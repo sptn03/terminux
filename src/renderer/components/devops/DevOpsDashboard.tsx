@@ -53,6 +53,16 @@ interface SysInfo {
   cpu_model?: string
   local_ip?: string
   public_ip?: string
+  network_ifaces?: NetworkIface[]
+}
+
+interface NetworkIface {
+  name: string
+  state: 'UP' | 'DOWN' | 'UNKNOWN'
+  ipv4: string[]
+  ipv6: string[]
+  mac?: string
+  type: 'physical' | 'vpn' | 'loopback' | 'bridge' | 'other'
 }
 
 interface PM2App {
@@ -285,11 +295,15 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
       echo "cpu_used: $cpu_used"
       echo "local_ip: $local_ip"
       echo "public_ip: $public_ip"
+      echo "===IFACES==="
+      ip a 2>/dev/null || ifconfig 2>/dev/null || true
     `
     const { stdout } = await exec(script)
     if (!stdout) return
 
-    const lines = stdout.split('\n')
+    // Split kv section and ip a section
+    const [kvSection, ifaceSection = ''] = stdout.split('===IFACES===')
+    const lines = kvSection.split('\n')
     const info: SysInfo = {}
     lines.forEach((l) => {
       const lineParts = l.split(': ')
@@ -303,6 +317,39 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
         }
       }
     })
+
+    // Parse network interfaces from `ip a` output
+    const SKIP = /^(docker|veth|br-|lo$)/
+    const VPN_RE = /^(tailscale|tun|wg|vpn)/i
+    const ifaces: NetworkIface[] = []
+    let cur: NetworkIface | null = null
+    ifaceSection.split('\n').forEach(raw => {
+      const line = raw.trim()
+      // New interface block: starts with digit
+      const ifaceMatch = line.match(/^\d+:\s+(\S+?)(@\S+)?:\s+<([^>]*)>/)
+      if (ifaceMatch) {
+        if (cur && !SKIP.test(cur.name)) ifaces.push(cur)
+        const name = ifaceMatch[1]
+        const flags = ifaceMatch[3] || ''
+        const state = flags.includes('UP') ? 'UP' : 'DOWN'
+        const type: NetworkIface['type'] = name === 'lo' ? 'loopback' : VPN_RE.test(name) ? 'vpn' : 'physical'
+        cur = { name, state: state as any, ipv4: [], ipv6: [], type }
+        return
+      }
+      if (!cur) return
+      // MAC
+      const macMatch = line.match(/link\/ether\s+([\da-f:]+)/i)
+      if (macMatch) { cur.mac = macMatch[1]; return }
+      // IPv4
+      const v4Match = line.match(/inet\s+([\d.]+\/\d+)/)
+      if (v4Match) { cur.ipv4.push(v4Match[1]); return }
+      // IPv6 (global only - skip link-local fe80)
+      const v6Match = line.match(/inet6\s+([\da-f:]+\/\d+).*scope global/)
+      if (v6Match) { cur.ipv6.push(v6Match[1]) }
+    })
+    if (cur && !SKIP.test((cur as NetworkIface).name)) ifaces.push(cur as NetworkIface)
+    info.network_ifaces = ifaces
+
     setSysInfo(info)
 
     // Resource Alerts check
@@ -972,6 +1019,57 @@ EOF
                 </div>
               </div>
             </div>
+
+            {/* Network Interfaces */}
+            {sysInfo.network_ifaces && sysInfo.network_ifaces.length > 0 && (
+              <div className="bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] mb-4 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#89b4fa]" />
+                  Network Interfaces
+                  <span className="ml-auto text-[10px] font-mono text-[#585b70] normal-case tracking-normal font-normal">
+                    Public IP: <span className="text-[#cdd6f4]">{sysInfo.public_ip || '...'}</span>
+                  </span>
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {(sysInfo.network_ifaces as NetworkIface[]).map((iface) => (
+                    <div key={iface.name} className="bg-[#11111b] border border-white/[0.04] rounded-xl p-3 flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between mb-0.5">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${iface.state === 'UP' ? 'bg-[#a6e3a1]' : 'bg-[#45475a]'}`} />
+                          <span className="font-mono text-xs font-bold text-[#cdd6f4]">{iface.name}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-semibold ${
+                            iface.type === 'vpn' ? 'bg-[#cba6f7]/10 text-[#cba6f7]' :
+                            iface.type === 'loopback' ? 'bg-[#585b70]/20 text-[#585b70]' :
+                            'bg-[#89b4fa]/10 text-[#89b4fa]'
+                          }`}>{iface.type}</span>
+                          <span className={`text-[9px] font-bold ${iface.state === 'UP' ? 'text-[#a6e3a1]' : 'text-[#585b70]'}`}>{iface.state}</span>
+                        </div>
+                      </div>
+                      {iface.mac && (
+                        <div className="font-mono text-[9px] text-[#45475a]">{iface.mac}</div>
+                      )}
+                      {iface.ipv4.map((ip: string) => (
+                        <div key={ip} className="flex items-center gap-1.5">
+                          <span className="text-[9px] font-bold text-[#f9e2af] bg-[#f9e2af]/10 px-1 rounded shrink-0">v4</span>
+                          <span className="font-mono text-[10px] text-[#cdd6f4] select-text">{ip}</span>
+                        </div>
+                      ))}
+                      {iface.ipv6.map((ip: string) => (
+                        <div key={ip} className="flex items-center gap-1.5">
+                          <span className="text-[9px] font-bold text-[#89b4fa] bg-[#89b4fa]/10 px-1 rounded shrink-0">v6</span>
+                          <span className="font-mono text-[9px] text-[#6c7086] break-all select-text">{ip}</span>
+                        </div>
+                      ))}
+                      {iface.ipv4.length === 0 && iface.ipv6.length === 0 && (
+                        <div className="text-[10px] text-[#45475a] italic">Không có địa chỉ IP</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
