@@ -1,0 +1,37 @@
+{
+  "name": "terminux",
+  "version": "1.0.0",
+  "description": "Local SSH Client — terminal, host manager, snippets",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "postinstall": "electron-rebuild -f -w better-sqlite3,ssh2"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.6.0",
+    "lucide-react": "^0.462.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "ssh2": "^1.16.0",
+    "xterm": "^5.3.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/ssh2": "^1.15.1",
+    "autoprefixer": "^10.4.20",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^33.2.1",
+    "electron-rebuild": "^3.2.9",
+    "electron-vite": "^2.3.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  }
+}
