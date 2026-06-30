@@ -61,6 +61,8 @@ Architecture decisions: DECISIONS.md
 | src/renderer/App.tsx | Root React component |
 | src/renderer/hooks/use-terminal.ts | xterm.js ↔ SSH IPC bridge |
 | src/renderer/stores/*.ts | Zustand stores (host, snippet, settings, terminal) |
+| src/renderer/components/devops/DevOpsDashboard.tsx | DevOps dashboard container and sub-tab navigator |
+| src/renderer/components/devops/*Panel.tsx | DevOps sub-panel components (Overview, PM2, Docker, etc.) |
 
 
 ==================================================
@@ -159,7 +161,12 @@ Known bottlenecks:
 
 # Known Issues
 
-Issue: None currently reported.
+Issue: `npm install` may fail during native module compilation on Windows with newer Node versions (e.g., v24).
+Workaround:
+1. Run `npm install --ignore-scripts`
+2. Run `node -e "process.chdir('node_modules/cpu-features'); require('child_process').execSync('node buildcheck.js > buildcheck.gypi')"` to generate the buildcheck configuration for `cpu-features` (which is skipped by --ignore-scripts).
+3. Run `npm run postinstall` (or `npx electron-rebuild -f -w better-sqlite3,ssh2`) to successfully compile the native modules.
+
 
 
 ==================================================

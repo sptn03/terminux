@@ -81,78 +81,208 @@ function FileViewer({ path, content, isRemote, onSave, onClose }: {
   onSave: (newContent: string) => Promise<void>
   onClose: () => void
 }) {
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(true) // Default to edit mode
   const [editedContent, setEditedContent] = useState(content)
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
+  const [saveSuccess, setSaveSuccess] = useState(false)
   const ext = (path.split('.').pop() || '').toLowerCase()
 
-  const handleSave = async () => {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchIndex, setSearchIndex] = useState(-1)
+  const [searchResults, setSearchResults] = useState<number[]>([])
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const lineNumbersRef = useRef<HTMLDivElement>(null)
+
+  const handleSave = async (contentToSave: string) => {
     setSaving(true)
     setSaveError('')
+    setSaveSuccess(false)
     try {
-      await onSave(editedContent)
-      setIsEditing(false)
+      await onSave(contentToSave)
+      setSaveSuccess(true)
+      setTimeout(() => setSaveSuccess(false), 2000)
     } catch (err: any) {
       setSaveError(err.message || 'Lỗi khi lưu file')
     }
     setSaving(false)
   }
 
+  const handleScroll = () => {
+    if (textareaRef.current && lineNumbersRef.current) {
+      lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop
+    }
+  }
+
+  const selectSearchMatch = (startIdx: number, length: number) => {
+    if (textareaRef.current) {
+      textareaRef.current.focus()
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.setSelectionRange(startIdx, startIdx + length)
+          const lineIndex = valToLineIndex(textareaRef.current.value, startIdx)
+          const lineHeight = 16.25 // leading-relaxed
+          textareaRef.current.scrollTop = lineIndex * lineHeight - 50
+        }
+      }, 10)
+    }
+  }
+
+  const valToLineIndex = (val: string, index: number): number => {
+    return val.substring(0, index).split('\n').length - 1
+  }
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+    if (!query) {
+      setSearchResults([])
+      setSearchIndex(-1)
+      return
+    }
+
+    const indexes: number[] = []
+    let idx = editedContent.toLowerCase().indexOf(query.toLowerCase())
+    while (idx !== -1) {
+      indexes.push(idx)
+      idx = editedContent.toLowerCase().indexOf(query.toLowerCase(), idx + 1)
+    }
+    setSearchResults(indexes)
+    if (indexes.length > 0) {
+      setSearchIndex(0)
+      selectSearchMatch(indexes[0], query.length)
+    } else {
+      setSearchIndex(-1)
+    }
+  }
+
+  const handleFindNext = () => {
+    if (searchResults.length === 0) return
+    const nextIdx = (searchIndex + 1) % searchResults.length
+    setSearchIndex(nextIdx)
+    selectSearchMatch(searchResults[nextIdx], searchQuery.length)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault()
+      handleSave(editedContent)
+      return
+    }
+
+    if (e.key === 'Tab') {
+      e.preventDefault()
+      const textarea = e.currentTarget
+      const start = textarea.selectionStart
+      const end = textarea.selectionEnd
+      const val = textarea.value
+
+      const tabString = '  '
+      const newValue = val.substring(0, start) + tabString + val.substring(end)
+      setEditedContent(newValue)
+
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + tabString.length
+      }, 0)
+    }
+  }
+
   return (
     <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/60 dialog-overlay" onClick={onClose}>
-      <div className="bg-[#1e1e2e] border border-white/10 rounded-xl shadow-2xl w-[780px] h-[80vh] flex flex-col modal-enter" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-[#1e1e2e] border border-white/10 rounded-xl shadow-2xl w-[90vw] h-[85vh] flex flex-col modal-enter" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/5 shrink-0">
           <div className="flex items-center gap-2 text-xs text-[#a6adc8] truncate">
             <File size={14} className="text-[#89b4fa]" />
             <span className="font-mono truncate">{path} <span className="text-[10px] text-[#585b70]">({isRemote ? 'Remote' : 'Local'})</span></span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            {!isEditing ? (
+            {saveSuccess && <span className="text-[10px] text-[#a6e3a1] font-semibold animate-pulse mr-2">Đã lưu!</span>}
+            {saveError && <span className="text-[10px] text-[#f38ba8] mr-2">{saveError}</span>}
+
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className="px-2.5 py-1 rounded bg-white/5 text-[#a6adc8] hover:bg-white/10 text-[10px] font-bold transition-all"
+            >
+              {isEditing ? 'Xem dạng Code' : 'Chỉnh sửa trực tiếp'}
+            </button>
+
+            {isEditing && (
               <button
-                onClick={() => setIsEditing(true)}
-                className="px-2.5 py-1 rounded bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 text-[10px] font-bold transition-all active:scale-95"
+                onClick={() => handleSave(editedContent)}
+                className="px-2.5 py-1 rounded bg-[#a6e3a1]/10 text-[#a6e3a1] hover:bg-[#a6e3a1]/20 text-[10px] font-bold transition-all flex items-center gap-1 active:scale-95"
+                disabled={saving}
               >
-                Chỉnh sửa
+                {saving && <Loader2 size={10} className="animate-spin" />}
+                Lưu (Ctrl+S)
               </button>
-            ) : (
-              <>
-                {saveError && <span className="text-[10px] text-[#f38ba8] mr-2">{saveError}</span>}
-                <button
-                  onClick={() => { setIsEditing(false); setEditedContent(content); setSaveError('') }}
-                  className="px-2.5 py-1 rounded bg-white/5 text-[#a6adc8] hover:bg-white/10 text-[10px] font-bold transition-all"
-                  disabled={saving}
-                >
-                  Hủy
-                </button>
-                <button
-                  onClick={handleSave}
-                  className="px-2.5 py-1 rounded bg-[#a6e3a1]/10 text-[#a6e3a1] hover:bg-[#a6e3a1]/20 text-[10px] font-bold transition-all flex items-center gap-1 active:scale-95"
-                  disabled={saving}
-                >
-                  {saving && <Loader2 size={10} className="animate-spin" />}
-                  Lưu
-                </button>
-              </>
             )}
+
             <button onClick={onClose} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]" disabled={saving}><X size={14} /></button>
           </div>
         </div>
-        <div className="flex-1 overflow-auto p-4 bg-[#11111b]/40">
-          {isEditing ? (
-            <textarea
-              value={editedContent}
-              onChange={(e) => setEditedContent(e.target.value)}
-              className="w-full h-full bg-[#11111b] text-[#cdd6f4] font-mono p-4 outline-none resize-none border border-white/5 rounded-xl text-xs leading-relaxed focus:border-[#89b4fa]/25"
-              disabled={saving}
+
+        {isEditing && (
+          <div className="px-4 py-1.5 border-b border-white/5 bg-[#181825]/40 flex items-center gap-2 shrink-0">
+            <input
+              type="text"
+              placeholder="Tìm kiếm từ khóa..."
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1 text-xs text-[#cdd6f4] outline-none w-48 focus:border-[#89b4fa]/20"
             />
+            {searchResults.length > 0 && (
+              <span className="text-[10px] text-[#585b70] font-mono">
+                {searchIndex + 1} / {searchResults.length}
+              </span>
+            )}
+            {searchResults.length > 0 && (
+              <button
+                type="button"
+                onClick={handleFindNext}
+                className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-[10px] text-[#cdd6f4] font-medium"
+              >
+                Tiếp theo
+              </button>
+            )}
+            {searchQuery && searchResults.length === 0 && (
+              <span className="text-[10px] text-[#f38ba8]">Không tìm thấy từ khóa</span>
+            )}
+          </div>
+        )}
+
+        <div className="flex-1 overflow-hidden flex bg-[#11111b]/40">
+          {isEditing ? (
+            <div className="flex-1 flex overflow-hidden">
+              <div
+                ref={lineNumbersRef}
+                className="w-12 text-right pr-2 py-4 select-none border-r border-white/5 text-[#585b70] font-mono text-[11px] overflow-hidden leading-relaxed bg-[#181825]"
+              >
+                {editedContent.split('\n').map((_, idx) => (
+                  <div key={idx}>{idx + 1}</div>
+                ))}
+              </div>
+              
+              <textarea
+                ref={textareaRef}
+                value={editedContent}
+                onScroll={handleScroll}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => setEditedContent(e.target.value)}
+                wrap="off"
+                className="flex-1 h-full bg-transparent text-[#cdd6f4] font-mono p-4 pl-3 outline-none resize-none text-[11px] leading-relaxed overflow-auto scrollbar-thin select-text whitespace-pre"
+                disabled={saving}
+                spellCheck={false}
+              />
+            </div>
           ) : (
-            <SyntaxHighlighter code={editedContent} language={ext} />
+            <div className="flex-1 overflow-auto p-4">
+              <SyntaxHighlighter code={editedContent} language={ext} />
+            </div>
           )}
         </div>
         <div className="px-4 py-2 border-t border-white/5 text-[9px] text-[#45475a] flex items-center gap-3 shrink-0">
           <span>{(editedContent.length / 1024).toFixed(1)} KB</span>
-          <span>{editedContent.split('\n').length} lines</span>
+          <span>{editedContent.split('\n').length} dòng</span>
         </div>
       </div>
     </div>

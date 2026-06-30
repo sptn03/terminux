@@ -7101,6 +7101,16 @@ const ArrowRight = createLucideIcon("ArrowRight", [
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
+const Bell = createLucideIcon("Bell", [
+  ["path", { d: "M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9", key: "1qo2s2" }],
+  ["path", { d: "M10.3 21a1.94 1.94 0 0 0 3.4 0", key: "qgo35s" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
 const Box = createLucideIcon("Box", [
   [
     "path",
@@ -7169,6 +7179,17 @@ const ClipboardList = createLucideIcon("ClipboardList", [
 const Clock = createLucideIcon("Clock", [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const CloudDownload = createLucideIcon("CloudDownload", [
+  ["path", { d: "M12 13v8l-4-4", key: "1f5nwf" }],
+  ["path", { d: "m12 21 4-4", key: "1lfcce" }],
+  ["path", { d: "M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284", key: "ui1hmy" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -7516,6 +7537,37 @@ const MousePointer2 = createLucideIcon("MousePointer2", [
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
+const Network = createLucideIcon("Network", [
+  ["rect", { x: "16", y: "16", width: "6", height: "6", rx: "1", key: "4q2zg0" }],
+  ["rect", { x: "2", y: "16", width: "6", height: "6", rx: "1", key: "8cvhb9" }],
+  ["rect", { x: "9", y: "2", width: "6", height: "6", rx: "1", key: "1egb70" }],
+  ["path", { d: "M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3", key: "1jsf9p" }],
+  ["path", { d: "M12 12V8", key: "2874zd" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Package = createLucideIcon("Package", [
+  [
+    "path",
+    {
+      d: "M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z",
+      key: "1a0edw"
+    }
+  ],
+  ["path", { d: "M12 22V12", key: "d0xqtd" }],
+  ["path", { d: "m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7", key: "yx3hmr" }],
+  ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
 const PenLine = createLucideIcon("PenLine", [
   ["path", { d: "M12 20h9", key: "t2du7b" }],
   [
@@ -7540,6 +7592,22 @@ const Pen = createLucideIcon("Pen", [
       key: "1a8usu"
     }
   ]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Pencil = createLucideIcon("Pencil", [
+  [
+    "path",
+    {
+      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+      key: "1a8usu"
+    }
+  ],
+  ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -8750,37 +8818,86 @@ function Sidebar() {
   const [showHostForm, setShowHostForm] = reactExports.useState(false);
   const [showGroupForm, setShowGroupForm] = reactExports.useState(false);
   const [searchQuery, setSearchQuery] = reactExports.useState("");
+  const [showAddMenu, setShowAddMenu] = reactExports.useState(false);
+  const addBtnRef = reactExports.useRef(null);
   const toggleSettings = useSettingsStore((s) => s.toggleSettings);
   const toggleSnippets = useSettingsStore((s) => s.toggleSnippets);
+  reactExports.useEffect(() => {
+    if (!showAddMenu) return;
+    const handler = (e) => {
+      if (addBtnRef.current && !addBtnRef.current.closest(".add-menu-container")?.contains(e.target)) {
+        setShowAddMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showAddMenu]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-[var(--sidebar-width)] min-w-[var(--sidebar-width)] bg-[#11111b] flex flex-col border-r border-white/[0.04] select-none z-10", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-12 flex items-center px-4 border-b border-white/[0.04] gap-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-7 h-7 rounded-[10px] bg-gradient-to-br from-[#89b4fa] to-[#cba6f7] p-[1px] shadow-lg shadow-[#89b4fa]/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full rounded-[9px] bg-[#11111b] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 13, className: "text-[#89b4fa]" }) }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-12 flex items-center px-4 border-b border-white/[0.04] gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-7 h-7 rounded-[10px] bg-gradient-to-br from-[#89b4fa] to-[#cba6f7] p-[1px] shadow-lg shadow-[#89b4fa]/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full rounded-[9px] bg-[#11111b] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 13, className: "text-[#89b4fa]" }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-[#cdd6f4] tracking-wide", children: "Terminux" })
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(QuickConnect, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-semibold text-[#45475a] uppercase tracking-[0.12em]", children: "Servers" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-0.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-2.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#45475a] uppercase tracking-[0.14em]", children: "Servers" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative add-menu-container", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
               {
-                onClick: () => setShowHostForm(true),
-                className: "p-1 rounded-[6px] hover:bg-white/[0.04] text-[#45475a] hover:text-[#cdd6f4] transition-all active:scale-95",
-                title: "Add Host",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 12 })
+                ref: addBtnRef,
+                onClick: () => setShowAddMenu((v2) => !v2),
+                className: `flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold transition-all active:scale-95 ${showAddMenu ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04]"}`,
+                title: "Thêm server hoặc nhóm",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 12, className: `transition-transform duration-200 ${showAddMenu ? "rotate-45" : ""}` }),
+                  "Thêm"
+                ]
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: () => setShowGroupForm(true),
-                className: "p-1 rounded-[6px] hover:bg-white/[0.04] text-[#45475a] hover:text-[#cdd6f4] transition-all active:scale-95",
-                title: "Add Group",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 12 })
-              }
-            )
+            showAddMenu && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute right-0 top-full mt-1.5 z-30 w-[160px] bg-[#1e1e2e] border border-white/10 rounded-xl shadow-2xl shadow-black/40 overflow-hidden animate-scale-in origin-top-right", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-2 border-b border-white/[0.04]", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#45475a] uppercase tracking-wider", children: "Tạo mới" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-1.5 space-y-0.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    onClick: () => {
+                      setShowHostForm(true);
+                      setShowAddMenu(false);
+                    },
+                    className: "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-white/[0.06] text-xs text-[#cdd6f4] transition-all active:scale-[0.98] group",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-md bg-[#89b4fa]/10 flex items-center justify-center group-hover:bg-[#89b4fa]/20 transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Server, { size: 12, className: "text-[#89b4fa]" }) }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-semibold", children: "Server" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[9px] text-[#585b70]", children: "Thêm máy chủ SSH" })
+                      ] })
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    onClick: () => {
+                      setShowGroupForm(true);
+                      setShowAddMenu(false);
+                    },
+                    className: "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-white/[0.06] text-xs text-[#cdd6f4] transition-all active:scale-[0.98] group",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-md bg-[#f9e2af]/10 flex items-center justify-center group-hover:bg-[#f9e2af]/20 transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 12, className: "text-[#f9e2af]" }) }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-semibold", children: "Nhóm" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[9px] text-[#585b70]", children: "Tạo nhóm máy chủ" })
+                      ] })
+                    ]
+                  }
+                )
+              ] })
+            ] })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 pb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 bg-[#1e1e2e] rounded-[8px] px-2.5 py-1.5 border border-white/[0.04] focus-within:border-[#89b4fa]/30 transition-all", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 pb-2.5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 bg-[#1e1e2e] rounded-[10px] px-2.5 py-1.5 border border-white/[0.04] focus-within:border-[#89b4fa]/25 transition-all", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 11, className: "text-[#45475a] shrink-0" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "input",
@@ -8792,16 +8909,16 @@ function Sidebar() {
               className: "flex-1 bg-transparent text-xs text-[#cdd6f4] placeholder-[#45475a] outline-none"
             }
           ),
-          searchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSearchQuery(""), className: "text-[#45475a] hover:text-[#cdd6f4] text-[10px] px-1 leading-none transition-colors", children: "✕" })
+          searchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSearchQuery(""), className: "text-[#45475a] hover:text-[#cdd6f4] transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
         ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-2 pb-2 space-y-0.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(HostTree, { searchQuery }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-2 pb-2 space-y-0.5 scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsx(HostTree, { searchQuery }) })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/[0.04] px-2 py-2.5 flex gap-1.5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/[0.04] px-2 py-2 flex gap-1", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
             onClick: toggleSnippets,
-            className: "flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[8px] text-xs text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all active:scale-[0.98]",
+            className: "flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg text-[10px] font-medium text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all active:scale-[0.98]",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(CodeXml, { size: 12 }),
               " Snippets"
@@ -8812,7 +8929,7 @@ function Sidebar() {
           "button",
           {
             onClick: toggleSettings,
-            className: "flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[8px] text-xs text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all active:scale-[0.98]",
+            className: "flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg text-[10px] font-medium text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all active:scale-[0.98]",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { size: 12 }),
               " Settings"
@@ -8913,7 +9030,7 @@ function Toolbar() {
   const toggleSettings = useSettingsStore((s) => s.toggleSettings);
   const tabs = useTerminalStore((s) => s.tabs);
   const activeTabId = useTerminalStore((s) => s.activeTabId);
-  const setActiveTab = useTerminalStore((s) => s.setActiveTab);
+  useTerminalStore((s) => s.setActiveTab);
   useTerminalStore((s) => s.removeTab);
   const activeTab = tabs.find((t2) => t2.sessionId === activeTabId);
   const updateTabState = useTerminalStore((s) => s.updateTabState);
@@ -8934,15 +9051,6 @@ function Toolbar() {
     setShowBroadcast(false);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-8 bg-[#11111b] border-b border-white/[0.04] flex items-center px-2 gap-0.5 select-none", children: [
-    tabs.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-0.5 mr-2", children: tabs.map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        onClick: () => setActiveTab(tab.sessionId),
-        className: `px-2 py-0.5 rounded text-[10px] transition-all ${tab.sessionId === activeTabId ? "bg-[#89b4fa]/10 text-[#89b4fa] font-medium" : "text-[#585b70] hover:text-[#a6adc8] hover:bg-white/[0.03]"}`,
-        children: tab.label
-      },
-      tab.sessionId
-    )) }),
     activeTab && activeTab.connected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center bg-[#1e1e2e]/50 border border-white/[0.04] rounded-lg p-[1px] ml-1 mr-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
@@ -8990,6 +9098,7 @@ function Toolbar() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setShowBroadcast(false), className: "text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
       ] })
     ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1" }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "button",
       {
@@ -9013,21 +9122,7 @@ function Toolbar() {
           "Settings"
         ]
       }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-2 text-[9px] text-[#45475a] border-l border-white/[0.04] pl-2 leading-none hidden md:flex items-center gap-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("kbd", { className: "px-1 py-[1px] rounded bg-white/[0.04] font-mono text-[9px]", children: "Ctrl+`" }),
-        " QC"
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("kbd", { className: "px-1 py-[1px] rounded bg-white/[0.04] font-mono text-[9px]", children: "Ctrl+B" }),
-        " Snip"
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("kbd", { className: "px-1 py-[1px] rounded bg-white/[0.04] font-mono text-[9px]", children: "Ctrl+W" }),
-        " Close"
-      ] })
-    ] })
+    )
   ] });
 }
 var xterm = { exports: {} };
@@ -16078,23 +16173,99 @@ function ContextMenu({ x: x2, y: y2, items, onClose }) {
   ] });
 }
 function FileViewer({ path, content, isRemote, onSave, onClose }) {
-  const [isEditing, setIsEditing] = reactExports.useState(false);
+  const [isEditing, setIsEditing] = reactExports.useState(true);
   const [editedContent, setEditedContent] = reactExports.useState(content);
   const [saving, setSaving] = reactExports.useState(false);
   const [saveError, setSaveError] = reactExports.useState("");
+  const [saveSuccess, setSaveSuccess] = reactExports.useState(false);
   const ext = (path.split(".").pop() || "").toLowerCase();
-  const handleSave = async () => {
+  const [searchQuery, setSearchQuery] = reactExports.useState("");
+  const [searchIndex, setSearchIndex] = reactExports.useState(-1);
+  const [searchResults, setSearchResults] = reactExports.useState([]);
+  const textareaRef = reactExports.useRef(null);
+  const lineNumbersRef = reactExports.useRef(null);
+  const handleSave = async (contentToSave) => {
     setSaving(true);
     setSaveError("");
+    setSaveSuccess(false);
     try {
-      await onSave(editedContent);
-      setIsEditing(false);
+      await onSave(contentToSave);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 2e3);
     } catch (err) {
       setSaveError(err.message || "Lỗi khi lưu file");
     }
     setSaving(false);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[80] flex items-center justify-center bg-black/60 dialog-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-xl shadow-2xl w-[780px] h-[80vh] flex flex-col modal-enter", onClick: (e) => e.stopPropagation(), children: [
+  const handleScroll = () => {
+    if (textareaRef.current && lineNumbersRef.current) {
+      lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
+    }
+  };
+  const selectSearchMatch = (startIdx, length) => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.setSelectionRange(startIdx, startIdx + length);
+          const lineIndex = valToLineIndex(textareaRef.current.value, startIdx);
+          const lineHeight = 16.25;
+          textareaRef.current.scrollTop = lineIndex * lineHeight - 50;
+        }
+      }, 10);
+    }
+  };
+  const valToLineIndex = (val, index) => {
+    return val.substring(0, index).split("\n").length - 1;
+  };
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (!query) {
+      setSearchResults([]);
+      setSearchIndex(-1);
+      return;
+    }
+    const indexes = [];
+    let idx = editedContent.toLowerCase().indexOf(query.toLowerCase());
+    while (idx !== -1) {
+      indexes.push(idx);
+      idx = editedContent.toLowerCase().indexOf(query.toLowerCase(), idx + 1);
+    }
+    setSearchResults(indexes);
+    if (indexes.length > 0) {
+      setSearchIndex(0);
+      selectSearchMatch(indexes[0], query.length);
+    } else {
+      setSearchIndex(-1);
+    }
+  };
+  const handleFindNext = () => {
+    if (searchResults.length === 0) return;
+    const nextIdx = (searchIndex + 1) % searchResults.length;
+    setSearchIndex(nextIdx);
+    selectSearchMatch(searchResults[nextIdx], searchQuery.length);
+  };
+  const handleKeyDown = (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+      e.preventDefault();
+      handleSave(editedContent);
+      return;
+    }
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const textarea = e.currentTarget;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const val = textarea.value;
+      const tabString = "  ";
+      const newValue = val.substring(0, start) + tabString + val.substring(end);
+      setEditedContent(newValue);
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + tabString.length;
+      }, 0);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[80] flex items-center justify-center bg-black/60 dialog-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-xl shadow-2xl w-[90vw] h-[85vh] flex flex-col modal-enter", onClick: (e) => e.stopPropagation(), children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-2.5 border-b border-white/5 shrink-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-xs text-[#a6adc8] truncate", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 14, className: "text-[#89b4fa]" }),
@@ -16109,53 +16280,82 @@ function FileViewer({ path, content, isRemote, onSave, onClose }) {
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 shrink-0", children: [
-        !isEditing ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+        saveSuccess && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#a6e3a1] font-semibold animate-pulse mr-2", children: "Đã lưu!" }),
+        saveError && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#f38ba8] mr-2", children: saveError }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
-            onClick: () => setIsEditing(true),
-            className: "px-2.5 py-1 rounded bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 text-[10px] font-bold transition-all active:scale-95",
-            children: "Chỉnh sửa"
+            onClick: () => setIsEditing(!isEditing),
+            className: "px-2.5 py-1 rounded bg-white/5 text-[#a6adc8] hover:bg-white/10 text-[10px] font-bold transition-all",
+            children: isEditing ? "Xem dạng Code" : "Chỉnh sửa trực tiếp"
           }
-        ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-          saveError && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#f38ba8] mr-2", children: saveError }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                setIsEditing(false);
-                setEditedContent(content);
-                setSaveError("");
-              },
-              className: "px-2.5 py-1 rounded bg-white/5 text-[#a6adc8] hover:bg-white/10 text-[10px] font-bold transition-all",
-              disabled: saving,
-              children: "Hủy"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: handleSave,
-              className: "px-2.5 py-1 rounded bg-[#a6e3a1]/10 text-[#a6e3a1] hover:bg-[#a6e3a1]/20 text-[10px] font-bold transition-all flex items-center gap-1 active:scale-95",
-              disabled: saving,
-              children: [
-                saving && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 10, className: "animate-spin" }),
-                "Lưu"
-              ]
-            }
-          )
-        ] }),
+        ),
+        isEditing && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => handleSave(editedContent),
+            className: "px-2.5 py-1 rounded bg-[#a6e3a1]/10 text-[#a6e3a1] hover:bg-[#a6e3a1]/20 text-[10px] font-bold transition-all flex items-center gap-1 active:scale-95",
+            disabled: saving,
+            children: [
+              saving && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 10, className: "animate-spin" }),
+              "Lưu (Ctrl+S)"
+            ]
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", disabled: saving, children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto p-4 bg-[#11111b]/40", children: isEditing ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "textarea",
-      {
-        value: editedContent,
-        onChange: (e) => setEditedContent(e.target.value),
-        className: "w-full h-full bg-[#11111b] text-[#cdd6f4] font-mono p-4 outline-none resize-none border border-white/5 rounded-xl text-xs leading-relaxed focus:border-[#89b4fa]/25",
-        disabled: saving
-      }
-    ) : /* @__PURE__ */ jsxRuntimeExports.jsx(SyntaxHighlighter, { code: editedContent, language: ext }) }),
+    isEditing && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-1.5 border-b border-white/5 bg-[#181825]/40 flex items-center gap-2 shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          placeholder: "Tìm kiếm từ khóa...",
+          value: searchQuery,
+          onChange: (e) => handleSearch(e.target.value),
+          className: "bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1 text-xs text-[#cdd6f4] outline-none w-48 focus:border-[#89b4fa]/20"
+        }
+      ),
+      searchResults.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] text-[#585b70] font-mono", children: [
+        searchIndex + 1,
+        " / ",
+        searchResults.length
+      ] }),
+      searchResults.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          onClick: handleFindNext,
+          className: "px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-[10px] text-[#cdd6f4] font-medium",
+          children: "Tiếp theo"
+        }
+      ),
+      searchQuery && searchResults.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#f38ba8]", children: "Không tìm thấy từ khóa" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden flex bg-[#11111b]/40", children: isEditing ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          ref: lineNumbersRef,
+          className: "w-12 text-right pr-2 py-4 select-none border-r border-white/5 text-[#585b70] font-mono text-[11px] overflow-hidden leading-relaxed bg-[#181825]",
+          children: editedContent.split("\n").map((_, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: idx + 1 }, idx))
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "textarea",
+        {
+          ref: textareaRef,
+          value: editedContent,
+          onScroll: handleScroll,
+          onKeyDown: handleKeyDown,
+          onChange: (e) => setEditedContent(e.target.value),
+          wrap: "off",
+          className: "flex-1 h-full bg-transparent text-[#cdd6f4] font-mono p-4 pl-3 outline-none resize-none text-[11px] leading-relaxed overflow-auto scrollbar-thin select-text whitespace-pre",
+          disabled: saving,
+          spellCheck: false
+        }
+      )
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SyntaxHighlighter, { code: editedContent, language: ext }) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-t border-white/5 text-[9px] text-[#45475a] flex items-center gap-3 shrink-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
         (editedContent.length / 1024).toFixed(1),
@@ -16163,7 +16363,7 @@ function FileViewer({ path, content, isRemote, onSave, onClose }) {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
         editedContent.split("\n").length,
-        " lines"
+        " dòng"
       ] })
     ] })
   ] }) });
@@ -16750,54 +16950,375 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
     )
   ] });
 }
-const stripAnsi$1 = (str) => {
-  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
-};
-function DevOpsDashboard({ sessionId }) {
-  const [activeSubTab, setActiveSubTab] = reactExports.useState("overview");
-  const [loading, setLoading] = reactExports.useState(false);
+function TunnelPanel({ sessionId, visible, onToggle, embedded = false }) {
+  const [tunnels, setTunnels] = reactExports.useState([]);
+  const [showForm, setShowForm] = reactExports.useState(false);
+  const [editingId, setEditingId] = reactExports.useState(null);
+  const [type, setType] = reactExports.useState("local");
+  const [name, setName] = reactExports.useState("");
+  const [localPort, setLocalPort] = reactExports.useState("");
+  const [remoteHost, setRemoteHost] = reactExports.useState("127.0.0.1");
+  const [remotePort, setRemotePort] = reactExports.useState("");
   const [error, setError] = reactExports.useState("");
-  const updateTabState = useTerminalStore((s) => s.updateTabState);
+  const [scanning, setScanning] = reactExports.useState(false);
+  const [remotePorts, setRemotePorts] = reactExports.useState([]);
+  const loadTunnels = async () => {
+    try {
+      const list = await window.api.tunnel.list();
+      setTunnels(list);
+    } catch {
+    }
+  };
+  reactExports.useEffect(() => {
+    if (visible) {
+      loadTunnels();
+      scanRemotePorts();
+    }
+    const interval = setInterval(loadTunnels, 3e3);
+    return () => clearInterval(interval);
+  }, [visible, sessionId]);
+  const resetForm = () => {
+    setName("");
+    setLocalPort("");
+    setRemoteHost("127.0.0.1");
+    setRemotePort("");
+    setError("");
+    setEditingId(null);
+    setType("local");
+  };
+  const scanRemotePorts = async () => {
+    if (!sessionId) return;
+    setScanning(true);
+    try {
+      const result = await window.api.port.scan(sessionId);
+      if (Array.isArray(result)) setRemotePorts(result);
+    } catch {
+    }
+    setScanning(false);
+  };
+  const handleStartTunnel = async () => {
+    if (!sessionId || !name || !localPort || !remotePort) return;
+    setError("");
+    try {
+      if (editingId) {
+        await window.api.tunnel.stop(editingId);
+      }
+      let result;
+      if (type === "local") {
+        result = await window.api.tunnel.startLocal(sessionId, name, parseInt(localPort), remoteHost, parseInt(remotePort));
+      } else {
+        result = await window.api.tunnel.startRemote(sessionId, name, parseInt(remotePort), remoteHost, parseInt(localPort));
+      }
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setShowForm(false);
+        resetForm();
+      }
+      loadTunnels();
+    } catch (err) {
+      setError(err.message || "Lỗi thiết lập tunnel");
+    }
+  };
+  const handleStop = async (id2) => {
+    try {
+      await window.api.tunnel.stop(id2);
+      loadTunnels();
+    } catch {
+    }
+  };
+  const startEdit = (t2) => {
+    setName(t2.name);
+    setType(t2.type);
+    setLocalPort(String(t2.listenPort));
+    setRemoteHost(t2.targetHost);
+    setRemotePort(String(t2.targetPort));
+    setEditingId(t2.id);
+    setShowForm(true);
+  };
+  const applyPreset = (service) => {
+    const presets = {
+      mysql: { name: "MySQL Tunnel", port: "3306" },
+      postgres: { name: "Postgres Tunnel", port: "5432" },
+      redis: { name: "Redis Tunnel", port: "6379" },
+      mongo: { name: "MongoDB Tunnel", port: "27017" }
+    };
+    const p2 = presets[service];
+    setName(p2.name);
+    setLocalPort(p2.port);
+    setRemoteHost("127.0.0.1");
+    setRemotePort(p2.port);
+  };
+  if (!visible) return null;
+  const tunnelsCount = tunnels.length;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `${embedded ? "flex-1" : "w-[390px] min-w-[390px]"} bg-[#181825]/96 backdrop-blur-md border-r border-white/5 flex flex-col shrink-0`, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#11111b]/50 shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-md bg-[#fab387]/10 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plug, { size: 11, className: "text-[#fab387]" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-[#cdd6f4] tracking-wider", children: "SSH Tunnel Manager" }),
+        tunnelsCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] font-bold text-[#a6e3a1] bg-[#a6e3a1]/10 px-1.5 py-0.5 rounded-full animate-pulse", children: [
+          tunnelsCount,
+          " active"
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1 shrink-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              resetForm();
+              setShowForm(!showForm);
+            },
+            className: `p-1 rounded-lg hover:bg-white/5 transition-all active:scale-95 ${showForm ? "text-[#fab387] bg-white/5" : "text-[#585b70] hover:text-[#cdd6f4]"}`,
+            title: "Thêm Tunnel mới",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 14 })
+          }
+        ),
+        !embedded && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onToggle, className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4] transition-all", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+      ] })
+    ] }),
+    showForm && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-b border-white/5 bg-[#11111b]/10 shrink-0 p-4 space-y-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-bold text-[#585b70] uppercase tracking-wider", children: editingId ? "Chỉnh sửa Tunnel" : "Tạo Tunnel mới" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex bg-[#11111b] p-0.5 rounded-lg border border-white/5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: () => setType("local"),
+              className: `px-2 py-0.5 rounded-md text-[9px] font-bold transition-all ${type === "local" ? "bg-[#fab387] text-[#11111b]" : "text-[#a6adc8]"}`,
+              children: "Local (L➔R)"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: () => setType("remote"),
+              className: `px-2 py-0.5 rounded-md text-[9px] font-bold transition-all ${type === "remote" ? "bg-[#fab387] text-[#11111b]" : "text-[#a6adc8]"}`,
+              children: "Remote (R➔L)"
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70] uppercase font-bold", children: "Mẫu dịch vụ (Presets)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-4 gap-1.5", children: ["mysql", "postgres", "redis", "mongo"].map((svc) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: () => applyPreset(svc),
+            className: "px-2 py-1 rounded bg-[#313244]/30 hover:bg-[#313244]/60 border border-white/5 text-[9px] font-bold text-[#cdd6f4] capitalize transition-all active:scale-95 flex items-center justify-center gap-1",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Database, { size: 9, className: "text-[#89b4fa]" }),
+              svc
+            ]
+          },
+          svc
+        )) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            value: name,
+            onChange: (e) => setName(e.target.value),
+            placeholder: "Tên gợi nhớ (ví dụ: Mysql Server)",
+            className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] placeholder-[#45475a] outline-none focus:border-[#fab387]/30 transition-all font-semibold"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-12 gap-2 items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-4 flex flex-col gap-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[9px] font-bold text-[#585b70] uppercase", children: type === "local" ? "PC Listen Port" : "PC Target Port" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                value: localPort,
+                onChange: (e) => setLocalPort(e.target.value),
+                placeholder: "3306",
+                type: "number",
+                className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] outline-none focus:border-[#fab387]/30 font-mono"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "col-span-1 flex justify-center pt-3 text-[#585b70]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 14, className: type === "remote" ? "rotate-180 text-[#fab387]" : "text-[#89b4fa]" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-4 flex flex-col gap-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[9px] font-bold text-[#585b70] uppercase", children: "Target Host" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                value: remoteHost,
+                onChange: (e) => setRemoteHost(e.target.value),
+                placeholder: "127.0.0.1",
+                className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] outline-none focus:border-[#fab387]/30 font-mono"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-3 flex flex-col gap-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[9px] font-bold text-[#585b70] uppercase", children: type === "local" ? "Server Port" : "Server Listen" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                value: remotePort,
+                onChange: (e) => setRemotePort(e.target.value),
+                placeholder: "3306",
+                type: "number",
+                className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] outline-none focus:border-[#fab387]/30 font-mono"
+              }
+            )
+          ] })
+        ] })
+      ] }),
+      error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#f38ba8] bg-[#f38ba8]/5 rounded-lg p-2 border border-[#f38ba8]/10", children: error }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
+          setShowForm(false);
+          resetForm();
+        }, className: "px-3.5 py-1.5 rounded-lg text-[10px] text-[#585b70] hover:bg-white/5 font-semibold transition-all", children: "Hủy" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: handleStartTunnel,
+            disabled: !sessionId || !name || !localPort || !remotePort,
+            className: "px-4 py-1.5 rounded-lg text-[10px] font-bold bg-[#fab387]/10 text-[#fab387] hover:bg-[#fab387]/20 disabled:opacity-30 transition-all active:scale-95",
+            children: editingId ? "Cập nhật" : "Kích hoạt Tunnel"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5 pt-2 border-t border-white/[0.03]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center text-[9px] text-[#585b70] font-bold uppercase", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Cổng khả dụng trên Server" }),
+          scanning ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#89b4fa] animate-pulse", children: "đang quét..." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: scanRemotePorts, className: "text-[#89b4fa] hover:underline font-bold", children: "Quét lại" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1 max-h-[60px] overflow-y-auto scrollbar-thin", children: remotePorts.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#45475a] italic", children: "Không phát hiện cổng nào đang lắng nghe" }) : remotePorts.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: () => {
+              setName(`Port ${p2} Tunnel`);
+              setRemotePort(String(p2));
+              setLocalPort(String(p2));
+            },
+            className: "px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#a6e3a1]/10 text-[#a6e3a1] border border-[#a6e3a1]/15 hover:bg-[#a6e3a1]/25 transition-all",
+            children: [
+              ":",
+              p2
+            ]
+          },
+          p2
+        )) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-3 space-y-3 scrollbar-thin", children: !showForm && tunnels.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center py-20 text-center text-[#585b70]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Network, { size: 36, className: "mb-3 opacity-30 animate-pulse text-[#fab387]" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Chưa thiết lập SSH Tunnel nào" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] mt-1 text-[#45475a] max-w-[200px] leading-relaxed", children: [
+        "Bấm nút ",
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 9, className: "inline-block" }),
+        " ở trên để cấu hình chuyển tiếp cổng bảo mật."
+      ] })
+    ] }) : tunnels.map((t2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: `bg-white/[0.01] border border-white/5 rounded-xl p-3.5 transition-all relative group flex flex-col gap-2.5 ${t2.active ? "hover:bg-white/[0.02]" : "opacity-40"}`,
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `w-1.5 h-1.5 rounded-full ${t2.active ? "bg-[#a6e3a1] shadow-[0_0_6px_rgba(166,227,161,0.4)]" : "bg-[#585b70]"}` }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-[#cdd6f4]", children: t2.name })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[8px] px-1.5 py-0.5 rounded font-bold uppercase ${t2.type === "local" ? "bg-[#89b4fa]/10 text-[#89b4fa]" : "bg-[#fab387]/10 text-[#fab387]"}`, children: t2.type === "local" ? "Local Forward" : "Remote Forward" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-[#11111b]/50 border border-white/[0.02] rounded-lg p-2.5 flex items-center justify-between text-[10px] font-mono", children: t2.type === "local" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#a6adc8] font-bold", children: [
+                ":",
+                t2.listenPort
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] text-[#585b70]", children: "Local PC" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center px-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[7px] text-[#a6e3a1] uppercase font-bold tracking-widest animate-pulse", children: "SSH Tunnel" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full flex items-center gap-0.5 justify-center text-[#585b70]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#a6e3a1]" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 10, className: "text-[#a6e3a1] -mr-1" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-[1px] flex-1 bg-gradient-to-r from-[#a6e3a1] to-transparent" })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center text-right max-w-[120px]", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#a6adc8] font-bold truncate block w-full text-right", title: `${t2.targetHost}:${t2.targetPort}`, children: [
+                t2.targetHost,
+                ":",
+                t2.targetPort
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] text-[#585b70]", children: "Remote Target" })
+            ] })
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center max-w-[120px]", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#a6adc8] font-bold truncate block w-full text-left", title: `${t2.targetHost}:${t2.targetPort}`, children: [
+                t2.targetHost,
+                ":",
+                t2.targetPort
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] text-[#585b70]", children: "Local Target" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center px-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[7px] text-[#fab387] uppercase font-bold tracking-widest animate-pulse", children: "Reverse SSH" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full flex items-center gap-0.5 justify-center text-[#585b70]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#fab387]" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 10, className: "text-[#fab387] rotate-180 -ml-1" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-[1px] flex-1 bg-gradient-to-r from-[#fab387] to-transparent" })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center text-right", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#a6adc8] font-bold", children: [
+                ":",
+                t2.listenPort
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] text-[#585b70]", children: "Remote Listen" })
+            ] })
+          ] }) }),
+          t2.error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[9px] text-[#f38ba8] bg-[#f38ba8]/5 rounded px-2 py-1 border border-[#f38ba8]/10", children: t2.error }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute right-3.5 top-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => startEdit(t2),
+                className: "p-1 rounded-md bg-[#313244]/40 hover:bg-[#313244] text-[#a6adc8] hover:text-[#89b4fa] transition-all",
+                title: "Chỉnh sửa",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Pencil, { size: 11 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleStop(t2.id),
+                className: "p-1 rounded-md bg-[#313244]/40 hover:bg-[#313244] text-[#a6adc8] hover:text-[#f38ba8] transition-all",
+                title: "Đóng Tunnel",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 11 })
+              }
+            )
+          ] })
+        ]
+      },
+      t2.id
+    )) })
+  ] });
+}
+function OverviewPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError,
+  alertCpu,
+  alertMem,
+  alertDisk,
+  triggerResourceAlert
+}) {
   const [sysInfo, setSysInfo] = reactExports.useState(null);
   const [ports, setPorts] = reactExports.useState([]);
-  const [pm2Apps, setPm2Apps] = reactExports.useState([]);
-  const [pm2Installed, setPm2Installed] = reactExports.useState(true);
-  const [selectedAppLogs, setSelectedAppLogs] = reactExports.useState(null);
-  const [services, setServices] = reactExports.useState([]);
-  const [nginxFiles, setNginxFiles] = reactExports.useState([]);
-  const [selectedNginxFile, setSelectedNginxFile] = reactExports.useState(null);
-  const [nginxConfigContent, setNginxConfigContent] = reactExports.useState("");
-  const [nginxTestResult, setNginxTestResult] = reactExports.useState(null);
-  const [savingNginx, setSavingNginx] = reactExports.useState(false);
-  const [dockerInstalled, setDockerInstalled] = reactExports.useState(true);
-  const [dockerSubTab, setDockerSubTab] = reactExports.useState("containers");
-  const [containers, setContainers] = reactExports.useState([]);
-  const [images, setImages] = reactExports.useState([]);
-  const [selectedContainerLogs, setSelectedContainerLogs] = reactExports.useState(null);
-  const [logPaths, setLogPaths] = reactExports.useState([
-    "/var/log/nginx/access.log",
-    "/var/log/nginx/error.log",
-    "/var/log/syslog"
-  ]);
-  const [selectedLogPath, setSelectedLogPath] = reactExports.useState("/var/log/nginx/access.log");
-  const [logContent, setLogContent] = reactExports.useState("");
-  const [logSearch, setLogSearch] = reactExports.useState("");
-  const [logAutoRefresh, setLogAutoRefresh] = reactExports.useState(true);
-  const [newLogPathInput, setNewLogPathInput] = reactExports.useState("");
-  const [showAddLogInput, setShowAddLogInput] = reactExports.useState(false);
-  const [dbInstances, setDbInstances] = reactExports.useState([]);
-  const [activeTunnels, setActiveTunnels] = reactExports.useState([]);
-  const [showCreateTunnelModal, setShowCreateTunnelModal] = reactExports.useState(null);
-  const [tunnelLocalPortInput, setTunnelLocalPortInput] = reactExports.useState("");
-  const [tunnelNameInput, setTunnelNameInput] = reactExports.useState("");
-  const exec = reactExports.useCallback(async (cmd) => {
-    try {
-      const result = await window.api.ssh.exec(sessionId, cmd);
-      return result;
-    } catch (err) {
-      return { stdout: "", stderr: err.message || "Execution failed", code: -1 };
-    }
-  }, [sessionId]);
+  const updateTabState = useTerminalStore((s) => s.updateTabState);
   const fetchPortsList = reactExports.useCallback(async () => {
     const cmd = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`;
     const { stdout } = await exec(cmd);
@@ -16856,216 +17377,510 @@ function DevOpsDashboard({ sessionId }) {
     return parsedPorts;
   }, [exec]);
   const fetchOverview = reactExports.useCallback(async () => {
-    const portsList = await fetchPortsList();
-    setPorts(portsList);
-    const script = `
-      os=$(cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2 2>/dev/null || echo "Linux")
-      uptime_str=$(uptime -p 2>/dev/null || echo "Unknown Uptime")
-      load_avg=$(uptime | awk -F'load average:' '{ print $2 }' | xargs 2>/dev/null || echo "0, 0, 0")
-      cpu_cores=$(nproc 2>/dev/null || echo "1")
-      cpu_model=$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -d':' -f2 | xargs 2>/dev/null || echo "Generic CPU")
-      mem_total=$(free -m 2>/dev/null | awk '/Mem:/ {print $2}' || echo 0)
-      mem_used=$(free -m 2>/dev/null | awk '/Mem:/ {print $3}' || echo 0)
-      mem_free=$(free -m 2>/dev/null | awk '/Mem:/ {print $4}' || echo 0)
-      mem_avail=$(free -m 2>/dev/null | awk '/Mem:/ {print $7}' || echo 0)
-      swap_total=$(free -m 2>/dev/null | awk '/Swap:/ {print $2}' || echo 0)
-      swap_used=$(free -m 2>/dev/null | awk '/Swap:/ {print $3}' || echo 0)
-      disk_total=$(df -BM / | awk 'NR==2 {print $2}' | sed 's/M//' 2>/dev/null || echo 0)
-      disk_used=$(df -BM / | awk 'NR==2 {print $3}' | sed 's/M//' 2>/dev/null || echo 0)
-      disk_free=$(df -BM / | awk 'NR==2 {print $4}' | sed 's/M//' 2>/dev/null || echo 0)
-      disk_percent=$(df -m / | awk 'NR==2 {print $5}' | sed 's/%//' 2>/dev/null || echo 0)
-      cpu_idle=$(top -bn1 | grep "Cpu(s)" | awk '{print $8}' 2>/dev/null || echo 100)
-      cpu_used=$(echo "100 - $cpu_idle" | bc 2>/dev/null || awk "BEGIN {print 100 - $cpu_idle}" 2>/dev/null || echo 0)
-      local_ip=$(hostname -I | awk '{print $1}' 2>/dev/null || echo "127.0.0.1")
-      public_ip=$(curl -s --connect-timeout 1 ifconfig.me 2>/dev/null || echo "Unknown")
+    try {
+      const portsList = await fetchPortsList();
+      setPorts(portsList);
+      const script = `
+        os=$(cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2 2>/dev/null || echo "Linux")
+        uptime_str=$(uptime -p 2>/dev/null || echo "Unknown Uptime")
+        load_avg=$(uptime | awk -F'load average:' '{ print $2 }' | xargs 2>/dev/null || echo "0, 0, 0")
+        cpu_cores=$(nproc 2>/dev/null || echo "1")
+        cpu_model=$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -d':' -f2 | xargs 2>/dev/null || echo "Generic CPU")
+        mem_total=$(free -m 2>/dev/null | awk '/Mem:/ {print $2}' || echo 0)
+        mem_used=$(free -m 2>/dev/null | awk '/Mem:/ {print $3}' || echo 0)
+        mem_free=$(free -m 2>/dev/null | awk '/Mem:/ {print $4}' || echo 0)
+        mem_avail=$(free -m 2>/dev/null | awk '/Mem:/ {print $7}' || echo 0)
+        swap_total=$(free -m 2>/dev/null | awk '/Swap:/ {print $2}' || echo 0)
+        swap_used=$(free -m 2>/dev/null | awk '/Swap:/ {print $3}' || echo 0)
+        disk_total=$(df -BM / | awk 'NR==2 {print $2}' | sed 's/M//' 2>/dev/null || echo 0)
+        disk_used=$(df -BM / | awk 'NR==2 {print $3}' | sed 's/M//' 2>/dev/null || echo 0)
+        disk_free=$(df -BM / | awk 'NR==2 {print $4}' | sed 's/M//' 2>/dev/null || echo 0)
+        disk_percent=$(df -m / | awk 'NR==2 {print $5}' | sed 's/%//' 2>/dev/null || echo 0)
+        cpu_idle=$(top -bn1 | grep "Cpu(s)" | awk '{print $8}' 2>/dev/null || echo 100)
+        cpu_used=$(echo "100 - $cpu_idle" | bc 2>/dev/null || awk "BEGIN {print 100 - $cpu_idle}" 2>/dev/null || echo 0)
+        local_ip=$(hostname -I | awk '{print $1}' 2>/dev/null || echo "127.0.0.1")
+        public_ip=$(curl -s --connect-timeout 1 ifconfig.me 2>/dev/null || echo "Unknown")
 
-      echo "os: $os"
-      echo "uptime: $uptime_str"
-      echo "load: $load_avg"
-      echo "cpu_cores: $cpu_cores"
-      echo "cpu_model: $cpu_model"
-      echo "mem_total: $mem_total"
-      echo "mem_used: $mem_used"
-      echo "mem_free: $mem_free"
-      echo "mem_avail: $mem_avail"
-      echo "swap_total: $swap_total"
-      echo "swap_used: $swap_used"
-      echo "disk_total: $disk_total"
-      echo "disk_used: $disk_used"
-      echo "disk_free: $disk_free"
-      echo "disk_percent: $disk_percent"
-      echo "cpu_used: $cpu_used"
-      echo "local_ip: $local_ip"
-      echo "public_ip: $public_ip"
-    `;
-    const { stdout } = await exec(script);
-    if (!stdout) return;
-    const lines = stdout.split("\n");
-    const info = {};
-    lines.forEach((l2) => {
-      const lineParts = l2.split(": ");
-      if (lineParts.length >= 2) {
-        const key = lineParts[0].trim();
-        const value = lineParts.slice(1).join(": ").trim();
-        if (["mem_total", "mem_used", "mem_free", "mem_avail", "swap_total", "swap_used", "disk_total", "disk_used", "disk_free", "disk_percent", "cpu_used", "cpu_cores"].includes(key)) {
-          info[key] = parseFloat(value) || 0;
-        } else {
-          info[key] = value;
+        echo "os: $os"
+        echo "uptime: $uptime_str"
+        echo "load: $load_avg"
+        echo "cpu_cores: $cpu_cores"
+        echo "cpu_model: $cpu_model"
+        echo "mem_total: $mem_total"
+        echo "mem_used: $mem_used"
+        echo "mem_free: $mem_free"
+        echo "mem_avail: $mem_avail"
+        echo "swap_total: $swap_total"
+        echo "swap_used: $swap_used"
+        echo "disk_total: $disk_total"
+        echo "disk_used: $disk_used"
+        echo "disk_free: $disk_free"
+        echo "disk_percent: $disk_percent"
+        echo "cpu_used: $cpu_used"
+        echo "local_ip: $local_ip"
+        echo "public_ip: $public_ip"
+        echo "===IFACES==="
+        ip a 2>/dev/null || ifconfig 2>/dev/null || true
+      `;
+      const { stdout } = await exec(script);
+      if (!stdout) return;
+      const [kvSection, ifaceSection = ""] = stdout.split("===IFACES===");
+      const lines = kvSection.split("\n");
+      const info = {};
+      lines.forEach((l2) => {
+        const lineParts = l2.split(": ");
+        if (lineParts.length >= 2) {
+          const key = lineParts[0].trim();
+          const value = lineParts.slice(1).join(": ").trim();
+          if ([
+            "mem_total",
+            "mem_used",
+            "mem_free",
+            "mem_avail",
+            "swap_total",
+            "swap_used",
+            "disk_total",
+            "disk_used",
+            "disk_free",
+            "disk_percent",
+            "cpu_used",
+            "cpu_cores"
+          ].includes(key)) {
+            info[key] = parseFloat(value) || 0;
+          } else {
+            info[key] = value;
+          }
         }
+      });
+      const SKIP = /^(docker|veth|br-|lo$)/;
+      const VPN_RE = /^(tailscale|tun|wg|vpn)/i;
+      const ifaces = [];
+      let cur = null;
+      ifaceSection.split("\n").forEach((raw) => {
+        const line = raw.trim();
+        const ifaceMatch = line.match(/^\d+:\s+(\S+?)(@\S+)?:\s+<([^>]*)>/);
+        if (ifaceMatch) {
+          if (cur && !SKIP.test(cur.name)) ifaces.push(cur);
+          const name = ifaceMatch[1];
+          const flags = ifaceMatch[3] || "";
+          const state = flags.includes("UP") ? "UP" : "DOWN";
+          const type = name === "lo" ? "loopback" : VPN_RE.test(name) ? "vpn" : "physical";
+          cur = { name, state, ipv4: [], ipv6: [], type };
+          return;
+        }
+        if (!cur) return;
+        const macMatch = line.match(/link\/ether\s+([\da-f:]+)/i);
+        if (macMatch) {
+          cur.mac = macMatch[1];
+          return;
+        }
+        const v4Match = line.match(/inet\s+([\d.]+\/\d+)/);
+        if (v4Match) {
+          cur.ipv4.push(v4Match[1]);
+          return;
+        }
+        const v6Match = line.match(/inet6\s+([\da-f:]+\/\d+).*scope global/);
+        if (v6Match) {
+          cur.ipv6.push(v6Match[1]);
+        }
+      });
+      if (cur && !SKIP.test(cur.name)) ifaces.push(cur);
+      info.network_ifaces = ifaces;
+      setSysInfo(info);
+      const cpuUsed = info.cpu_used || 0;
+      const memTotal = info.mem_total || 1;
+      const memUsed = info.mem_used || 0;
+      const memPercent = memUsed / memTotal * 100;
+      const diskPercent = info.disk_percent || 0;
+      if (cpuUsed > alertCpu || memPercent > alertMem || diskPercent > alertDisk) {
+        updateTabState(sessionId, { alertStatus: "danger" });
+        triggerResourceAlert(cpuUsed, memPercent, diskPercent);
+      } else {
+        updateTabState(sessionId, { alertStatus: "normal" });
       }
-    });
-    setSysInfo(info);
-    const cpuUsed = info.cpu_used || 0;
-    const memTotal = info.mem_total || 1;
-    const memUsed = info.mem_used || 0;
-    const memPercent = memUsed / memTotal * 100;
-    const diskPercent = info.disk_percent || 0;
-    if (cpuUsed > 85 || memPercent > 90 || diskPercent > 95) {
-      updateTabState(sessionId, { alertStatus: "danger" });
-    } else {
-      updateTabState(sessionId, { alertStatus: "normal" });
+    } catch (e) {
+      setError(e.message || "Lỗi tải dữ liệu Overview");
     }
-  }, [exec, fetchPortsList, sessionId, updateTabState]);
-  const fetchPm2 = reactExports.useCallback(async () => {
-    const portsList = await fetchPortsList();
-    setPorts(portsList);
-    const { stdout, code } = await exec("pm2 jlist 2>/dev/null");
-    if (code !== 0 || !stdout) {
-      setPm2Installed(false);
-      setPm2Apps([]);
-      return;
-    }
-    setPm2Installed(true);
+  }, [exec, fetchPortsList, sessionId, updateTabState, alertCpu, alertMem, alertDisk, triggerResourceAlert, setError]);
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchOverview();
+    setLoading(false);
+  }, [fetchOverview, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  reactExports.useEffect(() => {
+    const interval = setInterval(fetchOverview, 4e3);
+    return () => clearInterval(interval);
+  }, [fetchOverview]);
+  if (!sysInfo) return null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto space-y-6", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold tracking-wider text-[#585b70]", children: "Hệ Điều Hành" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-[#cdd6f4] truncate mt-1", children: sysInfo.os || "Linux" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold tracking-wider text-[#585b70]", children: "Uptime" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-[#cdd6f4] truncate mt-1", children: sysInfo.uptime || "Unknown" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold tracking-wider text-[#585b70]", children: "Tải trung bình (Load Avg)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-[#cdd6f4] truncate mt-1", children: sysInfo.load || "0, 0, 0" })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col items-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "text-[#89b4fa] mb-2", size: 16 }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-4", children: "CPU Utilization" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-28 h-28 flex items-center justify-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-full h-full transform -rotate-90", viewBox: "0 0 36 36", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#313244]", strokeWidth: "2.5", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#89b4fa] transition-all duration-500 ease-out", strokeWidth: "2.5", strokeDasharray: `${sysInfo.cpu_used || 0}, 100`, strokeLinecap: "round", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute flex flex-col items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold", children: [
+            (sysInfo.cpu_used || 0).toFixed(1),
+            "%"
+          ] }) })
+        ] })
+      ] }),
+      (() => {
+        const total = sysInfo.mem_total || 1;
+        const used = sysInfo.mem_used || 0;
+        const percent = Math.round(used / total * 100);
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { className: "text-[#a6e3a1] mb-2", size: 16 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-4", children: "RAM Utilization" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-28 h-28 flex items-center justify-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-full h-full transform -rotate-90", viewBox: "0 0 36 36", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#313244]", strokeWidth: "2.5", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#a6e3a1] transition-all duration-500 ease-out", strokeWidth: "2.5", strokeDasharray: `${percent}, 100`, strokeLinecap: "round", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute flex flex-col items-center", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold", children: [
+                percent,
+                "%"
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] text-[#585b70]", children: [
+                used,
+                " / ",
+                total,
+                " MB"
+              ] })
+            ] })
+          ] })
+        ] });
+      })(),
+      (() => {
+        const percent = sysInfo.disk_percent || 0;
+        const used = ((sysInfo.disk_used || 0) / 1024).toFixed(1);
+        const total = ((sysInfo.disk_total || 0) / 1024).toFixed(0);
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(HardDrive, { className: "text-[#fab387] mb-2", size: 16 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-4", children: "Disk Utilization (/)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-28 h-28 flex items-center justify-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-full h-full transform -rotate-90", viewBox: "0 0 36 36", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#313244]", strokeWidth: "2.5", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#fab387] transition-all duration-500 ease-out", strokeWidth: "2.5", strokeDasharray: `${percent}, 100`, strokeLinecap: "round", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute flex flex-col items-center", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold", children: [
+                percent,
+                "%"
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] text-[#585b70]", children: [
+                used,
+                " / ",
+                total,
+                " GB"
+              ] })
+            ] })
+          ] })
+        ] });
+      })()
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] mb-4 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#89b4fa]" }),
+          "Thông tin hệ thống chi tiết"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-xs flex-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5 border-b border-white/[0.02]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "CPU Model" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-semibold text-[#cdd6f4] max-w-[200px] truncate", title: sysInfo.cpu_model, children: sysInfo.cpu_model || "Generic CPU" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5 border-b border-white/[0.02]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "CPU Cores" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-semibold text-[#cdd6f4]", children: [
+              sysInfo.cpu_cores || 1,
+              " Cores"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5 border-b border-white/[0.02]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Swap Memory" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-semibold text-[#cdd6f4]", children: [
+              sysInfo.swap_used || 0,
+              " MB / ",
+              sysInfo.swap_total || 0,
+              " MB"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5 border-b border-white/[0.02]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "IP Nội Bộ (Private IP)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[#cdd6f4]", children: sysInfo.local_ip || "127.0.0.1" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "IP Công Cộng (Public IP)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[#cdd6f4]", children: sysInfo.public_ip || "Unknown" })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col max-h-[300px] overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] mb-4 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#f9e2af]" }),
+          "Cổng mạng đang lắng nghe (Listening Ports)"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto pr-1.5 scrollbar-thin", children: ports.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-xs py-8", children: "Không quét được cổng nào đang mở." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "pb-2", children: "Port" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "pb-2", children: "Proto" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "pb-2", children: "Bound Address" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "pb-2", children: "Process (PID)" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: ports.map((p2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2 font-mono font-bold text-[#89b4fa]", children: p2.port }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2 font-semibold text-[#a6e3a1] text-[10px]", children: p2.proto }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2 font-mono text-[#6c7086] truncate max-w-[120px]", title: p2.address, children: p2.address }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "py-2 font-semibold text-[#cdd6f4]", title: `PID: ${p2.pid}`, children: [
+              p2.processName,
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[#585b70] text-[10px]", children: [
+                "(",
+                p2.pid,
+                ")"
+              ] })
+            ] })
+          ] }, idx)) })
+        ] }) })
+      ] })
+    ] }),
+    sysInfo.network_ifaces && sysInfo.network_ifaces.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] mb-4 flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#89b4fa]" }),
+        "Network Interfaces",
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "ml-auto text-[10px] font-mono text-[#585b70] normal-case tracking-normal font-normal", children: [
+          "Public IP: ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#cdd6f4]", children: sysInfo.public_ip || "..." })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: sysInfo.network_ifaces.map((iface) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#11111b] border border-white/[0.04] rounded-xl p-3 flex flex-col gap-1.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-0.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `w-1.5 h-1.5 rounded-full shrink-0 ${iface.state === "UP" ? "bg-[#a6e3a1]" : "bg-[#45475a]"}` }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs font-bold text-[#cdd6f4]", children: iface.name })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "span",
+              {
+                className: `text-[9px] px-1.5 py-0.5 rounded-full font-semibold ${iface.type === "vpn" ? "bg-[#cba6f7]/10 text-[#cba6f7]" : iface.type === "loopback" ? "bg-[#585b70]/20 text-[#585b70]" : "bg-[#89b4fa]/10 text-[#89b4fa]"}`,
+                children: iface.type
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[9px] font-bold ${iface.state === "UP" ? "text-[#a6e3a1]" : "text-[#585b70]"}`, children: iface.state })
+          ] })
+        ] }),
+        iface.mac && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-mono text-[9px] text-[#45475a]", children: iface.mac }),
+        iface.ipv4.map((ip) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#f9e2af] bg-[#f9e2af]/10 px-1 rounded shrink-0", children: "v4" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[10px] text-[#cdd6f4] select-text", children: ip })
+        ] }, ip)),
+        iface.ipv6.map((ip) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#89b4fa] bg-[#89b4fa]/10 px-1 rounded shrink-0", children: "v6" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] text-[#6c7086] break-all select-text", children: ip })
+        ] }, ip)),
+        iface.ipv4.length === 0 && iface.ipv6.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] italic", children: "Không có địa chỉ IP" })
+      ] }, iface.name)) })
+    ] })
+  ] });
+}
+function ProcessesPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [processList, setProcessList] = reactExports.useState([]);
+  const [procSearch, setProcSearch] = reactExports.useState("");
+  const [procSortKey, setProcSortKey] = reactExports.useState("cpu");
+  const fetchProcesses = reactExports.useCallback(async () => {
     try {
-      const data = JSON.parse(stdout);
-      const apps = data.map((app) => ({
-        name: app.name || "Unnamed",
-        pm_id: app.pm_id ?? 0,
-        pid: app.pid ?? 0,
-        status: app.pm2_env?.status || "unknown",
-        cpu: app.monit?.cpu ?? 0,
-        memory: Math.round((app.monit?.memory ?? 0) / (1024 * 1024)),
-        restarts: app.pm2_env?.restart_time ?? 0,
-        outLog: app.pm2_env?.pm_out_log_path,
-        errLog: app.pm2_env?.pm_err_log_path
-      }));
-      setPm2Apps(apps);
-    } catch {
-      setPm2Installed(false);
+      const { stdout } = await exec("ps -eo pid,user,%cpu,%mem,time,comm --sort=-%cpu | head -n 40");
+      if (!stdout) return;
+      const lines = stdout.split("\n").slice(1);
+      const procs = lines.map((line) => {
+        const parts = line.trim().replace(/\s+/g, " ").split(" ");
+        if (parts.length < 6) return null;
+        return {
+          pid: parts[0],
+          user: parts[1],
+          cpu: parseFloat(parts[2]) || 0,
+          mem: parseFloat(parts[3]) || 0,
+          time: parts[4],
+          command: parts.slice(5).join(" ")
+        };
+      }).filter(Boolean);
+      setProcessList(procs);
+    } catch (e) {
+      setError(e.message || "Lỗi tải danh sách tiến trình");
     }
-  }, [exec, fetchPortsList]);
-  const fetchServices = reactExports.useCallback(async () => {
-    const portsList = await fetchPortsList();
-    setPorts(portsList);
-    const cmd = `
-      systemctl list-units --type=service --all --no-pager 2>/dev/null | grep -E "nginx|mysql|postgresql|docker|redis|apache2|mongodb|pm2|ssh" || true
-      echo "===PIDS==="
-      systemctl show --property=MainPID,Id nginx mysql postgresql redis docker apache2 mongodb ssh 2>/dev/null || true
-    `;
+  }, [exec, setError]);
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchProcesses();
+    setLoading(false);
+  }, [fetchProcesses, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  reactExports.useEffect(() => {
+    const interval = setInterval(fetchProcesses, 4e3);
+    return () => clearInterval(interval);
+  }, [fetchProcesses]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          placeholder: "Tìm kiếm tiến trình (tên, PID)...",
+          value: procSearch,
+          onChange: (e) => setProcSearch(e.target.value),
+          className: "bg-[#181825] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none w-64"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Sắp xếp:" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setProcSortKey("cpu"),
+            className: `px-2 py-0.5 rounded ${procSortKey === "cpu" ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "text-[#a6adc8]"}`,
+            children: "CPU%"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setProcSortKey("mem"),
+            className: `px-2 py-0.5 rounded ${procSortKey === "mem" ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "text-[#a6adc8]"}`,
+            children: "RAM%"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setProcSortKey("pid"),
+            className: `px-2 py-0.5 rounded ${procSortKey === "pid" ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "text-[#a6adc8]"}`,
+            children: "PID"
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "PID" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "User" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-right", children: "CPU %" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-right", children: "MEM %" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Time" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Command" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao tác" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: processList.filter((p2) => p2.command.toLowerCase().includes(procSearch.toLowerCase()) || p2.pid.includes(procSearch)).sort((a, b) => {
+        if (procSortKey === "cpu") return b.cpu - a.cpu;
+        if (procSortKey === "mem") return b.mem - a.mem;
+        return parseInt(b.pid) - parseInt(a.pid);
+      }).map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#89b4fa] font-bold", children: p2.pid }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8]", children: p2.user }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "p-3 text-right font-mono text-[#a6e3a1]", children: [
+          p2.cpu,
+          "%"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "p-3 text-right font-mono text-[#f9e2af]", children: [
+          p2.mem,
+          "%"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: p2.time }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#cdd6f4] max-w-xs truncate", title: p2.command, children: p2.command }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: async () => {
+                if (confirm(`Bạn có chắc muốn tắt tiến trình PID ${p2.pid}?`)) {
+                  setLoading(true);
+                  await exec(`kill -15 ${p2.pid} || sudo kill -15 ${p2.pid}`);
+                  await fetchProcesses();
+                  setLoading(false);
+                }
+              },
+              className: "px-2 py-0.5 rounded bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20 transition-all text-[10px]",
+              children: "Kill"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: async () => {
+                if (confirm(`Buộc tắt tiến trình PID ${p2.pid} (SIGKILL)?`)) {
+                  setLoading(true);
+                  await exec(`kill -9 ${p2.pid} || sudo kill -9 ${p2.pid}`);
+                  await fetchProcesses();
+                  setLoading(false);
+                }
+              },
+              className: "px-2 py-0.5 rounded bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all text-[10px]",
+              children: "Force Kill"
+            }
+          )
+        ] }) })
+      ] }, p2.pid)) })
+    ] }) })
+  ] });
+}
+const stripAnsi$3 = (str) => {
+  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
+};
+function PM2Panel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [pm2Apps, setPm2Apps] = reactExports.useState([]);
+  const [pm2Installed, setPm2Installed] = reactExports.useState(true);
+  const [selectedAppLogs, setSelectedAppLogs] = reactExports.useState(null);
+  const [ports, setPorts] = reactExports.useState([]);
+  const fetchPortsList = reactExports.useCallback(async () => {
+    const cmd = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`;
     const { stdout } = await exec(cmd);
-    const parts = stdout.split("===PIDS===");
-    const listPart = parts[0] || "";
-    const pidsPart = parts[1] || "";
-    const servicePids = {};
-    let currentId = "";
-    pidsPart.split("\n").forEach((l2) => {
-      const line = l2.trim();
-      if (line.startsWith("Id=")) {
-        currentId = line.replace("Id=", "").replace(".service", "");
-      } else if (line.startsWith("MainPID=") && currentId) {
-        const pid = line.replace("MainPID=", "");
-        if (pid && pid !== "0") {
-          servicePids[currentId] = pid;
-        }
-      }
-    });
-    const lines = listPart.split("\n");
-    const serviceList = [];
-    lines.forEach((l2) => {
-      const cleaned = l2.replace(/\s+/g, " ").trim();
-      const parts2 = cleaned.split(" ");
-      if (parts2.length >= 4 && parts2[0].endsWith(".service")) {
-        const name = parts2[0].replace(".service", "");
-        const activeState = parts2[2];
-        const subState = parts2[3];
-        const description = parts2.slice(4).join(" ");
-        const pid = servicePids[name] || "";
-        serviceList.push({ name, activeState, subState, description, pid });
-      }
-    });
-    setServices(serviceList);
-  }, [exec, fetchPortsList]);
-  const fetchNginx = reactExports.useCallback(async () => {
-    const { stdout } = await exec("ls -1 /etc/nginx/sites-available/ 2>/dev/null || ls -1 /etc/nginx/conf.d/ 2>/dev/null");
-    if (stdout) {
-      const files = stdout.split("\n").map((f2) => f2.trim()).filter(Boolean);
-      setNginxFiles(files);
-    } else {
-      setNginxFiles([]);
-    }
-  }, [exec]);
-  const fetchDocker = reactExports.useCallback(async () => {
-    const checkDocker = await exec("docker --version 2>/dev/null");
-    if (checkDocker.code !== 0) {
-      setDockerInstalled(false);
-      return;
-    }
-    setDockerInstalled(true);
-    if (dockerSubTab === "containers") {
-      const { stdout } = await exec(`docker ps -a --format '{{.ID}}||{{.Names}}||{{.Image}}||{{.Status}}||{{.Ports}}' 2>/dev/null`);
-      const list = stdout.split("\n").map((l2) => l2.trim()).filter(Boolean).map((line) => {
-        const parts = line.split("||");
-        return {
-          id: parts[0] || "",
-          name: parts[1] || "",
-          image: parts[2] || "",
-          status: parts[3] || "",
-          ports: parts[4] || "-"
-        };
-      });
-      setContainers(list);
-    } else {
-      const { stdout } = await exec(`docker images --format '{{.Repository}}||{{.Tag}}||{{.ID}}||{{.Size}}' 2>/dev/null`);
-      const list = stdout.split("\n").map((l2) => l2.trim()).filter(Boolean).map((line) => {
-        const parts = line.split("||");
-        return {
-          repository: parts[0] || "",
-          tag: parts[1] || "",
-          id: parts[2] || "",
-          size: parts[3] || ""
-        };
-      });
-      setImages(list);
-    }
-  }, [exec, dockerSubTab]);
-  const fetchLogsContent = reactExports.useCallback(async () => {
-    if (!selectedLogPath) return;
-    const { stdout, stderr } = await exec(`tail -n 100 "${selectedLogPath}" 2>&1`);
-    setLogContent(stripAnsi$1(stdout || stderr || "Không tìm thấy log hoặc file trống."));
-  }, [exec, selectedLogPath]);
-  const fetchTunnels = reactExports.useCallback(async () => {
-    try {
-      const list = await window.api.tunnel.list();
-      const filtered = list.map((t2) => ({
-        id: t2.id,
-        listenPort: t2.listenPort,
-        targetPort: t2.targetPort,
-        active: t2.active
-      }));
-      setActiveTunnels(filtered);
-    } catch {
-    }
-  }, []);
-  const fetchDatabaseInstances = reactExports.useCallback(async () => {
-    const script = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`;
-    const { stdout } = await exec(script);
-    const lines = stdout.split("\n");
-    const instances = [];
-    lines.forEach((l2) => {
+    if (!stdout) return [];
+    const portLines = stdout.split("\n");
+    const parsedPorts = [];
+    portLines.forEach((l2) => {
       const line = l2.replace(/\s+/g, " ").trim();
       if (!line || line.startsWith("Netid") || line.startsWith("Active") || line.startsWith("Proto")) return;
       const tokens = line.split(" ");
       if (tokens.length < 4) return;
+      const proto = tokens[0];
       let localAddressPort = "";
       let processInfo = "";
       if (line.includes("LISTEN") || tokens.includes("LISTEN") || tokens[1] === "LISTEN") {
@@ -17098,67 +17913,51 @@ function DevOpsDashboard({ sessionId }) {
             } else {
               processName = processInfo;
             }
-            let type = "unknown";
-            const portNum = parseInt(port);
-            const lowerProc = processName.toLowerCase();
-            if (portNum === 3306 || lowerProc.includes("mysql") || lowerProc.includes("mariadb")) type = "mysql";
-            else if (portNum === 5432 || lowerProc.includes("postgres")) type = "postgres";
-            else if (portNum === 6379 || lowerProc.includes("redis")) type = "redis";
-            else if (portNum === 27017 || lowerProc.includes("mongod")) type = "mongodb";
-            if (type !== "unknown") {
-              if (!instances.some((i) => i.port === port && i.type === type)) {
-                instances.push({ type, port, address, processName, pid });
-              }
-            }
+            parsedPorts.push({
+              proto: proto.toUpperCase(),
+              address,
+              port,
+              processName,
+              pid
+            });
           }
         }
       }
     });
-    setDbInstances(instances);
-    await fetchTunnels();
-  }, [exec, fetchTunnels]);
-  const loadTabData = reactExports.useCallback(async (tab) => {
-    setLoading(true);
-    setError("");
+    return parsedPorts;
+  }, [exec]);
+  const fetchPm2 = reactExports.useCallback(async () => {
     try {
-      if (tab === "overview") await fetchOverview();
-      else if (tab === "pm2") await fetchPm2();
-      else if (tab === "services") await fetchServices();
-      else if (tab === "nginx") await fetchNginx();
-      else if (tab === "docker") await fetchDocker();
-      else if (tab === "logs") await fetchLogsContent();
-      else if (tab === "database") await fetchDatabaseInstances();
+      const portsList = await fetchPortsList();
+      setPorts(portsList);
+      const { stdout, code } = await exec("pm2 jlist 2>/dev/null");
+      if (code !== 0 || !stdout) {
+        setPm2Installed(false);
+        setPm2Apps([]);
+        return;
+      }
+      setPm2Installed(true);
+      try {
+        const data = JSON.parse(stdout);
+        const apps = data.map((app) => ({
+          name: app.name || "Unnamed",
+          pm_id: app.pm_id ?? 0,
+          pid: app.pid ?? 0,
+          status: app.pm2_env?.status || "unknown",
+          cpu: app.monit?.cpu ?? 0,
+          memory: Math.round((app.monit?.memory ?? 0) / (1024 * 1024)),
+          restarts: app.pm2_env?.restart_time ?? 0,
+          outLog: app.pm2_env?.pm_out_log_path,
+          errLog: app.pm2_env?.pm_err_log_path
+        }));
+        setPm2Apps(apps);
+      } catch {
+        setPm2Installed(false);
+      }
     } catch (e) {
-      setError(e.message || "Lỗi tải dữ liệu");
+      setError(e.message || "Lỗi tải dữ liệu PM2");
     }
-    setLoading(false);
-  }, [activeSubTab, fetchOverview, fetchPm2, fetchServices, fetchNginx, fetchDocker, fetchLogsContent, fetchDatabaseInstances]);
-  reactExports.useEffect(() => {
-    loadTabData(activeSubTab);
-    if (activeSubTab === "overview") {
-      const interval = setInterval(fetchOverview, 4e3);
-      return () => clearInterval(interval);
-    }
-    if (activeSubTab === "docker") {
-      const interval = setInterval(fetchDocker, 5e3);
-      return () => clearInterval(interval);
-    }
-    return void 0;
-  }, [activeSubTab, loadTabData, fetchOverview, fetchDocker]);
-  reactExports.useEffect(() => {
-    if (activeSubTab === "logs" && logAutoRefresh) {
-      const interval = setInterval(fetchLogsContent, 3e3);
-      return () => clearInterval(interval);
-    }
-    return void 0;
-  }, [activeSubTab, selectedLogPath, logAutoRefresh, fetchLogsContent]);
-  reactExports.useEffect(() => {
-    if (activeSubTab === "database") {
-      const interval = setInterval(fetchTunnels, 3e3);
-      return () => clearInterval(interval);
-    }
-    return void 0;
-  }, [activeSubTab, fetchTunnels]);
+  }, [exec, fetchPortsList, setError]);
   const handlePm2Action = async (action, pmId) => {
     setLoading(true);
     const { stderr } = await exec(`pm2 ${action} ${pmId}`);
@@ -17185,68 +17984,176 @@ function DevOpsDashboard({ sessionId }) {
       const { stdout } = await exec(`tail -n 100 ~/.pm2/logs/${app.name}-out.log 2>/dev/null || echo "No logs found."`);
       logs = stdout;
     }
-    setSelectedAppLogs({ name: app.name, logs: stripAnsi$1(logs) || "Không tìm thấy log nào." });
+    setSelectedAppLogs({ name: app.name, logs: stripAnsi$3(logs) || "Không tìm thấy log nào." });
     setLoading(false);
   };
-  const handleServiceAction = async (action, serviceName) => {
+  const loadData = reactExports.useCallback(async () => {
     setLoading(true);
-    const { stderr } = await exec(`sudo systemctl ${action} ${serviceName} || systemctl ${action} ${serviceName}`);
-    if (stderr && stderr.includes("Failed")) {
-      alert("Lỗi thao tác: " + stderr);
-    }
-    await fetchServices();
+    setError("");
+    await fetchPm2();
     setLoading(false);
-  };
-  const handleReadNginxFile = async (filename) => {
-    setLoading(true);
-    setSelectedNginxFile(filename);
-    setNginxTestResult(null);
-    const path = `/etc/nginx/sites-available/${filename}`;
-    const { stdout } = await exec(`cat ${path} || cat /etc/nginx/conf.d/${filename}`);
-    setNginxConfigContent(stdout || "");
-    setLoading(false);
-  };
-  const handleSaveNginxConfig = async () => {
-    if (!selectedNginxFile || savingNginx) return;
-    setSavingNginx(true);
-    setNginxTestResult(null);
-    const path = `/etc/nginx/sites-available/${selectedNginxFile}`;
-    const saveScript = `
-      sudo cp ${path} ${path}.bak 2>/dev/null || true
-      cat << 'EOF' > /tmp/nginx_config_temp
-${nginxConfigContent}
-EOF
-      sudo mv /tmp/nginx_config_temp ${path} 2>/dev/null || mv /tmp/nginx_config_temp /etc/nginx/conf.d/${selectedNginxFile}
-      test_out=$(sudo nginx -t 2>&1)
-      test_code=$?
-      if [ $test_code -ne 0 ]; then
-        sudo mv ${path}.bak ${path} 2>/dev/null || mv ${path}.bak /etc/nginx/conf.d/${selectedNginxFile} 2>/dev/null || true
-        echo "===ERROR==="
-        echo "$test_out"
-      else
-        sudo rm ${path}.bak 2>/dev/null || true
-        echo "===SUCCESS==="
-      fi
-    `;
-    const { stdout } = await exec(saveScript);
-    if (stdout.includes("===ERROR===")) {
-      const errorMsg = stdout.replace("===ERROR===", "").trim();
-      setNginxTestResult({ success: false, message: errorMsg });
-    } else {
-      setNginxTestResult({ success: true, message: "Đã kiểm tra cú pháp thành công! (nginx -t ok)" });
+  }, [fetchPm2, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+    !pm2Installed ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 36, className: "mb-3 opacity-30" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "PM2 không được cài đặt trên máy chủ" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] mt-1 text-[#45475a] max-w-xs text-center leading-relaxed", children: "Vui lòng cài đặt PM2 toàn cục (ví dụ: `npm install -g pm2`) để sử dụng tính năng quản lý tiến trình." })
+    ] }) : pm2Apps.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 36, className: "mb-3 opacity-30" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không có app PM2 nào đang chạy" })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "ID" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tên Ứng Dụng" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "PID" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Port)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-right", children: "CPU" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-right", children: "Memory" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: pm2Apps.map((app) => {
+        const appPorts = ports.filter((p2) => p2.pid === String(app.pid)).map((p2) => p2.port);
+        const uniquePorts = Array.from(new Set(appPorts));
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: app.pm_id }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: app.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: app.pid }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: uniquePorts.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: uniquePorts.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "bg-[#a6e3a1]/10 text-[#a6e3a1] px-1.5 py-0.5 rounded text-[10px] font-bold", children: [
+            ":",
+            p2
+          ] }, p2)) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: `px-2 py-0.5 rounded-full text-[10px] font-medium leading-none ${app.status === "online" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`,
+              children: app.status
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "p-3 text-right font-mono", children: [
+            app.cpu,
+            "%"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "p-3 text-right font-mono", children: [
+            app.memory,
+            " MB"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
+            app.status === "online" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handlePm2Action("stop", app.pm_id),
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+                title: "Stop Process",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
+              }
+            ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handlePm2Action("start", app.pm_id),
+                className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
+                title: "Start Process",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handlePm2Action("restart", app.pm_id),
+                className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
+                title: "Restart Process",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleViewPm2Logs(app),
+                className: "p-1 rounded hover:bg-white/5 text-[#fab387]",
+                title: "View Logs",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { size: 12 })
+              }
+            )
+          ] }) })
+        ] }, app.pm_id);
+      }) })
+    ] }) }),
+    selectedAppLogs && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setSelectedAppLogs(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[800px] max-h-[80vh] flex flex-col animate-scale-in",
+        onClick: (e) => e.stopPropagation(),
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-gradient-to-r from-[#181825] to-transparent", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-semibold text-[#a6adc8] uppercase tracking-wider flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#fab387]" }),
+              "PM2 Logs: ",
+              selectedAppLogs.name
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSelectedAppLogs(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 15 }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text selection:bg-[#fab387]/25 scrollbar-thin", children: selectedAppLogs.logs })
+        ]
+      }
+    ) })
+  ] });
+}
+const stripAnsi$2 = (str) => {
+  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
+};
+function DockerPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [dockerInstalled, setDockerInstalled] = reactExports.useState(true);
+  const [dockerSubTab, setDockerSubTab] = reactExports.useState("containers");
+  const [containers, setContainers] = reactExports.useState([]);
+  const [images, setImages] = reactExports.useState([]);
+  const [selectedContainerLogs, setSelectedContainerLogs] = reactExports.useState(null);
+  const fetchDocker = reactExports.useCallback(async () => {
+    try {
+      const checkDocker = await exec("docker --version 2>/dev/null");
+      if (checkDocker.code !== 0) {
+        setDockerInstalled(false);
+        return;
+      }
+      setDockerInstalled(true);
+      if (dockerSubTab === "containers") {
+        const { stdout } = await exec(`docker ps -a --format '{{.ID}}||{{.Names}}||{{.Image}}||{{.Status}}||{{.Ports}}' 2>/dev/null`);
+        const list = stdout.split("\n").map((l2) => l2.trim()).filter(Boolean).map((line) => {
+          const parts = line.split("||");
+          return {
+            id: parts[0] || "",
+            name: parts[1] || "",
+            image: parts[2] || "",
+            status: parts[3] || "",
+            ports: parts[4] || "-"
+          };
+        });
+        setContainers(list);
+      } else {
+        const { stdout } = await exec(`docker images --format '{{.Repository}}||{{.Tag}}||{{.ID}}||{{.Size}}' 2>/dev/null`);
+        const list = stdout.split("\n").map((l2) => l2.trim()).filter(Boolean).map((line) => {
+          const parts = line.split("||");
+          return {
+            repository: parts[0] || "",
+            tag: parts[1] || "",
+            id: parts[2] || "",
+            size: parts[3] || ""
+          };
+        });
+        setImages(list);
+      }
+    } catch (e) {
+      setError(e.message || "Lỗi tải thông tin Docker");
     }
-    setSavingNginx(false);
-  };
-  const handleReloadNginx = async () => {
-    setLoading(true);
-    const { stderr } = await exec("sudo systemctl reload nginx || systemctl reload nginx");
-    if (stderr && stderr.includes("failed")) {
-      alert("Lỗi reload Nginx: " + stderr);
-    } else {
-      alert("Đã reload Nginx thành công!");
-    }
-    setLoading(false);
-  };
+  }, [exec, dockerSubTab, setError]);
   const handleDockerContainerAction = async (action, containerId) => {
     setLoading(true);
     const { stderr } = await exec(`docker ${action} ${containerId}`);
@@ -17271,19 +18178,276 @@ EOF
     setSelectedContainerLogs({
       id: containerId,
       name: containerName,
-      logs: stripAnsi$1(stdout || stderr || "Không tìm thấy log nào.")
+      logs: stripAnsi$2(stdout || stderr || "Không tìm thấy log nào.")
     });
     setLoading(false);
   };
-  const handleAddLogPath = () => {
-    const trimmed = newLogPathInput.trim();
-    if (trimmed && !logPaths.includes(trimmed)) {
-      setLogPaths([...logPaths, trimmed]);
-      setSelectedLogPath(trimmed);
-      setNewLogPathInput("");
-      setShowAddLogInput(false);
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchDocker();
+    setLoading(false);
+  }, [fetchDocker, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  reactExports.useEffect(() => {
+    const interval = setInterval(fetchDocker, 5e3);
+    return () => clearInterval(interval);
+  }, [fetchDocker]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+    !dockerInstalled ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { size: 36, className: "mb-3 opacity-30" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Docker không được cài đặt hoặc chưa khởi động" })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setDockerSubTab("containers");
+            },
+            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "containers" ? "bg-accent-blue/15 text-accent-blue" : "text-surface-mid hover:text-surface-light"}`,
+            children: [
+              "Containers (",
+              containers.length,
+              ")"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setDockerSubTab("images");
+            },
+            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "images" ? "bg-accent-blue/15 text-accent-blue" : "text-surface-mid hover:text-surface-light"}`,
+            children: [
+              "Images (",
+              images.length,
+              ")"
+            ]
+          }
+        )
+      ] }),
+      dockerSubTab === "containers" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Container ID" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tên" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Image" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Ports)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: containers.map((c) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: c.id }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: c.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#a6adc8] max-w-[150px] truncate", title: c.image, children: c.image }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: `px-2 py-0.5 rounded-full text-[10px] font-medium leading-none ${c.status.toLowerCase().includes("up") ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`,
+              children: c.status
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: c.ports && c.ports !== "-" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: c.ports.split(",").map((p2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: "bg-[#89b4fa]/10 text-[#89b4fa] px-1.5 py-0.5 rounded text-[10px] font-semibold",
+              title: p2.trim(),
+              children: p2.trim()
+            },
+            idx
+          )) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
+            c.status.toLowerCase().includes("up") ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDockerContainerAction("stop", c.id),
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+                title: "Stop Container",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
+              }
+            ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDockerContainerAction("start", c.id),
+                className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
+                title: "Start Container",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDockerContainerAction("restart", c.id),
+                className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
+                title: "Restart Container",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleViewDockerContainerLogs(c.id, c.name),
+                className: "p-1 rounded hover:bg-white/5 text-[#fab387]",
+                title: "View Container Logs",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDockerContainerAction("rm", c.id),
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]/70 hover:text-[#f38ba8]",
+                title: "Remove Container",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+              }
+            )
+          ] }) })
+        ] }, c.id)) })
+      ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Repository" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tag" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Image ID" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Size" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: images.map((img, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: img.repository }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8]", children: img.tag }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: img.id }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: img.size }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => handleDockerImageAction("rmi", img.id),
+              className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+              title: "Remove Image",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+            }
+          ) })
+        ] }, idx)) })
+      ] }) })
+    ] }),
+    selectedContainerLogs && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+        onClick: () => setSelectedContainerLogs(null),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[800px] max-h-[80vh] flex flex-col animate-scale-in",
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-gradient-to-r from-[#181825] to-transparent", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-semibold text-[#a6adc8] uppercase tracking-wider flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#89b4fa]" }),
+                  "Docker Logs: ",
+                  selectedContainerLogs.name
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSelectedContainerLogs(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 15 }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text selection:bg-[#89b4fa]/25 scrollbar-thin", children: selectedContainerLogs.logs })
+            ]
+          }
+        )
+      }
+    )
+  ] });
+}
+function DatabasePanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [dbInstances, setDbInstances] = reactExports.useState([]);
+  const [activeTunnels, setActiveTunnels] = reactExports.useState([]);
+  const [showCreateTunnelModal, setShowCreateTunnelModal] = reactExports.useState(null);
+  const [tunnelLocalPortInput, setTunnelLocalPortInput] = reactExports.useState("");
+  const [tunnelNameInput, setTunnelNameInput] = reactExports.useState("");
+  const fetchTunnels = reactExports.useCallback(async () => {
+    try {
+      const list = await window.api.tunnel.list();
+      const filtered = list.map((t2) => ({
+        id: t2.id,
+        listenPort: t2.listenPort,
+        targetPort: t2.targetPort,
+        active: t2.active
+      }));
+      setActiveTunnels(filtered);
+    } catch {
     }
-  };
+  }, []);
+  const fetchDatabaseInstances = reactExports.useCallback(async () => {
+    try {
+      const script = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`;
+      const { stdout } = await exec(script);
+      const lines = stdout.split("\n");
+      const instances = [];
+      lines.forEach((l2) => {
+        const line = l2.replace(/\s+/g, " ").trim();
+        if (!line || line.startsWith("Netid") || line.startsWith("Active") || line.startsWith("Proto")) return;
+        const tokens = line.split(" ");
+        if (tokens.length < 4) return;
+        let localAddressPort = "";
+        let processInfo = "";
+        if (line.includes("LISTEN") || tokens.includes("LISTEN") || tokens[1] === "LISTEN") {
+          if (line.includes("users:")) {
+            localAddressPort = tokens[4];
+            processInfo = tokens.slice(6).join(" ");
+          } else {
+            localAddressPort = tokens[3];
+            processInfo = tokens[tokens.length - 1];
+          }
+          if (localAddressPort) {
+            const lastColonIdx = localAddressPort.lastIndexOf(":");
+            if (lastColonIdx !== -1) {
+              const address = localAddressPort.substring(0, lastColonIdx);
+              const port = localAddressPort.substring(lastColonIdx + 1);
+              let processName = "-";
+              let pid = "-";
+              if (processInfo.includes("users:")) {
+                const match = processInfo.match(/users:\(\("([^"]+)",(?:pid|pgid)=(\d+)/);
+                if (match) {
+                  processName = match[1];
+                  pid = match[2];
+                }
+              } else if (processInfo.includes("/")) {
+                const match = processInfo.match(/(\d+)\/(.+)/);
+                if (match) {
+                  pid = match[1];
+                  processName = match[2];
+                }
+              } else {
+                processName = processInfo;
+              }
+              let type = "unknown";
+              const portNum = parseInt(port);
+              const lowerProc = processName.toLowerCase();
+              if (portNum === 3306 || lowerProc.includes("mysql") || lowerProc.includes("mariadb")) type = "mysql";
+              else if (portNum === 5432 || lowerProc.includes("postgres")) type = "postgres";
+              else if (portNum === 6379 || lowerProc.includes("redis")) type = "redis";
+              else if (portNum === 27017 || lowerProc.includes("mongod")) type = "mongodb";
+              if (type !== "unknown") {
+                if (!instances.some((i) => i.port === port && i.type === type)) {
+                  instances.push({ type, port, address, processName, pid });
+                }
+              }
+            }
+          }
+        }
+      });
+      setDbInstances(instances);
+      await fetchTunnels();
+    } catch (e) {
+      setError(e.message || "Lỗi tải cơ sở dữ liệu");
+    }
+  }, [exec, fetchTunnels, setError]);
   const handleOpenTunnelModal = (port, type) => {
     setTunnelLocalPortInput(port);
     setTunnelNameInput(`${type.toUpperCase()} Tunnel`);
@@ -17313,6 +18477,1739 @@ EOF
     await fetchDatabaseInstances();
     setLoading(false);
   };
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchDatabaseInstances();
+    setLoading(false);
+  }, [fetchDatabaseInstances, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  reactExports.useEffect(() => {
+    const interval = setInterval(fetchTunnels, 3e3);
+    return () => clearInterval(interval);
+  }, [fetchTunnels]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+    dbInstances.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Database, { size: 36, className: "mb-3 opacity-30" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không phát hiện hệ quản trị CSDL nào đang hoạt động" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] mt-1 text-[#45475a] max-w-xs text-center leading-relaxed", children: "Để sử dụng tính năng này, hãy đảm bảo MySQL, Postgres, Redis hoặc MongoDB đang lắng nghe trên server." })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto pr-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-4", children: dbInstances.map((db2, idx) => {
+      const activeTunnel = activeTunnels.find((t2) => t2.targetPort === parseInt(db2.port) && t2.active);
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "bg-[#181825] border border-white/[0.04] rounded-xl p-5 flex flex-col justify-between hover:border-white/[0.08] transition-all",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 rounded-lg bg-[#fab387]/10 text-[#fab387]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Database, { size: 18 }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "text-xs font-bold text-[#cdd6f4] uppercase", children: [
+                    db2.type,
+                    " Server"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] font-mono text-[#585b70]", children: [
+                    "Port ",
+                    db2.port,
+                    " | ",
+                    db2.processName
+                  ] })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: `px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider ${activeTunnel ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#585b70]/10 text-[#585b70]"}`,
+                  children: activeTunnel ? "Tunnel Active" : "Disconnected"
+                }
+              )
+            ] }),
+            activeTunnel && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 bg-[#11111b] border border-white/[0.02] rounded-lg p-2.5 text-[10px] font-mono text-[#a6adc8] space-y-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Cổng Cục Bộ:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-[#89b4fa]", children: activeTunnel.listenPort })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Kết Nối:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                  "localhost:",
+                  activeTunnel.listenPort
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-5", children: activeTunnel ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: () => handleStopTunnel(activeTunnel.id),
+                className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20 transition-all active:scale-95",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 11 }),
+                  "Hủy SSH Tunnel"
+                ]
+              }
+            ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: () => handleOpenTunnelModal(db2.port, db2.type),
+                className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] transition-all active:scale-95",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 11 }),
+                  "Tạo SSH Tunnel"
+                ]
+              }
+            ) })
+          ]
+        },
+        idx
+      );
+    }) }) }),
+    showCreateTunnelModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+        onClick: () => setShowCreateTunnelModal(null),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[380px] flex flex-col animate-scale-in",
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+                  "Kích hoạt SSH Tunnel (",
+                  showCreateTunnelModal.dbType.toUpperCase(),
+                  ")"
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowCreateTunnelModal(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên Kết Nối (Tunnel Name)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "text",
+                      value: tunnelNameInput,
+                      onChange: (e) => setTunnelNameInput(e.target.value),
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]/50"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Cổng Cục Bộ Máy Bạn (Local Listen Port)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "number",
+                      placeholder: "3307, 5433, 6380...",
+                      value: tunnelLocalPortInput,
+                      onChange: (e) => setTunnelLocalPortInput(e.target.value),
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]/50"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#585b70] block leading-relaxed", children: "Cổng này sẽ được mở trên máy tính cá nhân của bạn. Kết nối tới `localhost:cổng` sẽ tự động chuyển hướng tới database trên server." })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => setShowCreateTunnelModal(null),
+                      className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                      children: "Hủy"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: handleCreateTunnel,
+                      className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all",
+                      children: "Tạo Tunnel"
+                    }
+                  )
+                ] })
+              ] })
+            ]
+          }
+        )
+      }
+    )
+  ] });
+}
+function CronPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [cronJobs, setCronJobs] = reactExports.useState([]);
+  const [showAddCronModal, setShowAddCronModal] = reactExports.useState(false);
+  const [cronCommand, setCronCommand] = reactExports.useState("");
+  const [cronSchedule, setCronSchedule] = reactExports.useState("* * * * *");
+  const [cronLogs, setCronLogs] = reactExports.useState(null);
+  const [editingCronIndex, setEditingCronIndex] = reactExports.useState(null);
+  const fetchCronJobs = reactExports.useCallback(async () => {
+    try {
+      const { stdout } = await exec("crontab -l 2>/dev/null || echo ''");
+      const jobs = stdout.split("\n").filter(Boolean);
+      setCronJobs(jobs);
+    } catch (e) {
+      setError(e.message || "Lỗi tải danh sách cron jobs");
+    }
+  }, [exec, setError]);
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchCronJobs();
+    setLoading(false);
+  }, [fetchCronJobs, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-[#a6adc8] font-semibold", children: "Tác vụ định kỳ (crontab)" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: async () => {
+              setLoading(true);
+              const { stdout } = await exec(
+                "sudo grep CRON /var/log/syslog | tail -n 50 || tail -n 50 /var/log/cron 2>/dev/null || echo 'Không có quyền truy cập log file (Yêu cầu quyền sudo)'"
+              );
+              setCronLogs(stdout);
+              setLoading(false);
+            },
+            className: "px-3 py-1 rounded bg-[#fab387] text-[#1e1e2e] text-xs font-semibold hover:bg-[#f8a060] transition-all",
+            children: "Xem Cron Logs"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setCronCommand("");
+              setCronSchedule("* * * * *");
+              setEditingCronIndex(null);
+              setShowAddCronModal(true);
+            },
+            className: "px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] text-xs font-semibold hover:bg-[#74c7ec] transition-all flex items-center gap-1",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13 }),
+              " Thêm Cron Job"
+            ]
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: cronJobs.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-xs py-12", children: "Không có cron job nào được cấu hình." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 w-12", children: "Trạng thái" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Thời gian (Cron Expression)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Lệnh thực thi" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao tác" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: cronJobs.map((job, idx) => {
+        const isCommented = job.startsWith("#");
+        const cleanJob = job.replace(/^#\s*/, "").trim();
+        const parts = cleanJob.split(/\s+/);
+        const schedule = parts.slice(0, 5).join(" ");
+        const command = parts.slice(5).join(" ");
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: `px-2 py-0.5 rounded-full text-[9px] font-semibold ${isCommented ? "bg-[#585b70]/20 text-[#585b70]" : "bg-[#a6e3a1]/10 text-[#a6e3a1]"}`,
+              children: isCommented ? "Tắt" : "Bật"
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono font-bold text-[#89b4fa]", children: schedule }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#cdd6f4] break-all select-text", children: command }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  setLoading(true);
+                  const updatedJobs = [...cronJobs];
+                  if (isCommented) {
+                    updatedJobs[idx] = cleanJob;
+                  } else {
+                    updatedJobs[idx] = `# ${job}`;
+                  }
+                  const newCronString = updatedJobs.join("\n");
+                  await exec(`echo "${newCronString}" | crontab -`);
+                  await fetchCronJobs();
+                  setLoading(false);
+                },
+                className: "px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-xs transition-all animate-none text-[#a6adc8]",
+                children: isCommented ? "Bật" : "Tắt"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => {
+                  setCronSchedule(schedule);
+                  setCronCommand(command);
+                  setEditingCronIndex(idx);
+                  setShowAddCronModal(true);
+                },
+                className: "px-2 py-0.5 rounded bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 text-xs transition-all",
+                children: "Sửa"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  if (confirm("Xóa cron job này?")) {
+                    setLoading(true);
+                    const updatedJobs = cronJobs.filter((_, i) => i !== idx);
+                    const newCronString = updatedJobs.join("\n");
+                    await exec(`echo "${newCronString}" | crontab -`);
+                    await fetchCronJobs();
+                    setLoading(false);
+                  }
+                },
+                className: "px-2 py-0.5 rounded bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20 text-xs transition-all",
+                children: "Xóa"
+              }
+            )
+          ] }) })
+        ] }, idx);
+      }) })
+    ] }) }),
+    showAddCronModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+        onClick: () => setShowAddCronModal(false),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] flex flex-col animate-scale-in",
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: editingCronIndex !== null ? "Chỉnh sửa Cron Job" : "Tạo mới Cron Job" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowAddCronModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Thời gian (Cron Expression)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "text",
+                      value: cronSchedule,
+                      onChange: (e) => setCronSchedule(e.target.value),
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono",
+                      placeholder: "* * * * *"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-1.5 pt-1 text-[9px] text-[#585b70]", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        onClick: () => setCronSchedule("*/1 * * * *"),
+                        className: "px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]",
+                        children: "Mỗi phút (*/1 * * * *)"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCronSchedule("0 * * * *"), className: "px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]", children: "Mỗi giờ (0 * * * *)" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        onClick: () => setCronSchedule("0 0 * * *"),
+                        className: "px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]",
+                        children: "Mỗi ngày (0 0 * * *)"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        onClick: () => setCronSchedule("0 0 * * 0"),
+                        className: "px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]",
+                        children: "Mỗi tuần (0 0 * * 0)"
+                      }
+                    )
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Lệnh thực thi (Command)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "text",
+                      value: cronCommand,
+                      onChange: (e) => setCronCommand(e.target.value),
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono",
+                      placeholder: "/path/to/script.sh"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => setShowAddCronModal(false),
+                      className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                      children: "Hủy"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: async () => {
+                        setLoading(true);
+                        const newJob = `${cronSchedule} ${cronCommand}`;
+                        let updatedJobs = [...cronJobs];
+                        if (editingCronIndex !== null) {
+                          updatedJobs[editingCronIndex] = newJob;
+                        } else {
+                          updatedJobs.push(newJob);
+                        }
+                        const newCronString = updatedJobs.join("\n");
+                        await exec(`echo "${newCronString}" | crontab -`);
+                        await fetchCronJobs();
+                        setShowAddCronModal(false);
+                        setLoading(false);
+                      },
+                      className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all",
+                      children: editingCronIndex !== null ? "Lưu thay đổi" : "Tạo mới"
+                    }
+                  )
+                ] })
+              ] })
+            ]
+          }
+        )
+      }
+    ),
+    cronLogs !== null && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setCronLogs(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[700px] max-h-[85vh] flex flex-col animate-scale-in",
+        onClick: (e) => e.stopPropagation(),
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: "Cron Execution Logs" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCronLogs(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text scrollbar-thin", children: cronLogs || "Không tìm thấy nhật ký hoạt động của Cron." })
+        ]
+      }
+    ) })
+  ] });
+}
+function MultiExecPanel({
+  sessionId,
+  exec
+}) {
+  const [multiCmd, setMultiCmd] = reactExports.useState("");
+  const [selectedSessions, setSelectedSessions] = reactExports.useState({});
+  const [multiOutputs, setMultiOutputs] = reactExports.useState({});
+  const handleBroadcast = async () => {
+    const targetIds = [sessionId, ...Object.keys(selectedSessions).filter((id2) => selectedSessions[id2])];
+    const freshOutputs = {};
+    targetIds.forEach((id2) => {
+      freshOutputs[id2] = { label: "", output: "", status: "running" };
+    });
+    setMultiOutputs(freshOutputs);
+    targetIds.forEach(async (id2) => {
+      try {
+        const result = await window.api.ssh.exec(id2, multiCmd);
+        setMultiOutputs((prev) => ({
+          ...prev,
+          [id2]: {
+            label: "",
+            output: result.stdout || result.stderr || "Command finished with no output.",
+            status: result.code === 0 ? "done" : "error"
+          }
+        }));
+      } catch (err) {
+        setMultiOutputs((prev) => ({
+          ...prev,
+          [id2]: { label: "", output: "Lỗi kết nối: " + err.message, status: "error" }
+        }));
+      }
+    });
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden gap-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-4 gap-4 flex-1 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-1 bg-[#181825] border border-white/[0.04] rounded-xl p-3 flex flex-col overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Chọn Server đích" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto space-y-2", children: [
+          useTerminalStore.getState().tabs.filter((t2) => t2.connected && t2.sessionId !== sessionId).map((t2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "label",
+            {
+              className: "flex items-center gap-2 p-2 bg-[#11111b] border border-white/5 rounded-lg text-xs hover:bg-white/[0.02] cursor-pointer",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "checkbox",
+                    checked: !!selectedSessions[t2.sessionId],
+                    onChange: (e) => {
+                      setSelectedSessions((prev) => ({ ...prev, [t2.sessionId]: e.target.checked }));
+                    },
+                    className: "rounded text-[#89b4fa] focus:ring-0 bg-[#1e1e2e] border-white/5"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-[#cdd6f4] font-semibold", children: t2.label })
+              ]
+            },
+            t2.sessionId
+          )),
+          useTerminalStore.getState().tabs.filter((t2) => t2.connected && t2.sessionId !== sessionId).length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#585b70] italic text-center py-8", children: "Không có tab SSH nào khác đang mở. Hãy mở thêm kết nối để chạy cluster." })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-3 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative p-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Kết quả thực thi Cluster" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 grid grid-cols-2 gap-3 overflow-y-auto pr-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/5 rounded-lg p-2.5 flex flex-col overflow-hidden max-h-[250px]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-1 text-[10px]", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-[#89b4fa]", children: "Máy chủ hiện tại (Local)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: `font-mono text-[9px] px-1 py-0.5 rounded ${multiOutputs[sessionId]?.status === "running" ? "bg-yellow-500/10 text-yellow-500 animate-pulse" : multiOutputs[sessionId]?.status === "done" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "text-[#585b70]"}`,
+                  children: multiOutputs[sessionId]?.status || "idle"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 font-mono text-[9px] overflow-auto whitespace-pre-wrap select-text bg-[#11111b] p-1.5 rounded border border-white/[0.02]", children: multiOutputs[sessionId]?.output || "Chưa chạy lệnh nào." })
+          ] }),
+          Object.keys(selectedSessions).filter((id2) => selectedSessions[id2]).map((id2) => {
+            const sessionInfo = useTerminalStore.getState().tabs.find((t2) => t2.sessionId === id2);
+            return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/5 rounded-lg p-2.5 flex flex-col overflow-hidden max-h-[250px]", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-1 text-[10px]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-[#a6e3a1] truncate max-w-[120px]", children: sessionInfo?.label || "Server" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "span",
+                  {
+                    className: `font-mono text-[9px] px-1 py-0.5 rounded ${multiOutputs[id2]?.status === "running" ? "bg-yellow-500/10 text-yellow-500 animate-pulse" : multiOutputs[id2]?.status === "done" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "text-[#585b70]"}`,
+                    children: multiOutputs[id2]?.status || "idle"
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 font-mono text-[9px] overflow-auto whitespace-pre-wrap select-text bg-[#11111b] p-1.5 rounded border border-white/[0.02]", children: multiOutputs[id2]?.output || "Chưa chạy lệnh nào." })
+            ] }, id2);
+          })
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-3 flex gap-3 items-center shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          placeholder: "Nhập lệnh thực thi cluster (ví dụ: df -h, uname -a, free -m)...",
+          value: multiCmd,
+          onChange: (e) => setMultiCmd(e.target.value),
+          onKeyDown: async (e) => {
+            if (e.key === "Enter") {
+              await handleBroadcast();
+            }
+          },
+          className: "flex-1 bg-[#11111b] border border-white/5 rounded-lg px-4 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: handleBroadcast,
+          className: "px-4 py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center gap-1.5",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Send, { size: 12 }),
+            " Broadcast"
+          ]
+        }
+      )
+    ] })
+  ] });
+}
+function PackagesPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [packagesList, setPackagesList] = reactExports.useState([]);
+  const [installingPackage, setInstallingPackage] = reactExports.useState(null);
+  const [installLogs, setInstallLogs] = reactExports.useState("");
+  const fetchPackages = reactExports.useCallback(async () => {
+    try {
+      const pkgs = [
+        { name: "Nginx", cmd: "nginx", pkg: "nginx" },
+        { name: "Docker", cmd: "docker", pkg: "docker.io" },
+        { name: "Node.js", cmd: "node", pkg: "nodejs" },
+        { name: "Git", cmd: "git", pkg: "git" },
+        { name: "PM2", cmd: "pm2", pkg: "pm2" },
+        { name: "MySQL", cmd: "mysql", pkg: "mysql-server" },
+        { name: "Redis", cmd: "redis-server", pkg: "redis-server" },
+        { name: "Python3", cmd: "python3", pkg: "python3" },
+        { name: "Certbot", cmd: "certbot", pkg: "certbot" }
+      ];
+      const updated = await Promise.all(
+        pkgs.map(async (p2) => {
+          const { stdout } = await exec(`which ${p2.cmd} 2>/dev/null && ${p2.cmd} --version || echo "not installed"`);
+          const installed = !stdout.includes("not installed") && stdout.trim() !== "";
+          const version = installed ? stdout.split("\n")[0].replace(/Docker version |node |git version |pm2 |mysql /i, "").trim() : "-";
+          return { ...p2, installed, version };
+        })
+      );
+      setPackagesList(updated);
+    } catch (e) {
+      setError(e.message || "Lỗi kiểm tra danh sách phần mềm");
+    }
+  }, [exec, setError]);
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchPackages();
+    setLoading(false);
+  }, [fetchPackages, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-[#a6adc8] font-semibold", children: "Trình quản lý gói phần mềm thiết yếu" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: async () => {
+            if (confirm("Cập nhật chỉ mục gói (apt update)?")) {
+              setInstallingPackage("Update System");
+              setInstallLogs("Đang chạy cập nhật chỉ mục gói...\n");
+              const result = await exec("sudo apt-get update || sudo yum makecache");
+              setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
+              await fetchPackages();
+            }
+          },
+          className: "px-3 py-1 rounded bg-[#89b4fa]/10 text-[#89b4fa] text-xs font-semibold hover:bg-[#89b4fa]/20 transition-all",
+          children: "Update System Index"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tên phần mềm" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Package Name" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng thái" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Phiên bản" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao tác" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: packagesList.map((p2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: p2.name }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#585b70]", children: p2.pkg }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "span",
+          {
+            className: `px-2 py-0.5 rounded-full text-[10px] font-semibold ${p2.installed ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`,
+            children: p2.installed ? "Đã cài đặt" : "Chưa cài đặt"
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#a6adc8]", children: p2.version }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: !p2.installed ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: async () => {
+              const sudoPass = prompt("Nhập mật khẩu sudo (nếu cần, hoặc để trống):");
+              setInstallingPackage(p2.name);
+              setInstallLogs(`Bắt đầu cài đặt ${p2.name}...
+`);
+              let cmd = `sudo apt-get install -y ${p2.pkg} || sudo yum install -y ${p2.pkg}`;
+              if (sudoPass) {
+                cmd = `echo "${sudoPass}" | sudo -S apt-get install -y ${p2.pkg} || echo "${sudoPass}" | sudo -S yum install -y ${p2.pkg}`;
+              }
+              const result = await exec(cmd);
+              setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
+              await fetchPackages();
+            },
+            className: "px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] font-semibold text-[10px] hover:bg-[#89d48b] transition-all",
+            children: "Cài đặt nhanh"
+          }
+        ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: async () => {
+              if (confirm(`Gỡ cài đặt ${p2.name}?`)) {
+                const sudoPass = prompt("Nhập mật khẩu sudo (nếu cần, hoặc để trống):");
+                setInstallingPackage(p2.name);
+                setInstallLogs(`Bắt đầu gỡ cài đặt ${p2.name}...
+`);
+                let cmd = `sudo apt-get remove -y ${p2.pkg} || sudo yum remove -y ${p2.pkg}`;
+                if (sudoPass) {
+                  cmd = `echo "${sudoPass}" | sudo -S apt-get remove -y ${p2.pkg} || echo "${sudoPass}" | sudo -S yum remove -y ${p2.pkg}`;
+                }
+                const result = await exec(cmd);
+                setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
+                await fetchPackages();
+              }
+            },
+            className: "px-3 py-1 rounded bg-[#f38ba8]/10 text-[#f38ba8] font-semibold text-[10px] hover:bg-[#f38ba8]/20 transition-all",
+            children: "Gỡ cài đặt"
+          }
+        ) })
+      ] }, idx)) })
+    ] }) }),
+    installingPackage !== null && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[600px] max-h-[70vh] flex flex-col animate-scale-in", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#a6e3a1] animate-ping" }),
+          "Tiến trình gói: ",
+          installingPackage
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              setInstallingPackage(null);
+              setInstallLogs("");
+            },
+            className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#a6adc8] leading-relaxed whitespace-pre-wrap select-text scrollbar-thin", children: installLogs })
+    ] }) })
+  ] });
+}
+const stripAnsi$1 = (str) => {
+  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
+};
+function LogsPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [logPaths, setLogPaths] = reactExports.useState([
+    "/var/log/nginx/access.log",
+    "/var/log/nginx/error.log",
+    "/var/log/syslog"
+  ]);
+  const [selectedLogPath, setSelectedLogPath] = reactExports.useState("/var/log/nginx/access.log");
+  const [logContent, setLogContent] = reactExports.useState("");
+  const [logSearch, setLogSearch] = reactExports.useState("");
+  const [logAutoRefresh, setLogAutoRefresh] = reactExports.useState(true);
+  const [newLogPathInput, setNewLogPathInput] = reactExports.useState("");
+  const [showAddLogInput, setShowAddLogInput] = reactExports.useState(false);
+  const fetchLogsContent = reactExports.useCallback(async () => {
+    if (!selectedLogPath) return;
+    try {
+      const { stdout, stderr } = await exec(`tail -n 100 "${selectedLogPath}" 2>&1`);
+      setLogContent(stripAnsi$1(stdout || stderr || "Không tìm thấy log hoặc file trống."));
+    } catch (e) {
+      setError(e.message || "Lỗi tải log file");
+    }
+  }, [exec, selectedLogPath, setError]);
+  const handleAddLogPath = () => {
+    const trimmed = newLogPathInput.trim();
+    if (trimmed && !logPaths.includes(trimmed)) {
+      setLogPaths([...logPaths, trimmed]);
+      setSelectedLogPath(trimmed);
+      setNewLogPathInput("");
+      setShowAddLogInput(false);
+    }
+  };
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchLogsContent();
+    setLoading(false);
+  }, [fetchLogsContent, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  reactExports.useEffect(() => {
+    if (logAutoRefresh) {
+      const interval = setInterval(fetchLogsContent, 3e3);
+      return () => clearInterval(interval);
+    }
+    return void 0;
+  }, [logAutoRefresh, fetchLogsContent]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-64 min-w-64 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] flex items-center justify-between text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Log Files" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setShowAddLogInput(!showAddLogInput),
+            className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]",
+            title: "Thêm file log",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 11 })
+          }
+        )
+      ] }),
+      showAddLogInput && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 border-b border-white/[0.04] bg-[#11111b]/35 space-y-1.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "text",
+            placeholder: "Đường dẫn log file...",
+            value: newLogPathInput,
+            onChange: (e) => setNewLogPathInput(e.target.value),
+            className: "w-full bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1 justify-end", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowAddLogInput(false), className: "px-2 py-0.5 rounded text-[9px] bg-white/5 hover:bg-white/10", children: "Hủy" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleAddLogPath, className: "px-2 py-0.5 rounded text-[9px] bg-[#89b4fa] text-[#1e1e2e] font-semibold", children: "Thêm" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5", children: logPaths.map((path) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: () => setSelectedLogPath(path),
+          className: `w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left transition-all ${selectedLogPath === path ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8] hover:bg-white/[0.02]"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 12, className: "shrink-0 text-[#89b4fa]" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate block flex-1", title: path, children: path.substring(path.lastIndexOf("/") + 1) })
+          ]
+        },
+        path
+      )) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 border-t border-white/[0.04] bg-[#11111b]/35 flex justify-between items-center text-[10px] text-[#585b70]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tự động cập nhật (3s)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "checkbox",
+            checked: logAutoRefresh,
+            onChange: (e) => setLogAutoRefresh(e.target.checked),
+            className: "rounded bg-[#1e1e2e] border-white/5"
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#181825]/50 flex items-center gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs text-[#a6adc8] truncate flex-1", children: selectedLogPath }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "text",
+            placeholder: "Lọc từ khóa logs...",
+            value: logSearch,
+            onChange: (e) => setLogSearch(e.target.value),
+            className: "w-48 bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto p-4 font-mono text-[11px] leading-relaxed select-text scrollbar-thin", children: (() => {
+        const filteredLines = logContent.split("\n").filter((line) => line.toLowerCase().includes(logSearch.toLowerCase()));
+        if (filteredLines.length === 0) {
+          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] text-center py-10", children: "Không tìm thấy log nào khớp với từ khóa." });
+        }
+        return filteredLines.map((line, idx) => {
+          let colorClass = "text-[#bac2de]";
+          const lowerLine = line.toLowerCase();
+          if (lowerLine.includes("error") || lowerLine.includes("failed") || lowerLine.includes(" 500 ")) {
+            colorClass = "text-[#f38ba8] font-bold";
+          } else if (lowerLine.includes("warning") || lowerLine.includes("warn")) {
+            colorClass = "text-[#f9e2af]";
+          } else if (lowerLine.includes("success") || lowerLine.includes(" 200 ") || lowerLine.includes(" 201 ")) {
+            colorClass = "text-[#a6e3a1]";
+          }
+          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `${colorClass} whitespace-pre-wrap py-0.5 hover:bg-white/[0.02]`, children: line }, idx);
+        });
+      })() })
+    ] })
+  ] });
+}
+function ServicesPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [services, setServices] = reactExports.useState([]);
+  const [ports, setPorts] = reactExports.useState([]);
+  const fetchPortsList = reactExports.useCallback(async () => {
+    const cmd = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`;
+    const { stdout } = await exec(cmd);
+    if (!stdout) return [];
+    const portLines = stdout.split("\n");
+    const parsedPorts = [];
+    portLines.forEach((l2) => {
+      const line = l2.replace(/\s+/g, " ").trim();
+      if (!line || line.startsWith("Netid") || line.startsWith("Active") || line.startsWith("Proto")) return;
+      const tokens = line.split(" ");
+      if (tokens.length < 4) return;
+      const proto = tokens[0];
+      let localAddressPort = "";
+      let processInfo = "";
+      if (line.includes("LISTEN") || tokens.includes("LISTEN") || tokens[1] === "LISTEN") {
+        if (line.includes("users:")) {
+          localAddressPort = tokens[4];
+          processInfo = tokens.slice(6).join(" ");
+        } else {
+          localAddressPort = tokens[3];
+          processInfo = tokens[tokens.length - 1];
+        }
+        if (localAddressPort) {
+          const lastColonIdx = localAddressPort.lastIndexOf(":");
+          if (lastColonIdx !== -1) {
+            const address = localAddressPort.substring(0, lastColonIdx);
+            const port = localAddressPort.substring(lastColonIdx + 1);
+            let processName = "-";
+            let pid = "-";
+            if (processInfo.includes("users:")) {
+              const match = processInfo.match(/users:\(\("([^"]+)",(?:pid|pgid)=(\d+)/);
+              if (match) {
+                processName = match[1];
+                pid = match[2];
+              }
+            } else if (processInfo.includes("/")) {
+              const match = processInfo.match(/(\d+)\/(.+)/);
+              if (match) {
+                pid = match[1];
+                processName = match[2];
+              }
+            } else {
+              processName = processInfo;
+            }
+            parsedPorts.push({
+              proto: proto.toUpperCase(),
+              address,
+              port,
+              processName,
+              pid
+            });
+          }
+        }
+      }
+    });
+    return parsedPorts;
+  }, [exec]);
+  const fetchServices = reactExports.useCallback(async () => {
+    try {
+      const portsList = await fetchPortsList();
+      setPorts(portsList);
+      const cmd = `
+        systemctl list-units --type=service --all --no-pager 2>/dev/null | grep -E "nginx|mysql|postgresql|docker|redis|apache2|mongodb|pm2|ssh" || true
+        echo "===PIDS==="
+        systemctl show --property=MainPID,Id nginx mysql postgresql redis docker apache2 mongodb ssh 2>/dev/null || true
+      `;
+      const { stdout } = await exec(cmd);
+      const parts = stdout.split("===PIDS===");
+      const listPart = parts[0] || "";
+      const pidsPart = parts[1] || "";
+      const servicePids = {};
+      let currentId = "";
+      pidsPart.split("\n").forEach((l2) => {
+        const line = l2.trim();
+        if (line.startsWith("Id=")) {
+          currentId = line.replace("Id=", "").replace(".service", "");
+        } else if (line.startsWith("MainPID=") && currentId) {
+          const pid = line.replace("MainPID=", "");
+          if (pid && pid !== "0") {
+            servicePids[currentId] = pid;
+          }
+        }
+      });
+      const lines = listPart.split("\n");
+      const serviceList = [];
+      lines.forEach((l2) => {
+        const cleaned = l2.replace(/\s+/g, " ").trim();
+        const parts2 = cleaned.split(" ");
+        if (parts2.length >= 4 && parts2[0].endsWith(".service")) {
+          const name = parts2[0].replace(".service", "");
+          const activeState = parts2[2];
+          const subState = parts2[3];
+          const description = parts2.slice(4).join(" ");
+          const pid = servicePids[name] || "";
+          serviceList.push({ name, activeState, subState, description, pid });
+        }
+      });
+      setServices(serviceList);
+    } catch (e) {
+      setError(e.message || "Lỗi kiểm tra trạng thái dịch vụ");
+    }
+  }, [exec, fetchPortsList, setError]);
+  const handleServiceAction = async (action, serviceName) => {
+    setLoading(true);
+    const { stderr } = await exec(`sudo systemctl ${action} ${serviceName} || systemctl ${action} ${serviceName}`);
+    if (stderr && stderr.includes("Failed")) {
+      alert("Lỗi thao tác: " + stderr);
+    }
+    await fetchServices();
+    setLoading(false);
+  };
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchServices();
+    setLoading(false);
+  }, [fetchServices, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex flex-col overflow-hidden", children: services.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 36, className: "mb-3 opacity-30" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không tìm thấy service DevOps nào" })
+  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Dịch vụ (Service)" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Mô tả" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Port)" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái (Active)" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Chi tiết (Substate)" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: services.map((svc) => {
+      let svcPorts = [];
+      if (svc.pid) {
+        svcPorts = ports.filter((p2) => p2.pid === svc.pid).map((p2) => p2.port);
+      }
+      if (svcPorts.length === 0) {
+        const lowerName = svc.name.toLowerCase();
+        svcPorts = ports.filter((p2) => {
+          const proc = p2.processName.toLowerCase();
+          if (lowerName === "nginx" && proc.includes("nginx")) return true;
+          if (lowerName === "mysql" && (proc.includes("mysqld") || proc.includes("mysql"))) return true;
+          if (lowerName === "redis" && proc.includes("redis-server")) return true;
+          if (lowerName === "postgresql" && proc.includes("postgres")) return true;
+          if (lowerName === "mongodb" && proc.includes("mongod")) return true;
+          if (lowerName === "ssh" && proc.includes("sshd")) return true;
+          return false;
+        }).map((p2) => p2.port);
+      }
+      const uniquePorts = Array.from(new Set(svcPorts));
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: svc.name }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8] max-w-xs truncate", title: svc.description, children: svc.description }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: uniquePorts.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: uniquePorts.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "bg-[#89b4fa]/10 text-[#89b4fa] px-1.5 py-0.5 rounded text-[10px] font-bold", children: [
+          ":",
+          p2
+        ] }, p2)) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "span",
+          {
+            className: `px-2 py-0.5 rounded-full text-[10px] font-medium leading-none ${svc.activeState === "active" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`,
+            children: svc.activeState
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: svc.subState }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
+          svc.subState === "running" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => handleServiceAction("stop", svc.name),
+              className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+              title: "Stop Service",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
+            }
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => handleServiceAction("start", svc.name),
+              className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
+              title: "Start Service",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => handleServiceAction("restart", svc.name),
+              className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
+              title: "Restart Service",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
+            }
+          )
+        ] }) })
+      ] }, svc.name);
+    }) })
+  ] }) }) });
+}
+function NginxPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [nginxFiles, setNginxFiles] = reactExports.useState([]);
+  const [selectedNginxFile, setSelectedNginxFile] = reactExports.useState(null);
+  const [nginxConfigContent, setNginxConfigContent] = reactExports.useState("");
+  const [nginxTestResult, setNginxTestResult] = reactExports.useState(null);
+  const [savingNginx, setSavingNginx] = reactExports.useState(false);
+  const [showNginxWizard, setShowNginxWizard] = reactExports.useState(false);
+  const fetchNginx = reactExports.useCallback(async () => {
+    try {
+      const { stdout } = await exec("ls -1 /etc/nginx/sites-available/ 2>/dev/null || ls -1 /etc/nginx/conf.d/ 2>/dev/null");
+      if (stdout) {
+        const files = stdout.split("\n").map((f2) => f2.trim()).filter(Boolean);
+        setNginxFiles(files);
+      } else {
+        setNginxFiles([]);
+      }
+    } catch (e) {
+      setError(e.message || "Lỗi tải Virtual Hosts");
+    }
+  }, [exec, setError]);
+  const handleReadNginxFile = async (filename) => {
+    setLoading(true);
+    setSelectedNginxFile(filename);
+    setNginxTestResult(null);
+    try {
+      const path = `/etc/nginx/sites-available/${filename}`;
+      const { stdout } = await exec(`cat ${path} || cat /etc/nginx/conf.d/${filename}`);
+      setNginxConfigContent(stdout || "");
+    } catch (e) {
+      alert("Không đọc được file: " + e.message);
+    }
+    setLoading(false);
+  };
+  const handleSaveNginxConfig = async () => {
+    if (!selectedNginxFile || savingNginx) return;
+    setSavingNginx(true);
+    setNginxTestResult(null);
+    const path = `/etc/nginx/sites-available/${selectedNginxFile}`;
+    const saveScript = `
+      sudo cp ${path} ${path}.bak 2>/dev/null || true
+      cat << 'EOF' > /tmp/nginx_config_temp
+${nginxConfigContent}
+EOF
+      sudo mv /tmp/nginx_config_temp ${path} 2>/dev/null || mv /tmp/nginx_config_temp /etc/nginx/conf.d/${selectedNginxFile}
+      test_out=$(sudo nginx -t 2>&1)
+      test_code=$?
+      if [ $test_code -ne 0 ]; then
+        sudo mv ${path}.bak ${path} 2>/dev/null || mv ${path}.bak /etc/nginx/conf.d/${selectedNginxFile} 2>/dev/null || true
+        echo "===ERROR==="
+        echo "$test_out"
+      else
+        sudo rm ${path}.bak 2>/dev/null || true
+        echo "===SUCCESS==="
+      fi
+    `;
+    try {
+      const { stdout } = await exec(saveScript);
+      if (stdout.includes("===ERROR===")) {
+        const errorMsg = stdout.replace("===ERROR===", "").trim();
+        setNginxTestResult({ success: false, message: errorMsg });
+      } else {
+        setNginxTestResult({ success: true, message: "Đã kiểm tra cú pháp thành công! (nginx -t ok)" });
+      }
+    } catch (e) {
+      setNginxTestResult({ success: false, message: "Lỗi thực thi script lưu: " + e.message });
+    }
+    setSavingNginx(false);
+  };
+  const handleReloadNginx = async () => {
+    setLoading(true);
+    const { stderr } = await exec("sudo systemctl reload nginx || systemctl reload nginx");
+    if (stderr && stderr.includes("failed")) {
+      alert("Lỗi reload Nginx: " + stderr);
+    } else {
+      alert("Đã reload Nginx thành công!");
+    }
+    setLoading(false);
+  };
+  const loadData = reactExports.useCallback(async () => {
+    setLoading(true);
+    setError("");
+    await fetchNginx();
+    setSelectedNginxFile(null);
+    setNginxTestResult(null);
+    setLoading(false);
+  }, [fetchNginx, setLoading, setError]);
+  reactExports.useEffect(() => {
+    loadData();
+  }, [loadData, refreshKey]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-56 min-w-56 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: "Virtual Hosts" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5", children: nginxFiles.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-[10px] py-6", children: "Không tìm thấy file config nào." }) : nginxFiles.map((file) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: () => handleReadNginxFile(file),
+          className: `w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-left transition-all ${selectedNginxFile === file ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8] hover:bg-white/[0.02]"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 12, className: "shrink-0 text-[#89b4fa]" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: file })
+          ]
+        },
+        file
+      )) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-t border-white/[0.04] bg-[#11111b]/35", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: handleReloadNginx,
+          className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 active:scale-95 transition-all",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11 }),
+            "Reload Nginx"
+          ]
+        }
+      ) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative", children: selectedNginxFile ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs text-[#a6adc8]", children: selectedNginxFile }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setShowNginxWizard(true),
+              className: "px-3 py-1 rounded bg-[#fab387] text-[#1e1e2e] text-xs font-semibold hover:bg-[#f8a060] active:scale-95 transition-all",
+              children: "Mẫu Cấu Hình"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: handleSaveNginxConfig,
+              disabled: savingNginx,
+              className: "px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] text-xs font-semibold hover:bg-[#74c7ec] active:scale-95 disabled:opacity-40 transition-all",
+              children: savingNginx ? "Đang Lưu..." : "Lưu Config"
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "textarea",
+        {
+          value: nginxConfigContent,
+          onChange: (e) => setNginxConfigContent(e.target.value),
+          className: "flex-1 p-4 bg-[#181825] text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed",
+          spellCheck: false
+        }
+      ),
+      nginxTestResult && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: `p-3 border-t text-[11px] font-mono flex items-start gap-2 ${nginxTestResult.success ? "bg-[#a6e3a1]/5 border-[#a6e3a1]/25 text-[#a6e3a1]" : "bg-[#f38ba8]/5 border-[#f38ba8]/25 text-[#f38ba8]"}`,
+          children: [
+            nginxTestResult.success ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheckBig, { size: 14, className: "shrink-0 mt-0.5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { size: 14, className: "shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto whitespace-pre-wrap max-h-24", children: nginxTestResult.message })
+          ]
+        }
+      )
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 36, className: "mb-2 opacity-30" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "Chọn một file Nginx config để chỉnh sửa" })
+    ] }) }),
+    showNginxWizard && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+        onClick: () => setShowNginxWizard(false),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[420px] flex flex-col animate-scale-in",
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: "Nginx Config Wizard" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowNginxWizard(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Loại mẫu (Template Type)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "select",
+                    {
+                      id: "nginx_type_select",
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none",
+                      defaultValue: "proxy",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "proxy", children: "Reverse Proxy (Node.js/Python...)" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "static", children: "Static Site (React/Vue/HTML...)" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "redirect", children: "Redirect HTTP to HTTPS" })
+                      ]
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên miền (Server Name)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "text",
+                      id: "nginx_domain_input",
+                      placeholder: "example.com www.example.com",
+                      defaultValue: "example.com",
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tham số phụ (Port hoặc Thư mục gốc)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "text",
+                      id: "nginx_param_input",
+                      placeholder: "3000 (cho proxy) hoặc /var/www/html (cho static)",
+                      defaultValue: "3000",
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => setShowNginxWizard(false),
+                      className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                      children: "Hủy"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => {
+                        const type = document.getElementById("nginx_type_select").value;
+                        const domain = document.getElementById("nginx_domain_input").value;
+                        const param = document.getElementById("nginx_param_input").value;
+                        let generated = "";
+                        if (type === "proxy") {
+                          generated = `server {
+    listen 80;
+    server_name ${domain};
+
+    location / {
+        proxy_pass http://127.0.0.1:${param};
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}`;
+                        } else if (type === "static") {
+                          generated = `server {
+    listen 80;
+    server_name ${domain};
+    root ${param};
+    index index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}`;
+                        } else {
+                          generated = `server {
+    listen 80;
+    server_name ${domain};
+    return 301 https://$host$request_uri;
+}`;
+                        }
+                        setNginxConfigContent(generated);
+                        setShowNginxWizard(false);
+                      },
+                      className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all",
+                      children: "Sinh cấu hình"
+                    }
+                  )
+                ] })
+              ] })
+            ]
+          }
+        )
+      }
+    )
+  ] });
+}
+function AlertsPanel({
+  alertCpu,
+  setAlertCpu,
+  alertMem,
+  setAlertMem,
+  alertDisk,
+  setAlertDisk,
+  webhookUrl,
+  setWebhookUrl,
+  webhookType,
+  setWebhookType,
+  alertsHistory,
+  setLoading
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-96 min-w-96 bg-[#181825] border border-white/[0.04] rounded-xl p-4 space-y-4 overflow-y-auto scrollbar-thin", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] block", children: "Cấu hình Ngưỡng Cảnh báo" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Ngưỡng CPU cảnh báo (%)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "number",
+            value: alertCpu,
+            onChange: async (e) => {
+              const val = parseInt(e.target.value) || 85;
+              setAlertCpu(val);
+              await window.api.db.run("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_alert_cpu', ?)", [String(val)]);
+            },
+            className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Ngưỡng RAM cảnh báo (%)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "number",
+            value: alertMem,
+            onChange: async (e) => {
+              const val = parseInt(e.target.value) || 90;
+              setAlertMem(val);
+              await window.api.db.run("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_alert_mem', ?)", [String(val)]);
+            },
+            className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Ngưỡng Disk cảnh báo (%)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "number",
+            value: alertDisk,
+            onChange: async (e) => {
+              const val = parseInt(e.target.value) || 95;
+              setAlertDisk(val);
+              await window.api.db.run("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_alert_disk', ?)", [String(val)]);
+            },
+            className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/[0.04] pt-4 space-y-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] block", children: "Webhook thông báo" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Loại Webhook" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              value: webhookType,
+              onChange: async (e) => {
+                setWebhookType(e.target.value);
+                await window.api.db.run("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_webhook_type', ?)", [e.target.value]);
+              },
+              className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "slack", children: "Slack Webhook" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "discord", children: "Discord Webhook" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "telegram", children: "Telegram BOT Webhook" })
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Webhook URL" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              value: webhookUrl,
+              placeholder: "https://hooks.slack.com/services/...",
+              onChange: async (e) => {
+                setWebhookUrl(e.target.value);
+                await window.api.db.run("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_webhook_url', ?)", [e.target.value]);
+              },
+              className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: async () => {
+              if (!webhookUrl) {
+                alert("Vui lòng nhập Webhook URL");
+                return;
+              }
+              setLoading(true);
+              try {
+                let payload = {};
+                if (webhookType === "slack") {
+                  payload = { text: "🚨 *[Terminux Test]* \nCấu hình Webhook của bạn hoạt động chính xác!" };
+                } else {
+                  payload = { content: "🚨 **[Terminux Test]** \nCấu hình Webhook của bạn hoạt động chính xác!" };
+                }
+                await fetch(webhookUrl, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload)
+                });
+                alert("Gửi test webhook thành công!");
+              } catch (err) {
+                alert("Lỗi gửi Webhook: " + err.message);
+              }
+              setLoading(false);
+            },
+            className: "w-full py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all",
+            children: "Test Webhook Connection"
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Nhật ký cảnh báo hệ thống" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto space-y-2 pr-1 font-mono text-xs text-[#a6adc8]", children: [
+        alertsHistory.map((h, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-white/[0.02] text-[#f38ba8] hover:bg-white/[0.01]", children: h }, i)),
+        alertsHistory.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] text-center py-8", children: "Chưa ghi nhận sự cố quá tải nào." })
+      ] })
+    ] })
+  ] });
+}
+function BackupPanel({
+  sessionId,
+  exec,
+  setLoading
+}) {
+  const [backupPath, setBackupPath] = reactExports.useState("/var/www");
+  const [backupType, setBackupType] = reactExports.useState("dir");
+  const [backupStatus, setBackupStatus] = reactExports.useState(null);
+  const handleStartBackup = async () => {
+    setLoading(true);
+    setBackupStatus("Đang khởi tạo tiến trình sao lưu...\n");
+    const timestamp = Date.now();
+    if (backupType === "dir") {
+      const cleanPath = backupPath.trim();
+      const lastSlash = cleanPath.lastIndexOf("/");
+      const parentDir = lastSlash !== -1 ? cleanPath.substring(0, lastSlash) : "/";
+      const targetName = lastSlash !== -1 ? cleanPath.substring(lastSlash + 1) : cleanPath;
+      setBackupStatus((prev) => prev + `Đang nén thư mục ${cleanPath}...
+`);
+      const tarCmd = `tar -czf /tmp/backup_${timestamp}.tar.gz -C "${parentDir}" "${targetName}"`;
+      const result = await exec(tarCmd);
+      if (result.code === 0) {
+        setBackupStatus(
+          (prev) => prev + `✅ Sao lưu thành công!
+Tệp lưu trữ tạm thời tại: /tmp/backup_${timestamp}.tar.gz
+Bạn có thể tải tệp này về máy cục bộ qua tính năng SFTP.`
+        );
+      } else {
+        setBackupStatus((prev) => prev + `❌ Lỗi nén file: ${result.stderr}`);
+      }
+    } else {
+      const dbName = document.getElementById("db_name_input")?.value || "";
+      const dbUser = document.getElementById("db_user_input")?.value || "root";
+      const dbPass = document.getElementById("db_pass_input")?.value || "";
+      if (!dbName) {
+        alert("Vui lòng nhập tên Database");
+        setLoading(false);
+        return;
+      }
+      setBackupStatus((prev) => prev + `Đang chạy mysqldump cho database ${dbName}...
+`);
+      const dumpCmd = `mysqldump -u "${dbUser}" -p"${dbPass}" "${dbName}" > /tmp/db_${dbName}_${timestamp}.sql`;
+      const result = await exec(dumpCmd);
+      if (result.code === 0) {
+        setBackupStatus(
+          (prev) => prev + `✅ Xuất database thành công!
+Tệp backup tại: /tmp/db_${dbName}_${timestamp}.sql
+Bạn có thể quản lý và tải về qua SFTP.`
+        );
+      } else {
+        setBackupStatus((prev) => prev + `❌ Lỗi xuất database: ${result.stderr}`);
+      }
+    }
+    setLoading(false);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-96 min-w-96 bg-[#181825] border border-white/[0.04] rounded-xl p-4 space-y-4 overflow-y-auto scrollbar-thin", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] block", children: "Tạo bản sao lưu (Backup)" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Loại sao lưu" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setBackupType("dir"),
+              className: `flex-1 py-1.5 rounded-lg text-xs font-semibold ${backupType === "dir" ? "bg-[#89b4fa] text-[#1e1e2e]" : "bg-[#11111b] text-[#a6adc8]"}`,
+              children: "Thư mục nguồn"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setBackupType("mysql"),
+              className: `flex-1 py-1.5 rounded-lg text-xs font-semibold ${backupType === "mysql" ? "bg-[#89b4fa] text-[#1e1e2e]" : "bg-[#11111b] text-[#a6adc8]"}`,
+              children: "Database MySQL"
+            }
+          )
+        ] })
+      ] }),
+      backupType === "dir" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Đường dẫn thư mục" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "text",
+            value: backupPath,
+            onChange: (e) => setBackupPath(e.target.value),
+            className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+          }
+        )
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Tên Database" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              id: "db_name_input",
+              placeholder: "wordpress_db",
+              className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "MySQL User" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              id: "db_user_input",
+              placeholder: "root",
+              className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "MySQL Password" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "password",
+              id: "db_pass_input",
+              className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: handleStartBackup,
+          className: "w-full py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center justify-center gap-1.5",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CloudDownload, { size: 12 }),
+            " Bắt đầu Sao lưu"
+          ]
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Trạng thái tác vụ Backup/Restore" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-y-auto font-mono text-xs text-[#a6adc8] whitespace-pre-wrap select-text bg-[#181825] p-3 rounded-lg border border-white/[0.02]", children: backupStatus || "Sẵn sàng." })
+    ] })
+  ] });
+}
+function DevOpsDashboard({ sessionId }) {
+  const [activeSubTab, setActiveSubTab] = reactExports.useState("overview");
+  const [loading, setLoading] = reactExports.useState(false);
+  const [error, setError] = reactExports.useState("");
+  const [refreshKey, setRefreshKey] = reactExports.useState(0);
+  const [alertCpu, setAlertCpu] = reactExports.useState(85);
+  const [alertMem, setAlertMem] = reactExports.useState(90);
+  const [alertDisk, setAlertDisk] = reactExports.useState(95);
+  const [webhookUrl, setWebhookUrl] = reactExports.useState("");
+  const [webhookType, setWebhookType] = reactExports.useState("slack");
+  const [alertsHistory, setAlertsHistory] = reactExports.useState([]);
+  const lastAlertTimeRef = reactExports.useRef(0);
+  const triggerResourceAlert = reactExports.useCallback(
+    async (cpu, mem, disk) => {
+      const now = Date.now();
+      if (now - lastAlertTimeRef.current < 5 * 60 * 1e3) return;
+      lastAlertTimeRef.current = now;
+      const message = `Cảnh báo máy chủ: CPU: ${cpu.toFixed(1)}% (ngưỡng ${alertCpu}%), RAM: ${mem.toFixed(
+        1
+      )}% (ngưỡng ${alertMem}%), DISK: ${disk.toFixed(1)}% (ngưỡng ${alertDisk}%)`;
+      setAlertsHistory((prev) => [(/* @__PURE__ */ new Date()).toLocaleTimeString() + " - " + message, ...prev].slice(0, 20));
+      if (Notification.permission === "granted") {
+        new Notification("Terminux Alert", { body: message });
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") new Notification("Terminux Alert", { body: message });
+        });
+      }
+      if (webhookUrl) {
+        try {
+          let payload = {};
+          if (webhookType === "slack") {
+            payload = { text: `🚨 *[Terminux Alert]* 
+${message}` };
+          } else if (webhookType === "discord") {
+            payload = { content: `🚨 **[Terminux Alert]** 
+${message}` };
+          } else {
+            payload = { text: `🚨 [Terminux Alert] 
+${message}` };
+          }
+          await fetch(webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          console.error("Lỗi gửi Webhook:", err.message);
+        }
+      }
+    },
+    [alertCpu, alertMem, alertDisk, webhookUrl, webhookType]
+  );
+  const fetchAlertSettings = reactExports.useCallback(async () => {
+    try {
+      const rows = await window.api.db.all(
+        "SELECT * FROM app_settings WHERE key LIKE 'devops_alert_%' OR key = 'devops_webhook_url' OR key = 'devops_webhook_type'"
+      );
+      const map = {};
+      rows.forEach((r2) => {
+        map[r2.key] = r2.value;
+      });
+      if (map["devops_alert_cpu"]) setAlertCpu(parseInt(map["devops_alert_cpu"]));
+      if (map["devops_alert_mem"]) setAlertMem(parseInt(map["devops_alert_mem"]));
+      if (map["devops_alert_disk"]) setAlertDisk(parseInt(map["devops_alert_disk"]));
+      if (map["devops_webhook_url"]) setWebhookUrl(map["devops_webhook_url"]);
+      if (map["devops_webhook_type"]) setWebhookType(map["devops_webhook_type"]);
+    } catch {
+    }
+  }, []);
+  reactExports.useEffect(() => {
+    fetchAlertSettings();
+  }, [fetchAlertSettings]);
+  const exec = reactExports.useCallback(
+    async (cmd) => {
+      try {
+        const result = await window.api.ssh.exec(sessionId, cmd);
+        return result;
+      } catch (err) {
+        return { stdout: "", stderr: err.message || "Execution failed", code: -1 };
+      }
+    },
+    [sessionId]
+  );
+  const handleRefresh = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col bg-[#1e1e2e] text-[#cdd6f4] overflow-hidden select-none animate-fade-in", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-10 bg-[#181825] border-b border-white/[0.04] flex items-center px-4 justify-between shrink-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 items-center", children: [
@@ -17321,20 +20218,26 @@ EOF
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1 overflow-x-auto max-w-[70%] no-scrollbar", children: [
         { id: "overview", name: "Overview", icon: Activity },
+        { id: "processes", name: "Processes", icon: Activity },
         { id: "pm2", name: "PM2", icon: Layers },
         { id: "docker", name: "Docker", icon: Box },
         { id: "database", name: "Database", icon: Database },
+        { id: "cron", name: "Cron Jobs", icon: Clock },
+        { id: "multiexec", name: "Multi-Exec", icon: Send },
+        { id: "packages", name: "Packages", icon: Package },
         { id: "logs", name: "Log Streamer", icon: Terminal },
         { id: "services", name: "Services", icon: Settings },
         { id: "nginx", name: "Nginx", icon: FolderOpen },
-        { id: "sftp", name: "SFTP", icon: Server }
+        { id: "alerts", name: "Alerts", icon: Bell },
+        { id: "backup", name: "Backup", icon: CloudDownload },
+        { id: "sftp", name: "SFTP", icon: Server },
+        { id: "tunnel", name: "Tunnel", icon: ArrowRight }
       ].map(({ id: id2, name, icon: Icon2 }) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           onClick: () => {
             setActiveSubTab(id2);
-            setSelectedNginxFile(null);
-            setNginxTestResult(null);
+            setError("");
           },
           className: `flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all shrink-0 ${activeSubTab === id2 ? "bg-[#89b4fa]/15 text-[#89b4fa] font-medium" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
           children: [
@@ -17347,7 +20250,7 @@ EOF
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
-          onClick: () => loadTabData(activeSubTab),
+          onClick: handleRefresh,
           disabled: loading,
           className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4] transition-all disabled:opacity-40 shrink-0",
           title: "Tải lại dữ liệu",
@@ -17355,736 +20258,57 @@ EOF
         }
       )
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex-1 overflow-hidden relative flex flex-col p-4 ${activeSubTab === "sftp" ? "hidden" : ""}`, children: [
-      loading && !sysInfo && !pm2Apps.length && !services.length && !containers.length && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 flex items-center justify-center bg-[#1e1e2e]/50 z-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 24, className: "animate-spin text-[#89b4fa]" }) }),
-      activeSubTab === "overview" && sysInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto space-y-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold tracking-wider text-[#585b70]", children: "Hệ Điều Hành" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-[#cdd6f4] truncate mt-1", children: sysInfo.os || "Linux" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold tracking-wider text-[#585b70]", children: "Uptime" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-[#cdd6f4] truncate mt-1", children: sysInfo.uptime || "Unknown" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold tracking-wider text-[#585b70]", children: "Tải trung bình (Load Avg)" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-[#cdd6f4] truncate mt-1", children: sysInfo.load || "0, 0, 0" })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col items-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "text-[#89b4fa] mb-2", size: 16 }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-4", children: "CPU Utilization" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-28 h-28 flex items-center justify-center", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-full h-full transform -rotate-90", viewBox: "0 0 36 36", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#313244]", strokeWidth: "2.5", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#89b4fa] transition-all duration-500 ease-out", strokeWidth: "2.5", strokeDasharray: `${sysInfo.cpu_used || 0}, 100`, strokeLinecap: "round", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute flex flex-col items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold", children: [
-                (sysInfo.cpu_used || 0).toFixed(1),
-                "%"
-              ] }) })
-            ] })
-          ] }),
-          (() => {
-            const total = sysInfo.mem_total || 1;
-            const used = sysInfo.mem_used || 0;
-            const percent = Math.round(used / total * 100);
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col items-center", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { className: "text-[#a6e3a1] mb-2", size: 16 }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-4", children: "RAM Utilization" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-28 h-28 flex items-center justify-center", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-full h-full transform -rotate-90", viewBox: "0 0 36 36", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#313244]", strokeWidth: "2.5", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#a6e3a1] transition-all duration-500 ease-out", strokeWidth: "2.5", strokeDasharray: `${percent}, 100`, strokeLinecap: "round", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute flex flex-col items-center", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold", children: [
-                    percent,
-                    "%"
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] text-[#585b70]", children: [
-                    used,
-                    " / ",
-                    total,
-                    " MB"
-                  ] })
-                ] })
-              ] })
-            ] });
-          })(),
-          (() => {
-            const percent = sysInfo.disk_percent || 0;
-            const used = ((sysInfo.disk_used || 0) / 1024).toFixed(1);
-            const total = ((sysInfo.disk_total || 0) / 1024).toFixed(0);
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col items-center", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(HardDrive, { className: "text-[#fab387] mb-2", size: 16 }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-4", children: "Disk Utilization (/)" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-28 h-28 flex items-center justify-center", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-full h-full transform -rotate-90", viewBox: "0 0 36 36", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#313244]", strokeWidth: "2.5", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { className: "text-[#fab387] transition-all duration-500 ease-out", strokeWidth: "2.5", strokeDasharray: `${percent}, 100`, strokeLinecap: "round", stroke: "currentColor", fill: "none", d: "M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute flex flex-col items-center", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold", children: [
-                    percent,
-                    "%"
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] text-[#585b70]", children: [
-                    used,
-                    " / ",
-                    total,
-                    " GB"
-                  ] })
-                ] })
-              ] })
-            ] });
-          })()
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] mb-4 flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#89b4fa]" }),
-              "Thông tin hệ thống chi tiết"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-xs flex-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5 border-b border-white/[0.02]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "CPU Model" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-semibold text-[#cdd6f4] max-w-[200px] truncate", title: sysInfo.cpu_model, children: sysInfo.cpu_model || "Generic CPU" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5 border-b border-white/[0.02]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "CPU Cores" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-semibold text-[#cdd6f4]", children: [
-                  sysInfo.cpu_cores || 1,
-                  " Cores"
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5 border-b border-white/[0.02]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Swap Memory" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-semibold text-[#cdd6f4]", children: [
-                  sysInfo.swap_used || 0,
-                  " MB / ",
-                  sysInfo.swap_total || 0,
-                  " MB"
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5 border-b border-white/[0.02]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "IP Nội Bộ (Private IP)" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[#cdd6f4]", children: sysInfo.local_ip || "127.0.0.1" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center py-1.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "IP Công Cộng (Public IP)" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[#cdd6f4]", children: sysInfo.public_ip || "Unknown" })
-              ] })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col max-h-[300px] overflow-hidden", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] mb-4 flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#f9e2af]" }),
-              "Cổng mạng đang lắng nghe (Listening Ports)"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto pr-1.5 scrollbar-thin", children: ports.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-xs py-8", children: "Không quét được cổng nào đang mở." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "pb-2", children: "Port" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "pb-2", children: "Proto" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "pb-2", children: "Bound Address" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "pb-2", children: "Process (PID)" })
-              ] }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: ports.map((p2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2 font-mono font-bold text-[#89b4fa]", children: p2.port }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2 font-semibold text-[#a6e3a1] text-[10px]", children: p2.proto }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2 font-mono text-[#6c7086] truncate max-w-[120px]", title: p2.address, children: p2.address }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "py-2 font-semibold text-[#cdd6f4]", title: `PID: ${p2.pid}`, children: [
-                  p2.processName,
-                  " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[#585b70] text-[10px]", children: [
-                    "(",
-                    p2.pid,
-                    ")"
-                  ] })
-                ] })
-              ] }, idx)) })
-            ] }) })
-          ] })
-        ] })
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex-1 overflow-hidden relative flex flex-col p-4 ${activeSubTab === "sftp" || activeSubTab === "tunnel" ? "hidden" : ""}`, children: [
+      loading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 flex items-center justify-center bg-[#1e1e2e]/50 z-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 24, className: "animate-spin text-[#89b4fa]" }) }),
+      error && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#f38ba8]/10 border border-[#f38ba8]/20 rounded-lg p-3 text-xs text-[#f38ba8] mb-3 flex items-center justify-between shrink-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: error }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setError(""), className: "hover:text-white", children: "Close" })
       ] }),
-      activeSubTab === "pm2" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex flex-col overflow-hidden", children: !pm2Installed ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 36, className: "mb-3 opacity-30" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "PM2 không được cài đặt trên máy chủ" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] mt-1 text-[#45475a] max-w-xs text-center leading-relaxed", children: "Vui lòng cài đặt PM2 toàn cục (ví dụ: `npm install -g pm2`) để sử dụng tính năng quản lý tiến trình." })
-      ] }) : pm2Apps.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 36, className: "mb-3 opacity-30" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không có app PM2 nào đang chạy" })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "ID" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tên Ứng Dụng" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "PID" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Port)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-right", children: "CPU" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-right", children: "Memory" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: pm2Apps.map((app) => {
-          const appPorts = ports.filter((p2) => p2.pid === String(app.pid)).map((p2) => p2.port);
-          const uniquePorts = Array.from(new Set(appPorts));
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: app.pm_id }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: app.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: app.pid }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: uniquePorts.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: uniquePorts.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "bg-[#a6e3a1]/10 text-[#a6e3a1] px-1.5 py-0.5 rounded text-[10px] font-bold", children: [
-              ":",
-              p2
-            ] }, p2)) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `px-2 py-0.5 rounded-full text-[10px] font-medium leading-none ${app.status === "online" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`, children: app.status }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "p-3 text-right font-mono", children: [
-              app.cpu,
-              "%"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "p-3 text-right font-mono", children: [
-              app.memory,
-              " MB"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
-              app.status === "online" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handlePm2Action("stop", app.pm_id),
-                  className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
-                  title: "Stop Process",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
-                }
-              ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handlePm2Action("start", app.pm_id),
-                  className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
-                  title: "Start Process",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handlePm2Action("restart", app.pm_id),
-                  className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
-                  title: "Restart Process",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleViewPm2Logs(app),
-                  className: "p-1 rounded hover:bg-white/5 text-[#fab387]",
-                  title: "View Logs",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { size: 12 })
-                }
-              )
-            ] }) })
-          ] }, app.pm_id);
-        }) })
-      ] }) }) }),
-      activeSubTab === "docker" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex flex-col overflow-hidden", children: !dockerInstalled ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { size: 36, className: "mb-3 opacity-30" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Docker không được cài đặt hoặc chưa khởi động" })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => {
-                setDockerSubTab("containers");
-                fetchDocker();
-              },
-              className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "containers" ? "bg-accent-blue/15 text-accent-blue" : "text-surface-mid hover:text-surface-light"}`,
-              children: [
-                "Containers (",
-                containers.length,
-                ")"
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => {
-                setDockerSubTab("images");
-                fetchDocker();
-              },
-              className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "images" ? "bg-accent-blue/15 text-accent-blue" : "text-surface-mid hover:text-surface-light"}`,
-              children: [
-                "Images (",
-                images.length,
-                ")"
-              ]
-            }
-          )
-        ] }),
-        dockerSubTab === "containers" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Container ID" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tên" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Image" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Ports)" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: containers.map((c) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: c.id }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: c.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#a6adc8] max-w-[150px] truncate", title: c.image, children: c.image }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `px-2 py-0.5 rounded-full text-[10px] font-medium leading-none ${c.status.toLowerCase().includes("up") ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`, children: c.status }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: c.ports && c.ports !== "-" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: c.ports.split(",").map((p2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-[#89b4fa]/10 text-[#89b4fa] px-1.5 py-0.5 rounded text-[10px] font-semibold", title: p2.trim(), children: p2.trim() }, idx)) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
-              c.status.toLowerCase().includes("up") ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleDockerContainerAction("stop", c.id),
-                  className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
-                  title: "Stop Container",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
-                }
-              ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleDockerContainerAction("start", c.id),
-                  className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
-                  title: "Start Container",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleDockerContainerAction("restart", c.id),
-                  className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
-                  title: "Restart Container",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleViewDockerContainerLogs(c.id, c.name),
-                  className: "p-1 rounded hover:bg-white/5 text-[#fab387]",
-                  title: "View Container Logs",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { size: 12 })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleDockerContainerAction("rm", c.id),
-                  className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]/70 hover:text-[#f38ba8]",
-                  title: "Remove Container",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
-                }
-              )
-            ] }) })
-          ] }, c.id)) })
-        ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Repository" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tag" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Image ID" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Size" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: images.map((img, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: img.repository }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8]", children: img.tag }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: img.id }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: img.size }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: () => handleDockerImageAction("rmi", img.id),
-                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
-                title: "Remove Image",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
-              }
-            ) })
-          ] }, idx)) })
-        ] }) })
-      ] }) }),
-      activeSubTab === "logs" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-64 min-w-64 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] flex items-center justify-between text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Log Files" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: () => setShowAddLogInput(!showAddLogInput),
-                className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]",
-                title: "Thêm file log",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 11 })
-              }
-            )
-          ] }),
-          showAddLogInput && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 border-b border-white/[0.04] bg-[#11111b]/35 space-y-1.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "text",
-                placeholder: "Đường dẫn log file...",
-                value: newLogPathInput,
-                onChange: (e) => setNewLogPathInput(e.target.value),
-                className: "w-full bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1 justify-end", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => setShowAddLogInput(false),
-                  className: "px-2 py-0.5 rounded text-[9px] bg-white/5 hover:bg-white/10",
-                  children: "Hủy"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: handleAddLogPath,
-                  className: "px-2 py-0.5 rounded text-[9px] bg-[#89b4fa] text-[#1e1e2e] font-semibold",
-                  children: "Thêm"
-                }
-              )
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5", children: logPaths.map((path) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => setSelectedLogPath(path),
-              className: `w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left transition-all ${selectedLogPath === path ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8] hover:bg-white/[0.02]"}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 12, className: "shrink-0 text-[#89b4fa]" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate block flex-1", title: path, children: path.substring(path.lastIndexOf("/") + 1) })
-              ]
-            },
-            path
-          )) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 border-t border-white/[0.04] bg-[#11111b]/35 flex justify-between items-center text-[10px] text-[#585b70]", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tự động cập nhật (3s)" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "checkbox",
-                checked: logAutoRefresh,
-                onChange: (e) => setLogAutoRefresh(e.target.checked),
-                className: "rounded bg-[#1e1e2e] border-white/5"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#181825]/50 flex items-center gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs text-[#a6adc8] truncate flex-1", children: selectedLogPath }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "text",
-                placeholder: "Lọc từ khóa logs...",
-                value: logSearch,
-                onChange: (e) => setLogSearch(e.target.value),
-                className: "w-48 bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto p-4 font-mono text-[11px] leading-relaxed select-text scrollbar-thin", children: (() => {
-            const filteredLines = logContent.split("\n").filter((line) => line.toLowerCase().includes(logSearch.toLowerCase()));
-            if (filteredLines.length === 0) {
-              return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] text-center py-10", children: "Không tìm thấy log nào khớp với từ khóa." });
-            }
-            return filteredLines.map((line, idx) => {
-              let colorClass = "text-[#bac2de]";
-              const lowerLine = line.toLowerCase();
-              if (lowerLine.includes("error") || lowerLine.includes("failed") || lowerLine.includes(" 500 ")) {
-                colorClass = "text-[#f38ba8] font-bold";
-              } else if (lowerLine.includes("warning") || lowerLine.includes("warn")) {
-                colorClass = "text-[#f9e2af]";
-              } else if (lowerLine.includes("success") || lowerLine.includes(" 200 ") || lowerLine.includes(" 201 ")) {
-                colorClass = "text-[#a6e3a1]";
-              }
-              return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `${colorClass} whitespace-pre-wrap py-0.5 hover:bg-white/[0.02]`, children: line }, idx);
-            });
-          })() })
-        ] })
-      ] }),
-      activeSubTab === "database" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex flex-col overflow-hidden", children: dbInstances.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Database, { size: 36, className: "mb-3 opacity-30" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không phát hiện hệ quản trị CSDL nào đang hoạt động" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] mt-1 text-[#45475a] max-w-xs text-center leading-relaxed", children: "Để sử dụng tính năng này, hãy đảm bảo MySQL, Postgres, Redis hoặc MongoDB đang lắng nghe trên server." })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto pr-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-4", children: dbInstances.map((db2, idx) => {
-        const activeTunnel = activeTunnels.find((t2) => t2.targetPort === parseInt(db2.port) && t2.active);
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-5 flex flex-col justify-between hover:border-white/[0.08] transition-all", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 rounded-lg bg-[#fab387]/10 text-[#fab387]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Database, { size: 18 }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "text-xs font-bold text-[#cdd6f4] uppercase", children: [
-                  db2.type,
-                  " Server"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] font-mono text-[#585b70]", children: [
-                  "Port ",
-                  db2.port,
-                  " | ",
-                  db2.processName
-                ] })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider ${activeTunnel ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#585b70]/10 text-[#585b70]"}`, children: activeTunnel ? "Tunnel Active" : "Disconnected" })
-          ] }),
-          activeTunnel && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 bg-[#11111b] border border-white/[0.02] rounded-lg p-2.5 text-[10px] font-mono text-[#a6adc8] space-y-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Cổng Cục Bộ:" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-[#89b4fa]", children: activeTunnel.listenPort })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Kết Nối:" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                "localhost:",
-                activeTunnel.listenPort
-              ] })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-5", children: activeTunnel ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => handleStopTunnel(activeTunnel.id),
-              className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20 transition-all active:scale-95",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 11 }),
-                "Hủy SSH Tunnel"
-              ]
-            }
-          ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => handleOpenTunnelModal(db2.port, db2.type),
-              className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] transition-all active:scale-95",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 11 }),
-                "Tạo SSH Tunnel"
-              ]
-            }
-          ) })
-        ] }, idx);
-      }) }) }) }),
-      activeSubTab === "services" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex flex-col overflow-hidden", children: services.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { size: 36, className: "mb-3 opacity-30" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không tìm thấy service DevOps nào" })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Dịch vụ (Service)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Mô tả" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Port)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái (Active)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Chi tiết (Substate)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: services.map((svc) => {
-          let svcPorts = [];
-          if (svc.pid) {
-            svcPorts = ports.filter((p2) => p2.pid === svc.pid).map((p2) => p2.port);
-          }
-          if (svcPorts.length === 0) {
-            const lowerName = svc.name.toLowerCase();
-            svcPorts = ports.filter((p2) => {
-              const proc = p2.processName.toLowerCase();
-              if (lowerName === "nginx" && proc.includes("nginx")) return true;
-              if (lowerName === "mysql" && (proc.includes("mysqld") || proc.includes("mysql"))) return true;
-              if (lowerName === "redis" && proc.includes("redis-server")) return true;
-              if (lowerName === "postgresql" && proc.includes("postgres")) return true;
-              if (lowerName === "mongodb" && proc.includes("mongod")) return true;
-              if (lowerName === "ssh" && proc.includes("sshd")) return true;
-              return false;
-            }).map((p2) => p2.port);
-          }
-          const uniquePorts = Array.from(new Set(svcPorts));
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: svc.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8] max-w-xs truncate", title: svc.description, children: svc.description }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: uniquePorts.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: uniquePorts.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "bg-[#89b4fa]/10 text-[#89b4fa] px-1.5 py-0.5 rounded text-[10px] font-bold", children: [
-              ":",
-              p2
-            ] }, p2)) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `px-2 py-0.5 rounded-full text-[10px] font-medium leading-none ${svc.activeState === "active" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`, children: svc.activeState }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: svc.subState }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
-              svc.subState === "running" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleServiceAction("stop", svc.name),
-                  className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
-                  title: "Stop Service",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
-                }
-              ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleServiceAction("start", svc.name),
-                  className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
-                  title: "Start Service",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => handleServiceAction("restart", svc.name),
-                  className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
-                  title: "Restart Service",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
-                }
-              )
-            ] }) })
-          ] }, svc.name);
-        }) })
-      ] }) }) }),
-      activeSubTab === "nginx" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-56 min-w-56 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: "Virtual Hosts" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5", children: nginxFiles.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-[10px] py-6", children: "Không tìm thấy file config nào." }) : nginxFiles.map((file) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => handleReadNginxFile(file),
-              className: `w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-left transition-all ${selectedNginxFile === file ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8] hover:bg-white/[0.02]"}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 12, className: "shrink-0 text-[#89b4fa]" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: file })
-              ]
-            },
-            file
-          )) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-t border-white/[0.04] bg-[#11111b]/35", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: handleReloadNginx,
-              className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 active:scale-95 transition-all",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11 }),
-                "Reload Nginx"
-              ]
-            }
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative", children: selectedNginxFile ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs text-[#a6adc8]", children: selectedNginxFile }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: handleSaveNginxConfig,
-                disabled: savingNginx,
-                className: "px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] text-xs font-semibold hover:bg-[#74c7ec] active:scale-95 disabled:opacity-40 transition-all",
-                children: savingNginx ? "Đang Lưu..." : "Lưu Config"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "textarea",
-            {
-              value: nginxConfigContent,
-              onChange: (e) => setNginxConfigContent(e.target.value),
-              className: "flex-1 p-4 bg-[#181825] text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed",
-              spellCheck: false
-            }
-          ),
-          nginxTestResult && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `p-3 border-t text-[11px] font-mono flex items-start gap-2 ${nginxTestResult.success ? "bg-[#a6e3a1]/5 border-[#a6e3a1]/25 text-[#a6e3a1]" : "bg-[#f38ba8]/5 border-[#f38ba8]/25 text-[#f38ba8]"}`, children: [
-            nginxTestResult.success ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheckBig, { size: 14, className: "shrink-0 mt-0.5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { size: 14, className: "shrink-0 mt-0.5" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto whitespace-pre-wrap max-h-24", children: nginxTestResult.message })
-          ] })
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 36, className: "mb-2 opacity-30" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "Chọn một file Nginx config để chỉnh sửa" })
-        ] }) })
-      ] })
+      activeSubTab === "overview" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        OverviewPanel,
+        {
+          sessionId,
+          exec,
+          refreshKey,
+          setLoading,
+          setError,
+          alertCpu,
+          alertMem,
+          alertDisk,
+          triggerResourceAlert
+        }
+      ),
+      activeSubTab === "processes" && /* @__PURE__ */ jsxRuntimeExports.jsx(ProcessesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "pm2" && /* @__PURE__ */ jsxRuntimeExports.jsx(PM2Panel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "docker" && /* @__PURE__ */ jsxRuntimeExports.jsx(DockerPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "database" && /* @__PURE__ */ jsxRuntimeExports.jsx(DatabasePanel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "cron" && /* @__PURE__ */ jsxRuntimeExports.jsx(CronPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "multiexec" && /* @__PURE__ */ jsxRuntimeExports.jsx(MultiExecPanel, { sessionId, exec }),
+      activeSubTab === "packages" && /* @__PURE__ */ jsxRuntimeExports.jsx(PackagesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "logs" && /* @__PURE__ */ jsxRuntimeExports.jsx(LogsPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "services" && /* @__PURE__ */ jsxRuntimeExports.jsx(ServicesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "nginx" && /* @__PURE__ */ jsxRuntimeExports.jsx(NginxPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+      activeSubTab === "alerts" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        AlertsPanel,
+        {
+          alertCpu,
+          setAlertCpu,
+          alertMem,
+          setAlertMem,
+          alertDisk,
+          setAlertDisk,
+          webhookUrl,
+          setWebhookUrl,
+          webhookType,
+          setWebhookType,
+          alertsHistory,
+          setLoading
+        }
+      ),
+      activeSubTab === "backup" && /* @__PURE__ */ jsxRuntimeExports.jsx(BackupPanel, { sessionId, exec, setLoading })
     ] }),
-    selectedAppLogs && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setSelectedAppLogs(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[800px] max-h-[80vh] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-gradient-to-r from-[#181825] to-transparent", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-semibold text-[#a6adc8] uppercase tracking-wider flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#fab387]" }),
-          "PM2 Logs: ",
-          selectedAppLogs.name
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSelectedAppLogs(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 15 }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text selection:bg-[#fab387]/25 scrollbar-thin", children: selectedAppLogs.logs })
-    ] }) }),
-    selectedContainerLogs && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setSelectedContainerLogs(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[800px] max-h-[80vh] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-gradient-to-r from-[#181825] to-transparent", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-semibold text-[#a6adc8] uppercase tracking-wider flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#89b4fa]" }),
-          "Docker Logs: ",
-          selectedContainerLogs.name
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSelectedContainerLogs(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 15 }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text selection:bg-[#89b4fa]/25 scrollbar-thin", children: selectedContainerLogs.logs })
-    ] }) }),
-    showCreateTunnelModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setShowCreateTunnelModal(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[380px] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
-          "Kích hoạt SSH Tunnel (",
-          showCreateTunnelModal.dbType.toUpperCase(),
-          ")"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowCreateTunnelModal(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên Kết Nối (Tunnel Name)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "text",
-              value: tunnelNameInput,
-              onChange: (e) => setTunnelNameInput(e.target.value),
-              className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]/50"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Cổng Cục Bộ Máy Bạn (Local Listen Port)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "number",
-              placeholder: "3307, 5433, 6380...",
-              value: tunnelLocalPortInput,
-              onChange: (e) => setTunnelLocalPortInput(e.target.value),
-              className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]/50"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#585b70] block leading-relaxed", children: "Cổng này sẽ được mở trên máy tính cá nhân của bạn. Kết nối tới `localhost:cổng` sẽ tự động chuyển hướng tới database trên server." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: () => setShowCreateTunnelModal(null),
-              className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
-              children: "Hủy"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: handleCreateTunnel,
-              className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all",
-              children: "Tạo Tunnel"
-            }
-          )
-        ] })
-      ] })
-    ] }) }),
-    activeSubTab === "sftp" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SftpPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) })
+    activeSubTab === "sftp" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SftpPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) }),
+    activeSubTab === "tunnel" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TunnelPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) })
   ] });
 }
 function generateId() {
