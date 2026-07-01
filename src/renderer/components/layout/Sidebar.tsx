@@ -14,6 +14,7 @@ export default function Sidebar() {
   const addBtnRef = useRef<HTMLButtonElement>(null)
   const toggleSettings = useSettingsStore((s) => s.toggleSettings)
   const toggleSnippets = useSettingsStore((s) => s.toggleSnippets)
+  const sidebarCollapsed = useSettingsStore((s) => s.sidebarCollapsed)
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -29,7 +30,14 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="w-[var(--sidebar-width)] min-w-[var(--sidebar-width)] bg-[#11111b] flex flex-col border-r border-white/[0.04] select-none z-10">
+      <div
+        className="bg-[#11111b] flex flex-col border-r border-white/[0.04] select-none z-10 transition-all duration-300 ease-in-out overflow-hidden"
+        style={{
+          width: sidebarCollapsed ? '0px' : 'var(--sidebar-width)',
+          minWidth: sidebarCollapsed ? '0px' : 'var(--sidebar-width)',
+          borderRightWidth: sidebarCollapsed ? '0px' : '1px'
+        }}
+      >
         {/* Header */}
         <div className="h-12 flex items-center px-4 border-b border-white/[0.04] gap-3">
           <div className="w-7 h-7 rounded-[10px] bg-gradient-to-br from-[#89b4fa] to-[#cba6f7] p-[1px] shadow-lg shadow-[#89b4fa]/10">

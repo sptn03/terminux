@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Terminal, Minus, Square, X } from 'lucide-react'
+import { Terminal, Minus, Square, X, PanelLeft, PanelLeftClose } from 'lucide-react'
+import { useSettingsStore } from '../../stores/settings-store'
 
 export default function TitleBar() {
   const [maximized, setMaximized] = useState(false)
+  const sidebarCollapsed = useSettingsStore((s) => s.sidebarCollapsed)
+  const toggleSidebar = useSettingsStore((s) => s.toggleSidebar)
 
   useEffect(() => {
     window.api.window.isMaximized().then(setMaximized)
@@ -15,8 +18,15 @@ export default function TitleBar() {
       className="flex items-center h-[34px] bg-[#11111b] select-none shrink-0"
       style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
     >
-      {/* Logo — left side */}
-      <div className="flex items-center gap-[7px] pl-[14px] pr-3" style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}>
+      {/* Sidebar toggle button + Logo — left side */}
+      <div className="flex items-center gap-2 pl-[14px] pr-3" style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}>
+        <button
+          onClick={toggleSidebar}
+          className="p-1 rounded-md text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all flex items-center justify-center active:scale-95 animate-fade-in"
+          title={sidebarCollapsed ? 'Hiện thanh bên' : 'Ẩn thanh bên'}
+        >
+          {sidebarCollapsed ? <PanelLeft size={13} /> : <PanelLeftClose size={13} />}
+        </button>
         <div className="w-[18px] h-[18px] rounded-[8px] bg-gradient-to-br from-[#89b4fa] to-[#cba6f7] p-[1px] shrink-0">
           <div className="w-full h-full rounded-[7px] bg-[#11111b] flex items-center justify-center">
             <Terminal size={10} className="text-[#89b4fa]" />

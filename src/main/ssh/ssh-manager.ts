@@ -4,6 +4,7 @@ import { createShellSession } from './shell-session'
 import { sftpManager } from './sftp-manager'
 import { tunnelManager } from './tunnel-manager'
 import { BrowserWindow } from 'electron'
+import { getDb } from '../db'
 
 class SSHManager {
   private sessions: Map<string, ShellSession> = new Map()
@@ -24,8 +25,8 @@ class SSHManager {
 
       // Log session start to history database
       try {
-        const db = require('../db').getDb()
-        const savedHost = db.prepare('SELECT name FROM hosts WHERE host = ?').get(config.host)
+        const db = getDb()
+        const savedHost = db.prepare('SELECT name FROM hosts WHERE host = ?').get(config.host) as { name: string } | undefined
         const hostName = savedHost ? savedHost.name : config.host
         db.prepare('INSERT INTO session_history (id, host_name, host_address) VALUES (?, ?, ?)').run(session.sessionId, hostName, config.host)
       } catch (dbErr: any) {
@@ -56,7 +57,7 @@ class SSHManager {
         }
         // Update ended_at in history
         try {
-          const db = require('../db').getDb()
+          const db = getDb()
           db.prepare("UPDATE session_history SET ended_at = datetime('now') WHERE id = ?").run(session.sessionId)
         } catch (dbErr: any) {
           console.error('[terminux] Session history update failed:', dbErr.message)

@@ -1,6 +1,44 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Activity, Layers, HardDrive } from 'lucide-react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { Activity, Layers, HardDrive, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { useTerminalStore } from '../../stores/terminal-store'
+
+const MAX_HISTORY = 60
+
+function Sparkline({ data, color, label }: { data: number[]; color: string; label?: string }) {
+  if (data.length < 2) return null
+  const w = 160
+  const h = 32
+  const max = Math.max(...data, 1)
+  const points = data.map((v, i) => {
+    const x = (i / (MAX_HISTORY - 1)) * w
+    const y = h - (v / max) * (h - 2) - 1
+    return `${x},${y}`
+  }).join(' ')
+  const fillPoints = `0,${h} ${points} ${(data.length - 1) / (MAX_HISTORY - 1) * w},${h}`
+
+  const prev5 = data.slice(-6, -1)
+  const last = data[data.length - 1]
+  const avg5 = prev5.length > 0 ? prev5.reduce((a, b) => a + b, 0) / prev5.length : last
+  const diff = last - avg5
+  const TrendIcon = diff > 1.5 ? TrendingUp : diff < -1.5 ? TrendingDown : Minus
+  const trendColor = diff > 1.5 ? '#f38ba8' : diff < -1.5 ? '#a6e3a1' : '#585b70'
+
+  return (
+    <div className="flex items-center gap-2 mt-2">
+      <svg width={w} height={h} className="shrink-0">
+        <defs>
+          <linearGradient id={`spark-${color.replace('#', '')}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.3" />
+            <stop offset="100%" stopColor={color} stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+        <polygon points={fillPoints} fill={`url(#spark-${color.replace('#', '')})`} />
+        <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <TrendIcon size={10} style={{ color: trendColor }} className="shrink-0" />
+    </div>
+  )
+}
 
 export interface ListeningPort {
   proto: string
@@ -68,6 +106,13 @@ export default function OverviewPanel({
   const [sysInfo, setSysInfo] = useState<SysInfo | null>(null)
   const [ports, setPorts] = useState<ListeningPort[]>([])
   const updateTabState = useTerminalStore((s) => s.updateTabState)
+
+  const cpuHistoryRef = useRef<number[]>([])
+  const memHistoryRef = useRef<number[]>([])
+  const diskHistoryRef = useRef<number[]>([])
+  const [cpuHistory, setCpuHistory] = useState<number[]>([])
+  const [memHistory, setMemHistory] = useState<number[]>([])
+  const [diskHistory, setDiskHistory] = useState<number[]>([])
 
   const fetchPortsList = useCallback(async (): Promise<ListeningPort[]> => {
     const cmd = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`
@@ -258,6 +303,14 @@ export default function OverviewPanel({
       const memPercent = (memUsed / memTotal) * 100
       const diskPercent = info.disk_percent || 0
 
+      // Update sparkline history
+      cpuHistoryRef.current = [...cpuHistoryRef.current, cpuUsed].slice(-MAX_HISTORY)
+      memHistoryRef.current = [...memHistoryRef.current, memPercent].slice(-MAX_HISTORY)
+      diskHistoryRef.current = [...diskHistoryRef.current, diskPercent].slice(-MAX_HISTORY)
+      setCpuHistory([...cpuHistoryRef.current])
+      setMemHistory([...memHistoryRef.current])
+      setDiskHistory([...diskHistoryRef.current])
+
       if (cpuUsed > alertCpu || memPercent > alertMem || diskPercent > alertDisk) {
         updateTabState(sessionId, { alertStatus: 'danger' })
         triggerResourceAlert(cpuUsed, memPercent, diskPercent)
@@ -290,7 +343,7 @@ export default function OverviewPanel({
   return (
     <div className="flex-1 overflow-y-auto space-y-6">
       {/* Top Cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col justify-between">
           <span className="text-[10px] uppercase font-semibold tracking-wider text-[#585b70]">Hệ Điều Hành</span>
           <span className="text-sm font-bold text-[#cdd6f4] truncate mt-1">{sysInfo.os || 'Linux'}</span>
@@ -306,7 +359,7 @@ export default function OverviewPanel({
       </div>
 
       {/* Gauges */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col items-center">
           <Activity className="text-[#89b4fa] mb-2" size={16} />
           <span className="text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-4">CPU Utilization</span>
@@ -319,6 +372,7 @@ export default function OverviewPanel({
               <span className="text-lg font-bold">{(sysInfo.cpu_used || 0).toFixed(1)}%</span>
             </div>
           </div>
+          <Sparkline data={cpuHistory} color="#89b4fa" />
         </div>
 
         {(() => {
@@ -339,6 +393,7 @@ export default function OverviewPanel({
                   <span className="text-[9px] text-[#585b70]">{used} / {total} MB</span>
                 </div>
               </div>
+              <Sparkline data={memHistory} color="#a6e3a1" />
             </div>
           )
         })()}
@@ -361,13 +416,14 @@ export default function OverviewPanel({
                   <span className="text-[9px] text-[#585b70]">{used} / {total} GB</span>
                 </div>
               </div>
+              <Sparkline data={diskHistory} color="#fab387" />
             </div>
           )
         })()}
       </div>
 
       {/* System Details & Open Ports */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col">
           <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] mb-4 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#89b4fa]" />
@@ -449,7 +505,7 @@ export default function OverviewPanel({
               Public IP: <span className="text-[#cdd6f4]">{sysInfo.public_ip || '...'}</span>
             </span>
           </h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {(sysInfo.network_ifaces as NetworkIface[]).map((iface) => (
               <div key={iface.name} className="bg-[#11111b] border border-white/[0.04] rounded-xl p-3 flex flex-col gap-1.5">
                 <div className="flex items-center justify-between mb-0.5">

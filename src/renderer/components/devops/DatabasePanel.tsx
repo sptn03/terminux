@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Database, Square, ArrowRight, X } from 'lucide-react'
+import { Database, Square, ArrowRight, X, Terminal, List } from 'lucide-react'
 
 interface DbInstance {
   type: 'mysql' | 'postgres' | 'redis' | 'mongodb' | 'unknown'
@@ -36,6 +36,11 @@ export default function DatabasePanel({
   const [showCreateTunnelModal, setShowCreateTunnelModal] = useState<{ dbPort: string; dbType: string } | null>(null)
   const [tunnelLocalPortInput, setTunnelLocalPortInput] = useState<string>('')
   const [tunnelNameInput, setTunnelNameInput] = useState<string>('')
+  const [dbStats, setDbStats] = useState<Record<string, { version: string; connections: string }>>({})
+  const [dbListModal, setDbListModal] = useState<{ type: string; databases: string[] } | null>(null)
+  const [quickQueryModal, setQuickQueryModal] = useState<{ type: string; port: string } | null>(null)
+  const [queryInput, setQueryInput] = useState('')
+  const [queryResult, setQueryResult] = useState('')
 
   const fetchTunnels = useCallback(async () => {
     try {
@@ -119,6 +124,45 @@ export default function DatabasePanel({
       })
       setDbInstances(instances)
       await fetchTunnels()
+
+      // Fetch stats for detected instances
+      const statsMap: Record<string, { version: string; connections: string }> = {}
+      for (const inst of instances) {
+        try {
+          if (inst.type === 'mysql') {
+            const ver = await exec('mysql -V 2>/dev/null || echo "unknown"')
+            const conns = await exec('mysqladmin status 2>/dev/null || echo ""')
+            const connMatch = (conns.stdout || '').match(/Threads:\s+(\d+)/)
+            statsMap[`${inst.type}-${inst.port}`] = {
+              version: (ver.stdout || '').split('\n')[0].trim(),
+              connections: connMatch ? connMatch[1] : '-'
+            }
+          } else if (inst.type === 'postgres') {
+            const ver = await exec('psql --version 2>/dev/null || echo "unknown"')
+            const conns = await exec("sudo -u postgres psql -t -c 'SELECT count(*) FROM pg_stat_activity' 2>/dev/null || echo '-'")
+            statsMap[`${inst.type}-${inst.port}`] = {
+              version: (ver.stdout || '').split('\n')[0].trim(),
+              connections: (conns.stdout || '-').trim()
+            }
+          } else if (inst.type === 'redis') {
+            const info = await exec('redis-cli info server 2>/dev/null | head -5 || echo "unknown"')
+            const verMatch = (info.stdout || '').match(/redis_version:(.+)/)
+            const clients = await exec('redis-cli info clients 2>/dev/null | grep connected_clients || echo ""')
+            const clientMatch = (clients.stdout || '').match(/connected_clients:(\d+)/)
+            statsMap[`${inst.type}-${inst.port}`] = {
+              version: verMatch ? `Redis ${verMatch[1].trim()}` : 'Redis',
+              connections: clientMatch ? clientMatch[1] : '-'
+            }
+          } else if (inst.type === 'mongodb') {
+            const ver = await exec('mongod --version 2>/dev/null | head -1 || echo "unknown"')
+            statsMap[`${inst.type}-${inst.port}`] = {
+              version: (ver.stdout || '').split('\n')[0].trim(),
+              connections: '-'
+            }
+          }
+        } catch {}
+      }
+      setDbStats(statsMap)
     } catch (e: any) {
       setError(e.message || 'Lỗi tải cơ sở dữ liệu')
     }
@@ -228,7 +272,52 @@ export default function DatabasePanel({
                     </div>
                   )}
 
-                  <div className="mt-5">
+                  {/* DB Stats */}
+                  {dbStats[`${db.type}-${db.port}`] && (
+                    <div className="mt-3 bg-[#11111b] border border-white/[0.02] rounded-lg p-2.5 text-[10px] font-mono text-[#a6adc8] space-y-1">
+                      <div className="flex justify-between">
+                        <span className="text-[#585b70]">Version:</span>
+                        <span className="text-[#cdd6f4] truncate max-w-[150px]" title={dbStats[`${db.type}-${db.port}`].version}>{dbStats[`${db.type}-${db.port}`].version}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#585b70]">Connections:</span>
+                        <span className="text-[#a6e3a1] font-bold">{dbStats[`${db.type}-${db.port}`].connections}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-4 space-y-2">
+                    <div className="flex gap-2">
+                      {(db.type === 'mysql' || db.type === 'postgres') && (
+                        <>
+                          <button
+                            onClick={async () => {
+                              setLoading(true)
+                              let cmd = ''
+                              if (db.type === 'mysql') {
+                                cmd = "mysql -e 'SHOW DATABASES' 2>/dev/null || echo 'Không có quyền'"
+                              } else {
+                                cmd = "sudo -u postgres psql -t -c 'SELECT datname FROM pg_database WHERE datistemplate = false' 2>/dev/null || echo 'Không có quyền'"
+                              }
+                              const { stdout } = await exec(cmd)
+                              const dbs = stdout.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('+') && !s.startsWith('|') && s !== 'Database')
+                              setDbListModal({ type: db.type, databases: dbs })
+                              setLoading(false)
+                            }}
+                            className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                          >
+                            <List size={10} /> Databases
+                          </button>
+                          <button
+                            onClick={() => { setQuickQueryModal({ type: db.type, port: db.port }); setQueryInput(''); setQueryResult('') }}
+                            className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                          >
+                            <Terminal size={10} /> Query
+                          </button>
+                        </>
+                      )}
+                    </div>
+
                     {activeTunnel ? (
                       <button
                         onClick={() => handleStopTunnel(activeTunnel.id)}
@@ -313,6 +402,66 @@ export default function DatabasePanel({
                   Tạo Tunnel
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* DB List Modal */}
+      {dbListModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setDbListModal(null)}>
+          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[380px] max-h-[60vh] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">Databases ({dbListModal.type.toUpperCase()})</h3>
+              <button onClick={() => setDbListModal(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"><X size={14} /></button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-1">
+              {dbListModal.databases.map((db, i) => (
+                <div key={i} className="px-3 py-2 bg-[#181825] border border-white/[0.04] rounded-lg text-xs font-mono text-[#cdd6f4]">{db}</div>
+              ))}
+              {dbListModal.databases.length === 0 && <div className="text-[#585b70] text-center text-xs py-4">Không tìm thấy database nào.</div>}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Query Modal */}
+      {quickQueryModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setQuickQueryModal(null)}>
+          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[600px] max-h-[80vh] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">Quick Query ({quickQueryModal.type.toUpperCase()})</h3>
+              <button onClick={() => setQuickQueryModal(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"><X size={14} /></button>
+            </div>
+            <div className="p-5 space-y-3">
+              <textarea
+                value={queryInput}
+                onChange={(e) => setQueryInput(e.target.value)}
+                placeholder={quickQueryModal.type === 'mysql' ? 'SELECT * FROM users LIMIT 10;' : 'SELECT * FROM pg_stat_activity;'}
+                className="w-full h-20 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono resize-none"
+              />
+              <button
+                onClick={async () => {
+                  if (!queryInput.trim()) return
+                  setLoading(true)
+                  let cmd = ''
+                  if (quickQueryModal.type === 'mysql') {
+                    cmd = `mysql -e "${queryInput.replace(/"/g, '\\"')}" 2>&1`
+                  } else {
+                    cmd = `sudo -u postgres psql -c "${queryInput.replace(/"/g, '\\"')}" 2>&1`
+                  }
+                  const { stdout } = await exec(cmd)
+                  setQueryResult(stdout || 'Không có kết quả.')
+                  setLoading(false)
+                }}
+                className="w-full py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all"
+              >
+                Execute Query
+              </button>
+              {queryResult && (
+                <pre className="max-h-48 overflow-auto bg-[#11111b] border border-white/[0.04] rounded-lg p-3 text-[11px] font-mono text-[#a6adc8] whitespace-pre-wrap select-text">
+                  {queryResult}
+                </pre>
+              )}
             </div>
           </div>
         </div>

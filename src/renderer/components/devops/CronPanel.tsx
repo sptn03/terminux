@@ -1,5 +1,30 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Plus, X } from 'lucide-react'
+import { Plus, X, Play } from 'lucide-react'
+
+function describeCron(expr: string): string {
+  const parts = expr.trim().split(/\s+/)
+  if (parts.length < 5) return expr
+  const [min, hour, dom, mon, dow] = parts
+
+  // Common presets
+  if (min === '*' && hour === '*' && dom === '*' && mon === '*' && dow === '*') return 'Mỗi phút'
+  if (min.startsWith('*/')) return `Mỗi ${min.replace('*/', '')} phút`
+  if (min !== '*' && hour === '*' && dom === '*' && mon === '*' && dow === '*') return `Phút ${min} mỗi giờ`
+  if (hour.startsWith('*/') && dom === '*' && mon === '*' && dow === '*') return `Mỗi ${hour.replace('*/', '')} giờ, phút ${min}`
+  if (min !== '*' && hour !== '*' && dom === '*' && mon === '*' && dow === '*') return `Hàng ngày lúc ${hour}:${min.padStart(2, '0')}`
+  if (min !== '*' && hour !== '*' && dom === '*' && mon === '*' && dow !== '*') {
+    const days = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
+    const dayName = days[parseInt(dow)] || dow
+    return `Mỗi ${dayName} lúc ${hour}:${min.padStart(2, '0')}`
+  }
+  if (min !== '*' && hour !== '*' && dom !== '*' && mon === '*') return `Ngày ${dom} hàng tháng lúc ${hour}:${min.padStart(2, '0')}`
+  return expr
+}
+
+function sanitizeForShell(str: string): string {
+  // Escape shell special chars to prevent injection
+  return str.replace(/["$`\\!]/g, '\\$&')
+}
 
 interface CronPanelProps {
   sessionId: string
@@ -84,7 +109,8 @@ export default function CronPanel({
             <thead>
               <tr className="border-b border-white/[0.04] text-[#585b70] font-semibold">
                 <th className="p-3 w-12">Trạng thái</th>
-                <th className="p-3">Thời gian (Cron Expression)</th>
+                <th className="p-3">Thời gian</th>
+                <th className="p-3">Mô tả</th>
                 <th className="p-3">Lệnh thực thi</th>
                 <th className="p-3 text-center">Thao tác</th>
               </tr>
@@ -108,7 +134,8 @@ export default function CronPanel({
                         {isCommented ? 'Tắt' : 'Bật'}
                       </span>
                     </td>
-                    <td className="p-3 font-mono font-bold text-[#89b4fa]">{schedule}</td>
+                    <td className="p-3 font-mono font-bold text-[#89b4fa] text-[10px]" title={schedule}>{schedule}</td>
+                    <td className="p-3 text-[#a6adc8] text-[10px]">{describeCron(schedule)}</td>
                     <td className="p-3 font-mono text-[#cdd6f4] break-all select-text">{command}</td>
                     <td className="p-3">
                       <div className="flex gap-1.5 justify-center">
@@ -121,7 +148,7 @@ export default function CronPanel({
                             } else {
                               updatedJobs[idx] = `# ${job}`
                             }
-                            const newCronString = updatedJobs.join('\n')
+                            const newCronString = sanitizeForShell(updatedJobs.join('\n'))
                             await exec(`echo "${newCronString}" | crontab -`)
                             await fetchCronJobs()
                             setLoading(false)
@@ -129,6 +156,20 @@ export default function CronPanel({
                           className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-xs transition-all animate-none text-[#a6adc8]"
                         >
                           {isCommented ? 'Bật' : 'Tắt'}
+                        </button>
+                        <button
+                          onClick={async () => {
+                            if (confirm(`Chạy thử lệnh ngay bây giờ?\n${command}`)) {
+                              setLoading(true)
+                              const result = await exec(command)
+                              setCronLogs(result.stdout || result.stderr || 'Lệnh hoàn tất (không có output).')
+                              setLoading(false)
+                            }
+                          }}
+                          className="px-2 py-0.5 rounded bg-[#a6e3a1]/10 text-[#a6e3a1] hover:bg-[#a6e3a1]/20 text-xs transition-all"
+                          title="Chạy lệnh ngay lập tức"
+                        >
+                          <Play size={10} className="inline" /> Run
                         </button>
                         <button
                           onClick={() => {
@@ -146,7 +187,7 @@ export default function CronPanel({
                             if (confirm('Xóa cron job này?')) {
                               setLoading(true)
                               const updatedJobs = cronJobs.filter((_, i) => i !== idx)
-                              const newCronString = updatedJobs.join('\n')
+                              const newCronString = sanitizeForShell(updatedJobs.join('\n'))
                               await exec(`echo "${newCronString}" | crontab -`)
                               await fetchCronJobs()
                               setLoading(false)
@@ -249,7 +290,7 @@ export default function CronPanel({
                     } else {
                       updatedJobs.push(newJob)
                     }
-                    const newCronString = updatedJobs.join('\n')
+                    const newCronString = sanitizeForShell(updatedJobs.join('\n'))
                     await exec(`echo "${newCronString}" | crontab -`)
                     await fetchCronJobs()
                     setShowAddCronModal(false)

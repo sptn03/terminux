@@ -14,6 +14,8 @@ interface SettingsStore {
   backgroundBlur: number
   showSnippets: boolean
   showSettings: boolean
+  sidebarCollapsed: boolean
+  toggleSidebar: () => void
   loadSettings: () => Promise<void>
   loadThemes: () => Promise<void>
   setTheme: (id: string) => Promise<void>
@@ -41,6 +43,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   backgroundBlur: 0,
   showSnippets: false,
   showSettings: false,
+  sidebarCollapsed: localStorage.getItem('sidebar_collapsed') === 'true',
 
   loadSettings: async () => {
     const rows = await window.api.db.all('SELECT * FROM app_settings')
@@ -115,5 +118,10 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   },
 
   toggleSnippets: () => set((s) => ({ showSnippets: !s.showSnippets })),
-  toggleSettings: () => set((s) => ({ showSettings: !s.showSettings }))
+  toggleSettings: () => set((s) => ({ showSettings: !s.showSettings })),
+  toggleSidebar: () => set((s) => {
+    const next = !s.sidebarCollapsed
+    localStorage.setItem('sidebar_collapsed', String(next))
+    return { sidebarCollapsed: next }
+  })
 }))

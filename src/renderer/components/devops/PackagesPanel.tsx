@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { X } from 'lucide-react'
+import { X, Search, ArrowUp } from 'lucide-react'
 
 interface PackagesPanelProps {
   sessionId: string
@@ -9,6 +9,20 @@ interface PackagesPanelProps {
   setError: (error: string) => void
 }
 
+interface PkgInfo {
+  name: string
+  cmd: string
+  pkg: string
+  installed: boolean
+  version: string
+}
+
+interface UpgradableItem {
+  name: string
+  current: string
+  available: string
+}
+
 export default function PackagesPanel({
   sessionId,
   exec,
@@ -16,9 +30,12 @@ export default function PackagesPanel({
   setLoading,
   setError
 }: PackagesPanelProps) {
-  const [packagesList, setPackagesList] = useState<any[]>([])
+  const [packagesList, setPackagesList] = useState<PkgInfo[]>([])
   const [installingPackage, setInstallingPackage] = useState<string | null>(null)
   const [installLogs, setInstallLogs] = useState('')
+  const [customPkgInput, setCustomPkgInput] = useState('')
+  const [upgradableList, setUpgradableList] = useState<UpgradableItem[]>([])
+  const [showUpgradable, setShowUpgradable] = useState(false)
 
   const fetchPackages = useCallback(async () => {
     try {
@@ -52,6 +69,63 @@ export default function PackagesPanel({
     }
   }, [exec, setError])
 
+  const handleCheckUpgradable = async () => {
+    setLoading(true)
+    const { stdout } = await exec('apt list --upgradable 2>/dev/null || yum list updates 2>/dev/null || echo "Không hỗ trợ"')
+    const items: UpgradableItem[] = []
+    stdout.split('\n').forEach((line) => {
+      // apt format: package/codename version arch [upgradable from: version]
+      const match = line.match(/^(\S+)\/\S+\s+(\S+)\s+\S+\s+\[upgradable from:\s+(\S+)\]/)
+      if (match) {
+        items.push({ name: match[1], available: match[2], current: match[3] })
+      }
+    })
+    setUpgradableList(items)
+    setShowUpgradable(true)
+    setLoading(false)
+  }
+
+  const handleInstallPkg = async (pkgName: string) => {
+    setInstallingPackage(pkgName)
+    setInstallLogs(`Bắt đầu cài đặt ${pkgName}...\n`)
+    const cmd = `sudo apt-get install -y ${pkgName} || sudo yum install -y ${pkgName}`
+    const result = await exec(cmd)
+    setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
+    await fetchPackages()
+  }
+
+  const handleRemovePkg = async (pkgName: string) => {
+    if (!confirm(`Gỡ cài đặt ${pkgName}?`)) return
+    setInstallingPackage(pkgName)
+    setInstallLogs(`Bắt đầu gỡ cài đặt ${pkgName}...\n`)
+    const cmd = `sudo apt-get remove -y ${pkgName} || sudo yum remove -y ${pkgName}`
+    const result = await exec(cmd)
+    setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
+    await fetchPackages()
+  }
+
+  const handleCustomInstall = async () => {
+    const pkg = customPkgInput.trim()
+    if (!pkg) return
+    // Basic sanitization - only allow alphanumeric, hyphen, underscore, dot
+    if (!/^[a-zA-Z0-9._-]+$/.test(pkg)) {
+      alert('Tên gói không hợp lệ. Chỉ được dùng chữ, số, dấu gạch ngang và gạch dưới.')
+      return
+    }
+    await handleInstallPkg(pkg)
+    setCustomPkgInput('')
+  }
+
+  const handleUpgradeAll = async () => {
+    if (!confirm(`Nâng cấp ${upgradableList.length} gói?`)) return
+    setInstallingPackage('Upgrade All')
+    setInstallLogs('Đang nâng cấp tất cả gói...\n')
+    const result = await exec('sudo apt-get upgrade -y || sudo yum update -y')
+    setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
+    await fetchPackages()
+    setUpgradableList([])
+  }
+
   const loadData = useCallback(async () => {
     setLoading(true)
     setError('')
@@ -65,23 +139,82 @@ export default function PackagesPanel({
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <div className="flex justify-between items-center mb-3">
-        <span className="text-xs text-[#a6adc8] font-semibold">Trình quản lý gói phần mềm thiết yếu</span>
+      <div className="flex justify-between items-center mb-3 gap-3 flex-wrap">
+        <span className="text-xs text-[#a6adc8] font-semibold">Trình quản lý gói phần mềm</span>
+        <div className="flex gap-2">
+          <button
+            onClick={handleCheckUpgradable}
+            className="px-3 py-1 rounded bg-[#f9e2af]/10 text-[#f9e2af] text-xs font-semibold hover:bg-[#f9e2af]/20 transition-all flex items-center gap-1"
+          >
+            <ArrowUp size={11} /> Check Updates
+          </button>
+          <button
+            onClick={async () => {
+              if (confirm('Cập nhật chỉ mục gói (apt update)?')) {
+                setInstallingPackage('Update System')
+                setInstallLogs('Đang chạy cập nhật chỉ mục gói...\n')
+                const result = await exec('sudo apt-get update || sudo yum makecache')
+                setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
+                await fetchPackages()
+              }
+            }}
+            className="px-3 py-1 rounded bg-[#89b4fa]/10 text-[#89b4fa] text-xs font-semibold hover:bg-[#89b4fa]/20 transition-all"
+          >
+            Update System Index
+          </button>
+        </div>
+      </div>
+
+      {/* Custom Package Install */}
+      <div className="bg-[#181825] border border-white/[0.04] rounded-lg px-3 py-2 mb-3 flex gap-2 items-center shrink-0">
+        <Search size={12} className="text-[#585b70] shrink-0" />
+        <input
+          type="text"
+          placeholder="Cài đặt gói tùy chỉnh (vd: htop, curl, jq)..."
+          value={customPkgInput}
+          onChange={(e) => setCustomPkgInput(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleCustomInstall() }}
+          className="flex-1 bg-transparent text-xs text-[#cdd6f4] outline-none"
+        />
         <button
-          onClick={async () => {
-            if (confirm('Cập nhật chỉ mục gói (apt update)?')) {
-              setInstallingPackage('Update System')
-              setInstallLogs('Đang chạy cập nhật chỉ mục gói...\n')
-              const result = await exec('sudo apt-get update || sudo yum makecache')
-              setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
-              await fetchPackages()
-            }
-          }}
-          className="px-3 py-1 rounded bg-[#89b4fa]/10 text-[#89b4fa] text-xs font-semibold hover:bg-[#89b4fa]/20 transition-all"
+          onClick={handleCustomInstall}
+          disabled={!customPkgInput.trim()}
+          className="px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] text-[10px] font-bold hover:bg-[#89d48b] transition-all disabled:opacity-40"
         >
-          Update System Index
+          Install
         </button>
       </div>
+
+      {/* Upgradable packages */}
+      {showUpgradable && upgradableList.length > 0 && (
+        <div className="bg-[#f9e2af]/5 border border-[#f9e2af]/10 rounded-lg p-3 mb-3 shrink-0">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-xs font-bold text-[#f9e2af]">{upgradableList.length} gói có bản cập nhật</span>
+            <div className="flex gap-2">
+              <button onClick={handleUpgradeAll} className="px-2 py-0.5 rounded bg-[#f9e2af] text-[#1e1e2e] text-[10px] font-bold">
+                Upgrade All
+              </button>
+              <button onClick={() => setShowUpgradable(false)} className="text-[#585b70] hover:text-[#cdd6f4]">
+                <X size={12} />
+              </button>
+            </div>
+          </div>
+          <div className="max-h-24 overflow-y-auto space-y-1 text-[10px] font-mono">
+            {upgradableList.map((u) => (
+              <div key={u.name} className="flex justify-between text-[#a6adc8]">
+                <span className="text-[#cdd6f4] font-bold">{u.name}</span>
+                <span>{u.current} → <span className="text-[#a6e3a1]">{u.available}</span></span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {showUpgradable && upgradableList.length === 0 && (
+        <div className="bg-[#a6e3a1]/5 border border-[#a6e3a1]/10 rounded-lg p-3 mb-3 text-xs text-[#a6e3a1] shrink-0 flex items-center justify-between">
+          <span>Tất cả gói đã được cập nhật ✓</span>
+          <button onClick={() => setShowUpgradable(false)} className="text-[#585b70] hover:text-[#cdd6f4]"><X size={12} /></button>
+        </div>
+      )}
 
       <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
         <table className="w-full text-left border-collapse text-xs">
@@ -112,38 +245,14 @@ export default function PackagesPanel({
                 <td className="p-3 text-center">
                   {!p.installed ? (
                     <button
-                      onClick={async () => {
-                        const sudoPass = prompt('Nhập mật khẩu sudo (nếu cần, hoặc để trống):')
-                        setInstallingPackage(p.name)
-                        setInstallLogs(`Bắt đầu cài đặt ${p.name}...\n`)
-                        let cmd = `sudo apt-get install -y ${p.pkg} || sudo yum install -y ${p.pkg}`
-                        if (sudoPass) {
-                          cmd = `echo "${sudoPass}" | sudo -S apt-get install -y ${p.pkg} || echo "${sudoPass}" | sudo -S yum install -y ${p.pkg}`
-                        }
-                        const result = await exec(cmd)
-                        setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
-                        await fetchPackages()
-                      }}
+                      onClick={() => handleInstallPkg(p.pkg)}
                       className="px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] font-semibold text-[10px] hover:bg-[#89d48b] transition-all"
                     >
-                      Cài đặt nhanh
+                      Cài đặt
                     </button>
                   ) : (
                     <button
-                      onClick={async () => {
-                        if (confirm(`Gỡ cài đặt ${p.name}?`)) {
-                          const sudoPass = prompt('Nhập mật khẩu sudo (nếu cần, hoặc để trống):')
-                          setInstallingPackage(p.name)
-                          setInstallLogs(`Bắt đầu gỡ cài đặt ${p.name}...\n`)
-                          let cmd = `sudo apt-get remove -y ${p.pkg} || sudo yum remove -y ${p.pkg}`
-                          if (sudoPass) {
-                            cmd = `echo "${sudoPass}" | sudo -S apt-get remove -y ${p.pkg} || echo "${sudoPass}" | sudo -S yum remove -y ${p.pkg}`
-                          }
-                          const result = await exec(cmd)
-                          setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
-                          await fetchPackages()
-                        }
-                      }}
+                      onClick={() => handleRemovePkg(p.pkg)}
                       className="px-3 py-1 rounded bg-[#f38ba8]/10 text-[#f38ba8] font-semibold text-[10px] hover:bg-[#f38ba8]/20 transition-all"
                     >
                       Gỡ cài đặt

@@ -819,7 +819,7 @@ class SSHManager {
       this.pending.delete(sessionId);
       this.sessions.set(session.sessionId, session);
       try {
-        const db2 = require("../db").getDb();
+        const db2 = getDb();
         const savedHost = db2.prepare("SELECT name FROM hosts WHERE host = ?").get(config.host);
         const hostName = savedHost ? savedHost.name : config.host;
         db2.prepare("INSERT INTO session_history (id, host_name, host_address) VALUES (?, ?, ?)").run(session.sessionId, hostName, config.host);
@@ -844,7 +844,7 @@ class SSHManager {
           win.webContents.send("shell:exit", session.sessionId, code);
         }
         try {
-          const db2 = require("../db").getDb();
+          const db2 = getDb();
           db2.prepare("UPDATE session_history SET ended_at = datetime('now') WHERE id = ?").run(session.sessionId);
         } catch (dbErr) {
           console.error("[terminux] Session history update failed:", dbErr.message);
@@ -1247,22 +1247,34 @@ function registerLocalIpc() {
     if (process.platform === "win32") {
       const { execSync } = require("child_process");
       try {
-        const output = execSync("wmic logicaldisk get caption", { encoding: "utf8", timeout: 2e3 });
-        return output.split("\n").slice(1).map((l) => l.trim()).filter(Boolean).map((d) => ({
-          name: d,
-          path: d + "\\",
-          isDirectory: true
-        }));
+        let drives = [];
+        try {
+          const output = execSync("fsutil fsinfo drives", { encoding: "utf8", timeout: 2e3, stdio: "pipe" });
+          drives = output.replace(/^Drives:\s*/i, "").split(/\s+/).map((d) => d.trim()).filter(Boolean);
+        } catch {
+          const output = execSync('powershell -Command "[System.IO.DriveInfo]::GetDrives().Name"', { encoding: "utf8", timeout: 2e3, stdio: "pipe" });
+          drives = output.split("\n").map((d) => d.trim()).filter(Boolean);
+        }
+        if (drives.length > 0) {
+          return drives.map((d) => {
+            const formatted = d.endsWith("\\") ? d : d + "\\";
+            return {
+              name: d.endsWith("\\") ? d.slice(0, -1) : d,
+              path: formatted,
+              isDirectory: true
+            };
+          });
+        }
       } catch {
-        return ["C:\\", "D:\\"].filter((d) => {
-          try {
-            fs.readdirSync(d);
-            return true;
-          } catch {
-            return false;
-          }
-        }).map((d) => ({ name: d, path: d, isDirectory: true }));
       }
+      return ["C:\\", "D:\\"].filter((d) => {
+        try {
+          fs.readdirSync(d);
+          return true;
+        } catch {
+          return false;
+        }
+      }).map((d) => ({ name: d.endsWith("\\") ? d.slice(0, -1) : d, path: d, isDirectory: true }));
     }
     return [{ name: "/", path: "/", isDirectory: true }];
   });

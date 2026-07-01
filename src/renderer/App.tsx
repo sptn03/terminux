@@ -106,7 +106,7 @@ export default function App() {
       )}
 
       <Sidebar />
-      <div className="flex flex-1 flex-col overflow-hidden relative">
+      <div className="flex flex-1 flex-col min-w-0 overflow-hidden relative">
         <TitleBar />
         <Toolbar />
         <TabBar />
@@ -158,7 +158,7 @@ export default function App() {
           ) : (
             tabs.map((tab) => (
               <div key={tab.sessionId}
-                className={`flex-1 ${tab.sessionId === activeTabId ? 'flex animate-fade-in' : 'hidden'}`}>
+                className={`flex-1 flex-col min-w-0 ${tab.sessionId === activeTabId ? 'flex animate-fade-in' : 'hidden'}`}>
                 <div className={`flex-1 ${tab.viewMode === 'dashboard' ? 'hidden' : 'flex'}`}>
                   <TerminalTab sessionId={tab.sessionId} hostId={tab.hostId} connected={tab.connected} />
                 </div>

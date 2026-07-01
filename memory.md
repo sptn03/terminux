@@ -183,3 +183,11 @@ Future AI agents should know:
 - Reconnection is supported via a Reconnect Overlay when a session disconnects, or via right-click context menu.
 - If a connection fails to establish, the main process triggers a `shell:error` event before returning so that the error displays inside the terminal.
 - Prompting for passwords dynamically when `authMethod === 'password'` and `password` is empty is supported.
+- DevOps Dashboard has been updated to be fully responsive: the sub-tabs header was replaced with a vertical Left Sub-Sidebar (Option B) that groups the 15 features into 4 system categories (System, Apps, Data, Network) for optimal navigation without scrolling.
+- OverviewPanel cards/gauges/details use responsive grid breakpoints (sm/lg/etc.) to wrap nicely on resize.
+- Docker, PM2, and Nginx panels feature automatic installers: when these tools are missing on the remote host, the panel displays a status warning and an installer button. The installer runs via sudo SSH commands, streams logs in real-time, and refreshes the panel state on completion.
+- `RemotePathPicker` is a component in `NginxPanel` and `PM2Panel` used to browse files/directories on the remote host.
+
+
+
+

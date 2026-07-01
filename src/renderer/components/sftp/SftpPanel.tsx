@@ -307,8 +307,56 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
   const [localSearchQuery, setLocalSearchQuery] = useState('')
 
   // Selected files tracking
-  const [selectedLocal, setSelectedLocal] = useState<string | null>(null)
-  const [selectedRemote, setSelectedRemote] = useState<string | null>(null)
+  const [selectedLocal, setSelectedLocal] = useState<string[]>([])
+  const [selectedRemote, setSelectedRemote] = useState<string[]>([])
+  const [lastSelectedLocal, setLastSelectedLocal] = useState<string | null>(null)
+  const [lastSelectedRemote, setLastSelectedRemote] = useState<string | null>(null)
+
+  const handleSelectLocal = (e: React.MouseEvent, entry: LocalEntry, index: number) => {
+    e.stopPropagation()
+    const path = entry.path
+
+    if (e.ctrlKey || e.metaKey) {
+      setSelectedLocal(prev =>
+        prev.includes(path) ? prev.filter(p => p !== path) : [...prev, path]
+      )
+      setLastSelectedLocal(path)
+    } else if (e.shiftKey && lastSelectedLocal) {
+      const lastIndex = filteredLocalEntries.findIndex(item => item.path === lastSelectedLocal)
+      if (lastIndex !== -1) {
+        const start = Math.min(lastIndex, index)
+        const end = Math.max(lastIndex, index)
+        const pathsInRange = filteredLocalEntries.slice(start, end + 1).map(item => item.path)
+        setSelectedLocal(prev => Array.from(new Set([...prev, ...pathsInRange])))
+      }
+    } else {
+      setSelectedLocal([path])
+      setLastSelectedLocal(path)
+    }
+  }
+
+  const handleSelectRemote = (e: React.MouseEvent, entry: SftpEntry, index: number) => {
+    e.stopPropagation()
+    const path = entry.path
+
+    if (e.ctrlKey || e.metaKey) {
+      setSelectedRemote(prev =>
+        prev.includes(path) ? prev.filter(p => p !== path) : [...prev, path]
+      )
+      setLastSelectedRemote(path)
+    } else if (e.shiftKey && lastSelectedRemote) {
+      const lastIndex = filteredRemoteEntries.findIndex(item => item.path === lastSelectedRemote)
+      if (lastIndex !== -1) {
+        const start = Math.min(lastIndex, index)
+        const end = Math.max(lastIndex, index)
+        const pathsInRange = filteredRemoteEntries.slice(start, end + 1).map(item => item.path)
+        setSelectedRemote(prev => Array.from(new Set([...prev, ...pathsInRange])))
+      }
+    } else {
+      setSelectedRemote([path])
+      setLastSelectedRemote(path)
+    }
+  }
 
   // Transfers queue
   const [transfers, setTransfers] = useState<Array<{
@@ -395,6 +443,17 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
     }
   }
 
+  // Clear selection on navigation
+  useEffect(() => {
+    setSelectedRemote([])
+    setLastSelectedRemote(null)
+  }, [cwd])
+
+  useEffect(() => {
+    setSelectedLocal([])
+    setLastSelectedLocal(null)
+  }, [localCwd])
+
   // Size formatter
   const formatSize = (bytes: number) => {
     if (bytes === 0) return '0 B'
@@ -416,13 +475,15 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
   }
 
   // Action: Upload (Local -> Remote)
-  const handleUploadLocalToRemote = async (path: string) => {
-    if (!sessionId) return
-    const filename = path.substring(path.lastIndexOf('\\') + 1).substring(path.lastIndexOf('/') + 1)
-    const transferId = addTransfer(filename, 'upload')
+  const handleUploadLocalToRemote = async (paths: string[]) => {
+    if (!sessionId || paths.length === 0) return
+    const label = paths.length === 1
+      ? paths[0].substring(paths[0].lastIndexOf('\\') + 1).substring(paths[0].lastIndexOf('/') + 1)
+      : `${paths.length} tệp`
+    const transferId = addTransfer(label, 'upload')
     try {
       updateTransfer(transferId, { progress: 60 })
-      const result = await window.api.sftp.deploy(sessionId, localCwd, cwd, [path])
+      const result = await window.api.sftp.deploy(sessionId, localCwd, cwd, paths)
       if (result.errors && result.errors.length > 0) {
         updateTransfer(transferId, { status: 'error', progress: 100, errorMsg: result.errors[0] })
       } else {
@@ -435,13 +496,15 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
   }
 
   // Action: Download (Remote -> Local)
-  const handleDownloadRemoteToLocal = async (path: string) => {
-    if (!sessionId) return
-    const filename = path.substring(path.lastIndexOf('/') + 1)
-    const transferId = addTransfer(filename, 'download')
+  const handleDownloadRemoteToLocal = async (paths: string[]) => {
+    if (!sessionId || paths.length === 0) return
+    const label = paths.length === 1
+      ? paths[0].substring(paths[0].lastIndexOf('/') + 1)
+      : `${paths.length} tệp`
+    const transferId = addTransfer(label, 'download')
     try {
       updateTransfer(transferId, { progress: 60 })
-      const result = await window.api.sftp.downloadFiles(sessionId, [path], localCwd)
+      const result = await window.api.sftp.downloadFiles(sessionId, paths, localCwd)
       if (result.errors && result.errors.length > 0) {
         updateTransfer(transferId, { status: 'error', progress: 100, errorMsg: result.errors[0] })
       } else if (result.canceled) {
@@ -530,61 +593,34 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
   }
 
   // Remote delete
-  const handleDeleteRemote = async (entry: SftpEntry) => {
-    if (!sessionId) return
-    if (confirm(`Bạn có chắc chắn muốn xóa ${entry.name}?`)) {
-      if (entry.isDirectory) await window.api.sftp.deleteDir(sessionId, entry.path)
-      else await window.api.sftp.deleteFile(sessionId, entry.path)
+  const handleDeleteRemoteMultiple = async (targetEntries: SftpEntry[]) => {
+    if (!sessionId || targetEntries.length === 0) return
+    const msg = targetEntries.length === 1 
+      ? `Bạn có chắc chắn muốn xóa ${targetEntries[0].name}?`
+      : `Bạn có chắc chắn muốn xóa ${targetEntries.length} mục đã chọn trên Server?`
+    if (confirm(msg)) {
+      for (const entry of targetEntries) {
+        if (entry.isDirectory) await window.api.sftp.deleteDir(sessionId, entry.path)
+        else await window.api.sftp.deleteFile(sessionId, entry.path)
+      }
       loadDir(cwd)
+      setSelectedRemote([])
     }
   }
 
   // Local delete
-  const handleDeleteLocal = async (entry: LocalEntry) => {
-    if (confirm(`Bạn có chắc chắn muốn xóa ${entry.name}?`)) {
-      await window.api.local.delete(entry.path)
+  const handleDeleteLocalMultiple = async (targetEntries: LocalEntry[]) => {
+    if (targetEntries.length === 0) return
+    const msg = targetEntries.length === 1 
+      ? `Bạn có chắc chắn muốn xóa ${targetEntries[0].name}?`
+      : `Bạn có chắc chắn muốn xóa ${targetEntries.length} mục đã chọn?`
+    if (confirm(msg)) {
+      for (const entry of targetEntries) {
+        await window.api.local.delete(entry.path)
+      }
       loadLocalDir(localCwd)
+      setSelectedLocal([])
     }
-  }
-
-  // Drag-and-drop mechanics
-  const handleDragStart = (e: React.DragEvent, item: any, source: 'local' | 'remote') => {
-    e.dataTransfer.setData('text/plain', JSON.stringify({ source, path: item.path }))
-  }
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-  }
-
-  const handleDropLocal = async (e: React.DragEvent) => {
-    e.preventDefault()
-    try {
-      const dataStr = e.dataTransfer.getData('text/plain')
-      if (dataStr) {
-        const data = JSON.parse(dataStr)
-        if (data.source === 'remote') {
-          await handleDownloadRemoteToLocal(data.path)
-        }
-      }
-    } catch {}
-  }
-
-  const handleDropRemote = async (e: React.DragEvent) => {
-    e.preventDefault()
-    try {
-      const dataStr = e.dataTransfer.getData('text/plain')
-      if (dataStr) {
-        const data = JSON.parse(dataStr)
-        if (data.source === 'local') {
-          await handleUploadLocalToRemote(data.path)
-        }
-      } else if (e.dataTransfer.files.length > 0) {
-        for (let i = 0; i < e.dataTransfer.files.length; i++) {
-          const file = e.dataTransfer.files[i]
-          await handleUploadLocalToRemote(file.path)
-        }
-      }
-    } catch {}
   }
 
   // Filter lists
@@ -621,7 +657,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
         {/* Panes Container */}
         <div className="flex-1 flex overflow-hidden">
           {/* LEFT PANEL: LOCAL FILES */}
-          <div className="flex-1 flex flex-col border-r border-white/5 bg-[#11111b]/20" onDragOver={handleDragOver} onDrop={handleDropLocal}>
+          <div className="flex-1 flex flex-col border-r border-white/5 bg-[#11111b]/20">
             {/* Header / Select drive */}
             <div className="px-3 py-2 border-b border-white/5 bg-[#181825] flex justify-between items-center">
               <span className="text-[10px] font-bold text-[#89b4fa] uppercase tracking-wider">Local Computer</span>
@@ -670,22 +706,21 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
               ) : filteredLocalEntries.length === 0 ? (
                 <div className="text-[10px] text-[#45475a] text-center py-8">Thư mục trống</div>
               ) : (
-                filteredLocalEntries.map(entry => (
+                filteredLocalEntries.map((entry, index) => (
                   <div
                     key={entry.path}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, entry, 'local')}
-                    onClick={() => setSelectedLocal(entry.path === selectedLocal ? null : entry.path)}
+                    onClick={(e) => handleSelectLocal(e, entry, index)}
                     onDoubleClick={() => {
                       if (entry.isDirectory) enterLocalDir(entry.path)
                       else handleOpenLocalFile(entry.path)
                     }}
                     onContextMenu={(e) => {
                       e.preventDefault()
+                      setSelectedLocal(prev => prev.includes(entry.path) ? prev : [entry.path])
                       setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: false })
                     }}
                     className={`group flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${
-                      selectedLocal === entry.path ? 'bg-[#89b4fa]/15 text-[#89b4fa]' : 'hover:bg-white/[0.02]'
+                      selectedLocal.includes(entry.path) ? 'bg-[#89b4fa]/15 text-[#89b4fa]' : 'hover:bg-white/[0.02]'
                     }`}
                   >
                     {entry.isDirectory ? <Folder size={13} className="text-[#f9e2af] shrink-0" /> : <File size={13} className="text-[#89b4fa] shrink-0" />}
@@ -694,7 +729,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                     <div className="hidden group-hover:flex gap-1">
                       {entry.isFile && (
                         <button
-                          onClick={(e) => { e.stopPropagation(); handleUploadLocalToRemote(entry.path) }}
+                          onClick={(e) => { e.stopPropagation(); handleUploadLocalToRemote([entry.path]) }}
                           className="p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]"
                           title="Tải lên Server"
                         >
@@ -702,7 +737,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                         </button>
                       )}
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleDeleteLocal(entry) }}
+                        onClick={(e) => { e.stopPropagation(); handleDeleteLocalMultiple([entry]) }}
                         className="p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8]"
                         title="Xóa"
                       >
@@ -716,7 +751,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
           </div>
 
           {/* RIGHT PANEL: REMOTE FILES */}
-          <div className="flex-1 flex flex-col bg-[#11111b]/10" onDragOver={handleDragOver} onDrop={handleDropRemote}>
+          <div className="flex-1 flex flex-col bg-[#11111b]/10">
             {/* Header */}
             <div className="px-3 py-2 border-b border-white/5 bg-[#181825] flex justify-between items-center">
               <span className="text-[10px] font-bold text-[#f9e2af] uppercase tracking-wider">Remote Server</span>
@@ -758,22 +793,21 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
               ) : filteredRemoteEntries.length === 0 ? (
                 <div className="text-[10px] text-[#45475a] text-center py-8">Thư mục trống hoặc đã lọc hết</div>
               ) : (
-                filteredRemoteEntries.map(entry => (
+                filteredRemoteEntries.map((entry, index) => (
                   <div
                     key={entry.path}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, entry, 'remote')}
-                    onClick={() => setSelectedRemote(entry.path === selectedRemote ? null : entry.path)}
+                    onClick={(e) => handleSelectRemote(e, entry, index)}
                     onDoubleClick={() => {
                       if (entry.isDirectory) enterDir(entry.path)
                       else handleOpenRemoteFile(entry.path)
                     }}
                     onContextMenu={(e) => {
                       e.preventDefault()
+                      setSelectedRemote(prev => prev.includes(entry.path) ? prev : [entry.path])
                       setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: true })
                     }}
                     className={`group flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${
-                      selectedRemote === entry.path ? 'bg-[#fab387]/15 text-[#fab387]' : 'hover:bg-white/[0.02]'
+                      selectedRemote.includes(entry.path) ? 'bg-[#fab387]/15 text-[#fab387]' : 'hover:bg-white/[0.02]'
                     }`}
                   >
                     {entry.isDirectory ? <Folder size={13} className="text-[#f9e2af] shrink-0" /> : <File size={13} className="text-[#89b4fa] shrink-0" />}
@@ -790,7 +824,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                             <Eye size={12} />
                           </button>
                           <button
-                            onClick={(e) => { e.stopPropagation(); handleDownloadRemoteToLocal(entry.path) }}
+                            onClick={(e) => { e.stopPropagation(); handleDownloadRemoteToLocal([entry.path]) }}
                             className="p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]"
                             title="Tải về máy tính"
                           >
@@ -799,7 +833,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                         </>
                       )}
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleDeleteRemote(entry) }}
+                        onClick={(e) => { e.stopPropagation(); handleDeleteRemoteMultiple([entry]) }}
                         className="p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8]"
                         title="Xóa"
                       >
@@ -888,7 +922,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
           items={
             ctxMenu.isRemote
               ? [
-                  { label: 'Tải về (Download)', icon: FileDown, color: '#a6e3a1', onClick: () => handleDownloadRemoteToLocal(ctxMenu.entry.path) },
+                  { label: 'Tải về (Download)', icon: FileDown, color: '#a6e3a1', onClick: () => handleDownloadRemoteToLocal(selectedRemote.includes(ctxMenu.entry.path) ? selectedRemote : [ctxMenu.entry.path]) },
                   { label: 'Xem & Sửa file', icon: Eye, onClick: () => handleOpenRemoteFile(ctxMenu.entry.path) },
                   { label: 'Tạo bản sao', icon: Copy, onClick: () => window.api.sftp.duplicate(sessionId || '', ctxMenu.entry.path).then(() => loadDir(cwd)) },
                   { label: 'Đổi tên', icon: Edit3, onClick: () => setInputDlg({
@@ -902,10 +936,10 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                       loadDir(cwd)
                     }
                   })},
-                  { label: 'Xóa tệp', icon: Trash2, color: '#f38ba8', onClick: () => handleDeleteRemote(ctxMenu.entry) }
+                  { label: 'Xóa tệp', icon: Trash2, color: '#f38ba8', onClick: () => handleDeleteRemoteMultiple(selectedRemote.includes(ctxMenu.entry.path) ? entries.filter(e => selectedRemote.includes(e.path)) : [ctxMenu.entry]) }
                 ]
               : [
-                  { label: 'Tải lên Server', icon: FileUp, color: '#a6e3a1', onClick: () => handleUploadLocalToRemote(ctxMenu.entry.path) },
+                  { label: 'Tải lên Server', icon: FileUp, color: '#a6e3a1', onClick: () => handleUploadLocalToRemote(selectedLocal.includes(ctxMenu.entry.path) ? selectedLocal : [ctxMenu.entry.path]) },
                   { label: 'Chỉnh sửa tệp', icon: Eye, onClick: () => handleOpenLocalFile(ctxMenu.entry.path) },
                   { label: 'Đổi tên', icon: Edit3, onClick: () => setInputDlg({
                     title: 'Đổi tên tệp cục bộ',
@@ -918,7 +952,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                       loadLocalDir(localCwd)
                     }
                   })},
-                  { label: 'Xóa tệp', icon: Trash2, color: '#f38ba8', onClick: () => handleDeleteLocal(ctxMenu.entry) }
+                  { label: 'Xóa tệp', icon: Trash2, color: '#f38ba8', onClick: () => handleDeleteLocalMultiple(selectedLocal.includes(ctxMenu.entry.path) ? localEntries.filter(e => selectedLocal.includes(e.path)) : [ctxMenu.entry]) }
                 ]
           }
         />

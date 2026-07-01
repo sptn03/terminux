@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Square, Play, RefreshCw } from 'lucide-react'
+import { Square, Play, RefreshCw, FileText, X, Search } from 'lucide-react'
 
 interface SystemService {
   name: string
@@ -7,6 +7,7 @@ interface SystemService {
   subState: string
   description: string
   pid?: string
+  enabled?: boolean
 }
 
 interface ListeningPort {
@@ -25,6 +26,10 @@ interface ServicesPanelProps {
   setError: (error: string) => void
 }
 
+const stripAnsi = (str: string) => {
+  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')
+}
+
 export default function ServicesPanel({
   sessionId,
   exec,
@@ -34,6 +39,9 @@ export default function ServicesPanel({
 }: ServicesPanelProps) {
   const [services, setServices] = useState<SystemService[]>([])
   const [ports, setPorts] = useState<ListeningPort[]>([])
+  const [showAllServices, setShowAllServices] = useState(false)
+  const [serviceSearch, setServiceSearch] = useState('')
+  const [serviceLogsModal, setServiceLogsModal] = useState<{ name: string; logs: string } | null>(null)
 
   const fetchPortsList = useCallback(async (): Promise<ListeningPort[]> => {
     const cmd = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`
@@ -105,15 +113,34 @@ export default function ServicesPanel({
       const portsList = await fetchPortsList()
       setPorts(portsList)
 
+      let grepFilter = ''
+      if (!showAllServices) {
+        grepFilter = `| grep -E "nginx|mysql|postgresql|docker|redis|apache2|mongodb|pm2|ssh|mariadb|memcached|rabbitmq|elasticsearch|grafana|prometheus|jenkins|tomcat|haproxy|fail2ban|ufw|certbot"`
+      }
+
       const cmd = `
-        systemctl list-units --type=service --all --no-pager 2>/dev/null | grep -E "nginx|mysql|postgresql|docker|redis|apache2|mongodb|pm2|ssh" || true
+        systemctl list-units --type=service --all --no-pager 2>/dev/null ${grepFilter} || true
+        echo "===ENABLED==="
+        systemctl list-unit-files --type=service --no-pager 2>/dev/null | grep -E "enabled|disabled" || true
         echo "===PIDS==="
-        systemctl show --property=MainPID,Id nginx mysql postgresql redis docker apache2 mongodb ssh 2>/dev/null || true
+        systemctl show --property=MainPID,Id $(systemctl list-units --type=service --all --no-pager 2>/dev/null | awk '{print $1}' | grep '.service' | head -50) 2>/dev/null || true
       `
       const { stdout } = await exec(cmd)
-      const parts = stdout.split('===PIDS===')
-      const listPart = parts[0] || ''
-      const pidsPart = parts[1] || ''
+      const mainParts = stdout.split('===ENABLED===')
+      const listPart = mainParts[0] || ''
+      const rest = (mainParts[1] || '').split('===PIDS===')
+      const enabledPart = rest[0] || ''
+      const pidsPart = rest[1] || ''
+
+      // Parse enabled/disabled status
+      const enabledMap: Record<string, boolean> = {}
+      enabledPart.split('\n').forEach((l) => {
+        const line = l.trim()
+        const match = line.match(/^(\S+)\.service\s+(enabled|disabled)/)
+        if (match) {
+          enabledMap[match[1]] = match[2] === 'enabled'
+        }
+      })
 
       const servicePids: Record<string, string> = {}
       let currentId = ''
@@ -140,22 +167,30 @@ export default function ServicesPanel({
           const subState = parts[3]
           const description = parts.slice(4).join(' ')
           const pid = servicePids[name] || ''
-          serviceList.push({ name, activeState, subState, description, pid })
+          const enabled = enabledMap[name]
+          serviceList.push({ name, activeState, subState, description, pid, enabled })
         }
       })
       setServices(serviceList)
     } catch (e: any) {
       setError(e.message || 'Lỗi kiểm tra trạng thái dịch vụ')
     }
-  }, [exec, fetchPortsList, setError])
+  }, [exec, fetchPortsList, setError, showAllServices])
 
-  const handleServiceAction = async (action: 'restart' | 'stop' | 'start', serviceName: string) => {
+  const handleServiceAction = async (action: 'restart' | 'stop' | 'start' | 'enable' | 'disable', serviceName: string) => {
     setLoading(true)
     const { stderr } = await exec(`sudo systemctl ${action} ${serviceName} || systemctl ${action} ${serviceName}`)
     if (stderr && stderr.includes('Failed')) {
       alert('Lỗi thao tác: ' + stderr)
     }
     await fetchServices()
+    setLoading(false)
+  }
+
+  const handleViewLogs = async (serviceName: string) => {
+    setLoading(true)
+    const { stdout } = await exec(`sudo journalctl -u ${serviceName} --no-pager -n 80 2>/dev/null || echo "journalctl không khả dụng"`)
+    setServiceLogsModal({ name: serviceName, logs: stripAnsi(stdout || 'Không có log') })
     setLoading(false)
   }
 
@@ -170,12 +205,43 @@ export default function ServicesPanel({
     loadData()
   }, [loadData, refreshKey])
 
+  const filteredServices = services.filter((svc) => {
+    if (!serviceSearch) return true
+    const q = serviceSearch.toLowerCase()
+    return svc.name.toLowerCase().includes(q) || svc.description.toLowerCase().includes(q)
+  })
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      {services.length === 0 ? (
+      {/* Controls */}
+      <div className="flex justify-between items-center mb-3 gap-3 flex-wrap">
+        <div className="flex gap-2 items-center">
+          <div className="relative">
+            <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#585b70]" />
+            <input
+              type="text"
+              placeholder="Tìm service..."
+              value={serviceSearch}
+              onChange={(e) => setServiceSearch(e.target.value)}
+              className="bg-[#181825] border border-white/5 rounded-lg pl-7 pr-3 py-1.5 text-xs text-[#cdd6f4] outline-none w-48"
+            />
+          </div>
+        </div>
+        <label className="flex items-center gap-2 text-xs text-[#a6adc8] cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={showAllServices}
+            onChange={(e) => setShowAllServices(e.target.checked)}
+            className="rounded bg-[#1e1e2e] border-white/5"
+          />
+          Hiển thị tất cả services
+        </label>
+      </div>
+
+      {filteredServices.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center text-[#585b70]">
           <RefreshCw size={36} className="mb-3 opacity-30" />
-          <span className="text-xs font-semibold">Không tìm thấy service DevOps nào</span>
+          <span className="text-xs font-semibold">Không tìm thấy service nào</span>
         </div>
       ) : (
         <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl">
@@ -185,13 +251,13 @@ export default function ServicesPanel({
                 <th className="p-3">Dịch vụ (Service)</th>
                 <th className="p-3">Mô tả</th>
                 <th className="p-3">Cổng (Port)</th>
-                <th className="p-3">Trạng Thái (Active)</th>
-                <th className="p-3">Chi tiết (Substate)</th>
+                <th className="p-3">Trạng Thái</th>
+                <th className="p-3">Boot</th>
                 <th className="p-3 text-center">Thao Tác</th>
               </tr>
             </thead>
             <tbody>
-              {services.map((svc) => {
+              {filteredServices.map((svc) => {
                 let svcPorts: string[] = []
                 if (svc.pid) {
                   svcPorts = ports.filter((p) => p.pid === svc.pid).map((p) => p.port)
@@ -238,12 +304,18 @@ export default function ServicesPanel({
                           svc.activeState === 'active' ? 'bg-[#a6e3a1]/10 text-[#a6e3a1]' : 'bg-[#f38ba8]/10 text-[#f38ba8]'
                         }`}
                       >
-                        {svc.activeState}
+                        {svc.activeState} ({svc.subState})
                       </span>
                     </td>
-                    <td className="p-3 font-mono text-[#6c7086]">{svc.subState}</td>
                     <td className="p-3">
-                      <div className="flex gap-1.5 justify-center">
+                      {svc.enabled !== undefined && (
+                        <span className={`text-[10px] font-semibold ${svc.enabled ? 'text-[#a6e3a1]' : 'text-[#585b70]'}`}>
+                          {svc.enabled ? 'enabled' : 'disabled'}
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-3">
+                      <div className="flex gap-1 justify-center">
                         {svc.subState === 'running' ? (
                           <button
                             onClick={() => handleServiceAction('stop', svc.name)}
@@ -268,6 +340,22 @@ export default function ServicesPanel({
                         >
                           <RefreshCw size={12} />
                         </button>
+                        <button
+                          onClick={() => handleViewLogs(svc.name)}
+                          className="p-1 rounded hover:bg-white/5 text-[#f9e2af]"
+                          title="View Logs (journalctl)"
+                        >
+                          <FileText size={12} />
+                        </button>
+                        {svc.enabled !== undefined && (
+                          <button
+                            onClick={() => handleServiceAction(svc.enabled ? 'disable' : 'enable', svc.name)}
+                            className="px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/10 text-[10px] text-[#a6adc8]"
+                            title={svc.enabled ? 'Disable on boot' : 'Enable on boot'}
+                          >
+                            {svc.enabled ? 'Disable' : 'Enable'}
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -275,6 +363,28 @@ export default function ServicesPanel({
               })}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Service Logs Modal */}
+      {serviceLogsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setServiceLogsModal(null)}>
+          <div
+            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[700px] max-h-[85vh] flex flex-col animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">
+                Journal Logs — {serviceLogsModal.name}
+              </h3>
+              <button onClick={() => setServiceLogsModal(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+                <X size={14} />
+              </button>
+            </div>
+            <pre className="flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text scrollbar-thin">
+              {serviceLogsModal.logs}
+            </pre>
+          </div>
         </div>
       )}
     </div>

@@ -48,9 +48,16 @@ export const useTerminalStore = create<TerminalStore>((set, get) => ({
 
   updateTabState: (sessionId, partial) =>
     set((state) => ({
-      tabs: state.tabs.map((t) =>
-        t.sessionId === sessionId ? { ...t, ...partial } : t
-      )
+      tabs: state.tabs.map((t) => {
+        if (t.sessionId === sessionId) {
+          const nextTab = { ...t, ...partial }
+          if (partial.connected === true && !t.connected && t.viewMode === undefined) {
+            nextTab.viewMode = 'dashboard'
+          }
+          return nextTab
+        }
+        return t
+      })
     })),
 
   setTabTheme: (sessionId, themeId) =>

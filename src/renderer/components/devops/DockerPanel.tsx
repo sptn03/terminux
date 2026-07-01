@@ -36,23 +36,43 @@ export default function DockerPanel({
   setError
 }: DockerPanelProps) {
   const [dockerInstalled, setDockerInstalled] = useState(true)
-  const [dockerSubTab, setDockerSubTab] = useState<'containers' | 'images'>('containers')
+  const [dockerSubTab, setDockerSubTab] = useState<'containers' | 'images' | 'compose' | 'networks' | 'volumes' | 'config'>('containers')
   const [containers, setContainers] = useState<DockerContainer[]>([])
   const [images, setImages] = useState<DockerImage[]>([])
   const [selectedContainerLogs, setSelectedContainerLogs] = useState<{ id: string; name: string; logs: string } | null>(null)
 
-  const fetchDocker = useCallback(async () => {
+  // New states for compose, networks, volumes
+  const [composeProjects, setComposeProjects] = useState<{ name: string; status: string; configFiles: string }[]>([])
+  const [networks, setNetworks] = useState<{ id: string; name: string; driver: string; scope: string }[]>([])
+  const [volumes, setVolumes] = useState<{ name: string; driver: string; mountpoint: string }[]>([])
+  const [containerStats, setContainerStats] = useState<Record<string, { cpu: string; mem: string }>>({})
+
+  const [installing, setInstalling] = useState(false)
+  const [installLog, setInstallLog] = useState('')
+  const [daemonConfig, setDaemonConfig] = useState('')
+  const [savingConfig, setSavingConfig] = useState(false)
+
+  const fetchDocker = useCallback(async (checkVersion = false) => {
     try {
-      const checkDocker = await exec('docker --version 2>/dev/null')
-      if (checkDocker.code !== 0) {
-        setDockerInstalled(false)
-        return
+      if (checkVersion) {
+        const checkDocker = await exec('docker --version 2>/dev/null')
+        if (checkDocker.code !== 0) {
+          setDockerInstalled(false)
+          return
+        }
+        setDockerInstalled(true)
       }
-      setDockerInstalled(true)
 
       if (dockerSubTab === 'containers') {
-        const { stdout } = await exec(`docker ps -a --format '{{.ID}}||{{.Names}}||{{.Image}}||{{.Status}}||{{.Ports}}' 2>/dev/null`)
-        const list = stdout
+        const cmd = "docker ps -a --format '{{.ID}}||{{.Names}}||{{.Image}}||{{.Status}}||{{.Ports}}' 2>/dev/null && echo '===STATS===' && docker stats --no-stream --format '{{.Name}}||{{.CPUPerc}}||{{.MemUsage}}' 2>/dev/null || echo ''"
+        const { stdout, code } = await exec(cmd)
+        if (code === 127) {
+          setDockerInstalled(false)
+          return
+        }
+        const [psSection, statsSection] = stdout.split('===STATS===')
+
+        const list = (psSection || '')
           .split('\n')
           .map((l) => l.trim())
           .filter(Boolean)
@@ -67,8 +87,23 @@ export default function DockerPanel({
             }
           })
         setContainers(list)
-      } else {
-        const { stdout } = await exec(`docker images --format '{{.Repository}}||{{.Tag}}||{{.ID}}||{{.Size}}' 2>/dev/null`)
+
+        if (statsSection) {
+          const statsMap: Record<string, { cpu: string; mem: string }> = {}
+          statsSection.split('\n').filter(Boolean).forEach((line) => {
+            const parts = line.split('||')
+            if (parts.length >= 3) {
+              statsMap[parts[0].trim()] = { cpu: parts[1].trim(), mem: parts[2].trim() }
+            }
+          })
+          setContainerStats(statsMap)
+        }
+      } else if (dockerSubTab === 'images') {
+        const { stdout, code } = await exec(`docker images --format '{{.Repository}}||{{.Tag}}||{{.ID}}||{{.Size}}' 2>/dev/null`)
+        if (code === 127) {
+          setDockerInstalled(false)
+          return
+        }
         const list = stdout
           .split('\n')
           .map((l) => l.trim())
@@ -83,6 +118,40 @@ export default function DockerPanel({
             }
           })
         setImages(list)
+      } else if (dockerSubTab === 'compose') {
+        const { stdout, code } = await exec("docker compose ls --format 'table' 2>/dev/null || docker-compose ls 2>/dev/null || echo ''")
+        if (code === 127) {
+          setDockerInstalled(false)
+          return
+        }
+        const lines = stdout.split('\n').slice(1).filter(Boolean)
+        const projects = lines.map((line) => {
+          const parts = line.trim().replace(/\s+/g, '||').split('||')
+          return { name: parts[0] || '', status: parts[1] || '', configFiles: parts[2] || '' }
+        }).filter(p => p.name)
+        setComposeProjects(projects)
+      } else if (dockerSubTab === 'networks') {
+        const { stdout, code } = await exec("docker network ls --format '{{.ID}}||{{.Name}}||{{.Driver}}||{{.Scope}}' 2>/dev/null")
+        if (code === 127) {
+          setDockerInstalled(false)
+          return
+        }
+        const list = stdout.split('\n').filter(Boolean).map((line) => {
+          const parts = line.split('||')
+          return { id: parts[0] || '', name: parts[1] || '', driver: parts[2] || '', scope: parts[3] || '' }
+        })
+        setNetworks(list)
+      } else if (dockerSubTab === 'volumes') {
+        const { stdout, code } = await exec("docker volume ls --format '{{.Name}}||{{.Driver}}||{{.Mountpoint}}' 2>/dev/null")
+        if (code === 127) {
+          setDockerInstalled(false)
+          return
+        }
+        const list = stdout.split('\n').filter(Boolean).map((line) => {
+          const parts = line.split('||')
+          return { name: parts[0] || '', driver: parts[1] || '', mountpoint: parts[2] || '' }
+        })
+        setVolumes(list)
       }
     } catch (e: any) {
       setError(e.message || 'Lỗi tải thông tin Docker')
@@ -120,28 +189,135 @@ export default function DockerPanel({
     setLoading(false)
   }
 
+  const handleInstallDocker = async () => {
+    setInstalling(true)
+    setInstallLog('Đang chuẩn bị cài đặt Docker...\n')
+    try {
+      setInstallLog(prev => prev + 'Đang cập nhật danh sách gói (apt-get update)...\n')
+      await exec('sudo apt-get update')
+      
+      setInstallLog(prev => prev + 'Đang cài đặt Docker Engine...\n')
+      const res = await exec('sudo apt-get install -y docker.io')
+      
+      if (res.code === 0) {
+        setInstallLog(prev => prev + 'Cài đặt thành công! Đang khởi chạy Docker...\n')
+        await exec('sudo systemctl start docker && sudo systemctl enable docker')
+        alert('Cài đặt Docker thành công!')
+      } else {
+        setInstallLog(prev => prev + 'Không thể cài bằng apt. Đang thử bằng script chính thức từ get.docker.com...\n')
+        const scriptRes = await exec('curl -fsSL https://get.docker.com | sh')
+        if (scriptRes.code === 0) {
+          setInstallLog(prev => prev + 'Cài đặt thành công bằng script!\n')
+          await exec('sudo systemctl start docker && sudo systemctl enable docker')
+          alert('Cài đặt Docker thành công!')
+        } else {
+          throw new Error(scriptRes.stderr || res.stderr || 'Lỗi cài đặt thất bại.')
+        }
+      }
+      await loadData()
+    } catch (e: any) {
+      setInstallLog(prev => prev + `Lỗi: ${e.message}\n`)
+      alert('Lỗi cài đặt Docker: ' + e.message)
+    } finally {
+      setInstalling(false)
+    }
+  }
+
+  const fetchDaemonConfig = useCallback(async () => {
+    setLoading(true)
+    try {
+      const { stdout, code } = await exec('sudo cat /etc/docker/daemon.json 2>/dev/null || cat /etc/docker/daemon.json 2>/dev/null')
+      if (code !== 0 || !stdout.trim()) {
+        setDaemonConfig('{\n  "registry-mirrors": [],\n  "insecure-registries": [],\n  "experimental": false\n}')
+      } else {
+        setDaemonConfig(stdout)
+      }
+    } catch (e: any) {
+      setError(e.message || 'Lỗi đọc file cấu hình Docker daemon')
+    } finally {
+      setLoading(false)
+    }
+  }, [exec, setLoading, setError])
+
+  const handleSaveDaemonConfig = async () => {
+    if (savingConfig) return
+    setSavingConfig(true)
+    try {
+      try {
+        JSON.parse(daemonConfig)
+      } catch (err: any) {
+        alert('Lỗi định dạng JSON: ' + err.message)
+        setSavingConfig(false)
+        return
+      }
+
+      const tempFile = '/tmp/docker_daemon_config'
+      const writeCmd = `cat << 'EOF' > ${tempFile}\n${daemonConfig}\nEOF\nsudo mv ${tempFile} /etc/docker/daemon.json`
+      const res = await exec(writeCmd)
+      if (res.code !== 0) {
+        throw new Error(res.stderr || 'Không thể lưu file daemon.json')
+      }
+
+      const restartRes = await exec('sudo systemctl restart docker || systemctl restart docker')
+      if (restartRes.code !== 0) {
+        alert('Đã lưu cấu hình nhưng khởi động lại dịch vụ Docker thất bại: ' + (restartRes.stderr || restartRes.stdout))
+      } else {
+        alert('Đã lưu cấu hình và khởi động lại dịch vụ Docker thành công!')
+      }
+    } catch (e: any) {
+      alert('Lỗi: ' + e.message)
+    } finally {
+      setSavingConfig(false)
+    }
+  }
+
   const loadData = useCallback(async () => {
     setLoading(true)
     setError('')
-    await fetchDocker()
+    await fetchDocker(true)
+    if (dockerSubTab === 'config') {
+      await fetchDaemonConfig()
+    }
     setLoading(false)
-  }, [fetchDocker, setLoading, setError])
+  }, [fetchDocker, fetchDaemonConfig, dockerSubTab, setLoading, setError])
 
   useEffect(() => {
     loadData()
   }, [loadData, refreshKey])
 
   useEffect(() => {
+    if (!dockerInstalled || dockerSubTab === 'config') return
     const interval = setInterval(fetchDocker, 5000)
     return () => clearInterval(interval)
-  }, [fetchDocker])
+  }, [fetchDocker, dockerInstalled, dockerSubTab])
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {!dockerInstalled ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-[#585b70]">
-          <Box size={36} className="mb-3 opacity-30" />
-          <span className="text-xs font-semibold">Docker không được cài đặt hoặc chưa khởi động</span>
+        <div className="flex-grow flex flex-col items-center justify-center text-[#585b70] max-w-md mx-auto p-6 text-center space-y-4">
+          <Box size={48} className="text-[#89b4fa] opacity-60 animate-bounce" />
+          <div className="space-y-1">
+            <h3 className="text-sm font-bold text-[#cdd6f4]">Docker chưa được cài đặt hoặc chưa khởi động</h3>
+            <p className="text-xs text-[#585b70]">Không tìm thấy lệnh docker trên máy chủ SSH này. Bạn có thể tự động cài đặt Docker thông qua trình quản lý gói của hệ thống.</p>
+          </div>
+          
+          {installing ? (
+            <div className="w-full bg-[#181825] border border-white/5 rounded-xl p-4 flex flex-col text-left space-y-2">
+              <span className="text-[10px] uppercase font-bold text-[#89b4fa] tracking-wider animate-pulse flex items-center gap-1.5">
+                <RefreshCw size={11} className="animate-spin" /> Đang cài đặt Docker...
+              </span>
+              <pre className="h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[9px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
+                {installLog}
+              </pre>
+            </div>
+          ) : (
+            <button
+              onClick={handleInstallDocker}
+              className="px-4 py-2 rounded-xl bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all"
+            >
+              Cài đặt Docker tự động
+            </button>
+          )}
         </div>
       ) : (
         <div className="flex-1 flex flex-col overflow-hidden">
@@ -152,7 +328,7 @@ export default function DockerPanel({
                 setDockerSubTab('containers')
               }}
               className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
-                dockerSubTab === 'containers' ? 'bg-accent-blue/15 text-accent-blue' : 'text-surface-mid hover:text-surface-light'
+                dockerSubTab === 'containers' ? 'bg-[#89b4fa]/15 text-[#89b4fa] font-bold' : 'text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]'
               }`}
             >
               Containers ({containers.length})
@@ -162,15 +338,55 @@ export default function DockerPanel({
                 setDockerSubTab('images')
               }}
               className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
-                dockerSubTab === 'images' ? 'bg-accent-blue/15 text-accent-blue' : 'text-surface-mid hover:text-surface-light'
+                dockerSubTab === 'images' ? 'bg-[#89b4fa]/15 text-[#89b4fa] font-bold' : 'text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]'
               }`}
             >
               Images ({images.length})
             </button>
+            <button
+              onClick={() => {
+                setDockerSubTab('compose')
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+                dockerSubTab === 'compose' ? 'bg-[#89b4fa]/15 text-[#89b4fa] font-bold' : 'text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]'
+              }`}
+            >
+              Compose ({composeProjects.length})
+            </button>
+            <button
+              onClick={() => {
+                setDockerSubTab('networks')
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+                dockerSubTab === 'networks' ? 'bg-[#89b4fa]/15 text-[#89b4fa] font-bold' : 'text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]'
+              }`}
+            >
+              Networks ({networks.length})
+            </button>
+            <button
+              onClick={() => {
+                setDockerSubTab('volumes')
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+                dockerSubTab === 'volumes' ? 'bg-[#89b4fa]/15 text-[#89b4fa] font-bold' : 'text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]'
+              }`}
+            >
+              Volumes ({volumes.length})
+            </button>
+            <button
+              onClick={() => {
+                setDockerSubTab('config')
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+                dockerSubTab === 'config' ? 'bg-[#89b4fa]/15 text-[#89b4fa] font-bold' : 'text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]'
+              }`}
+            >
+              Config
+            </button>
           </div>
 
-          {dockerSubTab === 'containers' ? (
-            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl">
+          {dockerSubTab === 'containers' && (
+            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-white/[0.04] text-[#585b70] font-semibold">
@@ -178,6 +394,7 @@ export default function DockerPanel({
                     <th className="p-3">Tên</th>
                     <th className="p-3">Image</th>
                     <th className="p-3">Trạng Thái</th>
+                    <th className="p-3">CPU / RAM</th>
                     <th className="p-3">Cổng (Ports)</th>
                     <th className="p-3 text-center">Thao Tác</th>
                   </tr>
@@ -198,6 +415,15 @@ export default function DockerPanel({
                         >
                           {c.status}
                         </span>
+                      </td>
+                      <td className="p-3 font-mono text-[#a6adc8] text-[11px]">
+                        {c.status.toLowerCase().includes('up') && containerStats[c.name] ? (
+                          <span>
+                            {containerStats[c.name].cpu} / {containerStats[c.name].mem}
+                          </span>
+                        ) : (
+                          <span className="text-[#585b70]">-</span>
+                        )}
                       </td>
                       <td className="p-3 font-mono">
                         {c.ports && c.ports !== '-' ? (
@@ -263,8 +489,10 @@ export default function DockerPanel({
                 </tbody>
               </table>
             </div>
-          ) : (
-            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl">
+          )}
+
+          {dockerSubTab === 'images' && (
+            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-white/[0.04] text-[#585b70] font-semibold">
@@ -290,6 +518,151 @@ export default function DockerPanel({
                         >
                           <Trash2 size={12} />
                         </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {dockerSubTab === 'config' && (
+            <div className="flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-4 space-y-4">
+              <div className="flex justify-between items-center">
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-[#cdd6f4]">Cấu hình Docker Daemon (/etc/docker/daemon.json)</span>
+                  <span className="text-[10px] text-[#585b70]">Định dạng tệp tin cấu hình là JSON. Chú ý kiểm tra cú pháp trước khi lưu.</span>
+                </div>
+                <button
+                  onClick={handleSaveDaemonConfig}
+                  disabled={savingConfig}
+                  className="px-3.5 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all disabled:opacity-40"
+                >
+                  {savingConfig ? 'Đang lưu...' : 'Lưu & Khởi động lại Docker'}
+                </button>
+              </div>
+              <textarea
+                value={daemonConfig}
+                onChange={(e) => setDaemonConfig(e.target.value)}
+                spellCheck={false}
+                className="flex-1 w-full bg-[#11111b] border border-white/5 rounded-xl p-4 text-xs font-mono text-[#cdd6f4] outline-none resize-none leading-relaxed"
+                placeholder="{\n  ...\n}"
+              />
+            </div>
+          )}
+
+          {dockerSubTab === 'compose' && (
+            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
+              {composeProjects.length === 0 ? (
+                <div className="flex-1 flex items-center justify-center text-[#585b70] text-xs py-12">Không tìm thấy Docker Compose project nào.</div>
+              ) : (
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="border-b border-white/[0.04] text-[#585b70] font-semibold">
+                      <th className="p-3">Project</th>
+                      <th className="p-3">Status</th>
+                      <th className="p-3">Config Files</th>
+                      <th className="p-3 text-center">Thao Tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {composeProjects.map((p, idx) => (
+                      <tr key={idx} className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors">
+                        <td className="p-3 font-bold text-[#cdd6f4]">{p.name}</td>
+                        <td className="p-3">
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${p.status.includes('running') ? 'bg-[#a6e3a1]/10 text-[#a6e3a1]' : 'bg-[#f38ba8]/10 text-[#f38ba8]'}`}>
+                            {p.status}
+                          </span>
+                        </td>
+                        <td className="p-3 font-mono text-[#6c7086] text-[10px] truncate max-w-[200px]" title={p.configFiles}>{p.configFiles}</td>
+                        <td className="p-3">
+                          <div className="flex gap-1.5 justify-center">
+                            <button
+                              onClick={async () => { setLoading(true); await exec(`docker compose -p ${p.name} up -d 2>/dev/null`); await fetchDocker(); setLoading(false) }}
+                              className="p-1 rounded hover:bg-white/5 text-[#a6e3a1]" title="Up"
+                            ><Play size={12} /></button>
+                            <button
+                              onClick={async () => { setLoading(true); await exec(`docker compose -p ${p.name} stop 2>/dev/null`); await fetchDocker(); setLoading(false) }}
+                              className="p-1 rounded hover:bg-white/5 text-[#f38ba8]" title="Stop"
+                            ><Square size={12} /></button>
+                            <button
+                              onClick={async () => { setLoading(true); await exec(`docker compose -p ${p.name} restart 2>/dev/null`); await fetchDocker(); setLoading(false) }}
+                              className="p-1 rounded hover:bg-white/5 text-[#89b4fa]" title="Restart"
+                            ><RefreshCw size={12} /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+
+          {dockerSubTab === 'networks' && (
+            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="border-b border-white/[0.04] text-[#585b70] font-semibold">
+                    <th className="p-3">Network ID</th>
+                    <th className="p-3">Name</th>
+                    <th className="p-3">Driver</th>
+                    <th className="p-3">Scope</th>
+                    <th className="p-3 text-center">Thao Tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {networks.map((n, idx) => (
+                    <tr key={idx} className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors">
+                      <td className="p-3 font-mono text-[#6c7086]">{n.id.substring(0, 12)}</td>
+                      <td className="p-3 font-bold text-[#cdd6f4]">{n.name}</td>
+                      <td className="p-3 text-[#a6adc8]">{n.driver}</td>
+                      <td className="p-3 text-[#585b70]">{n.scope}</td>
+                      <td className="p-3 text-center">
+                        {!['bridge', 'host', 'none'].includes(n.name) && (
+                          <button
+                            onClick={async () => { if (confirm(`Xóa network ${n.name}?`)) { setLoading(true); await exec(`docker network rm ${n.id}`); await fetchDocker(); setLoading(false) }}}
+                            className="p-1 rounded hover:bg-white/5 text-[#f38ba8]" title="Remove"
+                          ><Trash2 size={12} /></button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {dockerSubTab === 'volumes' && (
+            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
+              <div className="flex justify-end p-2">
+                <button
+                  onClick={async () => { if (confirm('Xóa tất cả volumes không sử dụng?')) { setLoading(true); await exec('docker volume prune -f'); await fetchDocker(); setLoading(false) }}}
+                  className="px-2 py-1 rounded bg-[#f38ba8]/10 text-[#f38ba8] text-[10px] font-semibold hover:bg-[#f38ba8]/20"
+                >
+                  Prune Unused
+                </button>
+              </div>
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="border-b border-white/[0.04] text-[#585b70] font-semibold">
+                    <th className="p-3">Name</th>
+                    <th className="p-3">Driver</th>
+                    <th className="p-3">Mountpoint</th>
+                    <th className="p-3 text-center">Thao Tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {volumes.map((v, idx) => (
+                    <tr key={idx} className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors">
+                      <td className="p-3 font-bold text-[#cdd6f4] truncate max-w-[200px]" title={v.name}>{v.name}</td>
+                      <td className="p-3 text-[#a6adc8]">{v.driver}</td>
+                      <td className="p-3 font-mono text-[#6c7086] text-[10px] truncate max-w-[200px]" title={v.mountpoint}>{v.mountpoint}</td>
+                      <td className="p-3 text-center">
+                        <button
+                          onClick={async () => { if (confirm(`Xóa volume ${v.name}?`)) { setLoading(true); await exec(`docker volume rm ${v.name}`); await fetchDocker(); setLoading(false) }}}
+                          className="p-1 rounded hover:bg-white/5 text-[#f38ba8]" title="Remove"
+                        ><Trash2 size={12} /></button>
                       </td>
                     </tr>
                   ))}

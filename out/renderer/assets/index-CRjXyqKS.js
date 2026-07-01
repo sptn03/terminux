@@ -7101,6 +7101,16 @@ const ArrowRight = createLucideIcon("ArrowRight", [
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
+const ArrowUp = createLucideIcon("ArrowUp", [
+  ["path", { d: "m5 12 7-7 7 7", key: "hav0vg" }],
+  ["path", { d: "M12 19V5", key: "x0mq9r" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
 const Bell = createLucideIcon("Bell", [
   ["path", { d: "M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9", key: "1qo2s2" }],
   ["path", { d: "M10.3 21a1.94 1.94 0 0 0 3.4 0", key: "qgo35s" }]
@@ -7495,6 +7505,20 @@ const Layers = createLucideIcon("Layers", [
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
+const List = createLucideIcon("List", [
+  ["path", { d: "M3 12h.01", key: "nlz23k" }],
+  ["path", { d: "M3 18h.01", key: "1tta3j" }],
+  ["path", { d: "M3 6h.01", key: "1rqtza" }],
+  ["path", { d: "M8 12h13", key: "1za7za" }],
+  ["path", { d: "M8 18h13", key: "1lx6n3" }],
+  ["path", { d: "M8 6h13", key: "ik3vkj" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
 const LoaderCircle = createLucideIcon("LoaderCircle", [
   ["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]
 ]);
@@ -7561,6 +7585,27 @@ const Package = createLucideIcon("Package", [
   ["path", { d: "M12 22V12", key: "d0xqtd" }],
   ["path", { d: "m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7", key: "yx3hmr" }],
   ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const PanelLeftClose = createLucideIcon("PanelLeftClose", [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
+  ["path", { d: "M9 3v18", key: "fh3hqa" }],
+  ["path", { d: "m16 15-3-3 3-3", key: "14y99z" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const PanelLeft = createLucideIcon("PanelLeft", [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
+  ["path", { d: "M9 3v18", key: "fh3hqa" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -7646,6 +7691,16 @@ const Plus = createLucideIcon("Plus", [
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
+const Power = createLucideIcon("Power", [
+  ["path", { d: "M12 2v10", key: "mnfbl" }],
+  ["path", { d: "M18.4 6.6a9 9 0 1 1-12.77.04", key: "obofu9" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
 const Radio = createLucideIcon("Radio", [
   ["path", { d: "M4.9 19.1C1 15.2 1 8.8 4.9 4.9", key: "1vaf9d" }],
   ["path", { d: "M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5", key: "u1ii0m" }],
@@ -7664,6 +7719,16 @@ const RefreshCw = createLucideIcon("RefreshCw", [
   ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
   ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
   ["path", { d: "M8 16H3v5", key: "1cv678" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const RotateCw = createLucideIcon("RotateCw", [
+  ["path", { d: "M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8", key: "1p45f6" }],
+  ["path", { d: "M21 3v5h-5", key: "1q7to0" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -7760,6 +7825,26 @@ const Trash2 = createLucideIcon("Trash2", [
   ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
   ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
   ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const TrendingDown = createLucideIcon("TrendingDown", [
+  ["polyline", { points: "22 17 13.5 8.5 8.5 13.5 2 7", key: "1r2t7k" }],
+  ["polyline", { points: "16 17 22 17 22 11", key: "11uiuu" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const TrendingUp = createLucideIcon("TrendingUp", [
+  ["polyline", { points: "22 7 13.5 15.5 8.5 10.5 2 17", key: "126l90" }],
+  ["polyline", { points: "16 7 22 7 22 13", key: "kwv8wd" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -8188,9 +8273,16 @@ const useTerminalStore = create((set, get) => ({
   }),
   setActiveTab: (sessionId) => set({ activeTabId: sessionId }),
   updateTabState: (sessionId, partial) => set((state) => ({
-    tabs: state.tabs.map(
-      (t2) => t2.sessionId === sessionId ? { ...t2, ...partial } : t2
-    )
+    tabs: state.tabs.map((t2) => {
+      if (t2.sessionId === sessionId) {
+        const nextTab = { ...t2, ...partial };
+        if (partial.connected === true && !t2.connected && t2.viewMode === void 0) {
+          nextTab.viewMode = "dashboard";
+        }
+        return nextTab;
+      }
+      return t2;
+    })
   })),
   setTabTheme: (sessionId, themeId) => set((state) => ({
     tabThemes: { ...state.tabThemes, [sessionId]: themeId },
@@ -8752,6 +8844,7 @@ const useSettingsStore = create((set, get) => ({
   backgroundBlur: 0,
   showSnippets: false,
   showSettings: false,
+  sidebarCollapsed: localStorage.getItem("sidebar_collapsed") === "true",
   loadSettings: async () => {
     const rows = await window.api.db.all("SELECT * FROM app_settings");
     const map = {};
@@ -8812,7 +8905,12 @@ const useSettingsStore = create((set, get) => ({
     set({ backgroundBlur: blur });
   },
   toggleSnippets: () => set((s) => ({ showSnippets: !s.showSnippets })),
-  toggleSettings: () => set((s) => ({ showSettings: !s.showSettings }))
+  toggleSettings: () => set((s) => ({ showSettings: !s.showSettings })),
+  toggleSidebar: () => set((s) => {
+    const next = !s.sidebarCollapsed;
+    localStorage.setItem("sidebar_collapsed", String(next));
+    return { sidebarCollapsed: next };
+  })
 }));
 function Sidebar() {
   const [showHostForm, setShowHostForm] = reactExports.useState(false);
@@ -8822,6 +8920,7 @@ function Sidebar() {
   const addBtnRef = reactExports.useRef(null);
   const toggleSettings = useSettingsStore((s) => s.toggleSettings);
   const toggleSnippets = useSettingsStore((s) => s.toggleSnippets);
+  const sidebarCollapsed = useSettingsStore((s) => s.sidebarCollapsed);
   reactExports.useEffect(() => {
     if (!showAddMenu) return;
     const handler = (e) => {
@@ -8833,117 +8932,130 @@ function Sidebar() {
     return () => document.removeEventListener("mousedown", handler);
   }, [showAddMenu]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-[var(--sidebar-width)] min-w-[var(--sidebar-width)] bg-[#11111b] flex flex-col border-r border-white/[0.04] select-none z-10", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-12 flex items-center px-4 border-b border-white/[0.04] gap-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-7 h-7 rounded-[10px] bg-gradient-to-br from-[#89b4fa] to-[#cba6f7] p-[1px] shadow-lg shadow-[#89b4fa]/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full rounded-[9px] bg-[#11111b] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 13, className: "text-[#89b4fa]" }) }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-[#cdd6f4] tracking-wide", children: "Terminux" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(QuickConnect, {}),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-2.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#45475a] uppercase tracking-[0.14em]", children: "Servers" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative add-menu-container", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                ref: addBtnRef,
-                onClick: () => setShowAddMenu((v2) => !v2),
-                className: `flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold transition-all active:scale-95 ${showAddMenu ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04]"}`,
-                title: "Thêm server hoặc nhóm",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 12, className: `transition-transform duration-200 ${showAddMenu ? "rotate-45" : ""}` }),
-                  "Thêm"
-                ]
-              }
-            ),
-            showAddMenu && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute right-0 top-full mt-1.5 z-30 w-[160px] bg-[#1e1e2e] border border-white/10 rounded-xl shadow-2xl shadow-black/40 overflow-hidden animate-scale-in origin-top-right", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-2 border-b border-white/[0.04]", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#45475a] uppercase tracking-wider", children: "Tạo mới" }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-1.5 space-y-0.5", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "bg-[#11111b] flex flex-col border-r border-white/[0.04] select-none z-10 transition-all duration-300 ease-in-out overflow-hidden",
+        style: {
+          width: sidebarCollapsed ? "0px" : "var(--sidebar-width)",
+          minWidth: sidebarCollapsed ? "0px" : "var(--sidebar-width)",
+          borderRightWidth: sidebarCollapsed ? "0px" : "1px"
+        },
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-12 flex items-center px-4 border-b border-white/[0.04] gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-7 h-7 rounded-[10px] bg-gradient-to-br from-[#89b4fa] to-[#cba6f7] p-[1px] shadow-lg shadow-[#89b4fa]/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full rounded-[9px] bg-[#11111b] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 13, className: "text-[#89b4fa]" }) }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-[#cdd6f4] tracking-wide", children: "Terminux" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(QuickConnect, {}),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-2.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#45475a] uppercase tracking-[0.14em]", children: "Servers" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative add-menu-container", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "button",
                   {
-                    onClick: () => {
-                      setShowHostForm(true);
-                      setShowAddMenu(false);
-                    },
-                    className: "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-white/[0.06] text-xs text-[#cdd6f4] transition-all active:scale-[0.98] group",
+                    ref: addBtnRef,
+                    onClick: () => setShowAddMenu((v2) => !v2),
+                    className: `flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold transition-all active:scale-95 ${showAddMenu ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04]"}`,
+                    title: "Thêm server hoặc nhóm",
                     children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-md bg-[#89b4fa]/10 flex items-center justify-center group-hover:bg-[#89b4fa]/20 transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Server, { size: 12, className: "text-[#89b4fa]" }) }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-semibold", children: "Server" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[9px] text-[#585b70]", children: "Thêm máy chủ SSH" })
-                      ] })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 12, className: `transition-transform duration-200 ${showAddMenu ? "rotate-45" : ""}` }),
+                      "Thêm"
                     ]
                   }
                 ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    onClick: () => {
-                      setShowGroupForm(true);
-                      setShowAddMenu(false);
-                    },
-                    className: "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-white/[0.06] text-xs text-[#cdd6f4] transition-all active:scale-[0.98] group",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-md bg-[#f9e2af]/10 flex items-center justify-center group-hover:bg-[#f9e2af]/20 transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 12, className: "text-[#f9e2af]" }) }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-semibold", children: "Nhóm" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[9px] text-[#585b70]", children: "Tạo nhóm máy chủ" })
-                      ] })
-                    ]
-                  }
-                )
+                showAddMenu && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute right-0 top-full mt-1.5 z-30 w-[160px] bg-[#1e1e2e] border border-white/10 rounded-xl shadow-2xl shadow-black/40 overflow-hidden animate-scale-in origin-top-right", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-2 border-b border-white/[0.04]", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#45475a] uppercase tracking-wider", children: "Tạo mới" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-1.5 space-y-0.5", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "button",
+                      {
+                        onClick: () => {
+                          setShowHostForm(true);
+                          setShowAddMenu(false);
+                        },
+                        className: "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-white/[0.06] text-xs text-[#cdd6f4] transition-all active:scale-[0.98] group",
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-md bg-[#89b4fa]/10 flex items-center justify-center group-hover:bg-[#89b4fa]/20 transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Server, { size: 12, className: "text-[#89b4fa]" }) }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left", children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-semibold", children: "Server" }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[9px] text-[#585b70]", children: "Thêm máy chủ SSH" })
+                          ] })
+                        ]
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "button",
+                      {
+                        onClick: () => {
+                          setShowGroupForm(true);
+                          setShowAddMenu(false);
+                        },
+                        className: "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-white/[0.06] text-xs text-[#cdd6f4] transition-all active:scale-[0.98] group",
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-md bg-[#f9e2af]/10 flex items-center justify-center group-hover:bg-[#f9e2af]/20 transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 12, className: "text-[#f9e2af]" }) }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left", children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-semibold", children: "Nhóm" }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[9px] text-[#585b70]", children: "Tạo nhóm máy chủ" })
+                          ] })
+                        ]
+                      }
+                    )
+                  ] })
+                ] })
               ] })
-            ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 pb-2.5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 bg-[#1e1e2e] rounded-[10px] px-2.5 py-1.5 border border-white/[0.04] focus-within:border-[#89b4fa]/25 transition-all", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 11, className: "text-[#45475a] shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  value: searchQuery,
+                  onChange: (e) => setSearchQuery(e.target.value),
+                  placeholder: "Search servers...",
+                  className: "flex-1 bg-transparent text-xs text-[#cdd6f4] placeholder-[#45475a] outline-none"
+                }
+              ),
+              searchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSearchQuery(""), className: "text-[#45475a] hover:text-[#cdd6f4] transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-2 pb-2 space-y-0.5 scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsx(HostTree, { searchQuery }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/[0.04] px-2 py-2 flex gap-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: toggleSnippets,
+                className: "flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg text-[10px] font-medium text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all active:scale-[0.98]",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(CodeXml, { size: 12 }),
+                  " Snippets"
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: toggleSettings,
+                className: "flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg text-[10px] font-medium text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all active:scale-[0.98]",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { size: 12 }),
+                  " Settings"
+                ]
+              }
+            )
           ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 pb-2.5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 bg-[#1e1e2e] rounded-[10px] px-2.5 py-1.5 border border-white/[0.04] focus-within:border-[#89b4fa]/25 transition-all", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 11, className: "text-[#45475a] shrink-0" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "text",
-              value: searchQuery,
-              onChange: (e) => setSearchQuery(e.target.value),
-              placeholder: "Search servers...",
-              className: "flex-1 bg-transparent text-xs text-[#cdd6f4] placeholder-[#45475a] outline-none"
-            }
-          ),
-          searchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSearchQuery(""), className: "text-[#45475a] hover:text-[#cdd6f4] transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-2 pb-2 space-y-0.5 scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsx(HostTree, { searchQuery }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/[0.04] px-2 py-2 flex gap-1", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: toggleSnippets,
-            className: "flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg text-[10px] font-medium text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all active:scale-[0.98]",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(CodeXml, { size: 12 }),
-              " Snippets"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: toggleSettings,
-            className: "flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg text-[10px] font-medium text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all active:scale-[0.98]",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { size: 12 }),
-              " Settings"
-            ]
-          }
-        )
-      ] })
-    ] }),
+        ]
+      }
+    ),
     showHostForm && /* @__PURE__ */ jsxRuntimeExports.jsx(HostForm, { onClose: () => setShowHostForm(false) }),
     showGroupForm && /* @__PURE__ */ jsxRuntimeExports.jsx(GroupForm, { onClose: () => setShowGroupForm(false) })
   ] });
 }
 function TitleBar() {
   const [maximized, setMaximized] = reactExports.useState(false);
+  const sidebarCollapsed = useSettingsStore((s) => s.sidebarCollapsed);
+  const toggleSidebar = useSettingsStore((s) => s.toggleSidebar);
   reactExports.useEffect(() => {
     window.api.window.isMaximized().then(setMaximized);
     const unsub = window.api.window.onMaximizedChange(setMaximized);
@@ -8955,7 +9067,18 @@ function TitleBar() {
       className: "flex items-center h-[34px] bg-[#11111b] select-none shrink-0",
       style: { WebkitAppRegion: "drag" },
       children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-[7px] pl-[14px] pr-3", style: { WebkitAppRegion: "no-drag" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-[18px] h-[18px] rounded-[8px] bg-gradient-to-br from-[#89b4fa] to-[#cba6f7] p-[1px] shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full rounded-[7px] bg-[#11111b] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 10, className: "text-[#89b4fa]" }) }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 pl-[14px] pr-3", style: { WebkitAppRegion: "no-drag" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: toggleSidebar,
+              className: "p-1 rounded-md text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all flex items-center justify-center active:scale-95 animate-fade-in",
+              title: sidebarCollapsed ? "Hiện thanh bên" : "Ẩn thanh bên",
+              children: sidebarCollapsed ? /* @__PURE__ */ jsxRuntimeExports.jsx(PanelLeft, { size: 13 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(PanelLeftClose, { size: 13 })
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-[18px] h-[18px] rounded-[8px] bg-gradient-to-br from-[#89b4fa] to-[#cba6f7] p-[1px] shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full rounded-[7px] bg-[#11111b] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 10, className: "text-[#89b4fa]" }) }) })
+        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 text-center text-[11px] text-[#585b70] font-medium tracking-wide", children: "Terminux" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-[7px] pr-[14px] pl-3", style: { WebkitAppRegion: "no-drag" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -16381,8 +16504,52 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
   const [localLoading, setLocalLoading] = reactExports.useState(false);
   const [localHistory, setLocalHistory] = reactExports.useState([]);
   const [localSearchQuery, setLocalSearchQuery] = reactExports.useState("");
-  const [selectedLocal, setSelectedLocal] = reactExports.useState(null);
-  const [selectedRemote, setSelectedRemote] = reactExports.useState(null);
+  const [selectedLocal, setSelectedLocal] = reactExports.useState([]);
+  const [selectedRemote, setSelectedRemote] = reactExports.useState([]);
+  const [lastSelectedLocal, setLastSelectedLocal] = reactExports.useState(null);
+  const [lastSelectedRemote, setLastSelectedRemote] = reactExports.useState(null);
+  const handleSelectLocal = (e, entry, index) => {
+    e.stopPropagation();
+    const path = entry.path;
+    if (e.ctrlKey || e.metaKey) {
+      setSelectedLocal(
+        (prev) => prev.includes(path) ? prev.filter((p2) => p2 !== path) : [...prev, path]
+      );
+      setLastSelectedLocal(path);
+    } else if (e.shiftKey && lastSelectedLocal) {
+      const lastIndex = filteredLocalEntries.findIndex((item) => item.path === lastSelectedLocal);
+      if (lastIndex !== -1) {
+        const start = Math.min(lastIndex, index);
+        const end = Math.max(lastIndex, index);
+        const pathsInRange = filteredLocalEntries.slice(start, end + 1).map((item) => item.path);
+        setSelectedLocal((prev) => Array.from(/* @__PURE__ */ new Set([...prev, ...pathsInRange])));
+      }
+    } else {
+      setSelectedLocal([path]);
+      setLastSelectedLocal(path);
+    }
+  };
+  const handleSelectRemote = (e, entry, index) => {
+    e.stopPropagation();
+    const path = entry.path;
+    if (e.ctrlKey || e.metaKey) {
+      setSelectedRemote(
+        (prev) => prev.includes(path) ? prev.filter((p2) => p2 !== path) : [...prev, path]
+      );
+      setLastSelectedRemote(path);
+    } else if (e.shiftKey && lastSelectedRemote) {
+      const lastIndex = filteredRemoteEntries.findIndex((item) => item.path === lastSelectedRemote);
+      if (lastIndex !== -1) {
+        const start = Math.min(lastIndex, index);
+        const end = Math.max(lastIndex, index);
+        const pathsInRange = filteredRemoteEntries.slice(start, end + 1).map((item) => item.path);
+        setSelectedRemote((prev) => Array.from(/* @__PURE__ */ new Set([...prev, ...pathsInRange])));
+      }
+    } else {
+      setSelectedRemote([path]);
+      setLastSelectedRemote(path);
+    }
+  };
   const [transfers, setTransfers] = reactExports.useState([]);
   const [showQueue, setShowQueue] = reactExports.useState(false);
   const [viewFile, setViewFile] = reactExports.useState(null);
@@ -16457,6 +16624,14 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       setLocalCwd(h[h.length - 1]);
     }
   };
+  reactExports.useEffect(() => {
+    setSelectedRemote([]);
+    setLastSelectedRemote(null);
+  }, [cwd]);
+  reactExports.useEffect(() => {
+    setSelectedLocal([]);
+    setLastSelectedLocal(null);
+  }, [localCwd]);
   const formatSize = (bytes) => {
     if (bytes === 0) return "0 B";
     const k2 = 1024;
@@ -16473,13 +16648,13 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
   const updateTransfer = (id2, updates) => {
     setTransfers((prev) => prev.map((t2) => t2.id === id2 ? { ...t2, ...updates } : t2));
   };
-  const handleUploadLocalToRemote = async (path) => {
-    if (!sessionId) return;
-    const filename = path.substring(path.lastIndexOf("\\") + 1).substring(path.lastIndexOf("/") + 1);
-    const transferId = addTransfer(filename, "upload");
+  const handleUploadLocalToRemote = async (paths) => {
+    if (!sessionId || paths.length === 0) return;
+    const label = paths.length === 1 ? paths[0].substring(paths[0].lastIndexOf("\\") + 1).substring(paths[0].lastIndexOf("/") + 1) : `${paths.length} tệp`;
+    const transferId = addTransfer(label, "upload");
     try {
       updateTransfer(transferId, { progress: 60 });
-      const result = await window.api.sftp.deploy(sessionId, localCwd, cwd, [path]);
+      const result = await window.api.sftp.deploy(sessionId, localCwd, cwd, paths);
       if (result.errors && result.errors.length > 0) {
         updateTransfer(transferId, { status: "error", progress: 100, errorMsg: result.errors[0] });
       } else {
@@ -16490,13 +16665,13 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       updateTransfer(transferId, { status: "error", progress: 100, errorMsg: err.message });
     }
   };
-  const handleDownloadRemoteToLocal = async (path) => {
-    if (!sessionId) return;
-    const filename = path.substring(path.lastIndexOf("/") + 1);
-    const transferId = addTransfer(filename, "download");
+  const handleDownloadRemoteToLocal = async (paths) => {
+    if (!sessionId || paths.length === 0) return;
+    const label = paths.length === 1 ? paths[0].substring(paths[0].lastIndexOf("/") + 1) : `${paths.length} tệp`;
+    const transferId = addTransfer(label, "download");
     try {
       updateTransfer(transferId, { progress: 60 });
-      const result = await window.api.sftp.downloadFiles(sessionId, [path], localCwd);
+      const result = await window.api.sftp.downloadFiles(sessionId, paths, localCwd);
       if (result.errors && result.errors.length > 0) {
         updateTransfer(transferId, { status: "error", progress: 100, errorMsg: result.errors[0] });
       } else if (result.canceled) {
@@ -16574,55 +16749,27 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       }
     });
   };
-  const handleDeleteRemote = async (entry) => {
-    if (!sessionId) return;
-    if (confirm(`Bạn có chắc chắn muốn xóa ${entry.name}?`)) {
-      if (entry.isDirectory) await window.api.sftp.deleteDir(sessionId, entry.path);
-      else await window.api.sftp.deleteFile(sessionId, entry.path);
+  const handleDeleteRemoteMultiple = async (targetEntries) => {
+    if (!sessionId || targetEntries.length === 0) return;
+    const msg = targetEntries.length === 1 ? `Bạn có chắc chắn muốn xóa ${targetEntries[0].name}?` : `Bạn có chắc chắn muốn xóa ${targetEntries.length} mục đã chọn trên Server?`;
+    if (confirm(msg)) {
+      for (const entry of targetEntries) {
+        if (entry.isDirectory) await window.api.sftp.deleteDir(sessionId, entry.path);
+        else await window.api.sftp.deleteFile(sessionId, entry.path);
+      }
       loadDir(cwd);
+      setSelectedRemote([]);
     }
   };
-  const handleDeleteLocal = async (entry) => {
-    if (confirm(`Bạn có chắc chắn muốn xóa ${entry.name}?`)) {
-      await window.api.local.delete(entry.path);
+  const handleDeleteLocalMultiple = async (targetEntries) => {
+    if (targetEntries.length === 0) return;
+    const msg = targetEntries.length === 1 ? `Bạn có chắc chắn muốn xóa ${targetEntries[0].name}?` : `Bạn có chắc chắn muốn xóa ${targetEntries.length} mục đã chọn?`;
+    if (confirm(msg)) {
+      for (const entry of targetEntries) {
+        await window.api.local.delete(entry.path);
+      }
       loadLocalDir(localCwd);
-    }
-  };
-  const handleDragStart = (e, item, source) => {
-    e.dataTransfer.setData("text/plain", JSON.stringify({ source, path: item.path }));
-  };
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-  const handleDropLocal = async (e) => {
-    e.preventDefault();
-    try {
-      const dataStr = e.dataTransfer.getData("text/plain");
-      if (dataStr) {
-        const data = JSON.parse(dataStr);
-        if (data.source === "remote") {
-          await handleDownloadRemoteToLocal(data.path);
-        }
-      }
-    } catch {
-    }
-  };
-  const handleDropRemote = async (e) => {
-    e.preventDefault();
-    try {
-      const dataStr = e.dataTransfer.getData("text/plain");
-      if (dataStr) {
-        const data = JSON.parse(dataStr);
-        if (data.source === "local") {
-          await handleUploadLocalToRemote(data.path);
-        }
-      } else if (e.dataTransfer.files.length > 0) {
-        for (let i = 0; i < e.dataTransfer.files.length; i++) {
-          const file = e.dataTransfer.files[i];
-          await handleUploadLocalToRemote(file.path);
-        }
-      }
-    } catch {
+      setSelectedLocal([]);
     }
   };
   const filteredLocalEntries = reactExports.useMemo(() => {
@@ -16650,7 +16797,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
         !embedded && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onToggle, className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4] transition-all", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex overflow-hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col border-r border-white/5 bg-[#11111b]/20", onDragOver: handleDragOver, onDrop: handleDropLocal, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col border-r border-white/5 bg-[#11111b]/20", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 border-b border-white/5 bg-[#181825] flex justify-between items-center", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-bold text-[#89b4fa] uppercase tracking-wider", children: "Local Computer" }),
             drives.length > 1 && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -16690,21 +16837,20 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
             localSearchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setLocalSearchQuery(""), className: "text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-1.5 text-[9px] font-mono text-[#585b70] bg-[#11111b]/40 truncate border-b border-white/5", title: localCwd, children: localCwd }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin", children: localLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-[#585b70]" }) }) : filteredLocalEntries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] text-center py-8", children: "Thư mục trống" }) : filteredLocalEntries.map((entry) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin", children: localLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-[#585b70]" }) }) : filteredLocalEntries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] text-center py-8", children: "Thư mục trống" }) : filteredLocalEntries.map((entry, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "div",
             {
-              draggable: true,
-              onDragStart: (e) => handleDragStart(e, entry, "local"),
-              onClick: () => setSelectedLocal(entry.path === selectedLocal ? null : entry.path),
+              onClick: (e) => handleSelectLocal(e, entry, index),
               onDoubleClick: () => {
                 if (entry.isDirectory) enterLocalDir(entry.path);
                 else handleOpenLocalFile(entry.path);
               },
               onContextMenu: (e) => {
                 e.preventDefault();
+                setSelectedLocal((prev) => prev.includes(entry.path) ? prev : [entry.path]);
                 setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: false });
               },
-              className: `group flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${selectedLocal === entry.path ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "hover:bg-white/[0.02]"}`,
+              className: `group flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${selectedLocal.includes(entry.path) ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "hover:bg-white/[0.02]"}`,
               children: [
                 entry.isDirectory ? /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { size: 13, className: "text-[#f9e2af] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 13, className: "text-[#89b4fa] shrink-0" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] truncate flex-1 leading-none", children: entry.name }),
@@ -16715,7 +16861,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
                     {
                       onClick: (e) => {
                         e.stopPropagation();
-                        handleUploadLocalToRemote(entry.path);
+                        handleUploadLocalToRemote([entry.path]);
                       },
                       className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]",
                       title: "Tải lên Server",
@@ -16727,7 +16873,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
                     {
                       onClick: (e) => {
                         e.stopPropagation();
-                        handleDeleteLocal(entry);
+                        handleDeleteLocalMultiple([entry]);
                       },
                       className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8]",
                       title: "Xóa",
@@ -16740,7 +16886,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
             entry.path
           )) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col bg-[#11111b]/10", onDragOver: handleDragOver, onDrop: handleDropRemote, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col bg-[#11111b]/10", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 border-b border-white/5 bg-[#181825] flex justify-between items-center", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-bold text-[#f9e2af] uppercase tracking-wider", children: "Remote Server" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-mono text-[#585b70]", children: "SFTP connection active" })
@@ -16768,21 +16914,20 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
             searchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSearchQuery(""), className: "text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-1.5 text-[9px] font-mono text-[#585b70] bg-[#11111b]/40 truncate border-b border-white/5", title: cwd, children: cwd }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-[#585b70]" }) }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#f38ba8] px-3 py-4", children: error }) : filteredRemoteEntries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] text-center py-8", children: "Thư mục trống hoặc đã lọc hết" }) : filteredRemoteEntries.map((entry) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-[#585b70]" }) }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#f38ba8] px-3 py-4", children: error }) : filteredRemoteEntries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] text-center py-8", children: "Thư mục trống hoặc đã lọc hết" }) : filteredRemoteEntries.map((entry, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "div",
             {
-              draggable: true,
-              onDragStart: (e) => handleDragStart(e, entry, "remote"),
-              onClick: () => setSelectedRemote(entry.path === selectedRemote ? null : entry.path),
+              onClick: (e) => handleSelectRemote(e, entry, index),
               onDoubleClick: () => {
                 if (entry.isDirectory) enterDir(entry.path);
                 else handleOpenRemoteFile(entry.path);
               },
               onContextMenu: (e) => {
                 e.preventDefault();
+                setSelectedRemote((prev) => prev.includes(entry.path) ? prev : [entry.path]);
                 setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: true });
               },
-              className: `group flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${selectedRemote === entry.path ? "bg-[#fab387]/15 text-[#fab387]" : "hover:bg-white/[0.02]"}`,
+              className: `group flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${selectedRemote.includes(entry.path) ? "bg-[#fab387]/15 text-[#fab387]" : "hover:bg-white/[0.02]"}`,
               children: [
                 entry.isDirectory ? /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { size: 13, className: "text-[#f9e2af] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 13, className: "text-[#89b4fa] shrink-0" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] truncate flex-1 leading-none", children: entry.name }),
@@ -16806,7 +16951,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
                       {
                         onClick: (e) => {
                           e.stopPropagation();
-                          handleDownloadRemoteToLocal(entry.path);
+                          handleDownloadRemoteToLocal([entry.path]);
                         },
                         className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]",
                         title: "Tải về máy tính",
@@ -16819,7 +16964,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
                     {
                       onClick: (e) => {
                         e.stopPropagation();
-                        handleDeleteRemote(entry);
+                        handleDeleteRemoteMultiple([entry]);
                       },
                       className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8]",
                       title: "Xóa",
@@ -16895,7 +17040,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
         y: ctxMenu.y,
         onClose: () => setCtxMenu(null),
         items: ctxMenu.isRemote ? [
-          { label: "Tải về (Download)", icon: FileDown, color: "#a6e3a1", onClick: () => handleDownloadRemoteToLocal(ctxMenu.entry.path) },
+          { label: "Tải về (Download)", icon: FileDown, color: "#a6e3a1", onClick: () => handleDownloadRemoteToLocal(selectedRemote.includes(ctxMenu.entry.path) ? selectedRemote : [ctxMenu.entry.path]) },
           { label: "Xem & Sửa file", icon: Eye, onClick: () => handleOpenRemoteFile(ctxMenu.entry.path) },
           { label: "Tạo bản sao", icon: Copy, onClick: () => window.api.sftp.duplicate(sessionId || "", ctxMenu.entry.path).then(() => loadDir(cwd)) },
           { label: "Đổi tên", icon: PenLine, onClick: () => setInputDlg({
@@ -16909,9 +17054,9 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
               loadDir(cwd);
             }
           }) },
-          { label: "Xóa tệp", icon: Trash2, color: "#f38ba8", onClick: () => handleDeleteRemote(ctxMenu.entry) }
+          { label: "Xóa tệp", icon: Trash2, color: "#f38ba8", onClick: () => handleDeleteRemoteMultiple(selectedRemote.includes(ctxMenu.entry.path) ? entries.filter((e) => selectedRemote.includes(e.path)) : [ctxMenu.entry]) }
         ] : [
-          { label: "Tải lên Server", icon: FileUp, color: "#a6e3a1", onClick: () => handleUploadLocalToRemote(ctxMenu.entry.path) },
+          { label: "Tải lên Server", icon: FileUp, color: "#a6e3a1", onClick: () => handleUploadLocalToRemote(selectedLocal.includes(ctxMenu.entry.path) ? selectedLocal : [ctxMenu.entry.path]) },
           { label: "Chỉnh sửa tệp", icon: Eye, onClick: () => handleOpenLocalFile(ctxMenu.entry.path) },
           { label: "Đổi tên", icon: PenLine, onClick: () => setInputDlg({
             title: "Đổi tên tệp cục bộ",
@@ -16924,7 +17069,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
               loadLocalDir(localCwd);
             }
           }) },
-          { label: "Xóa tệp", icon: Trash2, color: "#f38ba8", onClick: () => handleDeleteLocal(ctxMenu.entry) }
+          { label: "Xóa tệp", icon: Trash2, color: "#f38ba8", onClick: () => handleDeleteLocalMultiple(selectedLocal.includes(ctxMenu.entry.path) ? localEntries.filter((e) => selectedLocal.includes(e.path)) : [ctxMenu.entry]) }
         ]
       }
     ),
@@ -17305,6 +17450,36 @@ function TunnelPanel({ sessionId, visible, onToggle, embedded = false }) {
     )) })
   ] });
 }
+const MAX_HISTORY = 60;
+function Sparkline({ data, color, label }) {
+  if (data.length < 2) return null;
+  const w2 = 160;
+  const h = 32;
+  const max = Math.max(...data, 1);
+  const points = data.map((v2, i) => {
+    const x2 = i / (MAX_HISTORY - 1) * w2;
+    const y2 = h - v2 / max * (h - 2) - 1;
+    return `${x2},${y2}`;
+  }).join(" ");
+  const fillPoints = `0,${h} ${points} ${(data.length - 1) / (MAX_HISTORY - 1) * w2},${h}`;
+  const prev5 = data.slice(-6, -1);
+  const last = data[data.length - 1];
+  const avg5 = prev5.length > 0 ? prev5.reduce((a, b) => a + b, 0) / prev5.length : last;
+  const diff = last - avg5;
+  const TrendIcon = diff > 1.5 ? TrendingUp : diff < -1.5 ? TrendingDown : Minus;
+  const trendColor = diff > 1.5 ? "#f38ba8" : diff < -1.5 ? "#a6e3a1" : "#585b70";
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mt-2", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: w2, height: h, className: "shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("defs", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("linearGradient", { id: `spark-${color.replace("#", "")}`, x1: "0", y1: "0", x2: "0", y2: "1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("stop", { offset: "0%", stopColor: color, stopOpacity: "0.3" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("stop", { offset: "100%", stopColor: color, stopOpacity: "0.02" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("polygon", { points: fillPoints, fill: `url(#spark-${color.replace("#", "")})` }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("polyline", { points, fill: "none", stroke: color, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TrendIcon, { size: 10, style: { color: trendColor }, className: "shrink-0" })
+  ] });
+}
 function OverviewPanel({
   sessionId,
   exec,
@@ -17319,6 +17494,12 @@ function OverviewPanel({
   const [sysInfo, setSysInfo] = reactExports.useState(null);
   const [ports, setPorts] = reactExports.useState([]);
   const updateTabState = useTerminalStore((s) => s.updateTabState);
+  const cpuHistoryRef = reactExports.useRef([]);
+  const memHistoryRef = reactExports.useRef([]);
+  const diskHistoryRef = reactExports.useRef([]);
+  const [cpuHistory, setCpuHistory] = reactExports.useState([]);
+  const [memHistory, setMemHistory] = reactExports.useState([]);
+  const [diskHistory, setDiskHistory] = reactExports.useState([]);
   const fetchPortsList = reactExports.useCallback(async () => {
     const cmd = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`;
     const { stdout } = await exec(cmd);
@@ -17492,6 +17673,12 @@ function OverviewPanel({
       const memUsed = info.mem_used || 0;
       const memPercent = memUsed / memTotal * 100;
       const diskPercent = info.disk_percent || 0;
+      cpuHistoryRef.current = [...cpuHistoryRef.current, cpuUsed].slice(-MAX_HISTORY);
+      memHistoryRef.current = [...memHistoryRef.current, memPercent].slice(-MAX_HISTORY);
+      diskHistoryRef.current = [...diskHistoryRef.current, diskPercent].slice(-MAX_HISTORY);
+      setCpuHistory([...cpuHistoryRef.current]);
+      setMemHistory([...memHistoryRef.current]);
+      setDiskHistory([...diskHistoryRef.current]);
       if (cpuUsed > alertCpu || memPercent > alertMem || diskPercent > alertDisk) {
         updateTabState(sessionId, { alertStatus: "danger" });
         triggerResourceAlert(cpuUsed, memPercent, diskPercent);
@@ -17517,7 +17704,7 @@ function OverviewPanel({
   }, [fetchOverview]);
   if (!sysInfo) return null;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto space-y-6", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold tracking-wider text-[#585b70]", children: "Hệ Điều Hành" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-[#cdd6f4] truncate mt-1", children: sysInfo.os || "Linux" })
@@ -17531,7 +17718,7 @@ function OverviewPanel({
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-[#cdd6f4] truncate mt-1", children: sysInfo.load || "0, 0, 0" })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col items-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "text-[#89b4fa] mb-2", size: 16 }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-4", children: "CPU Utilization" }),
@@ -17544,7 +17731,8 @@ function OverviewPanel({
             (sysInfo.cpu_used || 0).toFixed(1),
             "%"
           ] }) })
-        ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkline, { data: cpuHistory, color: "#89b4fa" })
       ] }),
       (() => {
         const total = sysInfo.mem_total || 1;
@@ -17570,7 +17758,8 @@ function OverviewPanel({
                 " MB"
               ] })
             ] })
-          ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkline, { data: memHistory, color: "#a6e3a1" })
         ] });
       })(),
       (() => {
@@ -17597,11 +17786,12 @@ function OverviewPanel({
                 " GB"
               ] })
             ] })
-          ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkline, { data: diskHistory, color: "#fab387" })
         ] });
       })()
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-2xl p-5 flex flex-col", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] mb-4 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#89b4fa]" }),
@@ -17676,7 +17866,7 @@ function OverviewPanel({
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#cdd6f4]", children: sysInfo.public_ip || "..." })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: sysInfo.network_ifaces.map((iface) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#11111b] border border-white/[0.04] rounded-xl p-3 flex flex-col gap-1.5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3", children: sysInfo.network_ifaces.map((iface) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#11111b] border border-white/[0.04] rounded-xl p-3 flex flex-col gap-1.5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-0.5", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `w-1.5 h-1.5 rounded-full shrink-0 ${iface.state === "UP" ? "bg-[#a6e3a1]" : "bg-[#45475a]"}` }),
@@ -17717,9 +17907,10 @@ function ProcessesPanel({
   const [processList, setProcessList] = reactExports.useState([]);
   const [procSearch, setProcSearch] = reactExports.useState("");
   const [procSortKey, setProcSortKey] = reactExports.useState("cpu");
+  const [filterUser, setFilterUser] = reactExports.useState("__all__");
   const fetchProcesses = reactExports.useCallback(async () => {
     try {
-      const { stdout } = await exec("ps -eo pid,user,%cpu,%mem,time,comm --sort=-%cpu | head -n 40");
+      const { stdout } = await exec("ps -eo pid,user,%cpu,%mem,time,comm --sort=-%cpu | head -n 50");
       if (!stdout) return;
       const lines = stdout.split("\n").slice(1);
       const procs = lines.map((line) => {
@@ -17752,19 +17943,69 @@ function ProcessesPanel({
     const interval = setInterval(fetchProcesses, 4e3);
     return () => clearInterval(interval);
   }, [fetchProcesses]);
+  const uniqueUsers = reactExports.useMemo(() => {
+    const users = new Set(processList.map((p2) => p2.user));
+    return Array.from(users).sort();
+  }, [processList]);
+  const filtered = reactExports.useMemo(() => {
+    return processList.filter((p2) => {
+      if (filterUser !== "__all__" && p2.user !== filterUser) return false;
+      if (procSearch && !p2.command.toLowerCase().includes(procSearch.toLowerCase()) && !p2.pid.includes(procSearch)) return false;
+      return true;
+    }).sort((a, b) => {
+      if (procSortKey === "cpu") return b.cpu - a.cpu;
+      if (procSortKey === "mem") return b.mem - a.mem;
+      return parseInt(b.pid) - parseInt(a.pid);
+    });
+  }, [processList, filterUser, procSearch, procSortKey]);
+  const stats = reactExports.useMemo(() => {
+    const totalCpu = filtered.reduce((s, p2) => s + p2.cpu, 0);
+    const totalMem = filtered.reduce((s, p2) => s + p2.mem, 0);
+    return { count: filtered.length, totalCpu, totalMem };
+  }, [filtered]);
+  const handleSignal = async (pid, signal) => {
+    const signalMap = {
+      SIGTERM: "15",
+      SIGKILL: "9",
+      SIGHUP: "1",
+      SIGUSR1: "10",
+      SIGUSR2: "12"
+    };
+    const sigNum = signalMap[signal] || "15";
+    if (confirm(`Gửi ${signal} tới tiến trình PID ${pid}?`)) {
+      setLoading(true);
+      await exec(`kill -${sigNum} ${pid} || sudo kill -${sigNum} ${pid}`);
+      await fetchProcesses();
+      setLoading(false);
+    }
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "input",
-        {
-          type: "text",
-          placeholder: "Tìm kiếm tiến trình (tên, PID)...",
-          value: procSearch,
-          onChange: (e) => setProcSearch(e.target.value),
-          className: "bg-[#181825] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none w-64"
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 text-xs", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3 gap-3 flex-wrap", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 items-center flex-1 min-w-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "text",
+            placeholder: "Tìm kiếm tiến trình (tên, PID)...",
+            value: procSearch,
+            onChange: (e) => setProcSearch(e.target.value),
+            className: "bg-[#181825] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none w-56"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "select",
+          {
+            value: filterUser,
+            onChange: (e) => setFilterUser(e.target.value),
+            className: "bg-[#181825] border border-white/5 rounded-lg px-2 py-1.5 text-xs text-[#cdd6f4] outline-none",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "__all__", children: "Tất cả Users" }),
+              uniqueUsers.map((u2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: u2, children: u2 }, u2))
+            ]
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 text-xs items-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Sắp xếp:" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
@@ -17792,6 +18033,27 @@ function ProcessesPanel({
         )
       ] })
     ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-lg px-4 py-2 mb-3 flex gap-6 text-xs shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#585b70]", children: [
+        "Tổng: ",
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-[#cdd6f4]", children: stats.count }),
+        " tiến trình"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#585b70]", children: [
+        "CPU tổng: ",
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-[#a6e3a1]", children: [
+          stats.totalCpu.toFixed(1),
+          "%"
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#585b70]", children: [
+        "RAM tổng: ",
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-[#f9e2af]", children: [
+          stats.totalMem.toFixed(1),
+          "%"
+        ] })
+      ] })
+    ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "PID" }),
@@ -17802,11 +18064,7 @@ function ProcessesPanel({
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Command" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao tác" })
       ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: processList.filter((p2) => p2.command.toLowerCase().includes(procSearch.toLowerCase()) || p2.pid.includes(procSearch)).sort((a, b) => {
-        if (procSortKey === "cpu") return b.cpu - a.cpu;
-        if (procSortKey === "mem") return b.mem - a.mem;
-        return parseInt(b.pid) - parseInt(a.pid);
-      }).map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: filtered.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#89b4fa] font-bold", children: p2.pid }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8]", children: p2.user }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "p-3 text-right font-mono text-[#a6e3a1]", children: [
@@ -17819,43 +18077,32 @@ function ProcessesPanel({
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: p2.time }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#cdd6f4] max-w-xs truncate", title: p2.command, children: p2.command }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: async () => {
-                if (confirm(`Bạn có chắc muốn tắt tiến trình PID ${p2.pid}?`)) {
-                  setLoading(true);
-                  await exec(`kill -15 ${p2.pid} || sudo kill -15 ${p2.pid}`);
-                  await fetchProcesses();
-                  setLoading(false);
-                }
-              },
-              className: "px-2 py-0.5 rounded bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20 transition-all text-[10px]",
-              children: "Kill"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: async () => {
-                if (confirm(`Buộc tắt tiến trình PID ${p2.pid} (SIGKILL)?`)) {
-                  setLoading(true);
-                  await exec(`kill -9 ${p2.pid} || sudo kill -9 ${p2.pid}`);
-                  await fetchProcesses();
-                  setLoading(false);
-                }
-              },
-              className: "px-2 py-0.5 rounded bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all text-[10px]",
-              children: "Force Kill"
-            }
-          )
-        ] }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1 justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "select",
+          {
+            defaultValue: "",
+            onChange: (e) => {
+              if (e.target.value) {
+                handleSignal(p2.pid, e.target.value);
+                e.target.value = "";
+              }
+            },
+            className: "bg-[#11111b] border border-white/5 rounded px-1.5 py-0.5 text-[10px] text-[#cdd6f4] outline-none cursor-pointer",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", disabled: true, children: "Signal..." }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "SIGTERM", children: "SIGTERM (15)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "SIGKILL", children: "SIGKILL (9)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "SIGHUP", children: "SIGHUP (1)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "SIGUSR1", children: "SIGUSR1 (10)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "SIGUSR2", children: "SIGUSR2 (12)" })
+            ]
+          }
+        ) }) })
       ] }, p2.pid)) })
     ] }) })
   ] });
 }
-const stripAnsi$3 = (str) => {
+const stripAnsi$4 = (str) => {
   return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
 };
 function PM2Panel({
@@ -17869,6 +18116,15 @@ function PM2Panel({
   const [pm2Installed, setPm2Installed] = reactExports.useState(true);
   const [selectedAppLogs, setSelectedAppLogs] = reactExports.useState(null);
   const [ports, setPorts] = reactExports.useState([]);
+  const [installing, setInstalling] = reactExports.useState(false);
+  const [installLog, setInstallLog] = reactExports.useState("");
+  const [showStartAppModal, setShowStartAppModal] = reactExports.useState(false);
+  const [newAppName, setNewAppName] = reactExports.useState("");
+  const [newAppScript, setNewAppScript] = reactExports.useState("");
+  const [newAppCwd, setNewAppCwd] = reactExports.useState("");
+  const [newAppArgs, setNewAppArgs] = reactExports.useState("");
+  const [startingApp, setStartingApp] = reactExports.useState(false);
+  const [pickerTarget, setPickerTarget] = reactExports.useState(null);
   const fetchPortsList = reactExports.useCallback(async () => {
     const cmd = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`;
     const { stdout } = await exec(cmd);
@@ -17967,6 +18223,35 @@ function PM2Panel({
     await fetchPm2();
     setLoading(false);
   };
+  const handleStartNewApp = async () => {
+    if (!newAppName.trim() || !newAppScript.trim()) {
+      alert("Vui lòng nhập tên ứng dụng và đường dẫn script!");
+      return;
+    }
+    setStartingApp(true);
+    try {
+      const name = newAppName.trim();
+      const script = newAppScript.trim();
+      const cwd = newAppCwd.trim() ? `--cwd "${newAppCwd.trim()}"` : "";
+      const args = newAppArgs.trim() ? `-- ${newAppArgs.trim()}` : "";
+      const cmd = `pm2 start "${script}" --name "${name}" ${cwd} ${args}`;
+      const res = await exec(cmd);
+      if (res.code !== 0) {
+        throw new Error(res.stderr || "Không thể start ứng dụng PM2");
+      }
+      alert(`Đã khởi chạy ứng dụng "${name}" thành công!`);
+      setShowStartAppModal(false);
+      setNewAppName("");
+      setNewAppScript("");
+      setNewAppCwd("");
+      setNewAppArgs("");
+      await fetchPm2();
+    } catch (e) {
+      alert("Lỗi khởi chạy ứng dụng: " + e.message);
+    } finally {
+      setStartingApp(false);
+    }
+  };
   const handleViewPm2Logs = async (app) => {
     setLoading(true);
     let logs = "";
@@ -17984,8 +18269,39 @@ function PM2Panel({
       const { stdout } = await exec(`tail -n 100 ~/.pm2/logs/${app.name}-out.log 2>/dev/null || echo "No logs found."`);
       logs = stdout;
     }
-    setSelectedAppLogs({ name: app.name, logs: stripAnsi$3(logs) || "Không tìm thấy log nào." });
+    setSelectedAppLogs({ name: app.name, logs: stripAnsi$4(logs) || "Không tìm thấy log nào." });
     setLoading(false);
+  };
+  const handleInstallPm2 = async () => {
+    setInstalling(true);
+    setInstallLog("Đang chuẩn bị cài đặt PM2...\n");
+    try {
+      setInstallLog((prev) => prev + "Đang kiểm tra Node.js & NPM...\n");
+      const checkNpm = await exec("npm -v 2>/dev/null");
+      if (checkNpm.code !== 0) {
+        setInstallLog((prev) => prev + "Không tìm thấy NPM. Đang tiến hành cài đặt Node.js & NPM từ hệ thống...\n");
+        await exec("sudo apt-get update");
+        const installNode = await exec("sudo apt-get install -y nodejs npm");
+        if (installNode.code !== 0) {
+          setInstallLog((prev) => prev + "Cài đặt Node.js qua apt thất bại. Đang cấu hình NodeSource...\n");
+          await exec("curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && sudo apt-get install -y nodejs");
+        }
+      }
+      setInstallLog((prev) => prev + "Đang tiến hành cài đặt PM2 toàn cục (npm install -g pm2)...\n");
+      const installPm2 = await exec("sudo npm install -g pm2 || npm install -g pm2");
+      if (installPm2.code !== 0) {
+        throw new Error(installPm2.stderr || "Không thể cài đặt PM2. Vui lòng kiểm tra quyền sudo.");
+      }
+      setInstallLog((prev) => prev + "Cài đặt PM2 thành công!\n");
+      alert("Cài đặt PM2 thành công!");
+      await loadData();
+    } catch (e) {
+      setInstallLog((prev) => prev + `Lỗi: ${e.message}
+`);
+      alert("Lỗi cài đặt PM2: " + e.message);
+    } finally {
+      setInstalling(false);
+    }
   };
   const loadData = reactExports.useCallback(async () => {
     setLoading(true);
@@ -17997,14 +18313,52 @@ function PM2Panel({
     loadData();
   }, [loadData, refreshKey]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-    !pm2Installed ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 36, className: "mb-3 opacity-30" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "PM2 không được cài đặt trên máy chủ" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] mt-1 text-[#45475a] max-w-xs text-center leading-relaxed", children: "Vui lòng cài đặt PM2 toàn cục (ví dụ: `npm install -g pm2`) để sử dụng tính năng quản lý tiến trình." })
-    ] }) : pm2Apps.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 36, className: "mb-3 opacity-30" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không có app PM2 nào đang chạy" })
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+    pm2Installed && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3 shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-[#cdd6f4]", children: "Quản lý tiến trình NodeJS (PM2)" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: () => setShowStartAppModal(true),
+          className: "px-3 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] active:scale-95 transition-all flex items-center gap-1.5",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 12 }),
+            " Khởi chạy ứng dụng mới"
+          ]
+        }
+      )
+    ] }),
+    !pm2Installed ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-grow flex flex-col items-center justify-center text-[#585b70] max-w-md mx-auto p-6 text-center space-y-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 48, className: "text-[#89b4fa] opacity-60 animate-bounce" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-bold text-[#cdd6f4]", children: "PM2 chưa được cài đặt trên máy chủ" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-[#585b70]", children: "Không tìm thấy lệnh pm2 trên máy chủ này. Cần cài đặt Node.js, NPM và PM2 toàn cục để quản lý ứng dụng Node.js." })
+      ] }),
+      installing ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full bg-[#181825] border border-white/5 rounded-xl p-4 flex flex-col text-left space-y-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-bold text-[#89b4fa] tracking-wider animate-pulse flex items-center gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: "animate-spin" }),
+          " Đang cài đặt PM2..."
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[9px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin", children: installLog })
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: handleInstallPm2,
+          className: "px-4 py-2 rounded-xl bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all",
+          children: "Cài đặt PM2 tự động"
+        }
+      )
+    ] }) : pm2Apps.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70] space-y-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 36, className: "opacity-30 animate-pulse" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không có app PM2 nào đang chạy" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => setShowStartAppModal(true),
+          className: "px-4 py-2 rounded-xl bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] active:scale-95 transition-all",
+          children: "Khởi chạy ứng dụng mới"
+        }
+      )
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "ID" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tên Ứng Dụng" }),
@@ -18062,6 +18416,15 @@ function PM2Panel({
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
+                onClick: () => handlePm2Action("reload", app.pm_id),
+                className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
+                title: "Reload (Zero Downtime)",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(RotateCw, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
                 onClick: () => handlePm2Action("restart", app.pm_id),
                 className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
                 title: "Restart Process",
@@ -18075,6 +18438,19 @@ function PM2Panel({
                 className: "p-1 rounded hover:bg-white/5 text-[#fab387]",
                 title: "View Logs",
                 children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => {
+                  if (confirm(`Bạn có chắc chắn muốn xóa tiến trình PM2 "${app.name}" không?`)) {
+                    handlePm2Action("delete", app.pm_id);
+                  }
+                },
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]/70 hover:text-[#f38ba8]",
+                title: "Delete Process",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
               }
             )
           ] }) })
@@ -18098,10 +18474,262 @@ function PM2Panel({
           /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text selection:bg-[#fab387]/25 scrollbar-thin", children: selectedAppLogs.logs })
         ]
       }
-    ) })
+    ) }),
+    showStartAppModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setShowStartAppModal(false), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[420px] flex flex-col animate-scale-in",
+        onClick: (e) => e.stopPropagation(),
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13, className: "text-[#89b4fa]" }),
+              " Khởi chạy ứng dụng PM2 mới"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowStartAppModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên ứng dụng (App Name) *" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "ví dụ: my-node-server",
+                  value: newAppName,
+                  onChange: (e) => setNewAppName(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Đường dẫn Script/File chạy (Script Path) *" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "text",
+                    placeholder: "ví dụ: /var/www/app/index.js hoặc app.js",
+                    value: newAppScript,
+                    onChange: (e) => setNewAppScript(e.target.value),
+                    className: "flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: () => setPickerTarget("script"),
+                    className: "px-3 rounded-lg bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs flex items-center justify-center",
+                    title: "Chọn Tệp",
+                    children: "Duyệt..."
+                  }
+                )
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Thư mục làm việc (Working Directory - CWD)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "text",
+                    placeholder: "ví dụ: /var/www/app (để trống nếu chạy cùng thư mục)",
+                    value: newAppCwd,
+                    onChange: (e) => setNewAppCwd(e.target.value),
+                    className: "flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: () => setPickerTarget("cwd"),
+                    className: "px-3 rounded-lg bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs flex items-center justify-center",
+                    title: "Chọn Thư Mục",
+                    children: "Duyệt..."
+                  }
+                )
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tham số truyền vào (Arguments)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "ví dụ: --port=3000 --env=production",
+                  value: newAppArgs,
+                  onChange: (e) => setNewAppArgs(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => setShowStartAppModal(false),
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                  children: "Hủy"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleStartNewApp,
+                  disabled: startingApp,
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40",
+                  children: startingApp ? "Đang chạy..." : "Khởi chạy"
+                }
+              )
+            ] })
+          ] })
+        ]
+      }
+    ) }),
+    pickerTarget && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      RemotePathPicker$1,
+      {
+        visible: true,
+        mode: pickerTarget === "script" ? "file" : "dir",
+        exec,
+        onClose: () => setPickerTarget(null),
+        onSelect: (path) => {
+          if (pickerTarget === "script") setNewAppScript(path);
+          if (pickerTarget === "cwd") setNewAppCwd(path);
+        }
+      }
+    )
   ] });
 }
-const stripAnsi$2 = (str) => {
+function RemotePathPicker$1({ mode, exec, onClose, onSelect }) {
+  const [currentPath, setCurrentPath] = reactExports.useState("/");
+  const [items, setItems] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const fetchDir = reactExports.useCallback(async (path) => {
+    setLoading(true);
+    try {
+      const sanitizedPath = path.replace(/"/g, '\\"');
+      const cmd = `cd "${sanitizedPath}" && ls -F -1`;
+      const res = await exec(cmd);
+      if (res.code === 0) {
+        const parsed = res.stdout.split("\n").map((f2) => f2.trim()).filter((f2) => f2 && f2 !== "./" && f2 !== "../").map((f2) => {
+          const isDir = f2.endsWith("/");
+          const name = isDir ? f2.slice(0, -1) : f2;
+          return { name, isDir };
+        });
+        parsed.sort((a, b) => {
+          if (a.isDir && !b.isDir) return -1;
+          if (!a.isDir && b.isDir) return 1;
+          return a.name.localeCompare(b.name);
+        });
+        setItems(parsed);
+        setCurrentPath(path);
+      } else {
+        alert("Lỗi đọc thư mục: " + res.stderr);
+      }
+    } catch (e) {
+      alert("Lỗi: " + e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [exec]);
+  reactExports.useEffect(() => {
+    fetchDir("/");
+  }, [fetchDir]);
+  const handleGoUp = () => {
+    if (currentPath === "/") return;
+    const parts = currentPath.split("/").filter(Boolean);
+    parts.pop();
+    const parent = "/" + parts.join("/");
+    fetchDir(parent);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] h-[480px] flex flex-col animate-scale-in", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#181825]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+        "Chọn ",
+        mode === "file" ? "Tệp tin" : "Thư mục",
+        " trên Server"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-[#11111b] border-b border-white/5 flex gap-2 items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: handleGoUp,
+          disabled: currentPath === "/",
+          className: "px-2 py-1 rounded bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40",
+          children: "← Lên"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          readOnly: true,
+          value: currentPath,
+          className: "flex-1 bg-[#181825] border border-white/5 rounded px-2 py-1 text-xs text-[#a6adc8] font-mono outline-none"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-2.5 space-y-0.5 scrollbar-thin", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70] gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 14, className: "animate-spin text-[#89b4fa]" }),
+      " Đang tải..."
+    ] }) : items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70]", children: "Thư mục trống." }) : items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        onClick: () => {
+          const newPath = currentPath === "/" ? `/${item.name}` : `${currentPath}/${item.name}`;
+          if (item.isDir) {
+            fetchDir(newPath);
+          } else {
+            if (mode === "file") {
+              onSelect(newPath);
+              onClose();
+            }
+          }
+        },
+        className: "w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.02] transition-all",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-sm", children: item.isDir ? "📁" : "📄" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: item.name })
+        ]
+      },
+      item.name
+    )) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 border-t border-white/5 bg-[#181825] flex justify-between items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70]", children: mode === "file" ? "Click file để chọn" : "Bấm Chọn để lấy thư mục hiện tại" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: onClose,
+            className: "px-3 py-1 rounded bg-white/5 hover:bg-white/10 text-xs text-[#cdd6f4]",
+            children: "Hủy"
+          }
+        ),
+        mode === "dir" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => {
+              onSelect(currentPath);
+              onClose();
+            },
+            className: "px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] text-xs font-bold",
+            children: "Chọn thư mục này"
+          }
+        )
+      ] })
+    ] })
+  ] }) });
+}
+const stripAnsi$3 = (str) => {
   return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
 };
 function DockerPanel({
@@ -18116,17 +18744,33 @@ function DockerPanel({
   const [containers, setContainers] = reactExports.useState([]);
   const [images, setImages] = reactExports.useState([]);
   const [selectedContainerLogs, setSelectedContainerLogs] = reactExports.useState(null);
-  const fetchDocker = reactExports.useCallback(async () => {
+  const [composeProjects, setComposeProjects] = reactExports.useState([]);
+  const [networks, setNetworks] = reactExports.useState([]);
+  const [volumes, setVolumes] = reactExports.useState([]);
+  const [containerStats, setContainerStats] = reactExports.useState({});
+  const [installing, setInstalling] = reactExports.useState(false);
+  const [installLog, setInstallLog] = reactExports.useState("");
+  const [daemonConfig, setDaemonConfig] = reactExports.useState("");
+  const [savingConfig, setSavingConfig] = reactExports.useState(false);
+  const fetchDocker = reactExports.useCallback(async (checkVersion = false) => {
     try {
-      const checkDocker = await exec("docker --version 2>/dev/null");
-      if (checkDocker.code !== 0) {
-        setDockerInstalled(false);
-        return;
+      if (checkVersion) {
+        const checkDocker = await exec("docker --version 2>/dev/null");
+        if (checkDocker.code !== 0) {
+          setDockerInstalled(false);
+          return;
+        }
+        setDockerInstalled(true);
       }
-      setDockerInstalled(true);
       if (dockerSubTab === "containers") {
-        const { stdout } = await exec(`docker ps -a --format '{{.ID}}||{{.Names}}||{{.Image}}||{{.Status}}||{{.Ports}}' 2>/dev/null`);
-        const list = stdout.split("\n").map((l2) => l2.trim()).filter(Boolean).map((line) => {
+        const cmd = "docker ps -a --format '{{.ID}}||{{.Names}}||{{.Image}}||{{.Status}}||{{.Ports}}' 2>/dev/null && echo '===STATS===' && docker stats --no-stream --format '{{.Name}}||{{.CPUPerc}}||{{.MemUsage}}' 2>/dev/null || echo ''";
+        const { stdout, code } = await exec(cmd);
+        if (code === 127) {
+          setDockerInstalled(false);
+          return;
+        }
+        const [psSection, statsSection] = stdout.split("===STATS===");
+        const list = (psSection || "").split("\n").map((l2) => l2.trim()).filter(Boolean).map((line) => {
           const parts = line.split("||");
           return {
             id: parts[0] || "",
@@ -18137,8 +18781,22 @@ function DockerPanel({
           };
         });
         setContainers(list);
-      } else {
-        const { stdout } = await exec(`docker images --format '{{.Repository}}||{{.Tag}}||{{.ID}}||{{.Size}}' 2>/dev/null`);
+        if (statsSection) {
+          const statsMap = {};
+          statsSection.split("\n").filter(Boolean).forEach((line) => {
+            const parts = line.split("||");
+            if (parts.length >= 3) {
+              statsMap[parts[0].trim()] = { cpu: parts[1].trim(), mem: parts[2].trim() };
+            }
+          });
+          setContainerStats(statsMap);
+        }
+      } else if (dockerSubTab === "images") {
+        const { stdout, code } = await exec(`docker images --format '{{.Repository}}||{{.Tag}}||{{.ID}}||{{.Size}}' 2>/dev/null`);
+        if (code === 127) {
+          setDockerInstalled(false);
+          return;
+        }
         const list = stdout.split("\n").map((l2) => l2.trim()).filter(Boolean).map((line) => {
           const parts = line.split("||");
           return {
@@ -18149,6 +18807,40 @@ function DockerPanel({
           };
         });
         setImages(list);
+      } else if (dockerSubTab === "compose") {
+        const { stdout, code } = await exec("docker compose ls --format 'table' 2>/dev/null || docker-compose ls 2>/dev/null || echo ''");
+        if (code === 127) {
+          setDockerInstalled(false);
+          return;
+        }
+        const lines = stdout.split("\n").slice(1).filter(Boolean);
+        const projects = lines.map((line) => {
+          const parts = line.trim().replace(/\s+/g, "||").split("||");
+          return { name: parts[0] || "", status: parts[1] || "", configFiles: parts[2] || "" };
+        }).filter((p2) => p2.name);
+        setComposeProjects(projects);
+      } else if (dockerSubTab === "networks") {
+        const { stdout, code } = await exec("docker network ls --format '{{.ID}}||{{.Name}}||{{.Driver}}||{{.Scope}}' 2>/dev/null");
+        if (code === 127) {
+          setDockerInstalled(false);
+          return;
+        }
+        const list = stdout.split("\n").filter(Boolean).map((line) => {
+          const parts = line.split("||");
+          return { id: parts[0] || "", name: parts[1] || "", driver: parts[2] || "", scope: parts[3] || "" };
+        });
+        setNetworks(list);
+      } else if (dockerSubTab === "volumes") {
+        const { stdout, code } = await exec("docker volume ls --format '{{.Name}}||{{.Driver}}||{{.Mountpoint}}' 2>/dev/null");
+        if (code === 127) {
+          setDockerInstalled(false);
+          return;
+        }
+        const list = stdout.split("\n").filter(Boolean).map((line) => {
+          const parts = line.split("||");
+          return { name: parts[0] || "", driver: parts[1] || "", mountpoint: parts[2] || "" };
+        });
+        setVolumes(list);
       }
     } catch (e) {
       setError(e.message || "Lỗi tải thông tin Docker");
@@ -18178,27 +18870,127 @@ function DockerPanel({
     setSelectedContainerLogs({
       id: containerId,
       name: containerName,
-      logs: stripAnsi$2(stdout || stderr || "Không tìm thấy log nào.")
+      logs: stripAnsi$3(stdout || stderr || "Không tìm thấy log nào.")
     });
     setLoading(false);
+  };
+  const handleInstallDocker = async () => {
+    setInstalling(true);
+    setInstallLog("Đang chuẩn bị cài đặt Docker...\n");
+    try {
+      setInstallLog((prev) => prev + "Đang cập nhật danh sách gói (apt-get update)...\n");
+      await exec("sudo apt-get update");
+      setInstallLog((prev) => prev + "Đang cài đặt Docker Engine...\n");
+      const res = await exec("sudo apt-get install -y docker.io");
+      if (res.code === 0) {
+        setInstallLog((prev) => prev + "Cài đặt thành công! Đang khởi chạy Docker...\n");
+        await exec("sudo systemctl start docker && sudo systemctl enable docker");
+        alert("Cài đặt Docker thành công!");
+      } else {
+        setInstallLog((prev) => prev + "Không thể cài bằng apt. Đang thử bằng script chính thức từ get.docker.com...\n");
+        const scriptRes = await exec("curl -fsSL https://get.docker.com | sh");
+        if (scriptRes.code === 0) {
+          setInstallLog((prev) => prev + "Cài đặt thành công bằng script!\n");
+          await exec("sudo systemctl start docker && sudo systemctl enable docker");
+          alert("Cài đặt Docker thành công!");
+        } else {
+          throw new Error(scriptRes.stderr || res.stderr || "Lỗi cài đặt thất bại.");
+        }
+      }
+      await loadData();
+    } catch (e) {
+      setInstallLog((prev) => prev + `Lỗi: ${e.message}
+`);
+      alert("Lỗi cài đặt Docker: " + e.message);
+    } finally {
+      setInstalling(false);
+    }
+  };
+  const fetchDaemonConfig = reactExports.useCallback(async () => {
+    setLoading(true);
+    try {
+      const { stdout, code } = await exec("sudo cat /etc/docker/daemon.json 2>/dev/null || cat /etc/docker/daemon.json 2>/dev/null");
+      if (code !== 0 || !stdout.trim()) {
+        setDaemonConfig('{\n  "registry-mirrors": [],\n  "insecure-registries": [],\n  "experimental": false\n}');
+      } else {
+        setDaemonConfig(stdout);
+      }
+    } catch (e) {
+      setError(e.message || "Lỗi đọc file cấu hình Docker daemon");
+    } finally {
+      setLoading(false);
+    }
+  }, [exec, setLoading, setError]);
+  const handleSaveDaemonConfig = async () => {
+    if (savingConfig) return;
+    setSavingConfig(true);
+    try {
+      try {
+        JSON.parse(daemonConfig);
+      } catch (err) {
+        alert("Lỗi định dạng JSON: " + err.message);
+        setSavingConfig(false);
+        return;
+      }
+      const tempFile = "/tmp/docker_daemon_config";
+      const writeCmd = `cat << 'EOF' > ${tempFile}
+${daemonConfig}
+EOF
+sudo mv ${tempFile} /etc/docker/daemon.json`;
+      const res = await exec(writeCmd);
+      if (res.code !== 0) {
+        throw new Error(res.stderr || "Không thể lưu file daemon.json");
+      }
+      const restartRes = await exec("sudo systemctl restart docker || systemctl restart docker");
+      if (restartRes.code !== 0) {
+        alert("Đã lưu cấu hình nhưng khởi động lại dịch vụ Docker thất bại: " + (restartRes.stderr || restartRes.stdout));
+      } else {
+        alert("Đã lưu cấu hình và khởi động lại dịch vụ Docker thành công!");
+      }
+    } catch (e) {
+      alert("Lỗi: " + e.message);
+    } finally {
+      setSavingConfig(false);
+    }
   };
   const loadData = reactExports.useCallback(async () => {
     setLoading(true);
     setError("");
-    await fetchDocker();
+    await fetchDocker(true);
+    if (dockerSubTab === "config") {
+      await fetchDaemonConfig();
+    }
     setLoading(false);
-  }, [fetchDocker, setLoading, setError]);
+  }, [fetchDocker, fetchDaemonConfig, dockerSubTab, setLoading, setError]);
   reactExports.useEffect(() => {
     loadData();
   }, [loadData, refreshKey]);
   reactExports.useEffect(() => {
+    if (!dockerInstalled || dockerSubTab === "config") return;
     const interval = setInterval(fetchDocker, 5e3);
     return () => clearInterval(interval);
-  }, [fetchDocker]);
+  }, [fetchDocker, dockerInstalled, dockerSubTab]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-    !dockerInstalled ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { size: 36, className: "mb-3 opacity-30" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Docker không được cài đặt hoặc chưa khởi động" })
+    !dockerInstalled ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-grow flex flex-col items-center justify-center text-[#585b70] max-w-md mx-auto p-6 text-center space-y-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { size: 48, className: "text-[#89b4fa] opacity-60 animate-bounce" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-bold text-[#cdd6f4]", children: "Docker chưa được cài đặt hoặc chưa khởi động" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-[#585b70]", children: "Không tìm thấy lệnh docker trên máy chủ SSH này. Bạn có thể tự động cài đặt Docker thông qua trình quản lý gói của hệ thống." })
+      ] }),
+      installing ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full bg-[#181825] border border-white/5 rounded-xl p-4 flex flex-col text-left space-y-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-bold text-[#89b4fa] tracking-wider animate-pulse flex items-center gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: "animate-spin" }),
+          " Đang cài đặt Docker..."
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[9px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin", children: installLog })
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: handleInstallDocker,
+          className: "px-4 py-2 rounded-xl bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all",
+          children: "Cài đặt Docker tự động"
+        }
+      )
     ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-3", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -18207,7 +18999,7 @@ function DockerPanel({
             onClick: () => {
               setDockerSubTab("containers");
             },
-            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "containers" ? "bg-accent-blue/15 text-accent-blue" : "text-surface-mid hover:text-surface-light"}`,
+            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "containers" ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
             children: [
               "Containers (",
               containers.length,
@@ -18221,21 +19013,74 @@ function DockerPanel({
             onClick: () => {
               setDockerSubTab("images");
             },
-            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "images" ? "bg-accent-blue/15 text-accent-blue" : "text-surface-mid hover:text-surface-light"}`,
+            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "images" ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
             children: [
               "Images (",
               images.length,
               ")"
             ]
           }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setDockerSubTab("compose");
+            },
+            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "compose" ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
+            children: [
+              "Compose (",
+              composeProjects.length,
+              ")"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setDockerSubTab("networks");
+            },
+            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "networks" ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
+            children: [
+              "Networks (",
+              networks.length,
+              ")"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setDockerSubTab("volumes");
+            },
+            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "volumes" ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
+            children: [
+              "Volumes (",
+              volumes.length,
+              ")"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              setDockerSubTab("config");
+            },
+            className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "config" ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
+            children: "Config"
+          }
         )
       ] }),
-      dockerSubTab === "containers" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+      dockerSubTab === "containers" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Container ID" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tên" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Image" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "CPU / RAM" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Ports)" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
         ] }) }),
@@ -18250,6 +19095,11 @@ function DockerPanel({
               children: c.status
             }
           ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#a6adc8] text-[11px]", children: c.status.toLowerCase().includes("up") && containerStats[c.name] ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+            containerStats[c.name].cpu,
+            " / ",
+            containerStats[c.name].mem
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: c.ports && c.ports !== "-" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: c.ports.split(",").map((p2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
             "span",
             {
@@ -18306,7 +19156,8 @@ function DockerPanel({
             )
           ] }) })
         ] }, c.id)) })
-      ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+      ] }) }),
+      dockerSubTab === "images" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Repository" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tag" }),
@@ -18329,7 +19180,168 @@ function DockerPanel({
             }
           ) })
         ] }, idx)) })
-      ] }) })
+      ] }) }),
+      dockerSubTab === "config" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-4 space-y-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-[#cdd6f4]", children: "Cấu hình Docker Daemon (/etc/docker/daemon.json)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#585b70]", children: "Định dạng tệp tin cấu hình là JSON. Chú ý kiểm tra cú pháp trước khi lưu." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: handleSaveDaemonConfig,
+              disabled: savingConfig,
+              className: "px-3.5 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all disabled:opacity-40",
+              children: savingConfig ? "Đang lưu..." : "Lưu & Khởi động lại Docker"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "textarea",
+          {
+            value: daemonConfig,
+            onChange: (e) => setDaemonConfig(e.target.value),
+            spellCheck: false,
+            className: "flex-1 w-full bg-[#11111b] border border-white/5 rounded-xl p-4 text-xs font-mono text-[#cdd6f4] outline-none resize-none leading-relaxed",
+            placeholder: "{\\n  ...\\n}"
+          }
+        )
+      ] }),
+      dockerSubTab === "compose" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: composeProjects.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex items-center justify-center text-[#585b70] text-xs py-12", children: "Không tìm thấy Docker Compose project nào." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Project" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Status" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Config Files" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: composeProjects.map((p2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: p2.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `px-2 py-0.5 rounded-full text-[10px] font-medium ${p2.status.includes("running") ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`, children: p2.status }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086] text-[10px] truncate max-w-[200px]", title: p2.configFiles, children: p2.configFiles }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  setLoading(true);
+                  await exec(`docker compose -p ${p2.name} up -d 2>/dev/null`);
+                  await fetchDocker();
+                  setLoading(false);
+                },
+                className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
+                title: "Up",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  setLoading(true);
+                  await exec(`docker compose -p ${p2.name} stop 2>/dev/null`);
+                  await fetchDocker();
+                  setLoading(false);
+                },
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+                title: "Stop",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  setLoading(true);
+                  await exec(`docker compose -p ${p2.name} restart 2>/dev/null`);
+                  await fetchDocker();
+                  setLoading(false);
+                },
+                className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
+                title: "Restart",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
+              }
+            )
+          ] }) })
+        ] }, idx)) })
+      ] }) }),
+      dockerSubTab === "networks" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Network ID" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Name" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Driver" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Scope" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: networks.map((n2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: n2.id.substring(0, 12) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: n2.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8]", children: n2.driver }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#585b70]", children: n2.scope }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: !["bridge", "host", "none"].includes(n2.name) && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: async () => {
+                if (confirm(`Xóa network ${n2.name}?`)) {
+                  setLoading(true);
+                  await exec(`docker network rm ${n2.id}`);
+                  await fetchDocker();
+                  setLoading(false);
+                }
+              },
+              className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+              title: "Remove",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+            }
+          ) })
+        ] }, idx)) })
+      ] }) }),
+      dockerSubTab === "volumes" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-end p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: async () => {
+              if (confirm("Xóa tất cả volumes không sử dụng?")) {
+                setLoading(true);
+                await exec("docker volume prune -f");
+                await fetchDocker();
+                setLoading(false);
+              }
+            },
+            className: "px-2 py-1 rounded bg-[#f38ba8]/10 text-[#f38ba8] text-[10px] font-semibold hover:bg-[#f38ba8]/20",
+            children: "Prune Unused"
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Name" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Driver" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Mountpoint" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: volumes.map((v2, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4] truncate max-w-[200px]", title: v2.name, children: v2.name }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8]", children: v2.driver }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086] text-[10px] truncate max-w-[200px]", title: v2.mountpoint, children: v2.mountpoint }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  if (confirm(`Xóa volume ${v2.name}?`)) {
+                    setLoading(true);
+                    await exec(`docker volume rm ${v2.name}`);
+                    await fetchDocker();
+                    setLoading(false);
+                  }
+                },
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+                title: "Remove",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+              }
+            ) })
+          ] }, idx)) })
+        ] })
+      ] })
     ] }),
     selectedContainerLogs && /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
@@ -18370,6 +19382,11 @@ function DatabasePanel({
   const [showCreateTunnelModal, setShowCreateTunnelModal] = reactExports.useState(null);
   const [tunnelLocalPortInput, setTunnelLocalPortInput] = reactExports.useState("");
   const [tunnelNameInput, setTunnelNameInput] = reactExports.useState("");
+  const [dbStats, setDbStats] = reactExports.useState({});
+  const [dbListModal, setDbListModal] = reactExports.useState(null);
+  const [quickQueryModal, setQuickQueryModal] = reactExports.useState(null);
+  const [queryInput, setQueryInput] = reactExports.useState("");
+  const [queryResult, setQueryResult] = reactExports.useState("");
   const fetchTunnels = reactExports.useCallback(async () => {
     try {
       const list = await window.api.tunnel.list();
@@ -18444,6 +19461,44 @@ function DatabasePanel({
       });
       setDbInstances(instances);
       await fetchTunnels();
+      const statsMap = {};
+      for (const inst of instances) {
+        try {
+          if (inst.type === "mysql") {
+            const ver = await exec('mysql -V 2>/dev/null || echo "unknown"');
+            const conns = await exec('mysqladmin status 2>/dev/null || echo ""');
+            const connMatch = (conns.stdout || "").match(/Threads:\s+(\d+)/);
+            statsMap[`${inst.type}-${inst.port}`] = {
+              version: (ver.stdout || "").split("\n")[0].trim(),
+              connections: connMatch ? connMatch[1] : "-"
+            };
+          } else if (inst.type === "postgres") {
+            const ver = await exec('psql --version 2>/dev/null || echo "unknown"');
+            const conns = await exec("sudo -u postgres psql -t -c 'SELECT count(*) FROM pg_stat_activity' 2>/dev/null || echo '-'");
+            statsMap[`${inst.type}-${inst.port}`] = {
+              version: (ver.stdout || "").split("\n")[0].trim(),
+              connections: (conns.stdout || "-").trim()
+            };
+          } else if (inst.type === "redis") {
+            const info = await exec('redis-cli info server 2>/dev/null | head -5 || echo "unknown"');
+            const verMatch = (info.stdout || "").match(/redis_version:(.+)/);
+            const clients = await exec('redis-cli info clients 2>/dev/null | grep connected_clients || echo ""');
+            const clientMatch = (clients.stdout || "").match(/connected_clients:(\d+)/);
+            statsMap[`${inst.type}-${inst.port}`] = {
+              version: verMatch ? `Redis ${verMatch[1].trim()}` : "Redis",
+              connections: clientMatch ? clientMatch[1] : "-"
+            };
+          } else if (inst.type === "mongodb") {
+            const ver = await exec('mongod --version 2>/dev/null | head -1 || echo "unknown"');
+            statsMap[`${inst.type}-${inst.port}`] = {
+              version: (ver.stdout || "").split("\n")[0].trim(),
+              connections: "-"
+            };
+          }
+        } catch {
+        }
+      }
+      setDbStats(statsMap);
     } catch (e) {
       setError(e.message || "Lỗi tải cơ sở dữ liệu");
     }
@@ -18539,27 +19594,79 @@ function DatabasePanel({
                 ] })
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-5", children: activeTunnel ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: () => handleStopTunnel(activeTunnel.id),
-                className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20 transition-all active:scale-95",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 11 }),
-                  "Hủy SSH Tunnel"
-                ]
-              }
-            ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: () => handleOpenTunnelModal(db2.port, db2.type),
-                className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] transition-all active:scale-95",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 11 }),
-                  "Tạo SSH Tunnel"
-                ]
-              }
-            ) })
+            dbStats[`${db2.type}-${db2.port}`] && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 bg-[#11111b] border border-white/[0.02] rounded-lg p-2.5 text-[10px] font-mono text-[#a6adc8] space-y-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Version:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#cdd6f4] truncate max-w-[150px]", title: dbStats[`${db2.type}-${db2.port}`].version, children: dbStats[`${db2.type}-${db2.port}`].version })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Connections:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#a6e3a1] font-bold", children: dbStats[`${db2.type}-${db2.port}`].connections })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 space-y-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2", children: (db2.type === "mysql" || db2.type === "postgres") && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    onClick: async () => {
+                      setLoading(true);
+                      let cmd = "";
+                      if (db2.type === "mysql") {
+                        cmd = "mysql -e 'SHOW DATABASES' 2>/dev/null || echo 'Không có quyền'";
+                      } else {
+                        cmd = "sudo -u postgres psql -t -c 'SELECT datname FROM pg_database WHERE datistemplate = false' 2>/dev/null || echo 'Không có quyền'";
+                      }
+                      const { stdout } = await exec(cmd);
+                      const dbs = stdout.split("\n").map((s) => s.trim()).filter((s) => s && !s.startsWith("+") && !s.startsWith("|") && s !== "Database");
+                      setDbListModal({ type: db2.type, databases: dbs });
+                      setLoading(false);
+                    },
+                    className: "flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(List, { size: 10 }),
+                      " Databases"
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    onClick: () => {
+                      setQuickQueryModal({ type: db2.type, port: db2.port });
+                      setQueryInput("");
+                      setQueryResult("");
+                    },
+                    className: "flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 10 }),
+                      " Query"
+                    ]
+                  }
+                )
+              ] }) }),
+              activeTunnel ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  onClick: () => handleStopTunnel(activeTunnel.id),
+                  className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20 transition-all active:scale-95",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 11 }),
+                    "Hủy SSH Tunnel"
+                  ]
+                }
+              ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  onClick: () => handleOpenTunnelModal(db2.port, db2.type),
+                  className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] transition-all active:scale-95",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 11 }),
+                    "Tạo SSH Tunnel"
+                  ]
+                }
+              )
+            ] })
           ]
         },
         idx
@@ -18636,8 +19743,84 @@ function DatabasePanel({
           }
         )
       }
-    )
+    ),
+    dbListModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setDbListModal(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[380px] max-h-[60vh] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: [
+          "Databases (",
+          dbListModal.type.toUpperCase(),
+          ")"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setDbListModal(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto p-4 space-y-1", children: [
+        dbListModal.databases.map((db2, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-2 bg-[#181825] border border-white/[0.04] rounded-lg text-xs font-mono text-[#cdd6f4]", children: db2 }, i)),
+        dbListModal.databases.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] text-center text-xs py-4", children: "Không tìm thấy database nào." })
+      ] })
+    ] }) }),
+    quickQueryModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setQuickQueryModal(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[600px] max-h-[80vh] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: [
+          "Quick Query (",
+          quickQueryModal.type.toUpperCase(),
+          ")"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setQuickQueryModal(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "textarea",
+          {
+            value: queryInput,
+            onChange: (e) => setQueryInput(e.target.value),
+            placeholder: quickQueryModal.type === "mysql" ? "SELECT * FROM users LIMIT 10;" : "SELECT * FROM pg_stat_activity;",
+            className: "w-full h-20 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono resize-none"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: async () => {
+              if (!queryInput.trim()) return;
+              setLoading(true);
+              let cmd = "";
+              if (quickQueryModal.type === "mysql") {
+                cmd = `mysql -e "${queryInput.replace(/"/g, '\\"')}" 2>&1`;
+              } else {
+                cmd = `sudo -u postgres psql -c "${queryInput.replace(/"/g, '\\"')}" 2>&1`;
+              }
+              const { stdout } = await exec(cmd);
+              setQueryResult(stdout || "Không có kết quả.");
+              setLoading(false);
+            },
+            className: "w-full py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all",
+            children: "Execute Query"
+          }
+        ),
+        queryResult && /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "max-h-48 overflow-auto bg-[#11111b] border border-white/[0.04] rounded-lg p-3 text-[11px] font-mono text-[#a6adc8] whitespace-pre-wrap select-text", children: queryResult })
+      ] })
+    ] }) })
   ] });
+}
+function describeCron(expr) {
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length < 5) return expr;
+  const [min, hour, dom, mon, dow] = parts;
+  if (min === "*" && hour === "*" && dom === "*" && mon === "*" && dow === "*") return "Mỗi phút";
+  if (min.startsWith("*/")) return `Mỗi ${min.replace("*/", "")} phút`;
+  if (min !== "*" && hour === "*" && dom === "*" && mon === "*" && dow === "*") return `Phút ${min} mỗi giờ`;
+  if (hour.startsWith("*/") && dom === "*" && mon === "*" && dow === "*") return `Mỗi ${hour.replace("*/", "")} giờ, phút ${min}`;
+  if (min !== "*" && hour !== "*" && dom === "*" && mon === "*" && dow === "*") return `Hàng ngày lúc ${hour}:${min.padStart(2, "0")}`;
+  if (min !== "*" && hour !== "*" && dom === "*" && mon === "*" && dow !== "*") {
+    const days = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+    const dayName = days[parseInt(dow)] || dow;
+    return `Mỗi ${dayName} lúc ${hour}:${min.padStart(2, "0")}`;
+  }
+  if (min !== "*" && hour !== "*" && dom !== "*" && mon === "*") return `Ngày ${dom} hàng tháng lúc ${hour}:${min.padStart(2, "0")}`;
+  return expr;
+}
+function sanitizeForShell(str) {
+  return str.replace(/["$`\\!]/g, "\\$&");
 }
 function CronPanel({
   sessionId,
@@ -18710,7 +19893,8 @@ function CronPanel({
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: cronJobs.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-xs py-12", children: "Không có cron job nào được cấu hình." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 w-12", children: "Trạng thái" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Thời gian (Cron Expression)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Thời gian" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Mô tả" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Lệnh thực thi" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao tác" })
       ] }) }),
@@ -18728,7 +19912,8 @@ function CronPanel({
               children: isCommented ? "Tắt" : "Bật"
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono font-bold text-[#89b4fa]", children: schedule }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono font-bold text-[#89b4fa] text-[10px]", title: schedule, children: schedule }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8] text-[10px]", children: describeCron(schedule) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#cdd6f4] break-all select-text", children: command }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -18742,13 +19927,33 @@ function CronPanel({
                   } else {
                     updatedJobs[idx] = `# ${job}`;
                   }
-                  const newCronString = updatedJobs.join("\n");
+                  const newCronString = sanitizeForShell(updatedJobs.join("\n"));
                   await exec(`echo "${newCronString}" | crontab -`);
                   await fetchCronJobs();
                   setLoading(false);
                 },
                 className: "px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-xs transition-all animate-none text-[#a6adc8]",
                 children: isCommented ? "Bật" : "Tắt"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: async () => {
+                  if (confirm(`Chạy thử lệnh ngay bây giờ?
+${command}`)) {
+                    setLoading(true);
+                    const result = await exec(command);
+                    setCronLogs(result.stdout || result.stderr || "Lệnh hoàn tất (không có output).");
+                    setLoading(false);
+                  }
+                },
+                className: "px-2 py-0.5 rounded bg-[#a6e3a1]/10 text-[#a6e3a1] hover:bg-[#a6e3a1]/20 text-xs transition-all",
+                title: "Chạy lệnh ngay lập tức",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 10, className: "inline" }),
+                  " Run"
+                ]
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -18771,7 +19976,7 @@ function CronPanel({
                   if (confirm("Xóa cron job này?")) {
                     setLoading(true);
                     const updatedJobs = cronJobs.filter((_, i) => i !== idx);
-                    const newCronString = updatedJobs.join("\n");
+                    const newCronString = sanitizeForShell(updatedJobs.join("\n"));
                     await exec(`echo "${newCronString}" | crontab -`);
                     await fetchCronJobs();
                     setLoading(false);
@@ -18877,7 +20082,7 @@ function CronPanel({
                         } else {
                           updatedJobs.push(newJob);
                         }
-                        const newCronString = updatedJobs.join("\n");
+                        const newCronString = sanitizeForShell(updatedJobs.join("\n"));
                         await exec(`echo "${newCronString}" | crontab -`);
                         await fetchCronJobs();
                         setShowAddCronModal(false);
@@ -18910,133 +20115,6 @@ function CronPanel({
     ) })
   ] });
 }
-function MultiExecPanel({
-  sessionId,
-  exec
-}) {
-  const [multiCmd, setMultiCmd] = reactExports.useState("");
-  const [selectedSessions, setSelectedSessions] = reactExports.useState({});
-  const [multiOutputs, setMultiOutputs] = reactExports.useState({});
-  const handleBroadcast = async () => {
-    const targetIds = [sessionId, ...Object.keys(selectedSessions).filter((id2) => selectedSessions[id2])];
-    const freshOutputs = {};
-    targetIds.forEach((id2) => {
-      freshOutputs[id2] = { label: "", output: "", status: "running" };
-    });
-    setMultiOutputs(freshOutputs);
-    targetIds.forEach(async (id2) => {
-      try {
-        const result = await window.api.ssh.exec(id2, multiCmd);
-        setMultiOutputs((prev) => ({
-          ...prev,
-          [id2]: {
-            label: "",
-            output: result.stdout || result.stderr || "Command finished with no output.",
-            status: result.code === 0 ? "done" : "error"
-          }
-        }));
-      } catch (err) {
-        setMultiOutputs((prev) => ({
-          ...prev,
-          [id2]: { label: "", output: "Lỗi kết nối: " + err.message, status: "error" }
-        }));
-      }
-    });
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden gap-4", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-4 gap-4 flex-1 overflow-hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-1 bg-[#181825] border border-white/[0.04] rounded-xl p-3 flex flex-col overflow-hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Chọn Server đích" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto space-y-2", children: [
-          useTerminalStore.getState().tabs.filter((t2) => t2.connected && t2.sessionId !== sessionId).map((t2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "label",
-            {
-              className: "flex items-center gap-2 p-2 bg-[#11111b] border border-white/5 rounded-lg text-xs hover:bg-white/[0.02] cursor-pointer",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    type: "checkbox",
-                    checked: !!selectedSessions[t2.sessionId],
-                    onChange: (e) => {
-                      setSelectedSessions((prev) => ({ ...prev, [t2.sessionId]: e.target.checked }));
-                    },
-                    className: "rounded text-[#89b4fa] focus:ring-0 bg-[#1e1e2e] border-white/5"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-[#cdd6f4] font-semibold", children: t2.label })
-              ]
-            },
-            t2.sessionId
-          )),
-          useTerminalStore.getState().tabs.filter((t2) => t2.connected && t2.sessionId !== sessionId).length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#585b70] italic text-center py-8", children: "Không có tab SSH nào khác đang mở. Hãy mở thêm kết nối để chạy cluster." })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-3 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative p-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Kết quả thực thi Cluster" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 grid grid-cols-2 gap-3 overflow-y-auto pr-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/5 rounded-lg p-2.5 flex flex-col overflow-hidden max-h-[250px]", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-1 text-[10px]", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-[#89b4fa]", children: "Máy chủ hiện tại (Local)" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "span",
-                {
-                  className: `font-mono text-[9px] px-1 py-0.5 rounded ${multiOutputs[sessionId]?.status === "running" ? "bg-yellow-500/10 text-yellow-500 animate-pulse" : multiOutputs[sessionId]?.status === "done" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "text-[#585b70]"}`,
-                  children: multiOutputs[sessionId]?.status || "idle"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 font-mono text-[9px] overflow-auto whitespace-pre-wrap select-text bg-[#11111b] p-1.5 rounded border border-white/[0.02]", children: multiOutputs[sessionId]?.output || "Chưa chạy lệnh nào." })
-          ] }),
-          Object.keys(selectedSessions).filter((id2) => selectedSessions[id2]).map((id2) => {
-            const sessionInfo = useTerminalStore.getState().tabs.find((t2) => t2.sessionId === id2);
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/5 rounded-lg p-2.5 flex flex-col overflow-hidden max-h-[250px]", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-1 text-[10px]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-[#a6e3a1] truncate max-w-[120px]", children: sessionInfo?.label || "Server" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "span",
-                  {
-                    className: `font-mono text-[9px] px-1 py-0.5 rounded ${multiOutputs[id2]?.status === "running" ? "bg-yellow-500/10 text-yellow-500 animate-pulse" : multiOutputs[id2]?.status === "done" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "text-[#585b70]"}`,
-                    children: multiOutputs[id2]?.status || "idle"
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 font-mono text-[9px] overflow-auto whitespace-pre-wrap select-text bg-[#11111b] p-1.5 rounded border border-white/[0.02]", children: multiOutputs[id2]?.output || "Chưa chạy lệnh nào." })
-            ] }, id2);
-          })
-        ] })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-3 flex gap-3 items-center shrink-0", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "input",
-        {
-          type: "text",
-          placeholder: "Nhập lệnh thực thi cluster (ví dụ: df -h, uname -a, free -m)...",
-          value: multiCmd,
-          onChange: (e) => setMultiCmd(e.target.value),
-          onKeyDown: async (e) => {
-            if (e.key === "Enter") {
-              await handleBroadcast();
-            }
-          },
-          className: "flex-1 bg-[#11111b] border border-white/5 rounded-lg px-4 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          onClick: handleBroadcast,
-          className: "px-4 py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center gap-1.5",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Send, { size: 12 }),
-            " Broadcast"
-          ]
-        }
-      )
-    ] })
-  ] });
-}
 function PackagesPanel({
   sessionId,
   exec,
@@ -19047,6 +20125,9 @@ function PackagesPanel({
   const [packagesList, setPackagesList] = reactExports.useState([]);
   const [installingPackage, setInstallingPackage] = reactExports.useState(null);
   const [installLogs, setInstallLogs] = reactExports.useState("");
+  const [customPkgInput, setCustomPkgInput] = reactExports.useState("");
+  const [upgradableList, setUpgradableList] = reactExports.useState([]);
+  const [showUpgradable, setShowUpgradable] = reactExports.useState(false);
   const fetchPackages = reactExports.useCallback(async () => {
     try {
       const pkgs = [
@@ -19073,6 +20154,58 @@ function PackagesPanel({
       setError(e.message || "Lỗi kiểm tra danh sách phần mềm");
     }
   }, [exec, setError]);
+  const handleCheckUpgradable = async () => {
+    setLoading(true);
+    const { stdout } = await exec('apt list --upgradable 2>/dev/null || yum list updates 2>/dev/null || echo "Không hỗ trợ"');
+    const items = [];
+    stdout.split("\n").forEach((line) => {
+      const match = line.match(/^(\S+)\/\S+\s+(\S+)\s+\S+\s+\[upgradable from:\s+(\S+)\]/);
+      if (match) {
+        items.push({ name: match[1], available: match[2], current: match[3] });
+      }
+    });
+    setUpgradableList(items);
+    setShowUpgradable(true);
+    setLoading(false);
+  };
+  const handleInstallPkg = async (pkgName) => {
+    setInstallingPackage(pkgName);
+    setInstallLogs(`Bắt đầu cài đặt ${pkgName}...
+`);
+    const cmd = `sudo apt-get install -y ${pkgName} || sudo yum install -y ${pkgName}`;
+    const result = await exec(cmd);
+    setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
+    await fetchPackages();
+  };
+  const handleRemovePkg = async (pkgName) => {
+    if (!confirm(`Gỡ cài đặt ${pkgName}?`)) return;
+    setInstallingPackage(pkgName);
+    setInstallLogs(`Bắt đầu gỡ cài đặt ${pkgName}...
+`);
+    const cmd = `sudo apt-get remove -y ${pkgName} || sudo yum remove -y ${pkgName}`;
+    const result = await exec(cmd);
+    setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
+    await fetchPackages();
+  };
+  const handleCustomInstall = async () => {
+    const pkg = customPkgInput.trim();
+    if (!pkg) return;
+    if (!/^[a-zA-Z0-9._-]+$/.test(pkg)) {
+      alert("Tên gói không hợp lệ. Chỉ được dùng chữ, số, dấu gạch ngang và gạch dưới.");
+      return;
+    }
+    await handleInstallPkg(pkg);
+    setCustomPkgInput("");
+  };
+  const handleUpgradeAll = async () => {
+    if (!confirm(`Nâng cấp ${upgradableList.length} gói?`)) return;
+    setInstallingPackage("Upgrade All");
+    setInstallLogs("Đang nâng cấp tất cả gói...\n");
+    const result = await exec("sudo apt-get upgrade -y || sudo yum update -y");
+    setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
+    await fetchPackages();
+    setUpgradableList([]);
+  };
   const loadData = reactExports.useCallback(async () => {
     setLoading(true);
     setError("");
@@ -19083,24 +20216,86 @@ function PackagesPanel({
     loadData();
   }, [loadData, refreshKey]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-[#a6adc8] font-semibold", children: "Trình quản lý gói phần mềm thiết yếu" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3 gap-3 flex-wrap", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-[#a6adc8] font-semibold", children: "Trình quản lý gói phần mềm" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: handleCheckUpgradable,
+            className: "px-3 py-1 rounded bg-[#f9e2af]/10 text-[#f9e2af] text-xs font-semibold hover:bg-[#f9e2af]/20 transition-all flex items-center gap-1",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowUp, { size: 11 }),
+              " Check Updates"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: async () => {
+              if (confirm("Cập nhật chỉ mục gói (apt update)?")) {
+                setInstallingPackage("Update System");
+                setInstallLogs("Đang chạy cập nhật chỉ mục gói...\n");
+                const result = await exec("sudo apt-get update || sudo yum makecache");
+                setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
+                await fetchPackages();
+              }
+            },
+            className: "px-3 py-1 rounded bg-[#89b4fa]/10 text-[#89b4fa] text-xs font-semibold hover:bg-[#89b4fa]/20 transition-all",
+            children: "Update System Index"
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-lg px-3 py-2 mb-3 flex gap-2 items-center shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 12, className: "text-[#585b70] shrink-0" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          placeholder: "Cài đặt gói tùy chỉnh (vd: htop, curl, jq)...",
+          value: customPkgInput,
+          onChange: (e) => setCustomPkgInput(e.target.value),
+          onKeyDown: (e) => {
+            if (e.key === "Enter") handleCustomInstall();
+          },
+          className: "flex-1 bg-transparent text-xs text-[#cdd6f4] outline-none"
+        }
+      ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
-          onClick: async () => {
-            if (confirm("Cập nhật chỉ mục gói (apt update)?")) {
-              setInstallingPackage("Update System");
-              setInstallLogs("Đang chạy cập nhật chỉ mục gói...\n");
-              const result = await exec("sudo apt-get update || sudo yum makecache");
-              setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
-              await fetchPackages();
-            }
-          },
-          className: "px-3 py-1 rounded bg-[#89b4fa]/10 text-[#89b4fa] text-xs font-semibold hover:bg-[#89b4fa]/20 transition-all",
-          children: "Update System Index"
+          onClick: handleCustomInstall,
+          disabled: !customPkgInput.trim(),
+          className: "px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] text-[10px] font-bold hover:bg-[#89d48b] transition-all disabled:opacity-40",
+          children: "Install"
         }
       )
+    ] }),
+    showUpgradable && upgradableList.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#f9e2af]/5 border border-[#f9e2af]/10 rounded-lg p-3 mb-3 shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-bold text-[#f9e2af]", children: [
+          upgradableList.length,
+          " gói có bản cập nhật"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleUpgradeAll, className: "px-2 py-0.5 rounded bg-[#f9e2af] text-[#1e1e2e] text-[10px] font-bold", children: "Upgrade All" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowUpgradable(false), className: "text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 12 }) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-h-24 overflow-y-auto space-y-1 text-[10px] font-mono", children: upgradableList.map((u2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-[#a6adc8]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#cdd6f4] font-bold", children: u2.name }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+          u2.current,
+          " → ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#a6e3a1]", children: u2.available })
+        ] })
+      ] }, u2.name)) })
+    ] }),
+    showUpgradable && upgradableList.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#a6e3a1]/5 border border-[#a6e3a1]/10 rounded-lg p-3 mb-3 text-xs text-[#a6e3a1] shrink-0 flex items-center justify-between", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tất cả gói đã được cập nhật ✓" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowUpgradable(false), className: "text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 12 }) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
@@ -19124,40 +20319,14 @@ function PackagesPanel({
         /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: !p2.installed ? /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
-            onClick: async () => {
-              const sudoPass = prompt("Nhập mật khẩu sudo (nếu cần, hoặc để trống):");
-              setInstallingPackage(p2.name);
-              setInstallLogs(`Bắt đầu cài đặt ${p2.name}...
-`);
-              let cmd = `sudo apt-get install -y ${p2.pkg} || sudo yum install -y ${p2.pkg}`;
-              if (sudoPass) {
-                cmd = `echo "${sudoPass}" | sudo -S apt-get install -y ${p2.pkg} || echo "${sudoPass}" | sudo -S yum install -y ${p2.pkg}`;
-              }
-              const result = await exec(cmd);
-              setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
-              await fetchPackages();
-            },
+            onClick: () => handleInstallPkg(p2.pkg),
             className: "px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] font-semibold text-[10px] hover:bg-[#89d48b] transition-all",
-            children: "Cài đặt nhanh"
+            children: "Cài đặt"
           }
         ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
-            onClick: async () => {
-              if (confirm(`Gỡ cài đặt ${p2.name}?`)) {
-                const sudoPass = prompt("Nhập mật khẩu sudo (nếu cần, hoặc để trống):");
-                setInstallingPackage(p2.name);
-                setInstallLogs(`Bắt đầu gỡ cài đặt ${p2.name}...
-`);
-                let cmd = `sudo apt-get remove -y ${p2.pkg} || sudo yum remove -y ${p2.pkg}`;
-                if (sudoPass) {
-                  cmd = `echo "${sudoPass}" | sudo -S apt-get remove -y ${p2.pkg} || echo "${sudoPass}" | sudo -S yum remove -y ${p2.pkg}`;
-                }
-                const result = await exec(cmd);
-                setInstallLogs((prev) => prev + (result.stdout || result.stderr || "Hoàn tất.\n"));
-                await fetchPackages();
-              }
-            },
+            onClick: () => handleRemovePkg(p2.pkg),
             className: "px-3 py-1 rounded bg-[#f38ba8]/10 text-[#f38ba8] font-semibold text-[10px] hover:bg-[#f38ba8]/20 transition-all",
             children: "Gỡ cài đặt"
           }
@@ -19187,7 +20356,7 @@ function PackagesPanel({
     ] }) })
   ] });
 }
-const stripAnsi$1 = (str) => {
+const stripAnsi$2 = (str) => {
   return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
 };
 function LogsPanel({
@@ -19208,15 +20377,29 @@ function LogsPanel({
   const [logAutoRefresh, setLogAutoRefresh] = reactExports.useState(true);
   const [newLogPathInput, setNewLogPathInput] = reactExports.useState("");
   const [showAddLogInput, setShowAddLogInput] = reactExports.useState(false);
+  const [logSource, setLogSource] = reactExports.useState("file");
+  const [journalUnit, setJournalUnit] = reactExports.useState("");
+  const [journalPriority, setJournalPriority] = reactExports.useState("");
+  const [lastRefreshTime, setLastRefreshTime] = reactExports.useState("");
+  const consoleEndRef = reactExports.useRef(null);
   const fetchLogsContent = reactExports.useCallback(async () => {
-    if (!selectedLogPath) return;
+    if (logSource === "file" && !selectedLogPath) return;
     try {
-      const { stdout, stderr } = await exec(`tail -n 100 "${selectedLogPath}" 2>&1`);
-      setLogContent(stripAnsi$1(stdout || stderr || "Không tìm thấy log hoặc file trống."));
+      let cmd;
+      if (logSource === "journal") {
+        const unitArg = journalUnit ? `-u ${journalUnit}` : "";
+        const priorityArg = journalPriority ? `-p ${journalPriority}` : "";
+        cmd = `sudo journalctl ${unitArg} ${priorityArg} --no-pager -n 100 2>/dev/null || journalctl ${unitArg} ${priorityArg} --no-pager -n 100 2>/dev/null || echo "journalctl không khả dụng"`;
+      } else {
+        cmd = `tail -n 100 "${selectedLogPath}" 2>&1`;
+      }
+      const { stdout, stderr } = await exec(cmd);
+      setLogContent(stripAnsi$2(stdout || stderr || "Không tìm thấy log hoặc file trống."));
+      setLastRefreshTime((/* @__PURE__ */ new Date()).toLocaleTimeString());
     } catch (e) {
-      setError(e.message || "Lỗi tải log file");
+      setError(e.message || "Lỗi tải log");
     }
-  }, [exec, selectedLogPath, setError]);
+  }, [exec, selectedLogPath, setError, logSource, journalUnit, journalPriority]);
   const handleAddLogPath = () => {
     const trimmed = newLogPathInput.trim();
     if (trimmed && !logPaths.includes(trimmed)) {
@@ -19225,6 +20408,10 @@ function LogsPanel({
       setNewLogPathInput("");
       setShowAddLogInput(false);
     }
+  };
+  const handleCopyLogs = () => {
+    const lines = logContent.split("\n").filter((line) => line.toLowerCase().includes(logSearch.toLowerCase()));
+    navigator.clipboard.writeText(lines.join("\n"));
   };
   const loadData = reactExports.useCallback(async () => {
     setLoading(true);
@@ -19242,48 +20429,116 @@ function LogsPanel({
     }
     return void 0;
   }, [logAutoRefresh, fetchLogsContent]);
+  reactExports.useEffect(() => {
+    consoleEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [logContent]);
+  const filteredLines = logContent.split("\n").filter((line) => line.toLowerCase().includes(logSearch.toLowerCase()));
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-64 min-w-64 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] flex items-center justify-between text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Log Files" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex border-b border-white/[0.04]", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
-            onClick: () => setShowAddLogInput(!showAddLogInput),
-            className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]",
-            title: "Thêm file log",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 11 })
+            onClick: () => setLogSource("file"),
+            className: `flex-1 py-1.5 text-[10px] font-semibold text-center transition-all ${logSource === "file" ? "bg-[#89b4fa]/10 text-[#89b4fa]" : "text-[#585b70] hover:bg-white/[0.02]"}`,
+            children: "File Logs"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setLogSource("journal"),
+            className: `flex-1 py-1.5 text-[10px] font-semibold text-center transition-all ${logSource === "journal" ? "bg-[#89b4fa]/10 text-[#89b4fa]" : "text-[#585b70] hover:bg-white/[0.02]"}`,
+            children: "System Journal"
           }
         )
       ] }),
-      showAddLogInput && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 border-b border-white/[0.04] bg-[#11111b]/35 space-y-1.5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "input",
+      logSource === "file" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] flex items-center justify-between text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Log Files" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setShowAddLogInput(!showAddLogInput),
+              className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]",
+              title: "Thêm file log",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 11 })
+            }
+          )
+        ] }),
+        showAddLogInput && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 border-b border-white/[0.04] bg-[#11111b]/35 space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              placeholder: "Đường dẫn log file...",
+              value: newLogPathInput,
+              onChange: (e) => setNewLogPathInput(e.target.value),
+              className: "w-full bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1 justify-end", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowAddLogInput(false), className: "px-2 py-0.5 rounded text-[9px] bg-white/5 hover:bg-white/10", children: "Hủy" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleAddLogPath, className: "px-2 py-0.5 rounded text-[9px] bg-[#89b4fa] text-[#1e1e2e] font-semibold", children: "Thêm" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5", children: logPaths.map((path) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
           {
-            type: "text",
-            placeholder: "Đường dẫn log file...",
-            value: newLogPathInput,
-            onChange: (e) => setNewLogPathInput(e.target.value),
-            className: "w-full bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
+            onClick: () => setSelectedLogPath(path),
+            className: `w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left transition-all ${selectedLogPath === path ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8] hover:bg-white/[0.02]"}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 12, className: "shrink-0 text-[#89b4fa]" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate block flex-1", title: path, children: path.substring(path.lastIndexOf("/") + 1) })
+            ]
+          },
+          path
+        )) })
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-3 space-y-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: "Service Unit" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              placeholder: "nginx, mysql... (trống = tất cả)",
+              value: journalUnit,
+              onChange: (e) => setJournalUnit(e.target.value),
+              className: "w-full bg-[#11111b] border border-white/5 rounded-md px-2 py-1.5 text-xs text-[#cdd6f4] outline-none"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: "Mức độ (Priority)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              value: journalPriority,
+              onChange: (e) => setJournalPriority(e.target.value),
+              className: "w-full bg-[#11111b] border border-white/5 rounded-md px-2 py-1.5 text-xs text-[#cdd6f4] outline-none",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Tất cả" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "0", children: "Emergency (0)" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "1", children: "Alert (1)" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "2", children: "Critical (2)" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "3", children: "Error (3)" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "4", children: "Warning (4)" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "5", children: "Notice (5)" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "6", children: "Info (6)" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "7", children: "Debug (7)" })
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: fetchLogsContent,
+            className: "w-full py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all",
+            children: "Tải Journal"
           }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1 justify-end", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowAddLogInput(false), className: "px-2 py-0.5 rounded text-[9px] bg-white/5 hover:bg-white/10", children: "Hủy" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleAddLogPath, className: "px-2 py-0.5 rounded text-[9px] bg-[#89b4fa] text-[#1e1e2e] font-semibold", children: "Thêm" })
-        ] })
+        )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5", children: logPaths.map((path) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          onClick: () => setSelectedLogPath(path),
-          className: `w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left transition-all ${selectedLogPath === path ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8] hover:bg-white/[0.02]"}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 12, className: "shrink-0 text-[#89b4fa]" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate block flex-1", title: path, children: path.substring(path.lastIndexOf("/") + 1) })
-          ]
-        },
-        path
-      )) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 border-t border-white/[0.04] bg-[#11111b]/35 flex justify-between items-center text-[10px] text-[#585b70]", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tự động cập nhật (3s)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -19298,8 +20553,8 @@ function LogsPanel({
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#181825]/50 flex items-center gap-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs text-[#a6adc8] truncate flex-1", children: selectedLogPath }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#181825]/50 flex items-center gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs text-[#a6adc8] truncate flex-1", children: logSource === "file" ? selectedLogPath : `journalctl${journalUnit ? ` -u ${journalUnit}` : ""}` }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "input",
           {
@@ -19307,19 +20562,32 @@ function LogsPanel({
             placeholder: "Lọc từ khóa logs...",
             value: logSearch,
             onChange: (e) => setLogSearch(e.target.value),
-            className: "w-48 bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
+            className: "w-40 bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
           }
-        )
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: handleCopyLogs,
+            className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]",
+            title: "Copy toàn bộ log",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { size: 12 })
+          }
+        ),
+        lastRefreshTime && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 text-[9px] text-[#45475a]", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { size: 9 }),
+          lastRefreshTime
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] text-[#45475a]", children: [
+          filteredLines.length,
+          " dòng"
+        ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto p-4 font-mono text-[11px] leading-relaxed select-text scrollbar-thin", children: (() => {
-        const filteredLines = logContent.split("\n").filter((line) => line.toLowerCase().includes(logSearch.toLowerCase()));
-        if (filteredLines.length === 0) {
-          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] text-center py-10", children: "Không tìm thấy log nào khớp với từ khóa." });
-        }
-        return filteredLines.map((line, idx) => {
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-auto p-4 font-mono text-[11px] leading-relaxed select-text scrollbar-thin", children: [
+        filteredLines.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] text-center py-10", children: "Không tìm thấy log nào khớp với từ khóa." }) : filteredLines.map((line, idx) => {
           let colorClass = "text-[#bac2de]";
           const lowerLine = line.toLowerCase();
-          if (lowerLine.includes("error") || lowerLine.includes("failed") || lowerLine.includes(" 500 ")) {
+          if (lowerLine.includes("error") || lowerLine.includes("failed") || lowerLine.includes(" 500 ") || lowerLine.includes("crit")) {
             colorClass = "text-[#f38ba8] font-bold";
           } else if (lowerLine.includes("warning") || lowerLine.includes("warn")) {
             colorClass = "text-[#f9e2af]";
@@ -19327,11 +20595,15 @@ function LogsPanel({
             colorClass = "text-[#a6e3a1]";
           }
           return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `${colorClass} whitespace-pre-wrap py-0.5 hover:bg-white/[0.02]`, children: line }, idx);
-        });
-      })() })
+        }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: consoleEndRef })
+      ] })
     ] })
   ] });
 }
+const stripAnsi$1 = (str) => {
+  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
+};
 function ServicesPanel({
   sessionId,
   exec,
@@ -19341,6 +20613,9 @@ function ServicesPanel({
 }) {
   const [services, setServices] = reactExports.useState([]);
   const [ports, setPorts] = reactExports.useState([]);
+  const [showAllServices, setShowAllServices] = reactExports.useState(false);
+  const [serviceSearch, setServiceSearch] = reactExports.useState("");
+  const [serviceLogsModal, setServiceLogsModal] = reactExports.useState(null);
   const fetchPortsList = reactExports.useCallback(async () => {
     const cmd = `sudo ss -tulpn 2>/dev/null || ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null || true`;
     const { stdout } = await exec(cmd);
@@ -19402,15 +20677,31 @@ function ServicesPanel({
     try {
       const portsList = await fetchPortsList();
       setPorts(portsList);
+      let grepFilter = "";
+      if (!showAllServices) {
+        grepFilter = `| grep -E "nginx|mysql|postgresql|docker|redis|apache2|mongodb|pm2|ssh|mariadb|memcached|rabbitmq|elasticsearch|grafana|prometheus|jenkins|tomcat|haproxy|fail2ban|ufw|certbot"`;
+      }
       const cmd = `
-        systemctl list-units --type=service --all --no-pager 2>/dev/null | grep -E "nginx|mysql|postgresql|docker|redis|apache2|mongodb|pm2|ssh" || true
+        systemctl list-units --type=service --all --no-pager 2>/dev/null ${grepFilter} || true
+        echo "===ENABLED==="
+        systemctl list-unit-files --type=service --no-pager 2>/dev/null | grep -E "enabled|disabled" || true
         echo "===PIDS==="
-        systemctl show --property=MainPID,Id nginx mysql postgresql redis docker apache2 mongodb ssh 2>/dev/null || true
+        systemctl show --property=MainPID,Id $(systemctl list-units --type=service --all --no-pager 2>/dev/null | awk '{print $1}' | grep '.service' | head -50) 2>/dev/null || true
       `;
       const { stdout } = await exec(cmd);
-      const parts = stdout.split("===PIDS===");
-      const listPart = parts[0] || "";
-      const pidsPart = parts[1] || "";
+      const mainParts = stdout.split("===ENABLED===");
+      const listPart = mainParts[0] || "";
+      const rest = (mainParts[1] || "").split("===PIDS===");
+      const enabledPart = rest[0] || "";
+      const pidsPart = rest[1] || "";
+      const enabledMap = {};
+      enabledPart.split("\n").forEach((l2) => {
+        const line = l2.trim();
+        const match = line.match(/^(\S+)\.service\s+(enabled|disabled)/);
+        if (match) {
+          enabledMap[match[1]] = match[2] === "enabled";
+        }
+      });
       const servicePids = {};
       let currentId = "";
       pidsPart.split("\n").forEach((l2) => {
@@ -19428,21 +20719,22 @@ function ServicesPanel({
       const serviceList = [];
       lines.forEach((l2) => {
         const cleaned = l2.replace(/\s+/g, " ").trim();
-        const parts2 = cleaned.split(" ");
-        if (parts2.length >= 4 && parts2[0].endsWith(".service")) {
-          const name = parts2[0].replace(".service", "");
-          const activeState = parts2[2];
-          const subState = parts2[3];
-          const description = parts2.slice(4).join(" ");
+        const parts = cleaned.split(" ");
+        if (parts.length >= 4 && parts[0].endsWith(".service")) {
+          const name = parts[0].replace(".service", "");
+          const activeState = parts[2];
+          const subState = parts[3];
+          const description = parts.slice(4).join(" ");
           const pid = servicePids[name] || "";
-          serviceList.push({ name, activeState, subState, description, pid });
+          const enabled = enabledMap[name];
+          serviceList.push({ name, activeState, subState, description, pid, enabled });
         }
       });
       setServices(serviceList);
     } catch (e) {
       setError(e.message || "Lỗi kiểm tra trạng thái dịch vụ");
     }
-  }, [exec, fetchPortsList, setError]);
+  }, [exec, fetchPortsList, setError, showAllServices]);
   const handleServiceAction = async (action, serviceName) => {
     setLoading(true);
     const { stderr } = await exec(`sudo systemctl ${action} ${serviceName} || systemctl ${action} ${serviceName}`);
@@ -19450,6 +20742,12 @@ function ServicesPanel({
       alert("Lỗi thao tác: " + stderr);
     }
     await fetchServices();
+    setLoading(false);
+  };
+  const handleViewLogs = async (serviceName) => {
+    setLoading(true);
+    const { stdout } = await exec(`sudo journalctl -u ${serviceName} --no-pager -n 80 2>/dev/null || echo "journalctl không khả dụng"`);
+    setServiceLogsModal({ name: serviceName, logs: stripAnsi$1(stdout || "Không có log") });
     setLoading(false);
   };
   const loadData = reactExports.useCallback(async () => {
@@ -19461,83 +20759,157 @@ function ServicesPanel({
   reactExports.useEffect(() => {
     loadData();
   }, [loadData, refreshKey]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex flex-col overflow-hidden", children: services.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 36, className: "mb-3 opacity-30" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không tìm thấy service DevOps nào" })
-  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Dịch vụ (Service)" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Mô tả" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Port)" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái (Active)" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Chi tiết (Substate)" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: services.map((svc) => {
-      let svcPorts = [];
-      if (svc.pid) {
-        svcPorts = ports.filter((p2) => p2.pid === svc.pid).map((p2) => p2.port);
-      }
-      if (svcPorts.length === 0) {
-        const lowerName = svc.name.toLowerCase();
-        svcPorts = ports.filter((p2) => {
-          const proc = p2.processName.toLowerCase();
-          if (lowerName === "nginx" && proc.includes("nginx")) return true;
-          if (lowerName === "mysql" && (proc.includes("mysqld") || proc.includes("mysql"))) return true;
-          if (lowerName === "redis" && proc.includes("redis-server")) return true;
-          if (lowerName === "postgresql" && proc.includes("postgres")) return true;
-          if (lowerName === "mongodb" && proc.includes("mongod")) return true;
-          if (lowerName === "ssh" && proc.includes("sshd")) return true;
-          return false;
-        }).map((p2) => p2.port);
-      }
-      const uniquePorts = Array.from(new Set(svcPorts));
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: svc.name }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8] max-w-xs truncate", title: svc.description, children: svc.description }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: uniquePorts.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: uniquePorts.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "bg-[#89b4fa]/10 text-[#89b4fa] px-1.5 py-0.5 rounded text-[10px] font-bold", children: [
-          ":",
-          p2
-        ] }, p2)) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "span",
+  const filteredServices = services.filter((svc) => {
+    if (!serviceSearch) return true;
+    const q2 = serviceSearch.toLowerCase();
+    return svc.name.toLowerCase().includes(q2) || svc.description.toLowerCase().includes(q2);
+  });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3 gap-3 flex-wrap", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2 items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 12, className: "absolute left-2.5 top-1/2 -translate-y-1/2 text-[#585b70]" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
           {
-            className: `px-2 py-0.5 rounded-full text-[10px] font-medium leading-none ${svc.activeState === "active" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`,
-            children: svc.activeState
+            type: "text",
+            placeholder: "Tìm service...",
+            value: serviceSearch,
+            onChange: (e) => setServiceSearch(e.target.value),
+            className: "bg-[#181825] border border-white/5 rounded-lg pl-7 pr-3 py-1.5 text-xs text-[#cdd6f4] outline-none w-48"
           }
-        ) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: svc.subState }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 justify-center", children: [
-          svc.subState === "running" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
+        )
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-2 text-xs text-[#a6adc8] cursor-pointer select-none", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "checkbox",
+            checked: showAllServices,
+            onChange: (e) => setShowAllServices(e.target.checked),
+            className: "rounded bg-[#1e1e2e] border-white/5"
+          }
+        ),
+        "Hiển thị tất cả services"
+      ] })
+    ] }),
+    filteredServices.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 36, className: "mb-3 opacity-30" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Không tìm thấy service nào" })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Dịch vụ (Service)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Mô tả" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (Port)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Trạng Thái" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Boot" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: filteredServices.map((svc) => {
+        let svcPorts = [];
+        if (svc.pid) {
+          svcPorts = ports.filter((p2) => p2.pid === svc.pid).map((p2) => p2.port);
+        }
+        if (svcPorts.length === 0) {
+          const lowerName = svc.name.toLowerCase();
+          svcPorts = ports.filter((p2) => {
+            const proc = p2.processName.toLowerCase();
+            if (lowerName === "nginx" && proc.includes("nginx")) return true;
+            if (lowerName === "mysql" && (proc.includes("mysqld") || proc.includes("mysql"))) return true;
+            if (lowerName === "redis" && proc.includes("redis-server")) return true;
+            if (lowerName === "postgresql" && proc.includes("postgres")) return true;
+            if (lowerName === "mongodb" && proc.includes("mongod")) return true;
+            if (lowerName === "ssh" && proc.includes("sshd")) return true;
+            return false;
+          }).map((p2) => p2.port);
+        }
+        const uniquePorts = Array.from(new Set(svcPorts));
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: svc.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8] max-w-xs truncate", title: svc.description, children: svc.description }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono", children: uniquePorts.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1", children: uniquePorts.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "bg-[#89b4fa]/10 text-[#89b4fa] px-1.5 py-0.5 rounded text-[10px] font-bold", children: [
+            ":",
+            p2
+          ] }, p2)) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "-" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "span",
             {
-              onClick: () => handleServiceAction("stop", svc.name),
-              className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
-              title: "Stop Service",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
+              className: `px-2 py-0.5 rounded-full text-[10px] font-medium leading-none ${svc.activeState === "active" ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`,
+              children: [
+                svc.activeState,
+                " (",
+                svc.subState,
+                ")"
+              ]
             }
-          ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => handleServiceAction("start", svc.name),
-              className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
-              title: "Start Service",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => handleServiceAction("restart", svc.name),
-              className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
-              title: "Restart Service",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
-            }
-          )
-        ] }) })
-      ] }, svc.name);
-    }) })
-  ] }) }) });
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: svc.enabled !== void 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[10px] font-semibold ${svc.enabled ? "text-[#a6e3a1]" : "text-[#585b70]"}`, children: svc.enabled ? "enabled" : "disabled" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1 justify-center", children: [
+            svc.subState === "running" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleServiceAction("stop", svc.name),
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+                title: "Stop Service",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 12 })
+              }
+            ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleServiceAction("start", svc.name),
+                className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
+                title: "Start Service",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleServiceAction("restart", svc.name),
+                className: "p-1 rounded hover:bg-white/5 text-[#89b4fa]",
+                title: "Restart Service",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleViewLogs(svc.name),
+                className: "p-1 rounded hover:bg-white/5 text-[#f9e2af]",
+                title: "View Logs (journalctl)",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { size: 12 })
+              }
+            ),
+            svc.enabled !== void 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleServiceAction(svc.enabled ? "disable" : "enable", svc.name),
+                className: "px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/10 text-[10px] text-[#a6adc8]",
+                title: svc.enabled ? "Disable on boot" : "Enable on boot",
+                children: svc.enabled ? "Disable" : "Enable"
+              }
+            )
+          ] }) })
+        ] }, svc.name);
+      }) })
+    ] }) }),
+    serviceLogsModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setServiceLogsModal(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[700px] max-h-[85vh] flex flex-col animate-scale-in",
+        onClick: (e) => e.stopPropagation(),
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: [
+              "Journal Logs — ",
+              serviceLogsModal.name
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setServiceLogsModal(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text scrollbar-thin", children: serviceLogsModal.logs })
+        ]
+      }
+    ) })
+  ] });
 }
 function NginxPanel({
   sessionId,
@@ -19552,8 +20924,24 @@ function NginxPanel({
   const [nginxTestResult, setNginxTestResult] = reactExports.useState(null);
   const [savingNginx, setSavingNginx] = reactExports.useState(false);
   const [showNginxWizard, setShowNginxWizard] = reactExports.useState(false);
+  const [nginxInstalled, setNginxInstalled] = reactExports.useState(true);
+  const [installing, setInstalling] = reactExports.useState(false);
+  const [installLog, setInstallLog] = reactExports.useState("");
+  const [showCreateSiteModal, setShowCreateSiteModal] = reactExports.useState(false);
+  const [newSiteFilename, setNewSiteFilename] = reactExports.useState("");
+  const [newSiteType, setNewSiteType] = reactExports.useState("proxy");
+  const [newSiteDomain, setNewSiteDomain] = reactExports.useState("example.com");
+  const [newSiteParam, setNewSiteParam] = reactExports.useState("3000");
+  const [creatingSite, setCreatingSite] = reactExports.useState(false);
+  const [showPicker, setShowPicker] = reactExports.useState(false);
   const fetchNginx = reactExports.useCallback(async () => {
     try {
+      const checkNginx = await exec("nginx -v 2>/dev/null");
+      if (checkNginx.code !== 0) {
+        setNginxInstalled(false);
+        return;
+      }
+      setNginxInstalled(true);
       const { stdout } = await exec("ls -1 /etc/nginx/sites-available/ 2>/dev/null || ls -1 /etc/nginx/conf.d/ 2>/dev/null");
       if (stdout) {
         const files = stdout.split("\n").map((f2) => f2.trim()).filter(Boolean);
@@ -19623,6 +21011,139 @@ EOF
     }
     setLoading(false);
   };
+  const handleCreateSiteFromModal = async () => {
+    if (!newSiteFilename.trim() || !newSiteDomain.trim() || !newSiteParam.trim()) {
+      alert("Vui lòng nhập đầy đủ các trường thông tin!");
+      return;
+    }
+    const filename = newSiteFilename.trim();
+    const sanitized = filename.replace(/[^a-zA-Z0-9_.-]/g, "");
+    if (!sanitized) {
+      alert("Tên file không hợp lệ!");
+      return;
+    }
+    if (nginxFiles.includes(sanitized)) {
+      alert("Tên file cấu hình đã tồn tại!");
+      return;
+    }
+    setCreatingSite(true);
+    try {
+      let generated = "";
+      if (newSiteType === "proxy") {
+        generated = `server {
+    listen 80;
+    server_name ${newSiteDomain};
+
+    location / {
+        proxy_pass http://127.0.0.1:${newSiteParam};
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}`;
+      } else if (newSiteType === "static") {
+        generated = `server {
+    listen 80;
+    server_name ${newSiteDomain};
+    root ${newSiteParam};
+    index index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}`;
+      } else {
+        generated = `server {
+    listen 80;
+    server_name ${newSiteDomain};
+    return 301 https://$host$request_uri;
+}`;
+      }
+      const pathCheck = await exec('[ -d /etc/nginx/sites-available ] && echo "available" || echo "conf.d"');
+      const targetDir = pathCheck.stdout.trim() === "available" ? "/etc/nginx/sites-available" : "/etc/nginx/conf.d";
+      const filePath = `${targetDir}/${sanitized}`;
+      const tempFile = `/tmp/${sanitized}_temp`;
+      const writeCmd = `cat << 'EOF' > ${tempFile}
+${generated}
+EOF
+sudo mv ${tempFile} ${filePath}`;
+      const writeRes = await exec(writeCmd);
+      if (writeRes.code !== 0) {
+        throw new Error(writeRes.stderr || "Không thể tạo tệp cấu hình");
+      }
+      if (targetDir === "/etc/nginx/sites-available") {
+        await exec(`sudo ln -s ${filePath} /etc/nginx/sites-enabled/${sanitized} 2>/dev/null || true`);
+      }
+      await exec("sudo systemctl reload nginx || systemctl reload nginx");
+      await fetchNginx();
+      setSelectedNginxFile(sanitized);
+      setNginxConfigContent(generated);
+      setNginxTestResult(null);
+      setShowCreateSiteModal(false);
+      setNewSiteFilename("");
+      setNewSiteDomain("example.com");
+      setNewSiteParam("3000");
+      alert("Đã tạo và reload cấu hình site mới thành công!");
+    } catch (e) {
+      alert("Lỗi tạo cấu hình: " + e.message);
+    } finally {
+      setCreatingSite(false);
+    }
+  };
+  const handleDeleteSite = async (filename) => {
+    if (!confirm(`Bạn có chắc chắn muốn xóa cấu hình site "${filename}" không?`)) {
+      return;
+    }
+    setLoading(true);
+    try {
+      const cmd = `
+        sudo rm -f /etc/nginx/sites-enabled/${filename} 2>/dev/null || true
+        sudo rm -f /etc/nginx/sites-available/${filename} 2>/dev/null || true
+        sudo rm -f /etc/nginx/conf.d/${filename} 2>/dev/null || true
+      `;
+      await exec(cmd);
+      await exec("sudo systemctl reload nginx || systemctl reload nginx");
+      await fetchNginx();
+      if (selectedNginxFile === filename) {
+        setSelectedNginxFile(null);
+        setNginxConfigContent("");
+        setNginxTestResult(null);
+      }
+      alert(`Đã xóa cấu hình site "${filename}" và reload Nginx thành công!`);
+    } catch (e) {
+      alert("Lỗi xóa site: " + e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleInstallNginx = async () => {
+    setInstalling(true);
+    setInstallLog("Đang chuẩn bị cài đặt Nginx...\n");
+    try {
+      setInstallLog((prev) => prev + "Đang cập nhật danh sách gói (apt-get update)...\n");
+      await exec("sudo apt-get update");
+      setInstallLog((prev) => prev + "Đang cài đặt Nginx...\n");
+      const res = await exec("sudo apt-get install -y nginx");
+      if (res.code === 0) {
+        setInstallLog((prev) => prev + "Khởi chạy dịch vụ Nginx...\n");
+        await exec("sudo systemctl start nginx && sudo systemctl enable nginx");
+        alert("Cài đặt Nginx thành công!");
+      } else {
+        throw new Error(res.stderr || "Lỗi cài đặt thất bại.");
+      }
+      await loadData();
+    } catch (e) {
+      setInstallLog((prev) => prev + `Lỗi: ${e.message}
+`);
+      alert("Lỗi cài đặt Nginx: " + e.message);
+    } finally {
+      setInstalling(false);
+    }
+  };
   const loadData = reactExports.useCallback(async () => {
     setLoading(true);
     setError("");
@@ -19635,78 +21156,124 @@ EOF
     loadData();
   }, [loadData, refreshKey]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-56 min-w-56 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] text-[10px] font-semibold text-[#585b70] uppercase tracking-wider", children: "Virtual Hosts" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5", children: nginxFiles.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-[10px] py-6", children: "Không tìm thấy file config nào." }) : nginxFiles.map((file) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    !nginxInstalled ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-grow flex flex-col items-center justify-center text-[#585b70] max-w-md mx-auto p-6 text-center space-y-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 48, className: "text-[#89b4fa] opacity-60 animate-bounce" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-bold text-[#cdd6f4]", children: "Nginx chưa được cài đặt hoặc chưa khởi động" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-[#585b70]", children: "Không tìm thấy lệnh nginx trên máy chủ SSH này. Bạn có thể tự động cài đặt Nginx thông qua trình quản lý gói của hệ thống." })
+      ] }),
+      installing ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full bg-[#181825] border border-white/5 rounded-xl p-4 flex flex-col text-left space-y-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-bold text-[#89b4fa] tracking-wider animate-pulse flex items-center gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: "animate-spin" }),
+          " Đang cài đặt Nginx..."
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[9px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin", children: installLog })
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
-          onClick: () => handleReadNginxFile(file),
-          className: `w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-left transition-all ${selectedNginxFile === file ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8] hover:bg-white/[0.02]"}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 12, className: "shrink-0 text-[#89b4fa]" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: file })
-          ]
-        },
-        file
-      )) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-t border-white/[0.04] bg-[#11111b]/35", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          onClick: handleReloadNginx,
-          className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 active:scale-95 transition-all",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11 }),
-            "Reload Nginx"
-          ]
+          onClick: handleInstallNginx,
+          className: "px-4 py-2 rounded-xl bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all",
+          children: "Cài đặt Nginx tự động"
         }
-      ) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative", children: selectedNginxFile ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs text-[#a6adc8]", children: selectedNginxFile }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+      )
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-grow flex-shrink flex-basis-0 min-w-0 flex gap-4 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-56 min-w-56 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] text-[10px] font-semibold text-[#585b70] uppercase tracking-wider flex justify-between items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Virtual Hosts" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "button",
             {
-              onClick: () => setShowNginxWizard(true),
-              className: "px-3 py-1 rounded bg-[#fab387] text-[#1e1e2e] text-xs font-semibold hover:bg-[#f8a060] active:scale-95 transition-all",
-              children: "Mẫu Cấu Hình"
+              onClick: () => setShowCreateSiteModal(true),
+              className: "p-1 hover:bg-white/5 rounded text-[#89b4fa] transition-all",
+              title: "Thêm Site Config mới",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 12 })
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5 scrollbar-thin", children: nginxFiles.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-[10px] py-6", children: "Không tìm thấy file config nào." }) : nginxFiles.map((file) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group flex items-center justify-between px-1 rounded-lg hover:bg-white/[0.02]", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => handleReadNginxFile(file),
+              className: `flex-1 flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-left transition-all truncate ${selectedNginxFile === file ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8]"}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 12, className: "shrink-0 text-[#89b4fa]" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: file })
+              ]
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "button",
             {
-              onClick: handleSaveNginxConfig,
-              disabled: savingNginx,
-              className: "px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] text-xs font-semibold hover:bg-[#74c7ec] active:scale-95 disabled:opacity-40 transition-all",
-              children: savingNginx ? "Đang Lưu..." : "Lưu Config"
+              onClick: (e) => {
+                e.stopPropagation();
+                handleDeleteSite(file);
+              },
+              className: "p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-white/5 text-[#f38ba8] transition-all shrink-0 mr-1",
+              title: "Xóa Site",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 11 })
             }
           )
-        ] })
+        ] }, file)) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-t border-white/[0.04] bg-[#11111b]/35", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: handleReloadNginx,
+            className: "w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 active:scale-95 transition-all",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11 }),
+              "Reload Nginx"
+            ]
+          }
+        ) })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "textarea",
-        {
-          value: nginxConfigContent,
-          onChange: (e) => setNginxConfigContent(e.target.value),
-          className: "flex-1 p-4 bg-[#181825] text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed",
-          spellCheck: false
-        }
-      ),
-      nginxTestResult && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: `p-3 border-t text-[11px] font-mono flex items-start gap-2 ${nginxTestResult.success ? "bg-[#a6e3a1]/5 border-[#a6e3a1]/25 text-[#a6e3a1]" : "bg-[#f38ba8]/5 border-[#f38ba8]/25 text-[#f38ba8]"}`,
-          children: [
-            nginxTestResult.success ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheckBig, { size: 14, className: "shrink-0 mt-0.5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { size: 14, className: "shrink-0 mt-0.5" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto whitespace-pre-wrap max-h-24", children: nginxTestResult.message })
-          ]
-        }
-      )
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 36, className: "mb-2 opacity-30" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "Chọn một file Nginx config để chỉnh sửa" })
-    ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative", children: selectedNginxFile ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs text-[#a6adc8]", children: selectedNginxFile }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setShowNginxWizard(true),
+                className: "px-3 py-1 rounded bg-[#fab387] text-[#1e1e2e] text-xs font-semibold hover:bg-[#f8a060] active:scale-95 transition-all",
+                children: "Mẫu Cấu Hình"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: handleSaveNginxConfig,
+                disabled: savingNginx,
+                className: "px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] text-xs font-semibold hover:bg-[#74c7ec] active:scale-95 disabled:opacity-40 transition-all",
+                children: savingNginx ? "Đang Lưu..." : "Lưu Config"
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "textarea",
+          {
+            value: nginxConfigContent,
+            onChange: (e) => setNginxConfigContent(e.target.value),
+            className: "flex-1 p-4 bg-[#181825] text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed",
+            spellCheck: false
+          }
+        ),
+        nginxTestResult && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: `p-3 border-t text-[11px] font-mono flex items-start gap-2 ${nginxTestResult.success ? "bg-[#a6e3a1]/5 border-[#a6e3a1]/25 text-[#a6e3a1]" : "bg-[#f38ba8]/5 border-[#f38ba8]/25 text-[#f38ba8]"}`,
+            children: [
+              nginxTestResult.success ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheckBig, { size: 14, className: "shrink-0 mt-0.5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { size: 14, className: "shrink-0 mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto whitespace-pre-wrap max-h-24", children: nginxTestResult.message })
+            ]
+          }
+        )
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(FileCode, { size: 36, className: "mb-2 opacity-30" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "Chọn một file Nginx config để chỉnh sửa" })
+      ] }) })
+    ] }),
     showNginxWizard && /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
       {
@@ -19831,8 +21398,266 @@ EOF
           }
         )
       }
+    ),
+    showCreateSiteModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setShowCreateSiteModal(false), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[420px] flex flex-col animate-scale-in",
+        onClick: (e) => e.stopPropagation(),
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13, className: "text-[#89b4fa]" }),
+              " Tạo Site Config Nginx mới"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowCreateSiteModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên file cấu hình (Filename) *" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "ví dụ: myapp.conf",
+                  value: newSiteFilename,
+                  onChange: (e) => setNewSiteFilename(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Loại cấu hình (Site Type)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "select",
+                {
+                  value: newSiteType,
+                  onChange: (e) => {
+                    setNewSiteType(e.target.value);
+                    if (e.target.value === "static") {
+                      setNewSiteParam("/var/www/html");
+                    } else if (e.target.value === "proxy") {
+                      setNewSiteParam("3000");
+                    } else {
+                      setNewSiteParam("");
+                    }
+                  },
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "proxy", children: "Reverse Proxy (Node.js/Python...)" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "static", children: "Static Site (React/Vue/HTML...)" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "redirect", children: "Redirect HTTP to HTTPS" })
+                  ]
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên miền (Server Name) *" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "ví dụ: app.yourdomain.com",
+                  value: newSiteDomain,
+                  onChange: (e) => setNewSiteDomain(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                }
+              )
+            ] }),
+            newSiteType !== "redirect" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: newSiteType === "proxy" ? "Cổng ứng dụng (Port) *" : "Thư mục gốc (Root Path) *" }),
+              newSiteType === "proxy" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "3000",
+                  value: newSiteParam,
+                  onChange: (e) => setNewSiteParam(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                }
+              ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "text",
+                    placeholder: "/var/www/myapp/dist",
+                    value: newSiteParam,
+                    onChange: (e) => setNewSiteParam(e.target.value),
+                    className: "flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: () => setShowPicker(true),
+                    className: "px-3 rounded-lg bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs flex items-center justify-center",
+                    title: "Chọn Thư Mục",
+                    children: "Duyệt..."
+                  }
+                )
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => setShowCreateSiteModal(false),
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                  children: "Hủy"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleCreateSiteFromModal,
+                  disabled: creatingSite,
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40",
+                  children: creatingSite ? "Đang tạo..." : "Tạo & Lưu"
+                }
+              )
+            ] })
+          ] })
+        ]
+      }
+    ) }),
+    showPicker && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      RemotePathPicker,
+      {
+        visible: true,
+        mode: "dir",
+        exec,
+        onClose: () => setShowPicker(false),
+        onSelect: (path) => setNewSiteParam(path)
+      }
     )
   ] });
+}
+function RemotePathPicker({ mode, exec, onClose, onSelect }) {
+  const [currentPath, setCurrentPath] = reactExports.useState("/");
+  const [items, setItems] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const fetchDir = reactExports.useCallback(async (path) => {
+    setLoading(true);
+    try {
+      const sanitizedPath = path.replace(/"/g, '\\"');
+      const cmd = `cd "${sanitizedPath}" && ls -F -1`;
+      const res = await exec(cmd);
+      if (res.code === 0) {
+        const parsed = res.stdout.split("\n").map((f2) => f2.trim()).filter((f2) => f2 && f2 !== "./" && f2 !== "../").map((f2) => {
+          const isDir = f2.endsWith("/");
+          const name = isDir ? f2.slice(0, -1) : f2;
+          return { name, isDir };
+        });
+        parsed.sort((a, b) => {
+          if (a.isDir && !b.isDir) return -1;
+          if (!a.isDir && b.isDir) return 1;
+          return a.name.localeCompare(b.name);
+        });
+        setItems(parsed);
+        setCurrentPath(path);
+      } else {
+        alert("Lỗi đọc thư mục: " + res.stderr);
+      }
+    } catch (e) {
+      alert("Lỗi: " + e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [exec]);
+  reactExports.useEffect(() => {
+    fetchDir("/");
+  }, [fetchDir]);
+  const handleGoUp = () => {
+    if (currentPath === "/") return;
+    const parts = currentPath.split("/").filter(Boolean);
+    parts.pop();
+    const parent = "/" + parts.join("/");
+    fetchDir(parent);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] h-[480px] flex flex-col animate-scale-in", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#181825]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+        "Chọn ",
+        mode === "file" ? "Tệp tin" : "Thư mục",
+        " trên Server"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-[#11111b] border-b border-white/5 flex gap-2 items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: handleGoUp,
+          disabled: currentPath === "/",
+          className: "px-2 py-1 rounded bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40",
+          children: "← Lên"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          readOnly: true,
+          value: currentPath,
+          className: "flex-1 bg-[#181825] border border-white/5 rounded px-2 py-1 text-xs text-[#a6adc8] font-mono outline-none"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-2.5 space-y-0.5 scrollbar-thin", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70] gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 14, className: "animate-spin text-[#89b4fa]" }),
+      " Đang tải..."
+    ] }) : items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70]", children: "Thư mục trống." }) : items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        onClick: () => {
+          const newPath = currentPath === "/" ? `/${item.name}` : `${currentPath}/${item.name}`;
+          if (item.isDir) {
+            fetchDir(newPath);
+          } else {
+            if (mode === "file") {
+              onSelect(newPath);
+              onClose();
+            }
+          }
+        },
+        className: "w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.02] transition-all",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-sm", children: item.isDir ? "📁" : "📄" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: item.name })
+        ]
+      },
+      item.name
+    )) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 border-t border-white/5 bg-[#181825] flex justify-between items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70]", children: mode === "file" ? "Click file để chọn" : "Bấm Chọn để lấy thư mục hiện tại" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: onClose,
+            className: "px-3 py-1 rounded bg-white/5 hover:bg-white/10 text-xs text-[#cdd6f4]",
+            children: "Hủy"
+          }
+        ),
+        mode === "dir" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => {
+              onSelect(currentPath);
+              onClose();
+            },
+            className: "px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] text-xs font-bold",
+            children: "Chọn thư mục này"
+          }
+        )
+      ] })
+    ] })
+  ] }) });
 }
 function AlertsPanel({
   alertCpu,
@@ -19848,9 +21673,39 @@ function AlertsPanel({
   alertsHistory,
   setLoading
 }) {
+  const [alertsEnabled, setAlertsEnabled] = reactExports.useState(true);
+  reactExports.useEffect(() => {
+    (async () => {
+      try {
+        const rows = await window.api.db.all("SELECT value FROM app_settings WHERE key = 'devops_alerts_enabled'");
+        if (rows.length > 0) setAlertsEnabled(rows[0].value !== "false");
+      } catch {
+      }
+    })();
+  }, []);
+  const toggleAlerts = async (val) => {
+    setAlertsEnabled(val);
+    await window.api.db.run("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_alerts_enabled', ?)", [String(val)]);
+  };
+  const handleCopyHistory = () => {
+    navigator.clipboard.writeText(alertsHistory.join("\n"));
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-96 min-w-96 bg-[#181825] border border-white/[0.04] rounded-xl p-4 space-y-4 overflow-y-auto scrollbar-thin", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] block", children: "Cấu hình Ngưỡng Cảnh báo" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: "Cấu hình Cảnh báo" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => toggleAlerts(!alertsEnabled),
+            className: `flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all ${alertsEnabled ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Power, { size: 10 }),
+              alertsEnabled ? "Đang bật" : "Đang tắt"
+            ]
+          }
+        )
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "Ngưỡng CPU cảnh báo (%)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -19970,7 +21825,21 @@ function AlertsPanel({
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Nhật ký cảnh báo hệ thống" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: [
+          "Nhật ký cảnh báo hệ thống",
+          alertsHistory.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "ml-2 bg-[#f38ba8]/20 text-[#f38ba8] px-1.5 py-0.5 rounded-full text-[9px] font-bold", children: alertsHistory.length })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: handleCopyHistory,
+            className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]",
+            title: "Copy tất cả",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { size: 11 })
+          }
+        ) })
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto space-y-2 pr-1 font-mono text-xs text-[#a6adc8]", children: [
         alertsHistory.map((h, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-white/[0.02] text-[#f38ba8] hover:bg-white/[0.01]", children: h }, i)),
         alertsHistory.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] text-center py-8", children: "Chưa ghi nhận sự cố quá tải nào." })
@@ -19986,6 +21855,33 @@ function BackupPanel({
   const [backupPath, setBackupPath] = reactExports.useState("/var/www");
   const [backupType, setBackupType] = reactExports.useState("dir");
   const [backupStatus, setBackupStatus] = reactExports.useState(null);
+  const [backupHistory, setBackupHistory] = reactExports.useState([]);
+  const [dbName, setDbName] = reactExports.useState("");
+  const [dbUser, setDbUser] = reactExports.useState("root");
+  const [dbPass, setDbPass] = reactExports.useState("");
+  const fetchBackupHistory = reactExports.useCallback(async () => {
+    try {
+      const { stdout } = await exec('ls -lh /tmp/backup_* /tmp/db_* 2>/dev/null || echo ""');
+      if (!stdout.trim()) {
+        setBackupHistory([]);
+        return;
+      }
+      const items = stdout.split("\n").filter(Boolean).map((line) => {
+        const parts = line.trim().replace(/\s+/g, " ").split(" ");
+        if (parts.length < 9) return null;
+        return {
+          size: parts[4],
+          date: `${parts[5]} ${parts[6]} ${parts[7]}`,
+          path: parts.slice(8).join(" ")
+        };
+      }).filter(Boolean);
+      setBackupHistory(items);
+    } catch {
+    }
+  }, [exec]);
+  reactExports.useEffect(() => {
+    fetchBackupHistory();
+  }, [fetchBackupHistory]);
   const handleStartBackup = async () => {
     setLoading(true);
     setBackupStatus("Đang khởi tạo tiến trình sao lưu...\n");
@@ -20008,10 +21904,7 @@ Bạn có thể tải tệp này về máy cục bộ qua tính năng SFTP.`
       } else {
         setBackupStatus((prev) => prev + `❌ Lỗi nén file: ${result.stderr}`);
       }
-    } else {
-      const dbName = document.getElementById("db_name_input")?.value || "";
-      const dbUser = document.getElementById("db_user_input")?.value || "root";
-      const dbPass = document.getElementById("db_pass_input")?.value || "";
+    } else if (backupType === "mysql") {
       if (!dbName) {
         alert("Vui lòng nhập tên Database");
         setLoading(false);
@@ -20019,7 +21912,8 @@ Bạn có thể tải tệp này về máy cục bộ qua tính năng SFTP.`
       }
       setBackupStatus((prev) => prev + `Đang chạy mysqldump cho database ${dbName}...
 `);
-      const dumpCmd = `mysqldump -u "${dbUser}" -p"${dbPass}" "${dbName}" > /tmp/db_${dbName}_${timestamp}.sql`;
+      const passArg = dbPass ? `-p"${dbPass}"` : "";
+      const dumpCmd = `mysqldump -u "${dbUser}" ${passArg} "${dbName}" > /tmp/db_${dbName}_${timestamp}.sql`;
       const result = await exec(dumpCmd);
       if (result.code === 0) {
         setBackupStatus(
@@ -20030,7 +21924,69 @@ Bạn có thể quản lý và tải về qua SFTP.`
       } else {
         setBackupStatus((prev) => prev + `❌ Lỗi xuất database: ${result.stderr}`);
       }
+    } else {
+      if (!dbName) {
+        alert("Vui lòng nhập tên Database");
+        setLoading(false);
+        return;
+      }
+      setBackupStatus((prev) => prev + `Đang chạy pg_dump cho database ${dbName}...
+`);
+      const dumpCmd = `sudo -u postgres pg_dump "${dbName}" > /tmp/db_${dbName}_${timestamp}.sql`;
+      const result = await exec(dumpCmd);
+      if (result.code === 0) {
+        setBackupStatus(
+          (prev) => prev + `✅ Xuất PostgreSQL thành công!
+Tệp backup tại: /tmp/db_${dbName}_${timestamp}.sql`
+        );
+      } else {
+        setBackupStatus((prev) => prev + `❌ Lỗi xuất database: ${result.stderr}`);
+      }
     }
+    await fetchBackupHistory();
+    setLoading(false);
+  };
+  const handleRestore = async (item) => {
+    if (item.path.endsWith(".tar.gz")) {
+      const targetDir = prompt("Nhập đường dẫn thư mục đích để giải nén:", "/var/www");
+      if (!targetDir) return;
+      setLoading(true);
+      setBackupStatus(`Đang giải nén ${item.path} vào ${targetDir}...
+`);
+      const result = await exec(`tar -xzf "${item.path}" -C "${targetDir}"`);
+      if (result.code === 0) {
+        setBackupStatus((prev) => prev + `✅ Giải nén thành công vào ${targetDir}`);
+      } else {
+        setBackupStatus((prev) => prev + `❌ Lỗi giải nén: ${result.stderr}`);
+      }
+      setLoading(false);
+    } else if (item.path.endsWith(".sql")) {
+      const targetDb = prompt("Nhập tên database đích để import:", "");
+      if (!targetDb) return;
+      setLoading(true);
+      setBackupStatus(`Đang import ${item.path} vào database ${targetDb}...
+`);
+      const isMysql = item.path.includes("mysql") || !item.path.includes("pg_");
+      let cmd;
+      if (isMysql) {
+        cmd = `mysql "${targetDb}" < "${item.path}"`;
+      } else {
+        cmd = `sudo -u postgres psql "${targetDb}" < "${item.path}"`;
+      }
+      const result = await exec(cmd);
+      if (result.code === 0) {
+        setBackupStatus((prev) => prev + `✅ Import thành công vào ${targetDb}`);
+      } else {
+        setBackupStatus((prev) => prev + `❌ Lỗi import: ${result.stderr}`);
+      }
+      setLoading(false);
+    }
+  };
+  const handleDeleteBackup = async (item) => {
+    if (!confirm(`Xóa bản backup ${item.path}?`)) return;
+    setLoading(true);
+    await exec(`rm -f "${item.path}"`);
+    await fetchBackupHistory();
     setLoading(false);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
@@ -20044,7 +22000,7 @@ Bạn có thể quản lý và tải về qua SFTP.`
             {
               onClick: () => setBackupType("dir"),
               className: `flex-1 py-1.5 rounded-lg text-xs font-semibold ${backupType === "dir" ? "bg-[#89b4fa] text-[#1e1e2e]" : "bg-[#11111b] text-[#a6adc8]"}`,
-              children: "Thư mục nguồn"
+              children: "Thư mục"
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -20052,7 +22008,15 @@ Bạn có thể quản lý và tải về qua SFTP.`
             {
               onClick: () => setBackupType("mysql"),
               className: `flex-1 py-1.5 rounded-lg text-xs font-semibold ${backupType === "mysql" ? "bg-[#89b4fa] text-[#1e1e2e]" : "bg-[#11111b] text-[#a6adc8]"}`,
-              children: "Database MySQL"
+              children: "MySQL"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setBackupType("postgres"),
+              className: `flex-1 py-1.5 rounded-lg text-xs font-semibold ${backupType === "postgres" ? "bg-[#89b4fa] text-[#1e1e2e]" : "bg-[#11111b] text-[#a6adc8]"}`,
+              children: "PostgreSQL"
             }
           )
         ] })
@@ -20075,34 +22039,44 @@ Bạn có thể quản lý và tải về qua SFTP.`
             "input",
             {
               type: "text",
-              id: "db_name_input",
+              value: dbName,
+              onChange: (e) => setDbName(e.target.value),
               placeholder: "wordpress_db",
               className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
             }
           )
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "MySQL User" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "text",
-              id: "db_user_input",
-              placeholder: "root",
-              className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
-            }
-          )
+        backupType === "mysql" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "MySQL User" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                value: dbUser,
+                onChange: (e) => setDbUser(e.target.value),
+                placeholder: "root",
+                className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "MySQL Password" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "password",
+                value: dbPass,
+                onChange: (e) => setDbPass(e.target.value),
+                className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+              }
+            )
+          ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: "MySQL Password" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "password",
-              id: "db_pass_input",
-              className: "w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
-            }
-          )
+        backupType === "postgres" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-[10px] text-[#585b70] bg-[#11111b] rounded-lg p-2.5 leading-relaxed", children: [
+          "PostgreSQL sử dụng xác thực qua ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "text-[#89b4fa]", children: "sudo -u postgres" }),
+          ". Không cần nhập mật khẩu."
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -20115,7 +22089,44 @@ Bạn có thể quản lý và tải về qua SFTP.`
             " Bắt đầu Sao lưu"
           ]
         }
-      )
+      ),
+      backupHistory.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/[0.04] pt-4 space-y-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: [
+          "Lịch sử Backup (",
+          backupHistory.length,
+          ")"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-1.5 max-h-40 overflow-y-auto", children: backupHistory.map((item, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#11111b] border border-white/[0.02] rounded-lg p-2 flex items-center justify-between text-[10px]", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-mono text-[#cdd6f4] truncate", title: item.path, children: item.path.substring(item.path.lastIndexOf("/") + 1) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-[#585b70]", children: [
+              item.size,
+              " • ",
+              item.date
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1 shrink-0 ml-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleRestore(item),
+                className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
+                title: "Restore",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(RotateCw, { size: 10 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDeleteBackup(item),
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+                title: "Xóa",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 10 })
+              }
+            )
+          ] })
+        ] }, idx)) })
+      ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Trạng thái tác vụ Backup/Restore" }),
@@ -20210,43 +22221,48 @@ ${message}` };
   const handleRefresh = () => {
     setRefreshKey((prev) => prev + 1);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col bg-[#1e1e2e] text-[#cdd6f4] overflow-hidden select-none animate-fade-in", children: [
+  const menuGroups = [
+    {
+      title: "Hệ thống & Giám sát",
+      items: [
+        { id: "overview", name: "Overview", icon: Activity },
+        { id: "processes", name: "Processes", icon: Activity },
+        { id: "services", name: "Services", icon: Settings },
+        { id: "logs", name: "Log Streamer", icon: Terminal },
+        { id: "alerts", name: "Alerts", icon: Bell }
+      ]
+    },
+    {
+      title: "Ứng dụng & Dịch vụ",
+      items: [
+        { id: "pm2", name: "PM2", icon: Layers },
+        { id: "docker", name: "Docker", icon: Box },
+        { id: "nginx", name: "Nginx", icon: FolderOpen },
+        { id: "cron", name: "Cron Jobs", icon: Clock }
+      ]
+    },
+    {
+      title: "Dữ liệu & Tệp tin",
+      items: [
+        { id: "sftp", name: "SFTP", icon: Server },
+        { id: "database", name: "Database", icon: Database },
+        { id: "backup", name: "Backup", icon: CloudDownload }
+      ]
+    },
+    {
+      title: "Mạng & Tiện ích",
+      items: [
+        { id: "tunnel", name: "Tunnel", icon: ArrowRight },
+        { id: "packages", name: "Packages", icon: Package }
+      ]
+    }
+  ];
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-grow flex-shrink flex-basis-0 min-w-0 flex flex-col bg-[#1e1e2e] text-[#cdd6f4] overflow-hidden select-none animate-fade-in", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-10 bg-[#181825] border-b border-white/[0.04] flex items-center px-4 justify-between shrink-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 items-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { size: 14, className: "text-[#89b4fa]" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold uppercase tracking-wider text-[#a6adc8]", children: "DevOps Dashboard" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1 overflow-x-auto max-w-[70%] no-scrollbar", children: [
-        { id: "overview", name: "Overview", icon: Activity },
-        { id: "processes", name: "Processes", icon: Activity },
-        { id: "pm2", name: "PM2", icon: Layers },
-        { id: "docker", name: "Docker", icon: Box },
-        { id: "database", name: "Database", icon: Database },
-        { id: "cron", name: "Cron Jobs", icon: Clock },
-        { id: "multiexec", name: "Multi-Exec", icon: Send },
-        { id: "packages", name: "Packages", icon: Package },
-        { id: "logs", name: "Log Streamer", icon: Terminal },
-        { id: "services", name: "Services", icon: Settings },
-        { id: "nginx", name: "Nginx", icon: FolderOpen },
-        { id: "alerts", name: "Alerts", icon: Bell },
-        { id: "backup", name: "Backup", icon: CloudDownload },
-        { id: "sftp", name: "SFTP", icon: Server },
-        { id: "tunnel", name: "Tunnel", icon: ArrowRight }
-      ].map(({ id: id2, name, icon: Icon2 }) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          onClick: () => {
-            setActiveSubTab(id2);
-            setError("");
-          },
-          className: `flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all shrink-0 ${activeSubTab === id2 ? "bg-[#89b4fa]/15 text-[#89b4fa] font-medium" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { size: 12 }),
-            name
-          ]
-        },
-        id2
-      )) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
@@ -20258,57 +22274,78 @@ ${message}` };
         }
       )
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex-1 overflow-hidden relative flex flex-col p-4 ${activeSubTab === "sftp" || activeSubTab === "tunnel" ? "hidden" : ""}`, children: [
-      loading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 flex items-center justify-center bg-[#1e1e2e]/50 z-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 24, className: "animate-spin text-[#89b4fa]" }) }),
-      error && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#f38ba8]/10 border border-[#f38ba8]/20 rounded-lg p-3 text-xs text-[#f38ba8] mb-3 flex items-center justify-between shrink-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: error }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setError(""), className: "hover:text-white", children: "Close" })
-      ] }),
-      activeSubTab === "overview" && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        OverviewPanel,
-        {
-          sessionId,
-          exec,
-          refreshKey,
-          setLoading,
-          setError,
-          alertCpu,
-          alertMem,
-          alertDisk,
-          triggerResourceAlert
-        }
-      ),
-      activeSubTab === "processes" && /* @__PURE__ */ jsxRuntimeExports.jsx(ProcessesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "pm2" && /* @__PURE__ */ jsxRuntimeExports.jsx(PM2Panel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "docker" && /* @__PURE__ */ jsxRuntimeExports.jsx(DockerPanel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "database" && /* @__PURE__ */ jsxRuntimeExports.jsx(DatabasePanel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "cron" && /* @__PURE__ */ jsxRuntimeExports.jsx(CronPanel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "multiexec" && /* @__PURE__ */ jsxRuntimeExports.jsx(MultiExecPanel, { sessionId, exec }),
-      activeSubTab === "packages" && /* @__PURE__ */ jsxRuntimeExports.jsx(PackagesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "logs" && /* @__PURE__ */ jsxRuntimeExports.jsx(LogsPanel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "services" && /* @__PURE__ */ jsxRuntimeExports.jsx(ServicesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "nginx" && /* @__PURE__ */ jsxRuntimeExports.jsx(NginxPanel, { sessionId, exec, refreshKey, setLoading, setError }),
-      activeSubTab === "alerts" && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        AlertsPanel,
-        {
-          alertCpu,
-          setAlertCpu,
-          alertMem,
-          setAlertMem,
-          alertDisk,
-          setAlertDisk,
-          webhookUrl,
-          setWebhookUrl,
-          webhookType,
-          setWebhookType,
-          alertsHistory,
-          setLoading
-        }
-      ),
-      activeSubTab === "backup" && /* @__PURE__ */ jsxRuntimeExports.jsx(BackupPanel, { sessionId, exec, setLoading })
-    ] }),
-    activeSubTab === "sftp" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SftpPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) }),
-    activeSubTab === "tunnel" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TunnelPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) })
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-[180px] min-w-[180px] bg-[#181825] border-r border-white/[0.04] flex flex-col p-3 overflow-y-auto scrollbar-thin gap-4 shrink-0", children: menuGroups.map((group) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-[#45475a] uppercase tracking-wider px-2 mb-1", children: group.title }),
+        group.items.map(({ id: id2, name, icon: Icon2 }) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setActiveSubTab(id2);
+              setError("");
+            },
+            className: `flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all text-left group ${activeSubTab === id2 ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold border-l-2 border-[#89b4fa] pl-1.5" : "text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { size: 12, className: `shrink-0 ${activeSubTab === id2 ? "text-[#89b4fa]" : "text-[#585b70] group-hover:text-[#cdd6f4]"}` }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: name })
+            ]
+          },
+          id2
+        ))
+      ] }, group.title)) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0 flex flex-col overflow-hidden relative", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex-1 min-w-0 overflow-hidden relative flex flex-col p-4 ${activeSubTab === "sftp" || activeSubTab === "tunnel" ? "hidden" : ""}`, children: [
+          loading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 flex items-center justify-center bg-[#1e1e2e]/50 z-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 24, className: "animate-spin text-[#89b4fa]" }) }),
+          error && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#f38ba8]/10 border border-[#f38ba8]/20 rounded-lg p-3 text-xs text-[#f38ba8] mb-3 flex items-center justify-between shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: error }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setError(""), className: "hover:text-white", children: "Close" })
+          ] }),
+          activeSubTab === "overview" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            OverviewPanel,
+            {
+              sessionId,
+              exec,
+              refreshKey,
+              setLoading,
+              setError,
+              alertCpu,
+              alertMem,
+              alertDisk,
+              triggerResourceAlert
+            }
+          ),
+          activeSubTab === "processes" && /* @__PURE__ */ jsxRuntimeExports.jsx(ProcessesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "pm2" && /* @__PURE__ */ jsxRuntimeExports.jsx(PM2Panel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "docker" && /* @__PURE__ */ jsxRuntimeExports.jsx(DockerPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "database" && /* @__PURE__ */ jsxRuntimeExports.jsx(DatabasePanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "cron" && /* @__PURE__ */ jsxRuntimeExports.jsx(CronPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "packages" && /* @__PURE__ */ jsxRuntimeExports.jsx(PackagesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "logs" && /* @__PURE__ */ jsxRuntimeExports.jsx(LogsPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "services" && /* @__PURE__ */ jsxRuntimeExports.jsx(ServicesPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "nginx" && /* @__PURE__ */ jsxRuntimeExports.jsx(NginxPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "alerts" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            AlertsPanel,
+            {
+              alertCpu,
+              setAlertCpu,
+              alertMem,
+              setAlertMem,
+              alertDisk,
+              setAlertDisk,
+              webhookUrl,
+              setWebhookUrl,
+              webhookType,
+              setWebhookType,
+              alertsHistory,
+              setLoading
+            }
+          ),
+          activeSubTab === "backup" && /* @__PURE__ */ jsxRuntimeExports.jsx(BackupPanel, { sessionId, exec, setLoading })
+        ] }),
+        activeSubTab === "sftp" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SftpPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) }),
+        activeSubTab === "tunnel" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TunnelPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) })
+      ] })
+    ] })
   ] });
 }
 function generateId() {
@@ -21076,7 +23113,7 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#cba6f7]/[0.02] rounded-full blur-[100px]" })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Sidebar, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 flex-col overflow-hidden relative", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 flex-col min-w-0 overflow-hidden relative", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TitleBar, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Toolbar, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TabBar, {}),
@@ -21105,7 +23142,7 @@ function App() {
       ] }) }) : tabs.map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: `flex-1 ${tab.sessionId === activeTabId ? "flex animate-fade-in" : "hidden"}`,
+          className: `flex-1 flex-col min-w-0 ${tab.sessionId === activeTabId ? "flex animate-fade-in" : "hidden"}`,
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `flex-1 ${tab.viewMode === "dashboard" ? "hidden" : "flex"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TerminalTab, { sessionId: tab.sessionId, hostId: tab.hostId, connected: tab.connected }) }),
             tab.viewMode === "dashboard" && /* @__PURE__ */ jsxRuntimeExports.jsx(DevOpsDashboard, { sessionId: tab.sessionId })

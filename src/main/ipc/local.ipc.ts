@@ -55,17 +55,38 @@ export function registerLocalIpc(): void {
     if (process.platform === 'win32') {
       const { execSync } = require('child_process')
       try {
-        const output = execSync('wmic logicaldisk get caption', { encoding: 'utf8', timeout: 2000 })
-        return output.split('\n').slice(1).map((l: string) => l.trim()).filter(Boolean).map((d: string) => ({
-          name: d,
-          path: d + '\\',
-          isDirectory: true
-        }))
-      } catch {
-        return ['C:\\', 'D:\\'].filter((d) => {
-          try { readdirSync(d); return true } catch { return false }
-        }).map((d) => ({ name: d, path: d, isDirectory: true }))
-      }
+        let drives: string[] = []
+        try {
+          const output = execSync('fsutil fsinfo drives', { encoding: 'utf8', timeout: 2000, stdio: 'pipe' })
+          drives = output
+            .replace(/^Drives:\s*/i, '')
+            .split(/\s+/)
+            .map((d: string) => d.trim())
+            .filter(Boolean)
+        } catch {
+          const output = execSync('powershell -Command "[System.IO.DriveInfo]::GetDrives().Name"', { encoding: 'utf8', timeout: 2000, stdio: 'pipe' })
+          drives = output
+            .split('\n')
+            .map((d: string) => d.trim())
+            .filter(Boolean)
+        }
+
+        if (drives.length > 0) {
+          return drives.map((d: string) => {
+            const formatted = d.endsWith('\\') ? d : d + '\\'
+            return {
+              name: d.endsWith('\\') ? d.slice(0, -1) : d,
+              path: formatted,
+              isDirectory: true
+            }
+          })
+        }
+      } catch {}
+
+      // Fallback
+      return ['C:\\', 'D:\\'].filter((d) => {
+        try { readdirSync(d); return true } catch { return false }
+      }).map((d) => ({ name: d.endsWith('\\') ? d.slice(0, -1) : d, path: d, isDirectory: true }))
     }
     return [{ name: '/', path: '/', isDirectory: true }]
   })
