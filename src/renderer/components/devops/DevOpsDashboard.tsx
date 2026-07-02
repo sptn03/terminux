@@ -14,7 +14,10 @@ import {
   Send,
   Package,
   Bell,
-  DownloadCloud
+  DownloadCloud,
+  Shield,
+  GitBranch,
+  ShieldCheck
 } from 'lucide-react'
 import { useTerminalStore } from '../../stores/terminal-store'
 import SftpPanel from '../sftp/SftpPanel'
@@ -32,6 +35,9 @@ import ServicesPanel from './ServicesPanel'
 import NginxPanel from './NginxPanel'
 import AlertsPanel from './AlertsPanel'
 import BackupPanel from './BackupPanel'
+import FirewallPanel from './FirewallPanel'
+import GitPanel from './GitPanel'
+import SslTrackerPanel from './SslTrackerPanel'
 
 interface DevOpsDashboardProps {
   sessionId: string
@@ -54,6 +60,9 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
     | 'packages'
     | 'alerts'
     | 'backup'
+    | 'firewall'
+    | 'git'
+    | 'ssl'
   >('overview')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -168,7 +177,8 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
         { id: 'pm2', name: 'PM2', icon: Layers },
         { id: 'docker', name: 'Docker', icon: Box },
         { id: 'nginx', name: 'Nginx', icon: FolderOpen },
-        { id: 'cron', name: 'Cron Jobs', icon: Clock }
+        { id: 'cron', name: 'Cron Jobs', icon: Clock },
+        { id: 'git', name: 'Git & Deploy', icon: GitBranch }
       ]
     },
     {
@@ -183,7 +193,9 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
       title: 'Mạng & Tiện ích',
       items: [
         { id: 'tunnel', name: 'Tunnel', icon: ArrowRight },
-        { id: 'packages', name: 'Packages', icon: Package }
+        { id: 'packages', name: 'Packages', icon: Package },
+        { id: 'firewall', name: 'Firewall', icon: Shield },
+        { id: 'ssl', name: 'SSL Tracker', icon: ShieldCheck }
       ]
     }
   ] as const
@@ -324,6 +336,18 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
             )}
 
             {activeSubTab === 'backup' && <BackupPanel sessionId={sessionId} exec={exec} setLoading={setLoading} />}
+
+            {activeSubTab === 'firewall' && (
+              <FirewallPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
+            )}
+
+            {activeSubTab === 'git' && (
+              <GitPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
+            )}
+
+            {activeSubTab === 'ssl' && (
+              <SslTrackerPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
+            )}
           </div>
 
           {/* SFTP Dual-Pane Tab — full bleed, no padding */}

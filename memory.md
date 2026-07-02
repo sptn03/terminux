@@ -191,10 +191,17 @@ Future AI agents should know:
 - Reconnection is supported via a Reconnect Overlay when a session disconnects, or via right-click context menu.
 - If a connection fails to establish, the main process triggers a `shell:error` event before returning so that the error displays inside the terminal.
 - Prompting for passwords dynamically when `authMethod === 'password'` and `password` is empty is supported.
-- DevOps Dashboard has been updated to be fully responsive: the sub-tabs header was replaced with a vertical Left Sub-Sidebar (Option B) that groups the 15 features into 4 system categories (System, Apps, Data, Network) for optimal navigation without scrolling.
+- DevOps Dashboard has been updated to be fully responsive: the sub-tabs header was replaced with a vertical Left Sub-Sidebar (Option B) that groups the 18 features (Overview, Processes, PM2, Docker, Nginx, Cron Jobs, Git & Deploy, SFTP, Database, Backup, Tunnel, Packages, Logs, Services, Firewall, SSL Tracker, Alerts) into 4 system categories (System, Apps, Data, Network) for optimal navigation without scrolling.
 - OverviewPanel cards/gauges/details use responsive grid breakpoints (sm/lg/etc.) to wrap nicely on resize.
 - Docker, PM2, and Nginx panels feature automatic installers: when these tools are missing on the remote host, the panel displays a status warning and an installer button. The installer runs via sudo SSH commands, streams logs in real-time, and refreshes the panel state on completion.
-- `RemotePathPicker` is a component in `NginxPanel` and `PM2Panel` used to browse files/directories on the remote host.
+- `RemotePathPicker` is a reusable pattern implemented in `NginxPanel`, `DockerPanel` (for compose directory path picking), and `GitPanel` to browse files/directories on the remote host.
+- DockerPanel: Supports Docker Compose editing, Up/Down/Restart controls, and Interactive Terminal (`docker exec -it` inside new SSH xterm tab).
+- NginxPanel: Integrated with an automated Certbot Wizard to install Certbot and generate Let's Encrypt certificates for sites in 1-click.
+- DatabasePanel: Tích hợp Redis Key-Value Explorer (scan keys, read string/hash/list/set/zset type & value, delete key) và Database Backup/Restore (export, import cho MySQL & PostgreSQL).
+- BackupPanel: Tích hợp thiết lập lịch Cron Backup tự động và ghi đè trực tiếp vào crontab của server SSH.
+- FirewallPanel: Quản lý tường lửa UFW trực quan (bật/tắt, xem quy tắc, thêm rule cấm/cho phép theo IP & cổng mạng, xóa rule).
+- GitPanel: Quản lý danh sách repo Git, theo dõi trạng thái branch, modified files, commit history và chạy lệnh Pull/Fetch/Reset Hard/Deploy tự động.
+- SslTrackerPanel: Theo dõi danh sách tên miền website, tự động đọc và tính toán ngày hết hạn SSL qua `openssl` từ xa.
 
 
 

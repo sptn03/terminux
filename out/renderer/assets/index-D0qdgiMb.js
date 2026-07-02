@@ -7080,6 +7080,16 @@ const ArrowLeftRight = createLucideIcon("ArrowLeftRight", [
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
+const ArrowLeft = createLucideIcon("ArrowLeft", [
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
 const ArrowRightToLine = createLucideIcon("ArrowRightToLine", [
   ["path", { d: "M17 12H3", key: "8awo09" }],
   ["path", { d: "m11 18 6-6-6-6", key: "8c2y43" }],
@@ -7111,6 +7121,22 @@ const ArrowUp = createLucideIcon("ArrowUp", [
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
+const Award = createLucideIcon("Award", [
+  [
+    "path",
+    {
+      d: "m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526",
+      key: "1yiouv"
+    }
+  ],
+  ["circle", { cx: "12", cy: "8", r: "6", key: "1vp47v" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
 const Bell = createLucideIcon("Bell", [
   ["path", { d: "M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9", key: "1qo2s2" }],
   ["path", { d: "M10.3 21a1.94 1.94 0 0 0 3.4 0", key: "qgo35s" }]
@@ -7131,6 +7157,18 @@ const Box = createLucideIcon("Box", [
   ],
   ["path", { d: "m3.3 7 8.7 5 8.7-5", key: "g66t2b" }],
   ["path", { d: "M12 22V12", key: "d0xqtd" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Calendar = createLucideIcon("Calendar", [
+  ["path", { d: "M8 2v4", key: "1cmpym" }],
+  ["path", { d: "M16 2v4", key: "4m81vk" }],
+  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
+  ["path", { d: "M3 10h18", key: "8toen8" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -7243,6 +7281,17 @@ const Download = createLucideIcon("Download", [
   ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
   ["polyline", { points: "7 10 12 15 17 10", key: "2ggqvy" }],
   ["line", { x1: "12", x2: "12", y1: "15", y2: "3", key: "1vk2je" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ExternalLink = createLucideIcon("ExternalLink", [
+  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
+  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -7425,6 +7474,30 @@ const Folder = createLucideIcon("Folder", [
       key: "1kt360"
     }
   ]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const GitBranch = createLucideIcon("GitBranch", [
+  ["line", { x1: "6", x2: "6", y1: "3", y2: "15", key: "17qcm7" }],
+  ["circle", { cx: "18", cy: "6", r: "3", key: "1h7g24" }],
+  ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }],
+  ["path", { d: "M18 9a9 9 0 0 1-9 9", key: "n2h4wq" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const GitPullRequest = createLucideIcon("GitPullRequest", [
+  ["circle", { cx: "18", cy: "18", r: "3", key: "1xkwt0" }],
+  ["circle", { cx: "6", cy: "6", r: "3", key: "1lh9wr" }],
+  ["path", { d: "M13 6h3a2 2 0 0 1 2 2v7", key: "1yeb86" }],
+  ["line", { x1: "6", x2: "6", y1: "9", y2: "21", key: "rroup" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -7783,6 +7856,77 @@ const Settings = createLucideIcon("Settings", [
     }
   ],
   ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ShieldAlert = createLucideIcon("ShieldAlert", [
+  [
+    "path",
+    {
+      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      key: "oel41y"
+    }
+  ],
+  ["path", { d: "M12 8v4", key: "1got3b" }],
+  ["path", { d: "M12 16h.01", key: "1drbdi" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ShieldCheck = createLucideIcon("ShieldCheck", [
+  [
+    "path",
+    {
+      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      key: "oel41y"
+    }
+  ],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ShieldOff = createLucideIcon("ShieldOff", [
+  ["path", { d: "m2 2 20 20", key: "1ooewy" }],
+  [
+    "path",
+    {
+      d: "M5 5a1 1 0 0 0-1 1v7c0 5 3.5 7.5 7.67 8.94a1 1 0 0 0 .67.01c2.35-.82 4.48-1.97 5.9-3.71",
+      key: "1jlk70"
+    }
+  ],
+  [
+    "path",
+    {
+      d: "M9.309 3.652A12.252 12.252 0 0 0 11.24 2.28a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1v7a9.784 9.784 0 0 1-.08 1.264",
+      key: "18rp1v"
+    }
+  ]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Shield = createLucideIcon("Shield", [
+  [
+    "path",
+    {
+      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      key: "oel41y"
+    }
+  ]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -15247,6 +15391,8 @@ function useTerminal({ sessionId, containerRef }) {
   const globalTheme = useSettingsStore((s) => s.theme);
   const tabTheme = useTerminalStore((s) => sessionId ? s.tabThemes[sessionId] : void 0);
   const setTabTheme = useTerminalStore((s) => s.setTabTheme);
+  const tab = useTerminalStore((s) => sessionId ? s.tabs.find((t2) => t2.sessionId === sessionId) : void 0);
+  const startupSentRef = reactExports.useRef({});
   const activeThemeId = tabTheme ?? globalTheme;
   const themeEntry = themes.find((t2) => t2.id === activeThemeId);
   const themeConfig = themeEntry ? JSON.parse(themeEntry.config) : void 0;
@@ -15400,6 +15546,18 @@ function useTerminal({ sessionId, containerRef }) {
     };
   }, [sessionId]);
   reactExports.useEffect(() => {
+    if (sessionId && tab) {
+      if (tab.connected && tab.startupCommand && !startupSentRef.current[sessionId]) {
+        startupSentRef.current[sessionId] = true;
+        setTimeout(() => {
+          window.api.ssh.shellInput(sessionId, tab.startupCommand + "\n");
+        }, 600);
+      } else if (!tab.connected) {
+        startupSentRef.current[sessionId] = false;
+      }
+    }
+  }, [sessionId, tab?.connected, tab?.startupCommand]);
+  reactExports.useEffect(() => {
     const term = terminalRef.current;
     if (!term || !sessionId) return;
     const menuEl = document.createElement("div");
@@ -15429,28 +15587,28 @@ function useTerminal({ sessionId, containerRef }) {
         }
       };
       menuEl.appendChild(pb2);
-      const tab = useTerminalStore.getState().tabs.find((t2) => t2.sessionId === sessionId);
-      if (tab && tab.config) {
+      const tab2 = useTerminalStore.getState().tabs.find((t2) => t2.sessionId === sessionId);
+      if (tab2 && tab2.config) {
         const rb2 = document.createElement("button");
         rb2.className = "w-full flex items-center gap-2 px-3 py-1.5 text-[#cdd6f4] hover:bg-white/5 text-left";
         rb2.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg> Reconnect';
         rb2.onclick = async () => {
           menuEl.classList.add("hidden");
           const updateTabState = useTerminalStore.getState().updateTabState;
-          let password = tab.config.password;
-          if (tab.config.authMethod === "password" && !password) {
-            updateTabState(sessionId, { loading: false, connected: false, config: { ...tab.config, password: "" } });
+          let password = tab2.config.password;
+          if (tab2.config.authMethod === "password" && !password) {
+            updateTabState(sessionId, { loading: false, connected: false, config: { ...tab2.config, password: "" } });
             return;
           }
           updateTabState(sessionId, { loading: true, connected: false });
           term.clear();
           term.writeln("Đang kết nối lại...\r\n");
           await window.api.ssh.disconnect(sessionId);
-          const result = await window.api.ssh.connect({ ...tab.config, password });
+          const result = await window.api.ssh.connect({ ...tab2.config, password });
           updateTabState(sessionId, {
             connected: !result.error,
             loading: false,
-            label: result.error ? `${tab.label.replace(" (error)", "")} (error)` : tab.label.replace(" (error)", "")
+            label: result.error ? `${tab2.label.replace(" (error)", "")} (error)` : tab2.label.replace(" (error)", "")
           });
         };
         menuEl.appendChild(rb2);
@@ -18864,6 +19022,32 @@ function PM2Panel({
   reactExports.useEffect(() => {
     loadData();
   }, [loadData, refreshKey]);
+  reactExports.useEffect(() => {
+    if (!selectedAppLogs) return;
+    const interval = setInterval(async () => {
+      const appName = selectedAppLogs.name;
+      const appObj = pm2Apps.find((a) => a.name === appName);
+      if (appObj) {
+        let logs = "";
+        if (appObj.outLog || appObj.errLog) {
+          const cmd = `
+            echo "=== STDOUT LOGS (Last 100 lines) ==="
+            if [ -f "${appObj.outLog}" ]; then tail -n 100 "${appObj.outLog}"; else echo "No stdout log file found"; fi
+            echo ""
+            echo "=== STDERR LOGS (Last 100 lines) ==="
+            if [ -f "${appObj.errLog}" ]; then tail -n 100 "${appObj.errLog}"; else echo "No stderr log file found"; fi
+          `;
+          const res = await exec(cmd);
+          logs = res.stdout;
+        } else {
+          const res = await exec(`tail -n 100 ~/.pm2/logs/${appName}-out.log 2>/dev/null || echo "No logs found."`);
+          logs = res.stdout;
+        }
+        setSelectedAppLogs({ name: appName, logs: stripAnsi$4(logs) || "Không tìm thấy log nào." });
+      }
+    }, 3e3);
+    return () => clearInterval(interval);
+  }, [selectedAppLogs?.name, pm2Apps, exec]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
     pm2Installed && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-3 shrink-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-[#cdd6f4]", children: "Quản lý tiến trình NodeJS (PM2)" }),
@@ -19015,13 +19199,19 @@ function PM2Panel({
         className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[800px] max-h-[80vh] flex flex-col animate-scale-in",
         onClick: (e) => e.stopPropagation(),
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-gradient-to-r from-[#181825] to-transparent", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-semibold text-[#a6adc8] uppercase tracking-wider flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#fab387]" }),
-              "PM2 Logs: ",
-              selectedAppLogs.name
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-[#181825]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#fab387]" }),
+                "PM2 Logs: ",
+                selectedAppLogs.name
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-1 text-[9px] font-semibold text-[#a6e3a1] bg-[#a6e3a1]/10 px-1.5 py-0.5 rounded-full animate-pulse", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1 h-1 rounded-full bg-[#a6e3a1]" }),
+                "Live Logging"
+              ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSelectedAppLogs(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 15 }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSelectedAppLogs(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text selection:bg-[#fab387]/25 scrollbar-thin", children: selectedAppLogs.logs })
         ]
@@ -19143,7 +19333,7 @@ function PM2Panel({
       }
     ) }),
     pickerTarget && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      RemotePathPicker$1,
+      RemotePathPicker$4,
       {
         visible: true,
         mode: pickerTarget === "script" ? "file" : "dir",
@@ -19157,7 +19347,7 @@ function PM2Panel({
     )
   ] });
 }
-function RemotePathPicker$1({ mode, exec, onClose, onSelect }) {
+function RemotePathPicker$4({ mode, exec, onClose, onSelect }) {
   const [currentPath, setCurrentPath] = reactExports.useState("/");
   const [items, setItems] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(false);
@@ -19296,6 +19486,14 @@ function DockerPanel({
   const [containers, setContainers] = reactExports.useState([]);
   const [images, setImages] = reactExports.useState([]);
   const [selectedContainerLogs, setSelectedContainerLogs] = reactExports.useState(null);
+  const [selectedComposeProject, setSelectedComposeProject] = reactExports.useState(null);
+  const [composeConfigContent, setComposeConfigContent] = reactExports.useState("");
+  const [savingCompose, setSavingCompose] = reactExports.useState(false);
+  const [showCreateComposeModal, setShowCreateComposeModal] = reactExports.useState(false);
+  const [newComposeName, setNewComposeName] = reactExports.useState("");
+  const [newComposeDir, setNewComposeDir] = reactExports.useState("/var/www");
+  const [creatingCompose, setCreatingCompose] = reactExports.useState(false);
+  const [showComposePicker, setShowComposePicker] = reactExports.useState(false);
   const [composeProjects, setComposeProjects] = reactExports.useState([]);
   const [networks, setNetworks] = reactExports.useState([]);
   const [volumes, setVolumes] = reactExports.useState([]);
@@ -19304,6 +19502,13 @@ function DockerPanel({
   const [installLog, setInstallLog] = reactExports.useState("");
   const [daemonConfig, setDaemonConfig] = reactExports.useState("");
   const [savingConfig, setSavingConfig] = reactExports.useState(false);
+  const [pullImageName, setPullImageName] = reactExports.useState("");
+  const [pullingImage, setPullingImage] = reactExports.useState(false);
+  const [registryHost, setRegistryHost] = reactExports.useState("");
+  const [registryUser, setRegistryUser] = reactExports.useState("");
+  const [registryPass, setRegistryPass] = reactExports.useState("");
+  const [loggingInRegistry, setLoggingInRegistry] = reactExports.useState(false);
+  const [registryLogs, setRegistryLogs] = reactExports.useState("");
   const fetchDocker = reactExports.useCallback(async (checkVersion = false) => {
     try {
       if (checkVersion) {
@@ -19416,6 +19621,59 @@ function DockerPanel({
     await fetchDocker();
     setLoading(false);
   };
+  const handleDockerPull = async () => {
+    if (!pullImageName.trim()) {
+      alert("Vui lòng nhập tên Image!");
+      return;
+    }
+    setPullingImage(true);
+    setRegistryLogs(`Đang thực hiện pull image: ${pullImageName.trim()}...
+`);
+    try {
+      const res = await exec(`docker pull "${pullImageName.trim()}"`);
+      setRegistryLogs((prev) => prev + res.stdout + "\n" + res.stderr + "\n");
+      if (res.code === 0) {
+        setRegistryLogs((prev) => prev + "✅ Pull image thành công!\n");
+        alert("Tải Docker Image thành công!");
+        setPullImageName("");
+        await fetchDocker();
+      } else {
+        throw new Error(res.stderr || "Pull image thất bại");
+      }
+    } catch (err) {
+      setRegistryLogs((prev) => prev + `❌ Lỗi: ${err.message}
+`);
+      alert("Lỗi pull image: " + err.message);
+    } finally {
+      setPullingImage(false);
+    }
+  };
+  const handleDockerLogin = async () => {
+    if (!registryUser.trim() || !registryPass.trim()) {
+      alert("Vui lòng nhập Username và Password!");
+      return;
+    }
+    setLoggingInRegistry(true);
+    setRegistryLogs("Bắt đầu đăng nhập registry...\n");
+    try {
+      const hostArg = registryHost.trim() ? `"${registryHost.trim()}"` : "";
+      const cmd = `echo "${registryPass.trim()}" | docker login ${hostArg} -u "${registryUser.trim()}" --password-stdin`;
+      const res = await exec(cmd);
+      setRegistryLogs((prev) => prev + res.stdout + "\n" + res.stderr + "\n");
+      if (res.code === 0) {
+        setRegistryLogs((prev) => prev + "✅ Đăng nhập Registry thành công!\n");
+        alert("Đăng nhập Registry thành công!");
+      } else {
+        throw new Error(res.stderr || "Đăng nhập thất bại");
+      }
+    } catch (err) {
+      setRegistryLogs((prev) => prev + `❌ Lỗi: ${err.message}
+`);
+      alert("Lỗi đăng nhập: " + err.message);
+    } finally {
+      setLoggingInRegistry(false);
+    }
+  };
   const handleViewDockerContainerLogs = async (containerId, containerName) => {
     setLoading(true);
     const { stdout, stderr } = await exec(`docker logs --tail 100 ${containerId} 2>&1`);
@@ -19425,6 +19683,107 @@ function DockerPanel({
       logs: stripAnsi$3(stdout || stderr || "Không tìm thấy log nào.")
     });
     setLoading(false);
+  };
+  const handleDockerContainerTerminal = async (containerName) => {
+    const tabsStore = useTerminalStore.getState();
+    const currentTab = tabsStore.tabs.find((t2) => t2.sessionId === sessionId);
+    if (!currentTab || !currentTab.config) {
+      alert("Không tìm thấy cấu hình kết nối SSH hiện tại.");
+      return;
+    }
+    const execSessionId = `conn-docker-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    tabsStore.addTab({
+      sessionId: execSessionId,
+      hostId: currentTab.hostId,
+      label: `Exec: ${containerName}`,
+      connected: false,
+      loading: true,
+      config: currentTab.config,
+      startupCommand: `docker exec -it "${containerName}" /bin/bash || docker exec -it "${containerName}" /bin/sh || docker exec -it "${containerName}" sh`,
+      viewMode: "terminal"
+    });
+    const result = await window.api.ssh.connect(execSessionId ? { ...currentTab.config, sessionId: execSessionId } : currentTab.config);
+    tabsStore.updateTabState(execSessionId, {
+      connected: !result.error,
+      loading: false,
+      label: result.error ? `Exec: ${containerName} (error)` : `Exec: ${containerName}`
+    });
+  };
+  const handleReadComposeFile = async (name, configFiles) => {
+    setLoading(true);
+    setError("");
+    try {
+      const { stdout, code, stderr } = await exec(`cat "${configFiles}"`);
+      if (code !== 0) {
+        throw new Error(stderr || "Không thể đọc file compose.");
+      }
+      setSelectedComposeProject({ name, configFiles });
+      setComposeConfigContent(stdout);
+    } catch (err) {
+      alert("Lỗi đọc file: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleSaveComposeConfig = async () => {
+    if (!selectedComposeProject || savingCompose) return;
+    setSavingCompose(true);
+    try {
+      const writeCmd = `cat << 'EOF' > "${selectedComposeProject.configFiles}"
+${composeConfigContent}
+EOF`;
+      const res = await exec(writeCmd);
+      if (res.code !== 0) {
+        throw new Error(res.stderr || "Không thể lưu file compose.");
+      }
+      alert("Đã lưu file compose thành công!");
+    } catch (err) {
+      alert("Lỗi: " + err.message);
+    } finally {
+      setSavingCompose(false);
+    }
+  };
+  const handleCreateComposeProject = async () => {
+    if (!newComposeName.trim() || !newComposeDir.trim()) {
+      alert("Vui lòng nhập tên project và thư mục!");
+      return;
+    }
+    setCreatingCompose(true);
+    try {
+      const dir = newComposeDir.trim();
+      const name = newComposeName.trim();
+      const filePath = `${dir}/docker-compose.yml`;
+      const template = `version: '3.8'
+services:
+  ${name}:
+    image: nginx:alpine
+    container_name: ${name}
+    ports:
+      - "8080:80"
+    restart: always`;
+      const initCmd = `mkdir -p "${dir}" && cat << 'EOF' > "${filePath}"
+${template}
+EOF`;
+      const res = await exec(initCmd);
+      if (res.code !== 0) {
+        throw new Error(res.stderr || "Không thể khởi tạo thư mục và tệp compose.");
+      }
+      setLoading(true);
+      const upRes = await exec(`cd "${dir}" && docker compose up -d`);
+      setLoading(false);
+      if (upRes.code !== 0) {
+        alert("Tạo file thành công nhưng docker compose up thất bại: " + upRes.stderr);
+      } else {
+        alert("Đã tạo và khởi chạy Docker Compose project thành công!");
+      }
+      setShowCreateComposeModal(false);
+      setNewComposeName("");
+      await fetchDocker();
+    } catch (err) {
+      alert("Lỗi: " + err.message);
+    } finally {
+      setCreatingCompose(false);
+    }
   };
   const handleInstallDocker = async () => {
     setInstalling(true);
@@ -19624,6 +19983,17 @@ sudo mv ${tempFile} /etc/docker/daemon.json`;
             className: `px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${dockerSubTab === "config" ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/[0.02]"}`,
             children: "Config"
           }
+        ),
+        dockerSubTab === "compose" && !selectedComposeProject && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowCreateComposeModal(true),
+            className: "ml-auto flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold uppercase bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 active:scale-95 transition-all",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 11 }),
+              " Thêm Project mới"
+            ]
+          }
         )
       ] }),
       dockerSubTab === "containers" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
@@ -19679,6 +20049,15 @@ sudo mv ${tempFile} /etc/docker/daemon.json`;
                 children: /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12 })
               }
             ),
+            c.status.toLowerCase().includes("up") && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDockerContainerTerminal(c.name),
+                className: "p-1 rounded hover:bg-white/5 text-[#a6e3a1]",
+                title: "Interactive Terminal",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 12 })
+              }
+            ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
@@ -19709,30 +20088,120 @@ sudo mv ${tempFile} /etc/docker/daemon.json`;
           ] }) })
         ] }, c.id)) })
       ] }) }),
-      dockerSubTab === "images" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Repository" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tag" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Image ID" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Size" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+      dockerSubTab === "images" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col gap-4 overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Repository" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Tag" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Image ID" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Size" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: images.map((img, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: img.repository }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8]", children: img.tag }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: img.id }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: img.size }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDockerImageAction("rmi", img.id),
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
+                title: "Remove Image",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+              }
+            ) })
+          ] }, idx)) })
         ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: images.map((img, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-bold text-[#cdd6f4]", children: img.repository }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-[#a6adc8]", children: img.tag }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: img.id }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#6c7086]", children: img.size }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => handleDockerImageAction("rmi", img.id),
-              className: "p-1 rounded hover:bg-white/5 text-[#f38ba8]",
-              title: "Remove Image",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
-            }
-          ) })
-        ] }, idx)) })
-      ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4 shrink-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-bold text-[#585b70] tracking-wider", children: "Tải Docker Image mới (Pull)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "ví dụ: nginx:alpine, redis:latest...",
+                  value: pullImageName,
+                  onChange: (e) => setPullImageName(e.target.value),
+                  className: "flex-1 bg-[#11111b] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text",
+                  disabled: pullingImage
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: handleDockerPull,
+                  disabled: pullingImage,
+                  className: "px-4 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec]",
+                  children: pullingImage ? "Pulling..." : "Tải về"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-bold text-[#585b70] tracking-wider", children: "Đăng nhập Docker Registry" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "Registry Host (để trống nếu là DockerHub)",
+                  value: registryHost,
+                  onChange: (e) => setRegistryHost(e.target.value),
+                  className: "flex-1 min-w-[150px] bg-[#11111b] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text",
+                  disabled: loggingInRegistry
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "Username",
+                  value: registryUser,
+                  onChange: (e) => setRegistryUser(e.target.value),
+                  className: "w-28 bg-[#11111b] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text",
+                  disabled: loggingInRegistry
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "password",
+                  placeholder: "Password",
+                  value: registryPass,
+                  onChange: (e) => setRegistryPass(e.target.value),
+                  className: "w-28 bg-[#11111b] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text",
+                  disabled: loggingInRegistry
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: handleDockerLogin,
+                  disabled: loggingInRegistry,
+                  className: "px-4 py-1.5 rounded-lg bg-[#a6e3a1] text-[#1e1e2e] text-xs font-bold hover:bg-[#86c581]",
+                  children: loggingInRegistry ? "Logging in..." : "Login"
+                }
+              )
+            ] })
+          ] })
+        ] }),
+        registryLogs && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-32 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-3 shrink-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-1 shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] uppercase font-bold text-[#585b70] tracking-wider", children: "Trạng thái Tiến trình Registry" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setRegistryLogs(""),
+                className: "text-[9px] text-[#f38ba8] hover:underline",
+                children: "Clear"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-y-auto font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap select-text bg-[#11111b] p-2.5 rounded-lg border border-white/[0.02] scrollbar-thin", children: registryLogs })
+        ] })
+      ] }),
       dockerSubTab === "config" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-4 space-y-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col", children: [
@@ -19760,7 +20229,87 @@ sudo mv ${tempFile} /etc/docker/daemon.json`;
           }
         )
       ] }),
-      dockerSubTab === "compose" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: composeProjects.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex items-center justify-center text-[#585b70] text-xs py-12", children: "Không tìm thấy Docker Compose project nào." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+      dockerSubTab === "compose" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin flex flex-col", children: selectedComposeProject ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setSelectedComposeProject(null),
+                className: "p-1 hover:bg-white/5 rounded text-[#a6adc8] hover:text-[#cdd6f4]",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 14 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-xs text-[#a6adc8]", children: [
+              selectedComposeProject.name,
+              " (",
+              selectedComposeProject.configFiles,
+              ")"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: handleSaveComposeConfig,
+                disabled: savingCompose,
+                className: "px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] text-xs font-semibold hover:bg-[#74c7ec] active:scale-95 disabled:opacity-40 transition-all",
+                children: savingCompose ? "Đang Lưu..." : "Lưu File"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  await handleSaveComposeConfig();
+                  setLoading(true);
+                  const parentDir = selectedComposeProject.configFiles.substring(0, selectedComposeProject.configFiles.lastIndexOf("/"));
+                  const res = await exec(`cd "${parentDir}" && docker compose up -d`);
+                  setLoading(false);
+                  if (res.code === 0) {
+                    alert("Đã chạy docker compose up -d thành công!");
+                    await fetchDocker();
+                  } else {
+                    alert("Lỗi: " + res.stderr);
+                  }
+                },
+                className: "px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] text-xs font-semibold hover:bg-[#86c581] active:scale-95 transition-all",
+                children: "Lưu & Up"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  if (confirm("Chạy docker compose down cho project này?")) {
+                    setLoading(true);
+                    const parentDir = selectedComposeProject.configFiles.substring(0, selectedComposeProject.configFiles.lastIndexOf("/"));
+                    const res = await exec(`cd "${parentDir}" && docker compose down`);
+                    setLoading(false);
+                    if (res.code === 0) {
+                      alert("Đã chạy docker compose down thành công!");
+                      await fetchDocker();
+                    } else {
+                      alert("Lỗi: " + res.stderr);
+                    }
+                  }
+                },
+                className: "px-3 py-1 rounded bg-[#f38ba8] text-[#1e1e2e] text-xs font-semibold hover:bg-[#e27a97] active:scale-95 transition-all",
+                children: "Down Project"
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "textarea",
+          {
+            value: composeConfigContent,
+            onChange: (e) => setComposeConfigContent(e.target.value),
+            className: "flex-1 p-4 bg-[#181825] text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed",
+            spellCheck: false
+          }
+        )
+      ] }) : composeProjects.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-grow flex items-center justify-center text-[#585b70] text-xs py-12", children: "Không tìm thấy Docker Compose project nào." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Project" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Status" }),
@@ -19775,9 +20324,19 @@ sudo mv ${tempFile} /etc/docker/daemon.json`;
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
+                onClick: () => handleReadComposeFile(p2.name, p2.configFiles),
+                className: "p-1 rounded hover:bg-white/5 text-[#fab387]",
+                title: "Edit Compose File",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(PenLine, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
                 onClick: async () => {
                   setLoading(true);
-                  await exec(`docker compose -p ${p2.name} up -d 2>/dev/null`);
+                  const parentDir = p2.configFiles.substring(0, p2.configFiles.lastIndexOf("/"));
+                  await exec(`cd "${parentDir}" && docker compose up -d`);
                   await fetchDocker();
                   setLoading(false);
                 },
@@ -19791,7 +20350,8 @@ sudo mv ${tempFile} /etc/docker/daemon.json`;
               {
                 onClick: async () => {
                   setLoading(true);
-                  await exec(`docker compose -p ${p2.name} stop 2>/dev/null`);
+                  const parentDir = p2.configFiles.substring(0, p2.configFiles.lastIndexOf("/"));
+                  await exec(`cd "${parentDir}" && docker compose stop`);
                   await fetchDocker();
                   setLoading(false);
                 },
@@ -19805,7 +20365,8 @@ sudo mv ${tempFile} /etc/docker/daemon.json`;
               {
                 onClick: async () => {
                   setLoading(true);
-                  await exec(`docker compose -p ${p2.name} restart 2>/dev/null`);
+                  const parentDir = p2.configFiles.substring(0, p2.configFiles.lastIndexOf("/"));
+                  await exec(`cd "${parentDir}" && docker compose restart`);
                   await fetchDocker();
                   setLoading(false);
                 },
@@ -19919,8 +20480,211 @@ sudo mv ${tempFile} /etc/docker/daemon.json`;
           }
         )
       }
+    ),
+    showCreateComposeModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setShowCreateComposeModal(false), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[420px] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13, className: "text-[#89b4fa]" }),
+          " Tạo Docker Compose Project mới"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowCreateComposeModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên dịch vụ/Project (Project Name) *" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              placeholder: "ví dụ: my-web-app",
+              value: newComposeName,
+              onChange: (e) => setNewComposeName(e.target.value),
+              className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Thư mục lưu trữ (Directory Path) *" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                placeholder: "/var/www/my-web-app",
+                value: newComposeDir,
+                onChange: (e) => setNewComposeDir(e.target.value),
+                className: "flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => setShowComposePicker(true),
+                className: "px-3 rounded-lg bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs flex items-center justify-center",
+                children: "Duyệt..."
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: () => setShowCreateComposeModal(false),
+              className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+              children: "Hủy"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: handleCreateComposeProject,
+              disabled: creatingCompose,
+              className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40",
+              children: creatingCompose ? "Đang tạo..." : "Tạo & Up"
+            }
+          )
+        ] })
+      ] })
+    ] }) }),
+    showComposePicker && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      RemotePathPicker$3,
+      {
+        visible: true,
+        mode: "dir",
+        exec,
+        onClose: () => setShowComposePicker(false),
+        onSelect: (path) => setNewComposeDir(path)
+      }
     )
   ] });
+}
+function RemotePathPicker$3({ mode, exec, onClose, onSelect }) {
+  const [currentPath, setCurrentPath] = reactExports.useState("/");
+  const [items, setItems] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const fetchDir = reactExports.useCallback(async (path) => {
+    setLoading(true);
+    try {
+      const sanitizedPath = path.replace(/"/g, '\\"');
+      const cmd = `cd "${sanitizedPath}" && ls -F -1`;
+      const res = await exec(cmd);
+      if (res.code === 0) {
+        const parsed = res.stdout.split("\n").map((f2) => f2.trim()).filter((f2) => f2 && f2 !== "./" && f2 !== "../").map((f2) => {
+          const isDir = f2.endsWith("/");
+          const name = isDir ? f2.slice(0, -1) : f2;
+          return { name, isDir };
+        });
+        parsed.sort((a, b) => {
+          if (a.isDir && !b.isDir) return -1;
+          if (!a.isDir && b.isDir) return 1;
+          return a.name.localeCompare(b.name);
+        });
+        setItems(parsed);
+        setCurrentPath(path);
+      } else {
+        alert("Lỗi đọc thư mục: " + res.stderr);
+      }
+    } catch (e) {
+      alert("Lỗi: " + e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [exec]);
+  reactExports.useEffect(() => {
+    fetchDir("/");
+  }, [fetchDir]);
+  const handleGoUp = () => {
+    if (currentPath === "/") return;
+    const parts = currentPath.split("/").filter(Boolean);
+    parts.pop();
+    const parent = "/" + parts.join("/");
+    fetchDir(parent);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] h-[480px] flex flex-col animate-scale-in", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#181825]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+        "Chọn ",
+        mode === "file" ? "Tệp tin" : "Thư mục",
+        " trên Server"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-[#11111b] border-b border-white/5 flex gap-2 items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: handleGoUp,
+          disabled: currentPath === "/",
+          className: "px-2 py-1 rounded bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40",
+          children: "← Lên"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          readOnly: true,
+          value: currentPath,
+          className: "flex-1 bg-[#181825] border border-white/5 rounded px-2 py-1 text-xs text-[#a6adc8] font-mono outline-none"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-2.5 space-y-0.5 scrollbar-thin", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70] gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 14, className: "animate-spin text-[#89b4fa]" }),
+      " Đang tải..."
+    ] }) : items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70]", children: "Thư mục trống." }) : items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        onClick: () => {
+          const newPath = currentPath === "/" ? `/${item.name}` : `${currentPath}/${item.name}`;
+          if (item.isDir) {
+            fetchDir(newPath);
+          } else {
+            if (mode === "file") {
+              onSelect(newPath);
+              onClose();
+            }
+          }
+        },
+        className: "w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.02] transition-all",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-sm", children: item.isDir ? "📁" : "📄" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: item.name })
+        ]
+      },
+      item.name
+    )) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 border-t border-white/5 bg-[#181825] flex justify-between items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70]", children: mode === "file" ? "Click file để chọn" : "Bấm Chọn để lấy thư mục hiện tại" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: onClose,
+            className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10 text-xs",
+            children: "Hủy"
+          }
+        ),
+        mode === "dir" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => {
+              onSelect(currentPath);
+              onClose();
+            },
+            className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] text-xs active:scale-95 transition-all",
+            children: "Chọn thư mục này"
+          }
+        )
+      ] })
+    ] })
+  ] }) });
 }
 function DatabasePanel({
   sessionId,
@@ -19939,6 +20703,19 @@ function DatabasePanel({
   const [quickQueryModal, setQuickQueryModal] = reactExports.useState(null);
   const [queryInput, setQueryInput] = reactExports.useState("");
   const [queryResult, setQueryResult] = reactExports.useState("");
+  const [showRedisExplorer, setShowRedisExplorer] = reactExports.useState(null);
+  const [redisKeys, setRedisKeys] = reactExports.useState([]);
+  const [redisSearchPattern, setRedisSearchPattern] = reactExports.useState("*");
+  const [selectedRedisKey, setSelectedRedisKey] = reactExports.useState(null);
+  const [selectedRedisType, setSelectedRedisType] = reactExports.useState("");
+  const [selectedRedisValue, setSelectedRedisValue] = reactExports.useState("");
+  const [loadingRedis, setLoadingRedis] = reactExports.useState(false);
+  const [quickBackupModal, setQuickBackupModal] = reactExports.useState(null);
+  const [backupActionType, setBackupActionType] = reactExports.useState("export");
+  const [backupDbName, setBackupDbName] = reactExports.useState("");
+  const [backupSqlPath, setBackupSqlPath] = reactExports.useState("");
+  const [backupStatusMsg, setBackupStatusMsg] = reactExports.useState("");
+  const [runningDbBackup, setRunningDbBackup] = reactExports.useState(false);
   const fetchTunnels = reactExports.useCallback(async () => {
     try {
       const list = await window.api.tunnel.list();
@@ -20084,6 +20861,117 @@ function DatabasePanel({
     await fetchDatabaseInstances();
     setLoading(false);
   };
+  const handleFetchRedisKeys = async (port, pattern) => {
+    setLoadingRedis(true);
+    try {
+      const cmd = `redis-cli -p ${port} --scan --pattern "${pattern || "*"}" LIMIT 100 2>/dev/null || redis-cli -p ${port} KEYS "${pattern || "*"}" 2>/dev/null | head -n 100 || echo ""`;
+      const { stdout } = await exec(cmd);
+      const keys = stdout.split("\n").map((s) => s.trim()).filter(Boolean);
+      setRedisKeys(keys);
+      setSelectedRedisKey(null);
+      setSelectedRedisValue("");
+      setSelectedRedisType("");
+    } catch {
+    }
+    setLoadingRedis(false);
+  };
+  const handleReadRedisKey = async (port, key) => {
+    setLoadingRedis(true);
+    try {
+      const typeRes = await exec(`redis-cli -p ${port} TYPE "${key}"`);
+      const type = typeRes.stdout.trim();
+      setSelectedRedisType(type);
+      let valCmd = "";
+      if (type === "string") {
+        valCmd = `redis-cli -p ${port} GET "${key}"`;
+      } else if (type === "hash") {
+        valCmd = `redis-cli -p ${port} HGETALL "${key}"`;
+      } else if (type === "list") {
+        valCmd = `redis-cli -p ${port} LRANGE "${key}" 0 -1`;
+      } else if (type === "set") {
+        valCmd = `redis-cli -p ${port} SMEMBERS "${key}"`;
+      } else if (type === "zset") {
+        valCmd = `redis-cli -p ${port} ZRANGE "${key}" 0 -1 WITHSCORES`;
+      } else {
+        valCmd = `redis-cli -p ${port} DUMP "${key}"`;
+      }
+      const valRes = await exec(valCmd);
+      setSelectedRedisKey(key);
+      setSelectedRedisValue(valRes.stdout || valRes.stderr || "(Trống)");
+    } catch (err) {
+      alert("Lỗi đọc key: " + err.message);
+    }
+    setLoadingRedis(false);
+  };
+  const handleDeleteRedisKey = async (port, key) => {
+    if (!confirm(`Xóa key "${key}" này chứ?`)) return;
+    setLoadingRedis(true);
+    try {
+      await exec(`redis-cli -p ${port} DEL "${key}"`);
+      alert("Đã xóa key thành công!");
+      await handleFetchRedisKeys(port, redisSearchPattern);
+    } catch (err) {
+      alert("Lỗi xóa: " + err.message);
+    }
+    setLoadingRedis(false);
+  };
+  const handleDbBackupAction = async () => {
+    if (!backupDbName.trim()) {
+      alert("Vui lòng nhập tên Database!");
+      return;
+    }
+    if (backupActionType === "import" && !backupSqlPath.trim()) {
+      alert("Vui lòng nhập đường dẫn file SQL để import!");
+      return;
+    }
+    setRunningDbBackup(true);
+    setBackupStatusMsg("Bắt đầu tiến trình...\n");
+    const timestamp = Date.now();
+    try {
+      if (backupActionType === "export") {
+        const targetPath = `/tmp/db_${backupDbName}_${timestamp}.sql`;
+        setBackupStatusMsg((prev) => prev + `Đang xuất database ${backupDbName} ra ${targetPath}...
+`);
+        let cmd = "";
+        if (quickBackupModal?.type === "mysql") {
+          cmd = `mysqldump "${backupDbName}" > "${targetPath}"`;
+        } else {
+          cmd = `sudo -u postgres pg_dump "${backupDbName}" > "${targetPath}"`;
+        }
+        const res = await exec(cmd);
+        if (res.code === 0) {
+          setBackupStatusMsg((prev) => prev + `✅ Xuất database thành công!
+File lưu trữ tại: ${targetPath}
+Bạn có thể tải file này về máy qua SFTP.`);
+          alert("Export database thành công!");
+        } else {
+          throw new Error(res.stderr || "Xuất database thất bại");
+        }
+      } else {
+        setBackupStatusMsg((prev) => prev + `Đang import ${backupSqlPath} vào database ${backupDbName}...
+`);
+        let cmd = "";
+        if (quickBackupModal?.type === "mysql") {
+          cmd = `mysql "${backupDbName}" < "${backupSqlPath}"`;
+        } else {
+          cmd = `sudo -u postgres psql "${backupDbName}" < "${backupSqlPath}"`;
+        }
+        const res = await exec(cmd);
+        if (res.code === 0) {
+          setBackupStatusMsg((prev) => prev + "✅ Nhập database thành công!");
+          alert("Import database thành công!");
+        } else {
+          throw new Error(res.stderr || "Import database thất bại");
+        }
+      }
+    } catch (err) {
+      setBackupStatusMsg((prev) => prev + `❌ Lỗi: ${err.message}
+`);
+      alert("Lỗi: " + err.message);
+    } finally {
+      setRunningDbBackup(false);
+    }
+  };
   const loadData = reactExports.useCallback(async () => {
     setLoading(true);
     setError("");
@@ -20157,46 +21045,77 @@ function DatabasePanel({
               ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 space-y-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2", children: (db2.type === "mysql" || db2.type === "postgres") && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    onClick: async () => {
-                      setLoading(true);
-                      let cmd = "";
-                      if (db2.type === "mysql") {
-                        cmd = "mysql -e 'SHOW DATABASES' 2>/dev/null || echo 'Không có quyền'";
-                      } else {
-                        cmd = "sudo -u postgres psql -t -c 'SELECT datname FROM pg_database WHERE datistemplate = false' 2>/dev/null || echo 'Không có quyền'";
-                      }
-                      const { stdout } = await exec(cmd);
-                      const dbs = stdout.split("\n").map((s) => s.trim()).filter((s) => s && !s.startsWith("+") && !s.startsWith("|") && s !== "Database");
-                      setDbListModal({ type: db2.type, databases: dbs });
-                      setLoading(false);
-                    },
-                    className: "flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(List, { size: 10 }),
-                      " Databases"
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
+                (db2.type === "mysql" || db2.type === "postgres") && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: async () => {
+                        setLoading(true);
+                        let cmd = "";
+                        if (db2.type === "mysql") {
+                          cmd = "mysql -e 'SHOW DATABASES' 2>/dev/null || echo 'Không có quyền'";
+                        } else {
+                          cmd = "sudo -u postgres psql -t -c 'SELECT datname FROM pg_database WHERE datistemplate = false' 2>/dev/null || echo 'Không có quyền'";
+                        }
+                        const { stdout } = await exec(cmd);
+                        const dbs = stdout.split("\n").map((s) => s.trim()).filter((s) => s && !s.startsWith("+") && !s.startsWith("|") && s !== "Database");
+                        setDbListModal({ type: db2.type, databases: dbs });
+                        setLoading(false);
+                      },
+                      className: "flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(List, { size: 10 }),
+                        " DBs"
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: () => {
+                        setQuickQueryModal({ type: db2.type, port: db2.port });
+                        setQueryInput("");
+                        setQueryResult("");
+                      },
+                      className: "flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 10 }),
+                        " Query"
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      onClick: () => {
+                        setBackupDbName("");
+                        setBackupSqlPath("");
+                        setBackupStatusMsg("");
+                        setBackupActionType("export");
+                        setQuickBackupModal({ type: db2.type, port: db2.port });
+                      },
+                      className: "flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all",
+                      children: "Backup"
+                    }
+                  )
+                ] }),
+                db2.type === "redis" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "button",
                   {
                     onClick: () => {
-                      setQuickQueryModal({ type: db2.type, port: db2.port });
-                      setQueryInput("");
-                      setQueryResult("");
+                      setShowRedisExplorer({ port: db2.port });
+                      setRedisSearchPattern("*");
+                      handleFetchRedisKeys(db2.port, "*");
                     },
-                    className: "flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all",
+                    className: "w-full flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all",
                     children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { size: 10 }),
-                      " Query"
+                      " Duyệt Key-Value"
                     ]
                   }
                 )
-              ] }) }),
+              ] }),
               activeTunnel ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
@@ -20350,6 +21269,163 @@ function DatabasePanel({
           }
         ),
         queryResult && /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "max-h-48 overflow-auto bg-[#11111b] border border-white/[0.04] rounded-lg p-3 text-[11px] font-mono text-[#a6adc8] whitespace-pre-wrap select-text", children: queryResult })
+      ] })
+    ] }) }),
+    showRedisExplorer && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setShowRedisExplorer(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[700px] h-[80vh] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+          "Redis Key-Value Explorer (Cổng: ",
+          showRedisExplorer.port,
+          ")"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowRedisExplorer(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-[#11111b] border-b border-white/5 flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "text",
+            value: redisSearchPattern,
+            onChange: (e) => setRedisSearchPattern(e.target.value),
+            placeholder: "Nhập pattern tìm kiếm (ví dụ: user:*, *)...",
+            onKeyDown: (e) => {
+              if (e.key === "Enter") {
+                handleFetchRedisKeys(showRedisExplorer.port, redisSearchPattern);
+              }
+            },
+            className: "flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => handleFetchRedisKeys(showRedisExplorer.port, redisSearchPattern),
+            className: "px-4 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec]",
+            children: "Tìm kiếm"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-64 min-w-64 border-r border-white/5 flex flex-col overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-2 space-y-1.5 scrollbar-thin", children: loadingRedis && redisKeys.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-xs py-8 animate-pulse", children: "Đang tải..." }) : redisKeys.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-xs py-8", children: "Không tìm thấy key nào." }) : redisKeys.map((key) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            onClick: () => handleReadRedisKey(showRedisExplorer.port, key),
+            className: `group flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono text-left cursor-pointer transition-all select-text ${selectedRedisKey === key ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8] hover:bg-white/[0.02]"}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate flex-1 mr-2", children: key }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    handleDeleteRedisKey(showRedisExplorer.port, key);
+                  },
+                  className: "p-0.5 rounded opacity-0 group-hover:opacity-100 hover:bg-white/5 text-[#f38ba8] transition-all",
+                  title: "Xóa Key",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 })
+                }
+              )
+            ]
+          },
+          key
+        )) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex flex-col overflow-hidden bg-[#11111b]/20 p-4", children: selectedRedisKey ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden space-y-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center bg-[#11111b] border border-white/5 p-2 rounded-lg text-xs font-mono", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#585b70]", children: [
+              "Key: ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#cdd6f4] font-bold select-text", children: selectedRedisKey })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-[#cba6f7]/10 text-[#cba6f7] px-1.5 py-0.5 rounded text-[10px] font-bold font-sans uppercase", children: selectedRedisType })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-bold text-[#585b70] tracking-wider mb-1", children: "Giá trị (Value)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-auto bg-[#11111b] border border-white/[0.04] p-3 rounded-lg font-mono text-xs text-[#a6adc8] whitespace-pre-wrap select-text scrollbar-thin", children: selectedRedisValue })
+          ] })
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex items-center justify-center text-[#585b70] text-xs", children: "Chọn một key từ danh sách bên trái để xem giá trị chi tiết" }) })
+      ] })
+    ] }) }),
+    quickBackupModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setQuickBackupModal(null), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[450px] max-h-[85vh] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: [
+          "Sao lưu & Phục hồi (",
+          quickBackupModal.type.toUpperCase(),
+          ")"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setQuickBackupModal(null), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs overflow-y-auto scrollbar-thin", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 p-0.5 bg-[#11111b] border border-white/5 rounded-lg", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setBackupActionType("export"),
+              className: `flex-1 py-1 rounded-md transition-all ${backupActionType === "export" ? "bg-[#89b4fa] text-[#1e1e2e] font-bold" : "text-[#a6adc8] hover:text-[#cdd6f4]"}`,
+              children: "Export (Backup)"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setBackupActionType("import"),
+              className: `flex-1 py-1 transition-all ${backupActionType === "import" ? "bg-[#89b4fa] text-[#1e1e2e] font-bold" : "text-[#a6adc8] hover:text-[#cdd6f4]"}`,
+              children: "Import (Restore)"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên Database *" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              placeholder: "wordpress_db",
+              value: backupDbName,
+              onChange: (e) => setBackupDbName(e.target.value),
+              className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none",
+              disabled: runningDbBackup
+            }
+          )
+        ] }),
+        backupActionType === "import" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Đường dẫn file SQL nguồn (.sql) *" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              placeholder: "/tmp/db_wordpress_db_123456.sql",
+              value: backupSqlPath,
+              onChange: (e) => setBackupSqlPath(e.target.value),
+              className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono",
+              disabled: runningDbBackup
+            }
+          )
+        ] }),
+        backupStatusMsg && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tiến trình thực hiện" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "h-32 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin", children: backupStatusMsg })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: () => setQuickBackupModal(null),
+              className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+              disabled: runningDbBackup,
+              children: "Hủy"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: handleDbBackupAction,
+              disabled: runningDbBackup,
+              className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40",
+              children: runningDbBackup ? "Đang thực hiện..." : backupActionType === "export" ? "Bắt đầu Export" : "Bắt đầu Import"
+            }
+          )
+        ] })
       ] })
     ] }) })
   ] });
@@ -20933,6 +22009,7 @@ function LogsPanel({
   const [journalUnit, setJournalUnit] = reactExports.useState("");
   const [journalPriority, setJournalPriority] = reactExports.useState("");
   const [lastRefreshTime, setLastRefreshTime] = reactExports.useState("");
+  const [showPicker, setShowPicker] = reactExports.useState(false);
   const consoleEndRef = reactExports.useRef(null);
   const fetchLogsContent = reactExports.useCallback(async () => {
     if (logSource === "file" && !selectedLogPath) return;
@@ -21019,16 +22096,29 @@ function LogsPanel({
           )
         ] }),
         showAddLogInput && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 border-b border-white/[0.04] bg-[#11111b]/35 space-y-1.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "text",
-              placeholder: "Đường dẫn log file...",
-              value: newLogPathInput,
-              onChange: (e) => setNewLogPathInput(e.target.value),
-              className: "w-full bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none"
-            }
-          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                autoFocus: true,
+                placeholder: "Đường dẫn log file...",
+                value: newLogPathInput,
+                onChange: (e) => setNewLogPathInput(e.target.value),
+                className: "flex-1 bg-[#1e1e2e] border border-white/5 rounded-md px-2 py-1 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => setShowPicker(true),
+                className: "px-2 rounded bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs flex items-center justify-center font-bold",
+                title: "Chọn file trên server",
+                children: "..."
+              }
+            )
+          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1 justify-end", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowAddLogInput(false), className: "px-2 py-0.5 rounded text-[9px] bg-white/5 hover:bg-white/10", children: "Hủy" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleAddLogPath, className: "px-2 py-0.5 rounded text-[9px] bg-[#89b4fa] text-[#1e1e2e] font-semibold", children: "Thêm" })
@@ -21150,8 +22240,153 @@ function LogsPanel({
         }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: consoleEndRef })
       ] })
-    ] })
+    ] }),
+    showPicker && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      RemotePathPicker$2,
+      {
+        visible: true,
+        mode: "file",
+        exec,
+        onClose: () => setShowPicker(false),
+        onSelect: (path) => {
+          setNewLogPathInput(path);
+        }
+      }
+    )
   ] });
+}
+function RemotePathPicker$2({ mode, exec, onClose, onSelect }) {
+  const [currentPath, setCurrentPath] = reactExports.useState("/");
+  const [items, setItems] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const fetchDir = reactExports.useCallback(async (path) => {
+    setLoading(true);
+    try {
+      const sanitizedPath = path.replace(/"/g, '\\"');
+      const cmd = `cd "${sanitizedPath}" && ls -F -1`;
+      const res = await exec(cmd);
+      if (res.code === 0) {
+        const parsed = res.stdout.split("\n").map((f2) => f2.trim()).filter((f2) => f2 && f2 !== "./" && f2 !== "../").map((f2) => {
+          const isDir = f2.endsWith("/");
+          const name = isDir ? f2.slice(0, -1) : f2;
+          return { name, isDir };
+        });
+        parsed.sort((a, b) => {
+          if (a.isDir && !b.isDir) return -1;
+          if (!a.isDir && b.isDir) return 1;
+          return a.name.localeCompare(b.name);
+        });
+        setItems(parsed);
+        setCurrentPath(path);
+      } else {
+        alert("Lỗi đọc thư mục: " + res.stderr);
+      }
+    } catch (e) {
+      alert("Lỗi: " + e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [exec]);
+  reactExports.useEffect(() => {
+    fetchDir("/");
+  }, [fetchDir]);
+  const handleGoUp = () => {
+    if (currentPath === "/") return;
+    const parts = currentPath.split("/").filter(Boolean);
+    parts.pop();
+    const parent = "/" + parts.join("/");
+    fetchDir(parent);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      className: "fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm",
+      onClick: (e) => {
+        if (e.target === e.currentTarget) onClose();
+      },
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] h-[480px] flex flex-col animate-scale-in", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#181825]", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+            "Chọn ",
+            mode === "file" ? "Tệp tin" : "Thư mục",
+            " trên Server"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-[#11111b] border-b border-white/5 flex gap-2 items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: handleGoUp,
+              disabled: currentPath === "/",
+              className: "px-2 py-1 rounded bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40",
+              children: "← Lên"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              readOnly: true,
+              value: currentPath,
+              className: "flex-1 bg-[#181825] border border-white/5 rounded px-2 py-1 text-xs text-[#a6adc8] font-mono outline-none"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-2.5 space-y-0.5 scrollbar-thin", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70] gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 14, className: "animate-spin text-[#89b4fa]" }),
+          " Đang tải..."
+        ] }) : items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70]", children: "Thư mục trống." }) : items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              const newPath = currentPath === "/" ? `/${item.name}` : `${currentPath}/${item.name}`;
+              if (item.isDir) {
+                fetchDir(newPath);
+              } else {
+                if (mode === "file") {
+                  onSelect(newPath);
+                  onClose();
+                }
+              }
+            },
+            className: "w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.02] transition-all",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-sm", children: item.isDir ? "📁" : "📄" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: item.name })
+            ]
+          },
+          item.name
+        )) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 border-t border-white/5 bg-[#181825] flex justify-between items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70]", children: mode === "file" ? "Click file để chọn" : "Bấm Chọn để lấy thư mục hiện tại" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: onClose,
+                className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10 text-xs",
+                children: "Hủy"
+              }
+            ),
+            mode === "dir" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => {
+                  onSelect(currentPath);
+                  onClose();
+                },
+                className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] text-xs active:scale-95 transition-all",
+                children: "Chọn thư mục này"
+              }
+            )
+          ] })
+        ] })
+      ] })
+    }
+  );
 }
 const stripAnsi$1 = (str) => {
   return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
@@ -21486,6 +22721,11 @@ function NginxPanel({
   const [newSiteParam, setNewSiteParam] = reactExports.useState("3000");
   const [creatingSite, setCreatingSite] = reactExports.useState(false);
   const [showPicker, setShowPicker] = reactExports.useState(false);
+  const [showSslModal, setShowSslModal] = reactExports.useState(false);
+  const [sslDomain, setSslDomain] = reactExports.useState("");
+  const [sslEmail, setSslEmail] = reactExports.useState("");
+  const [runningSsl, setRunningSsl] = reactExports.useState(false);
+  const [sslLogs, setSslLogs] = reactExports.useState("");
   const fetchNginx = reactExports.useCallback(async () => {
     try {
       const checkNginx = await exec("nginx -v 2>/dev/null");
@@ -21696,6 +22936,60 @@ sudo mv ${tempFile} ${filePath}`;
       setInstalling(false);
     }
   };
+  const handleOpenSslWizard = () => {
+    const match = nginxConfigContent.match(/server_name\s+([^;]+);/);
+    if (match && match[1]) {
+      setSslDomain(match[1].trim().split(/\s+/)[0]);
+    } else {
+      setSslDomain("");
+    }
+    setSslEmail("");
+    setSslLogs("");
+    setRunningSsl(false);
+    setShowSslModal(true);
+  };
+  const handleRunSslCertbot = async () => {
+    if (!sslDomain.trim()) {
+      alert("Vui lòng nhập tên miền (Domain Name)!");
+      return;
+    }
+    setRunningSsl(true);
+    setSslLogs("Đang kiểm tra certbot trên máy chủ...\n");
+    try {
+      const checkCertbot = await exec("which certbot");
+      if (checkCertbot.code !== 0) {
+        setSslLogs((prev) => prev + "Không tìm thấy certbot. Đang tiến hành cài đặt certbot và plugin nginx...\n");
+        setSslLogs((prev) => prev + "Chạy apt-get update...\n");
+        await exec("sudo apt-get update");
+        setSslLogs((prev) => prev + "Đang cài đặt certbot python3-certbot-nginx...\n");
+        const installRes = await exec("sudo apt-get install -y certbot python3-certbot-nginx");
+        if (installRes.code !== 0) {
+          throw new Error("Cài đặt certbot thất bại: " + installRes.stderr);
+        }
+        setSslLogs((prev) => prev + "Cài đặt certbot thành công!\n");
+      } else {
+        setSslLogs((prev) => prev + "Đã cài đặt certbot. Bắt đầu sinh chứng chỉ SSL...\n");
+      }
+      const emailArg = sslEmail.trim() ? `-m "${sslEmail.trim()}"` : "--register-unsafely-without-email";
+      const certbotCmd = `sudo certbot --nginx -d "${sslDomain.trim()}" --non-interactive --agree-tos ${emailArg}`;
+      setSslLogs((prev) => prev + `Đang thực thi: ${certbotCmd}
+`);
+      const res = await exec(certbotCmd);
+      setSslLogs((prev) => prev + res.stdout + "\n" + res.stderr + "\n");
+      if (res.code === 0) {
+        setSslLogs((prev) => prev + "✅ Kích hoạt SSL thành công! Website đã được chuyển hướng sang HTTPS.\n");
+        alert("Cài đặt SSL Let's Encrypt thành công!");
+      } else {
+        throw new Error("Sinh chứng chỉ thất bại: " + res.stderr);
+      }
+    } catch (err) {
+      setSslLogs((prev) => prev + `❌ Lỗi: ${err.message}
+`);
+      alert("Lỗi cài đặt SSL: " + err.message);
+    } finally {
+      setRunningSsl(false);
+    }
+  };
   const loadData = reactExports.useCallback(async () => {
     setLoading(true);
     setError("");
@@ -21786,9 +23080,17 @@ sudo mv ${tempFile} ${filePath}`;
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
+                onClick: handleOpenSslWizard,
+                className: "px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] text-xs font-semibold hover:bg-[#86c581] active:scale-95 transition-all",
+                children: "Cấu hình SSL"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
                 onClick: () => setShowNginxWizard(true),
                 className: "px-3 py-1 rounded bg-[#fab387] text-[#1e1e2e] text-xs font-semibold hover:bg-[#f8a060] active:scale-95 transition-all",
-                children: "Mẫu Cấu Hình"
+                children: "Mẫu Cấu Hinh"
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -22076,7 +23378,7 @@ sudo mv ${tempFile} ${filePath}`;
       }
     ) }),
     showPicker && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      RemotePathPicker,
+      RemotePathPicker$1,
       {
         visible: true,
         mode: "dir",
@@ -22084,10 +23386,93 @@ sudo mv ${tempFile} ${filePath}`;
         onClose: () => setShowPicker(false),
         onSelect: (path) => setNewSiteParam(path)
       }
+    ),
+    showSslModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+        onClick: () => setShowSslModal(false),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[450px] max-h-[85vh] flex flex-col animate-scale-in",
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-[#a6e3a1]" }),
+                  "Cấu hình SSL Let's Encrypt"
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowSslModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs overflow-y-auto scrollbar-thin", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên miền (Domain Name) *" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "text",
+                      value: sslDomain,
+                      onChange: (e) => setSslDomain(e.target.value),
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#a6e3a1]/50",
+                      placeholder: "example.com",
+                      disabled: runningSsl
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "text-[#585b70] font-semibold", children: [
+                    "Email thông báo (Email) ",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "(Tùy chọn)" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "email",
+                      value: sslEmail,
+                      onChange: (e) => setSslEmail(e.target.value),
+                      className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#a6e3a1]/50",
+                      placeholder: "admin@example.com",
+                      disabled: runningSsl
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#585b70]", children: "Email này được dùng để Let's Encrypt gửi cảnh báo khi chứng chỉ sắp hết hạn." })
+                ] }),
+                sslLogs && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tiến trình thực thi (Logs)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin", children: sslLogs })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => setShowSslModal(false),
+                      className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                      disabled: runningSsl,
+                      children: "Đóng"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: handleRunSslCertbot,
+                      disabled: runningSsl,
+                      className: "px-4 py-1.5 rounded-lg font-semibold bg-[#a6e3a1] text-[#1e1e2e] hover:bg-[#86c581] active:scale-95 transition-all disabled:opacity-40",
+                      children: runningSsl ? "Đang chạy..." : "Cài đặt SSL"
+                    }
+                  )
+                ] })
+              ] })
+            ]
+          }
+        )
+      }
     )
   ] });
 }
-function RemotePathPicker({ mode, exec, onClose, onSelect }) {
+function RemotePathPicker$1({ mode, exec, onClose, onSelect }) {
   const [currentPath, setCurrentPath] = reactExports.useState("/");
   const [items, setItems] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(false);
@@ -22408,6 +23793,8 @@ function BackupPanel({
   const [backupType, setBackupType] = reactExports.useState("dir");
   const [backupStatus, setBackupStatus] = reactExports.useState(null);
   const [backupHistory, setBackupHistory] = reactExports.useState([]);
+  const [showCronModal, setShowCronModal] = reactExports.useState(false);
+  const [cronSchedule, setCronSchedule] = reactExports.useState("0 2 * * *");
   const [dbName, setDbName] = reactExports.useState("");
   const [dbUser, setDbUser] = reactExports.useState("root");
   const [dbPass, setDbPass] = reactExports.useState("");
@@ -22541,6 +23928,54 @@ Tệp backup tại: /tmp/db_${dbName}_${timestamp}.sql`
     await fetchBackupHistory();
     setLoading(false);
   };
+  const handleSaveBackupCron = async () => {
+    setLoading(true);
+    try {
+      let backupCmd = "";
+      if (backupType === "dir") {
+        const cleanPath = backupPath.trim();
+        const lastSlash = cleanPath.lastIndexOf("/");
+        const parentDir = lastSlash !== -1 ? cleanPath.substring(0, lastSlash) : "/";
+        const targetName = lastSlash !== -1 ? cleanPath.substring(lastSlash + 1) : cleanPath;
+        backupCmd = `tar -czf /tmp/backup_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).tar.gz -C "${parentDir}" "${targetName}"`;
+      } else if (backupType === "mysql") {
+        if (!dbName) {
+          alert("Vui lòng nhập tên Database!");
+          setLoading(false);
+          return;
+        }
+        const passArg = dbPass ? `-p"${dbPass}"` : "";
+        backupCmd = `mysqldump -u "${dbUser}" ${passArg} "${dbName}" > /tmp/db_${dbName}_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).sql`;
+      } else {
+        if (!dbName) {
+          alert("Vui lòng nhập tên Database!");
+          setLoading(false);
+          return;
+        }
+        backupCmd = `sudo -u postgres pg_dump "${dbName}" > /tmp/db_${dbName}_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).sql`;
+      }
+      const cronJobLine = `${cronSchedule} ${backupCmd}`;
+      const checkCron = await exec("crontab -l 2>/dev/null || echo ''");
+      const jobs = checkCron.stdout.split("\n").filter(Boolean);
+      jobs.push(cronJobLine);
+      const sanitizeForShell2 = (str) => str.replace(/["$`\\!]/g, "\\$&");
+      const newCronString = sanitizeForShell2(jobs.join("\n"));
+      const writeRes = await exec(`echo "${newCronString}" | crontab -`);
+      if (writeRes.code === 0) {
+        setBackupStatus(`✅ Đã đặt lịch backup thành công!
+Cron Job: ${cronJobLine}
+Bạn có thể kiểm tra hoặc quản lý lịch trình này ở tab Cron Jobs.`);
+        alert("Cấu hình lịch backup thành công!");
+        setShowCronModal(false);
+      } else {
+        throw new Error(writeRes.stderr || "Không thể cập nhật crontab");
+      }
+    } catch (err) {
+      alert("Lỗi đặt lịch: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-96 min-w-96 bg-[#181825] border border-white/[0.04] rounded-xl p-4 space-y-4 overflow-y-auto scrollbar-thin", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] block", children: "Tạo bản sao lưu (Backup)" }),
@@ -22631,17 +24066,31 @@ Tệp backup tại: /tmp/db_${dbName}_${timestamp}.sql`
           ". Không cần nhập mật khẩu."
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          onClick: handleStartBackup,
-          className: "w-full py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center justify-center gap-1.5",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CloudDownload, { size: 12 }),
-            " Bắt đầu Sao lưu"
-          ]
-        }
-      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: handleStartBackup,
+            className: "flex-1 py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center justify-center gap-1.5",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CloudDownload, { size: 12 }),
+              " Bắt đầu Sao lưu"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowCronModal(true),
+            className: "flex-1 py-2 rounded-lg bg-[#a6e3a1]/10 text-[#a6e3a1] text-xs font-bold hover:bg-[#a6e3a1]/25 transition-all flex items-center justify-center gap-1.5",
+            title: "Đặt lịch backup tự động",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { size: 12 }),
+              " Đặt lịch Cron"
+            ]
+          }
+        )
+      ] }),
       backupHistory.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/[0.04] pt-4 space-y-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider", children: [
           "Lịch sử Backup (",
@@ -22683,7 +24132,1250 @@ Tệp backup tại: /tmp/db_${dbName}_${timestamp}.sql`
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 bg-[#11111b] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2", children: "Trạng thái tác vụ Backup/Restore" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-y-auto font-mono text-xs text-[#a6adc8] whitespace-pre-wrap select-text bg-[#181825] p-3 rounded-lg border border-white/[0.02]", children: backupStatus || "Sẵn sàng." })
+    ] }),
+    showCronModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", onClick: () => setShowCronModal(false), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] flex flex-col animate-scale-in", onClick: (e) => e.stopPropagation(), children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8]", children: "Đặt lịch sao lưu tự động" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowCronModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tần suất chạy (Cron Expression) *" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              value: cronSchedule,
+              onChange: (e) => setCronSchedule(e.target.value),
+              className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]/50",
+              placeholder: "0 2 * * *"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-1.5 pt-1 text-[9px] text-[#585b70]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCronSchedule("0 2 * * *"), className: "px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]", children: "Hàng ngày lúc 2:00 sáng" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCronSchedule("0 12 * * *"), className: "px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]", children: "Hàng ngày lúc 12:00 trưa" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCronSchedule("0 0 * * 0"), className: "px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]", children: "Mỗi chủ nhật 0:00 sáng" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCronSchedule("0 0 1 * *"), className: "px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]", children: "Ngày 1 hàng tháng 0:00" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-[10px] text-[#585b70] bg-[#11111b] rounded-lg p-2.5 leading-relaxed", children: [
+          "Tác vụ sao lưu tự động sẽ nén/xuất tệp tin vào thư mục ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "text-[#89b4fa]", children: "/tmp" }),
+          " trên server. Bạn có thể thay đổi lịch trình bất kỳ lúc nào thông qua tab ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Cron Jobs" }),
+          "."
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: () => setShowCronModal(false),
+              className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+              children: "Hủy"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: handleSaveBackupCron,
+              className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all",
+              children: "Lưu & Lên Lịch"
+            }
+          )
+        ] })
+      ] })
+    ] }) })
+  ] });
+}
+function FirewallPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [installed, setInstalled] = reactExports.useState(true);
+  const [active, setActive] = reactExports.useState(false);
+  const [rules, setRules] = reactExports.useState([]);
+  const [showAddModal, setShowAddModal] = reactExports.useState(false);
+  const [newPort, setNewPort] = reactExports.useState("");
+  const [newProto, setNewProto] = reactExports.useState("tcp");
+  const [newAction, setNewAction] = reactExports.useState("allow");
+  const [newSource, setNewSource] = reactExports.useState("any");
+  const [adding, setAdding] = reactExports.useState(false);
+  const [ufwLogs, setUfwLogs] = reactExports.useState("");
+  const [loadingLogs, setLoadingLogs] = reactExports.useState(false);
+  const fetchUfwLogs = reactExports.useCallback(async () => {
+    setLoadingLogs(true);
+    try {
+      const cmd = `sudo tail -n 50 /var/log/ufw.log 2>/dev/null || tail -n 50 /var/log/ufw.log 2>/dev/null || dmesg | grep -i ufw | tail -n 50 2>/dev/null || echo "Không tìm thấy file log UFW hoặc không đủ quyền đọc."`;
+      const { stdout } = await exec(cmd);
+      setUfwLogs(stdout.trim() || "Không có nhật ký chặn/mở gói tin UFW gần đây.");
+    } catch {
+      setUfwLogs("Lỗi đọc nhật ký UFW.");
+    }
+    setLoadingLogs(false);
+  }, [exec]);
+  const fetchFirewall = reactExports.useCallback(async () => {
+    try {
+      const checkUfw = await exec("which ufw 2>/dev/null");
+      if (checkUfw.code !== 0) {
+        setInstalled(false);
+        return;
+      }
+      setInstalled(true);
+      const statusRes = await exec("sudo ufw status numbered");
+      if (statusRes.code !== 0) {
+        setError(statusRes.stderr || "Không thể chạy ufw status. Kiểm tra quyền sudo.");
+        return;
+      }
+      const stdout = statusRes.stdout;
+      if (stdout.includes("Status: inactive")) {
+        setActive(false);
+        setRules([]);
+        return;
+      }
+      setActive(true);
+      fetchUfwLogs();
+      const lines = stdout.split("\n");
+      const parsedRules = [];
+      const ruleRegex = /^\[\s*(\d+)\]\s+(\S+)\s+([a-zA-Z\s]+?)(?:\s+IN|\s+OUT)?\s+(.+)$/;
+      lines.forEach((line) => {
+        const cleanLine = line.trim();
+        const match = cleanLine.match(ruleRegex);
+        if (match) {
+          parsedRules.push({
+            num: match[1],
+            to: match[2],
+            action: match[3].trim(),
+            from: match[4].trim()
+          });
+        }
+      });
+      setRules(parsedRules);
+    } catch (e) {
+      setError(e.message || "Lỗi tải tường lửa.");
+    }
+  }, [exec, setError]);
+  const handleToggleFirewall = async () => {
+    setLoading(true);
+    try {
+      if (active) {
+        const res = await exec("sudo ufw disable");
+        if (res.code === 0) {
+          alert("Đã tắt tường lửa UFW.");
+        } else {
+          alert("Lỗi: " + res.stderr);
+        }
+      } else {
+        const res = await exec('echo "y" | sudo ufw enable');
+        if (res.code === 0) {
+          alert("Đã kích hoạt tường lửa UFW.");
+        } else {
+          alert("Lỗi: " + res.stderr);
+        }
+      }
+      await fetchFirewall();
+    } catch (err) {
+      alert("Lỗi: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleDeleteRule = async (num, to) => {
+    if (!confirm(`Bạn có chắc muốn xóa Rule #${num} (${to})?`)) return;
+    setLoading(true);
+    try {
+      const res = await exec(`sudo ufw --force delete ${num}`);
+      if (res.code === 0) {
+        alert(`Đã xóa rule #${num} thành công.`);
+        await fetchFirewall();
+      } else {
+        alert("Lỗi: " + res.stderr);
+      }
+    } catch (err) {
+      alert("Lỗi: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleAddRule = async () => {
+    if (!newPort.trim()) {
+      alert("Vui lòng nhập cổng (Port)!");
+      return;
+    }
+    setAdding(true);
+    try {
+      let cmd = `sudo ufw ${newAction}`;
+      const protoPart = newProto === "both" ? "" : `/${newProto}`;
+      const srcPart = newSource.trim() && newSource.trim() !== "any" ? ` from ${newSource.trim()}` : "";
+      const portPart = srcPart ? ` to any port ${newPort.trim()}` : ` ${newPort.trim()}${protoPart}`;
+      cmd = `${cmd}${srcPart}${portPart}`;
+      const res = await exec(cmd);
+      if (res.code === 0) {
+        alert("Đã thêm Rule tường lửa thành công!");
+        setShowAddModal(false);
+        setNewPort("");
+        setNewSource("any");
+        await fetchFirewall();
+      } else {
+        alert("Lỗi: " + res.stderr);
+      }
+    } catch (err) {
+      alert("Lỗi: " + err.message);
+    } finally {
+      setAdding(false);
+    }
+  };
+  reactExports.useEffect(() => {
+    setLoading(true);
+    fetchFirewall().finally(() => setLoading(false));
+  }, [fetchFirewall, refreshKey]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-grow flex flex-col overflow-hidden", children: [
+    !installed ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-grow flex flex-col items-center justify-center text-[#585b70] max-w-md mx-auto p-6 text-center space-y-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldAlert, { size: 48, className: "text-[#f38ba8] opacity-60 animate-bounce" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-bold text-[#cdd6f4]", children: "UFW chưa được cài đặt" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-[#585b70]", children: [
+          "Không tìm thấy lệnh ufw trên máy chủ SSH này. Vui lòng cài đặt ufw bằng lệnh ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "text-[#89b4fa]", children: "sudo apt-get install ufw" }),
+          "."
+        ] })
+      ] })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-4 bg-[#181825] border border-white/[0.04] p-3 rounded-xl shrink-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `p-2 rounded-lg ${active ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#585b70]/10 text-[#585b70]"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { size: 18 }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-xs font-bold text-[#cdd6f4]", children: "Trạng thái Tường lửa (UFW)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-semibold text-[#585b70]", children: active ? "Đang hoạt động (Kích hoạt)" : "Đang tắt (Chưa hoạt động)" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: handleToggleFirewall,
+              className: `px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-1.5 ${active ? "bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20" : "bg-[#a6e3a1]/10 text-[#a6e3a1] hover:bg-[#a6e3a1]/20"}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Power, { size: 12 }),
+                active ? "Tắt Firewall" : "Bật Firewall"
+              ]
+            }
+          ),
+          active && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => setShowAddModal(true),
+              className: "px-3 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] active:scale-95 transition-all flex items-center gap-1",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13 }),
+                " Thêm Rule"
+              ]
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col gap-4 overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin", children: !active ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center text-[#585b70] py-16 space-y-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldOff, { size: 36, className: "opacity-30" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: "Tường lửa đang tắt" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#45475a] max-w-xs text-center leading-relaxed", children: "Hãy kích hoạt UFW ở nút phía trên để bắt đầu cấu hình quy tắc lọc gói tin cho server." })
+        ] }) : rules.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-xs py-12", children: "Chưa cấu hình rule tường lửa nào." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-left border-collapse text-xs", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.04] text-[#585b70] font-semibold", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 w-12 text-center", children: "#" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Cổng (To Port)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Hành động (Action)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3", children: "Địa chỉ nguồn (From Source)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-3 text-center", children: "Thao Tác" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: rules.map((r2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center font-mono text-[#6c7086]", children: r2.num }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono font-bold text-[#89b4fa]", children: r2.to }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "span",
+              {
+                className: `px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${r2.action.toLowerCase().includes("allow") ? "bg-[#a6e3a1]/10 text-[#a6e3a1]" : "bg-[#f38ba8]/10 text-[#f38ba8]"}`,
+                children: r2.action
+              }
+            ) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 font-mono text-[#a6adc8]", children: r2.from }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-3 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDeleteRule(r2.num, r2.to),
+                className: "p-1 rounded hover:bg-white/5 text-[#f38ba8] transition-all",
+                title: "Xóa Rule",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+              }
+            ) })
+          ] }, r2.num)) })
+        ] }) }),
+        active && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-44 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-3.5 shrink-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-1.5 shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-bold text-[#585b70] tracking-wider", children: "Nhật ký Tường lửa (UFW Logs)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: fetchUfwLogs,
+                className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4] transition-all",
+                title: "Tải lại logs",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: loadingLogs ? "animate-spin" : "" })
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-y-auto font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap select-text bg-[#11111b] p-3 rounded-lg border border-white/[0.02] scrollbar-thin", children: ufwLogs || "Không có bản ghi nhật ký nào." })
+        ] })
+      ] })
+    ] }),
+    showAddModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+        onClick: (e) => {
+          if (e.target === e.currentTarget) setShowAddModal(false);
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] flex flex-col animate-scale-in", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13, className: "text-[#89b4fa]" }),
+              " Thêm Quy tắc Tường lửa"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowAddModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Cổng mạng (Port) *" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  autoFocus: true,
+                  placeholder: "ví dụ: 8080, 3000:3010",
+                  value: newPort,
+                  onChange: (e) => setNewPort(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono select-text",
+                  disabled: adding
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Giao thức (Protocol)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "select",
+                {
+                  value: newProto,
+                  onChange: (e) => setNewProto(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none",
+                  disabled: adding,
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "tcp", children: "TCP" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "udp", children: "UDP" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "both", children: "Cả hai (TCP/UDP)" })
+                  ]
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Hành động (Action)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "select",
+                {
+                  value: newAction,
+                  onChange: (e) => setNewAction(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none",
+                  disabled: adding,
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "allow", children: "Cho phép (ALLOW)" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "deny", children: "Chặn (DENY)" })
+                  ]
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Địa chỉ IP nguồn (Source IP)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "any hoặc địa chỉ IP cụ thể (ví dụ: 192.168.1.100)",
+                  value: newSource,
+                  onChange: (e) => setNewSource(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono select-text",
+                  disabled: adding
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => setShowAddModal(false),
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                  disabled: adding,
+                  children: "Hủy"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleAddRule,
+                  disabled: adding,
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40",
+                  children: adding ? "Đang thêm..." : "Thêm Rule"
+                }
+              )
+            ] })
+          ] })
+        ] })
+      }
+    )
+  ] });
+}
+function GitPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [repos, setRepos] = reactExports.useState([]);
+  const [activeRepoId, setActiveRepoId] = reactExports.useState(null);
+  const [gitBranch, setGitBranch] = reactExports.useState("");
+  const [modifiedFiles, setModifiedFiles] = reactExports.useState([]);
+  const [recentCommits, setRecentCommits] = reactExports.useState([]);
+  const [loadingGit, setLoadingGit] = reactExports.useState(false);
+  const [gitLogs, setGitLogs] = reactExports.useState("");
+  const [showAddModal, setShowAddModal] = reactExports.useState(false);
+  const [newRepoName, setNewRepoName] = reactExports.useState("");
+  const [newRepoPath, setNewRepoPath] = reactExports.useState("/var/www");
+  const [newRepoDeploy, setNewRepoDeploy] = reactExports.useState("");
+  const [showPicker, setShowPicker] = reactExports.useState(false);
+  const loadReposFromDb = reactExports.useCallback(async () => {
+    try {
+      const rows = await window.api.db.all("SELECT value FROM app_settings WHERE key = 'devops_git_repositories'");
+      if (rows.length > 0 && rows[0].value) {
+        setRepos(JSON.parse(rows[0].value));
+      } else {
+        setRepos([]);
+      }
+    } catch {
+    }
+  }, []);
+  const saveReposToDb = async (updatedRepos) => {
+    setRepos(updatedRepos);
+    await window.api.db.run(
+      "INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_git_repositories', ?)",
+      [JSON.stringify(updatedRepos)]
+    );
+  };
+  const fetchGitStatus = reactExports.useCallback(async (repo) => {
+    setLoadingGit(true);
+    setGitLogs("");
+    try {
+      const cmd = `cd "${repo.path}" && git branch --show-current && echo "===STATUS===" && git status --porcelain && echo "===LOGS===" && git log -n 5 --pretty=format:"%h||%an||%ar||%s" 2>/dev/null || echo "not_a_repo"`;
+      const res = await exec(cmd);
+      if (res.stdout.includes("not_a_repo")) {
+        setGitBranch("Chưa khởi tạo Git / Thư mục không tồn tại");
+        setModifiedFiles([]);
+        setRecentCommits([]);
+        setLoadingGit(false);
+        return;
+      }
+      const [branchSection, rest] = res.stdout.split("===STATUS===");
+      const [statusSection, logsSection = ""] = (rest || "").split("===LOGS===");
+      setGitBranch(branchSection.trim() || "main");
+      const files = statusSection.split("\n").map((s) => s.trim()).filter(Boolean);
+      setModifiedFiles(files);
+      const commits = logsSection.split("\n").filter(Boolean).map((line) => {
+        const parts = line.split("||");
+        return {
+          hash: parts[0] || "",
+          author: parts[1] || "",
+          date: parts[2] || "",
+          subject: parts[3] || ""
+        };
+      });
+      setRecentCommits(commits);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoadingGit(false);
+  }, [exec]);
+  const handleAddRepo = async () => {
+    if (!newRepoName.trim() || !newRepoPath.trim()) {
+      alert("Vui lòng nhập tên dự án và đường dẫn!");
+      return;
+    }
+    const newRepo = {
+      id: `git-${Date.now()}`,
+      name: newRepoName.trim(),
+      path: newRepoPath.trim(),
+      deployCmd: newRepoDeploy.trim()
+    };
+    const updated = [...repos, newRepo];
+    await saveReposToDb(updated);
+    setShowAddModal(false);
+    setNewRepoName("");
+    setNewRepoDeploy("");
+    setActiveRepoId(newRepo.id);
+  };
+  const handleDeleteRepo = async (id2, name) => {
+    if (!confirm(`Xóa cấu hình Git của dự án "${name}"?`)) return;
+    const updated = repos.filter((r2) => r2.id !== id2);
+    await saveReposToDb(updated);
+    if (activeRepoId === id2) {
+      setActiveRepoId(null);
+    }
+  };
+  const handleGitAction = async (action) => {
+    const activeRepo2 = repos.find((r2) => r2.id === activeRepoId);
+    if (!activeRepo2) return;
+    setLoadingGit(true);
+    setGitLogs(`Bắt đầu chạy Git ${action.toUpperCase()}...
+`);
+    try {
+      let cmd = `cd "${activeRepo2.path}"`;
+      if (action === "fetch") {
+        cmd += " && git fetch";
+      } else if (action === "pull") {
+        cmd += " && git pull";
+      } else if (action === "reset") {
+        cmd += " && git reset --hard HEAD";
+      } else {
+        if (!activeRepo2.deployCmd) {
+          throw new Error("Chưa cấu hình câu lệnh triển khai (Deploy Command) cho dự án này.");
+        }
+        cmd += ` && ${activeRepo2.deployCmd}`;
+      }
+      const res = await exec(cmd);
+      setGitLogs((prev) => prev + res.stdout + "\n" + res.stderr + "\n");
+      if (res.code === 0) {
+        setGitLogs((prev) => prev + `✅ Hoàn tất thao tác Git ${action.toUpperCase()} thành công!
+`);
+        if (action === "pull" && activeRepo2.deployCmd) {
+          setGitLogs((prev) => prev + `🚀 Tự động kích hoạt câu lệnh Deploy: ${activeRepo2.deployCmd}...
+`);
+          const depRes = await exec(`cd "${activeRepo2.path}" && ${activeRepo2.deployCmd}`);
+          setGitLogs((prev) => prev + depRes.stdout + "\n" + depRes.stderr + "\n");
+        }
+        await fetchGitStatus(activeRepo2);
+      } else {
+        throw new Error(res.stderr || "Thao tác thất bại");
+      }
+    } catch (err) {
+      setGitLogs((prev) => prev + `❌ Lỗi: ${err.message}
+`);
+    } finally {
+      setLoadingGit(false);
+    }
+  };
+  reactExports.useEffect(() => {
+    loadReposFromDb();
+  }, [loadReposFromDb, refreshKey]);
+  reactExports.useEffect(() => {
+    const active = repos.find((r2) => r2.id === activeRepoId);
+    if (active) {
+      fetchGitStatus(active);
+    } else {
+      setGitBranch("");
+      setModifiedFiles([]);
+      setRecentCommits([]);
+      setGitLogs("");
+    }
+  }, [activeRepoId, repos, fetchGitStatus]);
+  const activeRepo = repos.find((r2) => r2.id === activeRepoId);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex gap-4 overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-60 min-w-60 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 bg-[#11111b]/50 border-b border-white/[0.04] text-[10px] font-semibold text-[#585b70] uppercase tracking-wider flex justify-between items-center shrink-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Git Repositories" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setShowAddModal(true),
+            className: "p-1 hover:bg-white/5 rounded text-[#89b4fa]",
+            title: "Thêm Repository",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 12 })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1.5 space-y-0.5 scrollbar-thin", children: repos.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center text-[#585b70] text-[10px] py-8", children: "Chưa cấu hình dự án nào." }) : repos.map((r2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group flex items-center justify-between px-1 rounded-lg hover:bg-white/[0.02]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setActiveRepoId(r2.id),
+            className: `flex-1 flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-left truncate ${activeRepoId === r2.id ? "bg-[#89b4fa]/15 text-[#89b4fa] font-bold" : "text-[#a6adc8]"}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(GitBranch, { size: 12, className: "shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: r2.name })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => handleDeleteRepo(r2.id, r2.name),
+            className: "p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-white/5 text-[#f38ba8] transition-all shrink-0 mr-1",
+            title: "Xóa cấu hình",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 11 })
+          }
+        )
+      ] }, r2.id)) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative", children: activeRepo ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between shrink-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setActiveRepoId(null),
+              className: "p-1 hover:bg-white/5 rounded text-[#a6adc8] hover:text-[#cdd6f4]",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 14 })
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-xs text-[#cdd6f4]", children: activeRepo.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[10px] text-[#585b70] truncate max-w-[200px]", title: activeRepo.path, children: [
+            "(",
+            activeRepo.path,
+            ")"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => handleGitAction("fetch"),
+              disabled: loadingGit,
+              className: "px-2.5 py-1 rounded bg-white/5 text-[#cdd6f4] text-xs font-semibold hover:bg-white/10 active:scale-95 disabled:opacity-40 transition-all flex items-center gap-1",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: loadingGit ? "animate-spin" : "" }),
+                " Fetch"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => handleGitAction("pull"),
+              disabled: loadingGit,
+              className: "px-2.5 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] text-xs font-semibold hover:bg-[#74c7ec] active:scale-95 disabled:opacity-40 transition-all flex items-center gap-1",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(GitPullRequest, { size: 11 }),
+                " Pull & Deploy"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => handleGitAction("reset"),
+              disabled: loadingGit,
+              className: "px-2.5 py-1 rounded bg-white/5 text-[#f38ba8] text-xs font-semibold hover:bg-[#f38ba8]/10 active:scale-95 disabled:opacity-40 transition-all",
+              title: "Discard local changes",
+              children: "Reset Hard"
+            }
+          ),
+          activeRepo.deployCmd && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => handleGitAction("deploy"),
+              disabled: loadingGit,
+              className: "px-2.5 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] text-xs font-semibold hover:bg-[#86c581] active:scale-95 disabled:opacity-40 transition-all flex items-center gap-1",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 11 }),
+                " Deploy Only"
+              ]
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 grid grid-cols-5 overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-2 p-4 border-r border-white/[0.04] space-y-4 overflow-y-auto scrollbar-thin", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-bold text-[#585b70] tracking-wider block", children: "Nhánh hiện tại (Branch)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs font-bold text-[#89b4fa] bg-[#89b4fa]/10 px-2 py-0.5 rounded-full inline-block", children: gitBranch || "Checking..." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "text-[10px] uppercase font-bold text-[#585b70] tracking-wider block", children: [
+              "File đã sửa đổi (",
+              modifiedFiles.length,
+              ")"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#11111b] border border-white/5 rounded-lg p-2.5 font-mono text-[10px] max-h-32 overflow-y-auto scrollbar-thin", children: [
+              modifiedFiles.map((file, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#f38ba8] truncate", title: file, children: file }, i)),
+              modifiedFiles.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] italic", children: "Sạch sẽ (Clean)" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 flex-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[10px] uppercase font-bold text-[#585b70] tracking-wider block", children: "Lịch sử Commit gần đây" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
+              recentCommits.map((c, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#11111b] border border-white/[0.02] rounded-lg p-2.5 text-[10px]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-mono mb-1", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#89b4fa] font-bold", children: c.hash }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: c.date })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#cdd6f4] font-semibold truncate", title: c.subject, children: c.subject }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-[#585b70] mt-0.5", children: [
+                  "Tác giả: ",
+                  c.author
+                ] })
+              ] }, i)),
+              recentCommits.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[#585b70] text-center italic py-4", children: "Chưa có lịch sử commit." })
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "col-span-3 bg-[#11111b]/20 p-4 flex flex-col overflow-hidden", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] uppercase font-bold text-[#585b70] tracking-wider mb-2 block", children: "Nhật ký CI/CD & Git logs" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "flex-1 overflow-y-auto font-mono text-xs text-[#a6adc8] whitespace-pre-wrap select-text bg-[#11111b] p-3 rounded-lg border border-white/[0.02] scrollbar-thin", children: gitLogs || "Sẵn sàng." })
+        ] })
+      ] })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-[#585b70]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(GitPullRequest, { size: 36, className: "mb-2 opacity-30" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "Chọn hoặc thêm dự án Git để quản lý CI/CD" })
+    ] }) }),
+    showAddModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+        onClick: (e) => {
+          if (e.target === e.currentTarget) setShowAddModal(false);
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[420px] flex flex-col animate-scale-in", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13, className: "text-[#89b4fa]" }),
+              " Khai báo Dự án Git mới"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowAddModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên Dự án (Project Name) *" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  autoFocus: true,
+                  placeholder: "ví dụ: web-frontend",
+                  value: newRepoName,
+                  onChange: (e) => setNewRepoName(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none select-text"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Đường dẫn thư mục nguồn (Directory Path) *" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "text",
+                    placeholder: "/var/www/my-app",
+                    value: newRepoPath,
+                    onChange: (e) => setNewRepoPath(e.target.value),
+                    className: "flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: () => setShowPicker(true),
+                    className: "px-3 rounded-lg bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs flex items-center justify-center",
+                    children: "Duyệt..."
+                  }
+                )
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "text-[#585b70] font-semibold", children: [
+                "Lệnh triển khai (Deploy Command) ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "(Tùy chọn)" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  placeholder: "ví dụ: npm install && pm2 restart app",
+                  value: newRepoDeploy,
+                  onChange: (e) => setNewRepoDeploy(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#585b70]", children: "Lệnh này sẽ tự động chạy sau khi hoàn tất Git Pull." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => setShowAddModal(false),
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                  children: "Hủy"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleAddRepo,
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all",
+                  children: "Khai Báo"
+                }
+              )
+            ] })
+          ] })
+        ] })
+      }
+    ),
+    showPicker && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      RemotePathPicker,
+      {
+        visible: true,
+        mode: "dir",
+        exec,
+        onClose: () => setShowPicker(false),
+        onSelect: (path) => setNewRepoPath(path)
+      }
+    )
+  ] });
+}
+function RemotePathPicker({ mode, exec, onClose, onSelect }) {
+  const [currentPath, setCurrentPath] = reactExports.useState("/");
+  const [items, setItems] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const fetchDir = reactExports.useCallback(async (path) => {
+    setLoading(true);
+    try {
+      const sanitizedPath = path.replace(/"/g, '\\"');
+      const cmd = `cd "${sanitizedPath}" && ls -F -1`;
+      const res = await exec(cmd);
+      if (res.code === 0) {
+        const parsed = res.stdout.split("\n").map((f2) => f2.trim()).filter((f2) => f2 && f2 !== "./" && f2 !== "../").map((f2) => {
+          const isDir = f2.endsWith("/");
+          const name = isDir ? f2.slice(0, -1) : f2;
+          return { name, isDir };
+        });
+        parsed.sort((a, b) => {
+          if (a.isDir && !b.isDir) return -1;
+          if (!a.isDir && b.isDir) return 1;
+          return a.name.localeCompare(b.name);
+        });
+        setItems(parsed);
+        setCurrentPath(path);
+      } else {
+        alert("Lỗi đọc thư mục: " + res.stderr);
+      }
+    } catch (e) {
+      alert("Lỗi: " + e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [exec]);
+  reactExports.useEffect(() => {
+    fetchDir("/");
+  }, [fetchDir]);
+  const handleGoUp = () => {
+    if (currentPath === "/") return;
+    const parts = currentPath.split("/").filter(Boolean);
+    parts.pop();
+    const parent = "/" + parts.join("/");
+    fetchDir(parent);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] h-[480px] flex flex-col animate-scale-in", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#181825]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+        "Chọn ",
+        mode === "file" ? "Tệp tin" : "Thư mục",
+        " trên Server"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-[#11111b] border-b border-white/5 flex gap-2 items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: handleGoUp,
+          disabled: currentPath === "/",
+          className: "px-2 py-1 rounded bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40",
+          children: "← Lên"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          readOnly: true,
+          value: currentPath,
+          className: "flex-1 bg-[#181825] border border-white/5 rounded px-2 py-1 text-xs text-[#a6adc8] font-mono outline-none"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-2.5 space-y-0.5 scrollbar-thin", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70] gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 14, className: "animate-spin text-[#89b4fa]" }),
+      " Đang tải..."
+    ] }) : items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center h-full text-xs text-[#585b70]", children: "Thư mục trống." }) : items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        onClick: () => {
+          const newPath = currentPath === "/" ? `/${item.name}` : `${currentPath}/${item.name}`;
+          if (item.isDir) {
+            fetchDir(newPath);
+          } else {
+            if (mode === "file") {
+              onSelect(newPath);
+              onClose();
+            }
+          }
+        },
+        className: "w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.02] transition-all",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-sm", children: item.isDir ? "📁" : "📄" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: item.name })
+        ]
+      },
+      item.name
+    )) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 border-t border-white/5 bg-[#181825] flex justify-between items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70]", children: mode === "file" ? "Click file để chọn" : "Bấm Chọn để lấy thư mục hiện tại" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: onClose,
+            className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10 text-xs",
+            children: "Hủy"
+          }
+        ),
+        mode === "dir" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => {
+              onSelect(currentPath);
+              onClose();
+            },
+            className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] text-xs active:scale-95 transition-all",
+            children: "Chọn thư mục này"
+          }
+        )
+      ] })
     ] })
+  ] }) });
+}
+function SslTrackerPanel({
+  sessionId,
+  exec,
+  refreshKey,
+  setLoading,
+  setError
+}) {
+  const [domains, setDomains] = reactExports.useState([]);
+  const [domainStatus, setDomainStatus] = reactExports.useState({});
+  const checkedRef = reactExports.useRef(/* @__PURE__ */ new Set());
+  const [showAddModal, setShowAddModal] = reactExports.useState(false);
+  const [newDomain, setNewDomain] = reactExports.useState("");
+  const [addingDomain, setAddingDomain] = reactExports.useState(false);
+  const loadDomainsFromDb = reactExports.useCallback(async () => {
+    try {
+      const rows = await window.api.db.all("SELECT value FROM app_settings WHERE key = 'devops_ssl_domains'");
+      if (rows.length > 0 && rows[0].value) {
+        setDomains(JSON.parse(rows[0].value));
+      } else {
+        setDomains(["google.com", "github.com"]);
+      }
+    } catch {
+      setDomains(["google.com", "github.com"]);
+    }
+  }, []);
+  const saveDomainsToDb = async (updatedDomains) => {
+    setDomains(updatedDomains);
+    await window.api.db.run(
+      "INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_ssl_domains', ?)",
+      [JSON.stringify(updatedDomains)]
+    );
+  };
+  const checkDomainSsl = reactExports.useCallback(async (domain) => {
+    setDomainStatus((prev) => ({
+      ...prev,
+      [domain]: {
+        domain,
+        expiryDate: "",
+        issuer: "",
+        daysLeft: null,
+        loading: true
+      }
+    }));
+    try {
+      const cmd = `echo | openssl s_client -servername "${domain}" -connect "${domain}":443 2>/dev/null | openssl x509 -noout -enddate -issuer 2>/dev/null || echo "failed"`;
+      const res = await exec(cmd);
+      if (res.stdout.includes("failed") || !res.stdout.includes("notAfter")) {
+        throw new Error("Không thể kết nối hoặc đọc chứng chỉ SSL");
+      }
+      const lines = res.stdout.split("\n");
+      let notAfterLine = "";
+      let issuerLine = "";
+      lines.forEach((l2) => {
+        if (l2.startsWith("notAfter=")) notAfterLine = l2.replace("notAfter=", "");
+        if (l2.startsWith("issuer=")) issuerLine = l2.replace("issuer=", "");
+      });
+      if (!notAfterLine) throw new Error("Không tìm thấy ngày hết hạn");
+      const expiryDate = new Date(notAfterLine);
+      const now = /* @__PURE__ */ new Date();
+      const diffTime = expiryDate.getTime() - now.getTime();
+      const daysLeft = Math.ceil(diffTime / (1e3 * 60 * 60 * 24));
+      let issuerName = "Unknown";
+      const cnMatch = issuerLine.match(/CN\s*=\s*([^,]+)/);
+      const oMatch = issuerLine.match(/O\s*=\s*([^,]+)/);
+      if (cnMatch) {
+        issuerName = cnMatch[1].trim();
+      } else if (oMatch) {
+        issuerName = oMatch[1].trim();
+      }
+      setDomainStatus((prev) => ({
+        ...prev,
+        [domain]: {
+          domain,
+          expiryDate: expiryDate.toLocaleDateString(),
+          issuer: issuerName,
+          daysLeft,
+          loading: false
+        }
+      }));
+    } catch (err) {
+      setDomainStatus((prev) => ({
+        ...prev,
+        [domain]: {
+          domain,
+          expiryDate: "-",
+          issuer: "-",
+          daysLeft: null,
+          loading: false,
+          error: err.message || "Lỗi kiểm tra SSL"
+        }
+      }));
+    }
+  }, [exec]);
+  const handleAddDomain = async () => {
+    const cleanDomain = newDomain.trim().toLowerCase();
+    if (!cleanDomain) return;
+    if (domains.includes(cleanDomain)) {
+      alert("Tên miền đã tồn tại!");
+      return;
+    }
+    setAddingDomain(true);
+    const updated = [...domains, cleanDomain];
+    await saveDomainsToDb(updated);
+    setNewDomain("");
+    setShowAddModal(false);
+    setAddingDomain(false);
+  };
+  const handleDeleteDomain = async (domain) => {
+    if (!confirm(`Xóa tên miền "${domain}" khỏi danh sách theo dõi?`)) return;
+    checkedRef.current.delete(domain);
+    const updated = domains.filter((d) => d !== domain);
+    await saveDomainsToDb(updated);
+    setDomainStatus((prev) => {
+      const copy = { ...prev };
+      delete copy[domain];
+      return copy;
+    });
+  };
+  const handleRefreshAll = () => {
+    checkedRef.current.clear();
+    domains.forEach((d) => {
+      checkedRef.current.add(d);
+      checkDomainSsl(d);
+    });
+  };
+  reactExports.useEffect(() => {
+    checkedRef.current.clear();
+    loadDomainsFromDb();
+  }, [loadDomainsFromDb, refreshKey]);
+  reactExports.useEffect(() => {
+    if (domains.length > 0) {
+      domains.forEach((d) => {
+        if (!checkedRef.current.has(d)) {
+          checkedRef.current.add(d);
+          checkDomainSsl(d);
+        }
+      });
+    }
+  }, [domains, checkDomainSsl]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-grow flex flex-col overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-4 bg-[#181825] border border-white/[0.04] p-3 rounded-xl shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 rounded-lg bg-[#a6e3a1]/10 text-[#a6e3a1]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 18 }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-xs font-bold text-[#cdd6f4]", children: "Giám sát chứng chỉ SSL" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-semibold text-[#585b70]", children: "Theo dõi thời hạn và thông tin Certificate của các website" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: handleRefreshAll,
+            className: "px-3 py-1.5 rounded-lg bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs font-bold active:scale-95 transition-all flex items-center gap-1.5",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 }),
+              "Làm mới tất cả"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowAddModal(true),
+            className: "px-3 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] active:scale-95 transition-all flex items-center gap-1",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13 }),
+              " Thêm Domain"
+            ]
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 scrollbar-thin", children: domains.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "col-span-full text-center text-[#585b70] text-xs py-12", children: "Chưa theo dõi tên miền nào. Hãy thêm domain để theo dõi SSL." }) : domains.map((domain) => {
+      const status = domainStatus[domain];
+      if (!status) return null;
+      const isExpired = status.daysLeft !== null && status.daysLeft <= 0;
+      const isWarning = status.daysLeft !== null && status.daysLeft <= 15;
+      const statusColor = status.error ? "border-[#f38ba8]/20 bg-[#f38ba8]/5" : isExpired ? "border-[#f38ba8]/30 bg-[#f38ba8]/5" : isWarning ? "border-[#fab387]/30 bg-[#fab387]/5" : "border-[#a6e3a1]/25 bg-[#a6e3a1]/5";
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: `border rounded-xl p-4 flex flex-col justify-between space-y-3 relative group transition-all hover:scale-[1.01] ${statusColor}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleDeleteDomain(domain),
+                className: "absolute top-3 right-3 p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8] opacity-0 group-hover:opacity-100 transition-all",
+                title: "Xóa theo dõi",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 mb-1.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-xs text-[#cdd6f4] select-text", children: domain }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "a",
+                  {
+                    href: `https://${domain}`,
+                    target: "_blank",
+                    rel: "noreferrer",
+                    className: "text-[#89b4fa] hover:underline",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { size: 10 })
+                  }
+                )
+              ] }),
+              status.loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-[10px] text-[#585b70] flex items-center gap-1.5 py-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: "animate-spin" }),
+                " Đang kiểm tra..."
+              ] }) : status.error ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-[10px] text-[#f38ba8] bg-[#f38ba8]/5 border border-[#f38ba8]/10 rounded px-2.5 py-1.5 flex items-start gap-1 font-mono", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldAlert, { size: 12, className: "shrink-0 mt-0.5" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: status.error })
+              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 text-[10px] text-[#bac2de]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { size: 11, className: "text-[#585b70]" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                    "Hết hạn: ",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[#cdd6f4]", children: status.expiryDate })
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Award, { size: 11, className: "text-[#585b70]" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                    "Tổ chức cấp: ",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#cdd6f4] font-semibold", children: status.issuer })
+                  ] })
+                ] })
+              ] })
+            ] }),
+            !status.loading && !status.error && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center pt-2 border-t border-white/[0.04] text-[10px]", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#585b70]", children: "Thời hạn còn lại" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "span",
+                {
+                  className: `px-2 py-0.5 rounded-full font-bold font-mono ${isExpired ? "bg-[#f38ba8]/25 text-[#f38ba8]" : isWarning ? "bg-[#fab387]/25 text-[#fab387]" : "bg-[#a6e3a1]/25 text-[#a6e3a1]"}`,
+                  children: [
+                    status.daysLeft,
+                    " ngày"
+                  ]
+                }
+              )
+            ] })
+          ]
+        },
+        domain
+      );
+    }) }),
+    showAddModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+        onClick: (e) => {
+          if (e.target === e.currentTarget) setShowAddModal(false);
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[360px] flex flex-col animate-scale-in", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 13, className: "text-[#89b4fa]" }),
+              " Thêm Domain theo dõi SSL"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowAddModal(false), className: "p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4 text-xs", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-[#585b70] font-semibold", children: "Tên miền (Domain) *" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  autoFocus: true,
+                  placeholder: "ví dụ: mywebsite.com",
+                  value: newDomain,
+                  onChange: (e) => setNewDomain(e.target.value),
+                  className: "w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono select-text",
+                  onKeyDown: (e) => {
+                    if (e.key === "Enter") handleAddDomain();
+                  },
+                  disabled: addingDomain
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 justify-end pt-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => setShowAddModal(false),
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10",
+                  disabled: addingDomain,
+                  children: "Hủy"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleAddDomain,
+                  disabled: addingDomain,
+                  className: "px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all",
+                  children: "Thêm"
+                }
+              )
+            ] })
+          ] })
+        ] })
+      }
+    )
   ] });
 }
 function DevOpsDashboard({ sessionId }) {
@@ -22790,7 +25482,8 @@ ${message}` };
         { id: "pm2", name: "PM2", icon: Layers },
         { id: "docker", name: "Docker", icon: Box },
         { id: "nginx", name: "Nginx", icon: FolderOpen },
-        { id: "cron", name: "Cron Jobs", icon: Clock }
+        { id: "cron", name: "Cron Jobs", icon: Clock },
+        { id: "git", name: "Git & Deploy", icon: GitBranch }
       ]
     },
     {
@@ -22805,7 +25498,9 @@ ${message}` };
       title: "Mạng & Tiện ích",
       items: [
         { id: "tunnel", name: "Tunnel", icon: ArrowRight },
-        { id: "packages", name: "Packages", icon: Package }
+        { id: "packages", name: "Packages", icon: Package },
+        { id: "firewall", name: "Firewall", icon: Shield },
+        { id: "ssl", name: "SSL Tracker", icon: ShieldCheck }
       ]
     }
   ];
@@ -22892,7 +25587,10 @@ ${message}` };
               setLoading
             }
           ),
-          activeSubTab === "backup" && /* @__PURE__ */ jsxRuntimeExports.jsx(BackupPanel, { sessionId, exec, setLoading })
+          activeSubTab === "backup" && /* @__PURE__ */ jsxRuntimeExports.jsx(BackupPanel, { sessionId, exec, setLoading }),
+          activeSubTab === "firewall" && /* @__PURE__ */ jsxRuntimeExports.jsx(FirewallPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "git" && /* @__PURE__ */ jsxRuntimeExports.jsx(GitPanel, { sessionId, exec, refreshKey, setLoading, setError }),
+          activeSubTab === "ssl" && /* @__PURE__ */ jsxRuntimeExports.jsx(SslTrackerPanel, { sessionId, exec, refreshKey, setLoading, setError })
         ] }),
         activeSubTab === "sftp" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SftpPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) }),
         activeSubTab === "tunnel" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TunnelPanel, { sessionId, visible: true, onToggle: () => setActiveSubTab("overview"), embedded: true }) })

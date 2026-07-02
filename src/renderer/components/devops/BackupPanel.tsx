@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { DownloadCloud, RotateCw, Trash2, X } from 'lucide-react'
+import { DownloadCloud, RotateCw, Trash2, X, Clock } from 'lucide-react'
 
 interface BackupPanelProps {
   sessionId: string
@@ -22,6 +22,10 @@ export default function BackupPanel({
   const [backupType, setBackupType] = useState<'dir' | 'mysql' | 'postgres'>('dir')
   const [backupStatus, setBackupStatus] = useState<string | null>(null)
   const [backupHistory, setBackupHistory] = useState<BackupHistoryItem[]>([])
+
+  // Backup Cron Schedule states
+  const [showCronModal, setShowCronModal] = useState(false)
+  const [cronSchedule, setCronSchedule] = useState('0 2 * * *')
 
   // React controlled state for DB credentials
   const [dbName, setDbName] = useState('')
@@ -164,6 +168,56 @@ export default function BackupPanel({
     setLoading(false)
   }
 
+  const handleSaveBackupCron = async () => {
+    setLoading(true)
+    try {
+      let backupCmd = ''
+      if (backupType === 'dir') {
+        const cleanPath = backupPath.trim()
+        const lastSlash = cleanPath.lastIndexOf('/')
+        const parentDir = lastSlash !== -1 ? cleanPath.substring(0, lastSlash) : '/'
+        const targetName = lastSlash !== -1 ? cleanPath.substring(lastSlash + 1) : cleanPath
+        backupCmd = `tar -czf /tmp/backup_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).tar.gz -C "${parentDir}" "${targetName}"`
+      } else if (backupType === 'mysql') {
+        if (!dbName) {
+          alert('Vui lòng nhập tên Database!')
+          setLoading(false)
+          return
+        }
+        const passArg = dbPass ? `-p"${dbPass}"` : ''
+        backupCmd = `mysqldump -u "${dbUser}" ${passArg} "${dbName}" > /tmp/db_${dbName}_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).sql`
+      } else {
+        if (!dbName) {
+          alert('Vui lòng nhập tên Database!')
+          setLoading(false)
+          return
+        }
+        backupCmd = `sudo -u postgres pg_dump "${dbName}" > /tmp/db_${dbName}_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).sql`
+      }
+
+      const cronJobLine = `${cronSchedule} ${backupCmd}`
+      const checkCron = await exec("crontab -l 2>/dev/null || echo ''")
+      const jobs = checkCron.stdout.split('\n').filter(Boolean)
+      jobs.push(cronJobLine)
+      
+      const sanitizeForShell = (str: string) => str.replace(/["$`\\!]/g, '\\$&')
+      const newCronString = sanitizeForShell(jobs.join('\n'))
+      const writeRes = await exec(`echo "${newCronString}" | crontab -`)
+
+      if (writeRes.code === 0) {
+        setBackupStatus(`✅ Đã đặt lịch backup thành công!\nCron Job: ${cronJobLine}\nBạn có thể kiểm tra hoặc quản lý lịch trình này ở tab Cron Jobs.`)
+        alert('Cấu hình lịch backup thành công!')
+        setShowCronModal(false)
+      } else {
+        throw new Error(writeRes.stderr || 'Không thể cập nhật crontab')
+      }
+    } catch (err: any) {
+      alert('Lỗi đặt lịch: ' + err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="flex-1 flex gap-4 overflow-hidden">
       <div className="w-96 min-w-96 bg-[#181825] border border-white/[0.04] rounded-xl p-4 space-y-4 overflow-y-auto scrollbar-thin">
@@ -252,12 +306,21 @@ export default function BackupPanel({
           </div>
         )}
 
-        <button
-          onClick={handleStartBackup}
-          className="w-full py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center justify-center gap-1.5"
-        >
-          <DownloadCloud size={12} /> Bắt đầu Sao lưu
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleStartBackup}
+            className="flex-1 py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center justify-center gap-1.5"
+          >
+            <DownloadCloud size={12} /> Bắt đầu Sao lưu
+          </button>
+          <button
+            onClick={() => setShowCronModal(true)}
+            className="flex-1 py-2 rounded-lg bg-[#a6e3a1]/10 text-[#a6e3a1] text-xs font-bold hover:bg-[#a6e3a1]/25 transition-all flex items-center justify-center gap-1.5"
+            title="Đặt lịch backup tự động"
+          >
+            <Clock size={12} /> Đặt lịch Cron
+          </button>
+        </div>
 
         {/* Backup History */}
         {backupHistory.length > 0 && (
@@ -302,6 +365,67 @@ export default function BackupPanel({
           {backupStatus || 'Sẵn sàng.'}
         </pre>
       </div>
+
+      {/* Backup Cron Modal */}
+      {showCronModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowCronModal(false)}>
+          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">Đặt lịch sao lưu tự động</h3>
+              <button onClick={() => setShowCronModal(false)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"><X size={14} /></button>
+            </div>
+            
+            <div className="p-5 space-y-4 text-xs">
+              <div className="space-y-1.5">
+                <label className="text-[#585b70] font-semibold">Tần suất chạy (Cron Expression) *</label>
+                <input
+                  type="text"
+                  value={cronSchedule}
+                  onChange={(e) => setCronSchedule(e.target.value)}
+                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]/50"
+                  placeholder="0 2 * * *"
+                />
+                
+                <div className="grid grid-cols-2 gap-1.5 pt-1 text-[9px] text-[#585b70]">
+                  <button onClick={() => setCronSchedule('0 2 * * *')} className="px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]">
+                    Hàng ngày lúc 2:00 sáng
+                  </button>
+                  <button onClick={() => setCronSchedule('0 12 * * *')} className="px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]">
+                    Hàng ngày lúc 12:00 trưa
+                  </button>
+                  <button onClick={() => setCronSchedule('0 0 * * 0')} className="px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]">
+                    Mỗi chủ nhật 0:00 sáng
+                  </button>
+                  <button onClick={() => setCronSchedule('0 0 1 * *')} className="px-1.5 py-0.5 rounded bg-[#11111b] hover:bg-white/5 text-left text-[#bac2de]">
+                    Ngày 1 hàng tháng 0:00
+                  </button>
+                </div>
+              </div>
+
+              <div className="text-[10px] text-[#585b70] bg-[#11111b] rounded-lg p-2.5 leading-relaxed">
+                Tác vụ sao lưu tự động sẽ nén/xuất tệp tin vào thư mục <code className="text-[#89b4fa]">/tmp</code> trên server. Bạn có thể thay đổi lịch trình bất kỳ lúc nào thông qua tab <strong>Cron Jobs</strong>.
+              </div>
+
+              <div className="flex gap-2 justify-end pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowCronModal(false)}
+                  className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveBackupCron}
+                  className="px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all"
+                >
+                  Lưu & Lên Lịch
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

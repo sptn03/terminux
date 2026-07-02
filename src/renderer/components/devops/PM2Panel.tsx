@@ -263,6 +263,36 @@ export default function PM2Panel({
     loadData()
   }, [loadData, refreshKey])
 
+  // Auto-refresh PM2 logs
+  useEffect(() => {
+    if (!selectedAppLogs) return
+
+    const interval = setInterval(async () => {
+      const appName = selectedAppLogs.name
+      const appObj = pm2Apps.find(a => a.name === appName)
+      if (appObj) {
+        let logs = ''
+        if (appObj.outLog || appObj.errLog) {
+          const cmd = `
+            echo "=== STDOUT LOGS (Last 100 lines) ==="
+            if [ -f "${appObj.outLog}" ]; then tail -n 100 "${appObj.outLog}"; else echo "No stdout log file found"; fi
+            echo ""
+            echo "=== STDERR LOGS (Last 100 lines) ==="
+            if [ -f "${appObj.errLog}" ]; then tail -n 100 "${appObj.errLog}"; else echo "No stderr log file found"; fi
+          `
+          const res = await exec(cmd)
+          logs = res.stdout
+        } else {
+          const res = await exec(`tail -n 100 ~/.pm2/logs/${appName}-out.log 2>/dev/null || echo "No logs found."`)
+          logs = res.stdout
+        }
+        setSelectedAppLogs({ name: appName, logs: stripAnsi(logs) || 'Không tìm thấy log nào.' })
+      }
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [selectedAppLogs?.name, pm2Apps, exec])
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {pm2Installed && (
@@ -433,13 +463,19 @@ export default function PM2Panel({
             className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[800px] max-h-[80vh] flex flex-col animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-gradient-to-r from-[#181825] to-transparent">
-              <h3 className="text-xs font-semibold text-[#a6adc8] uppercase tracking-wider flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#fab387]" />
-                PM2 Logs: {selectedAppLogs.name}
-              </h3>
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-[#181825]">
+              <div className="flex items-center gap-3">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#fab387]" />
+                  PM2 Logs: {selectedAppLogs.name}
+                </h3>
+                <span className="flex items-center gap-1 text-[9px] font-semibold text-[#a6e3a1] bg-[#a6e3a1]/10 px-1.5 py-0.5 rounded-full animate-pulse">
+                  <span className="w-1 h-1 rounded-full bg-[#a6e3a1]" />
+                  Live Logging
+                </span>
+              </div>
               <button onClick={() => setSelectedAppLogs(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
-                <X size={15} />
+                <X size={14} />
               </button>
             </div>
             <pre className="flex-1 overflow-auto p-5 text-[11px] font-mono bg-[#11111b] text-[#bac2de] leading-relaxed whitespace-pre-wrap select-text selection:bg-[#fab387]/25 scrollbar-thin">

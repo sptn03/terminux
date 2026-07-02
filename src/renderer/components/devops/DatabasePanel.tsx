@@ -42,6 +42,23 @@ export default function DatabasePanel({
   const [queryInput, setQueryInput] = useState('')
   const [queryResult, setQueryResult] = useState('')
 
+  // Redis Explorer states
+  const [showRedisExplorer, setShowRedisExplorer] = useState<{ port: string } | null>(null)
+  const [redisKeys, setRedisKeys] = useState<string[]>([])
+  const [redisSearchPattern, setRedisSearchPattern] = useState('*')
+  const [selectedRedisKey, setSelectedRedisKey] = useState<string | null>(null)
+  const [selectedRedisType, setSelectedRedisType] = useState('')
+  const [selectedRedisValue, setSelectedRedisValue] = useState('')
+  const [loadingRedis, setLoadingRedis] = useState(false)
+
+  // DB Backup/Restore Modal states
+  const [quickBackupModal, setQuickBackupModal] = useState<{ type: string; port: string } | null>(null)
+  const [backupActionType, setBackupActionType] = useState<'export' | 'import'>('export')
+  const [backupDbName, setBackupDbName] = useState('')
+  const [backupSqlPath, setBackupSqlPath] = useState('')
+  const [backupStatusMsg, setBackupStatusMsg] = useState('')
+  const [runningDbBackup, setRunningDbBackup] = useState(false)
+
   const fetchTunnels = useCallback(async () => {
     try {
       const list = await window.api.tunnel.list()
@@ -200,6 +217,119 @@ export default function DatabasePanel({
     setLoading(false)
   }
 
+  const handleFetchRedisKeys = async (port: string, pattern: string) => {
+    setLoadingRedis(true)
+    try {
+      const cmd = `redis-cli -p ${port} --scan --pattern "${pattern || '*'}" LIMIT 100 2>/dev/null || redis-cli -p ${port} KEYS "${pattern || '*'}" 2>/dev/null | head -n 100 || echo ""`
+      const { stdout } = await exec(cmd)
+      const keys = stdout.split('\n').map(s => s.trim()).filter(Boolean)
+      setRedisKeys(keys)
+      setSelectedRedisKey(null)
+      setSelectedRedisValue('')
+      setSelectedRedisType('')
+    } catch {}
+    setLoadingRedis(false)
+  }
+
+  const handleReadRedisKey = async (port: string, key: string) => {
+    setLoadingRedis(true)
+    try {
+      const typeRes = await exec(`redis-cli -p ${port} TYPE "${key}"`)
+      const type = typeRes.stdout.trim()
+      setSelectedRedisType(type)
+
+      let valCmd = ''
+      if (type === 'string') {
+        valCmd = `redis-cli -p ${port} GET "${key}"`
+      } else if (type === 'hash') {
+        valCmd = `redis-cli -p ${port} HGETALL "${key}"`
+      } else if (type === 'list') {
+        valCmd = `redis-cli -p ${port} LRANGE "${key}" 0 -1`
+      } else if (type === 'set') {
+        valCmd = `redis-cli -p ${port} SMEMBERS "${key}"`
+      } else if (type === 'zset') {
+        valCmd = `redis-cli -p ${port} ZRANGE "${key}" 0 -1 WITHSCORES`
+      } else {
+        valCmd = `redis-cli -p ${port} DUMP "${key}"`
+      }
+      
+      const valRes = await exec(valCmd)
+      setSelectedRedisKey(key)
+      setSelectedRedisValue(valRes.stdout || valRes.stderr || '(Trống)')
+    } catch (err: any) {
+      alert('Lỗi đọc key: ' + err.message)
+    }
+    setLoadingRedis(false)
+  }
+
+  const handleDeleteRedisKey = async (port: string, key: string) => {
+    if (!confirm(`Xóa key "${key}" này chứ?`)) return
+    setLoadingRedis(true)
+    try {
+      await exec(`redis-cli -p ${port} DEL "${key}"`)
+      alert('Đã xóa key thành công!')
+      await handleFetchRedisKeys(port, redisSearchPattern)
+    } catch (err: any) {
+      alert('Lỗi xóa: ' + err.message)
+    }
+    setLoadingRedis(false)
+  }
+
+  const handleDbBackupAction = async () => {
+    if (!backupDbName.trim()) {
+      alert('Vui lòng nhập tên Database!')
+      return
+    }
+    if (backupActionType === 'import' && !backupSqlPath.trim()) {
+      alert('Vui lòng nhập đường dẫn file SQL để import!')
+      return
+    }
+
+    setRunningDbBackup(true)
+    setBackupStatusMsg('Bắt đầu tiến trình...\n')
+    const timestamp = Date.now()
+
+    try {
+      if (backupActionType === 'export') {
+        const targetPath = `/tmp/db_${backupDbName}_${timestamp}.sql`
+        setBackupStatusMsg((prev) => prev + `Đang xuất database ${backupDbName} ra ${targetPath}...\n`)
+        let cmd = ''
+        if (quickBackupModal?.type === 'mysql') {
+          cmd = `mysqldump "${backupDbName}" > "${targetPath}"`
+        } else {
+          cmd = `sudo -u postgres pg_dump "${backupDbName}" > "${targetPath}"`
+        }
+        const res = await exec(cmd)
+        if (res.code === 0) {
+          setBackupStatusMsg((prev) => prev + `✅ Xuất database thành công!\nFile lưu trữ tại: ${targetPath}\nBạn có thể tải file này về máy qua SFTP.`)
+          alert('Export database thành công!')
+        } else {
+          throw new Error(res.stderr || 'Xuất database thất bại')
+        }
+      } else {
+        setBackupStatusMsg((prev) => prev + `Đang import ${backupSqlPath} vào database ${backupDbName}...\n`)
+        let cmd = ''
+        if (quickBackupModal?.type === 'mysql') {
+          cmd = `mysql "${backupDbName}" < "${backupSqlPath}"`
+        } else {
+          cmd = `sudo -u postgres psql "${backupDbName}" < "${backupSqlPath}"`
+        }
+        const res = await exec(cmd)
+        if (res.code === 0) {
+          setBackupStatusMsg((prev) => prev + '✅ Nhập database thành công!')
+          alert('Import database thành công!')
+        } else {
+          throw new Error(res.stderr || 'Import database thất bại')
+        }
+      }
+    } catch (err: any) {
+      setBackupStatusMsg((prev) => prev + `❌ Lỗi: ${err.message}\n`)
+      alert('Lỗi: ' + err.message)
+    } finally {
+      setRunningDbBackup(false)
+    }
+  }
+
   const loadData = useCallback(async () => {
     setLoading(true)
     setError('')
@@ -287,7 +417,7 @@ export default function DatabasePanel({
                   )}
 
                   <div className="mt-4 space-y-2">
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {(db.type === 'mysql' || db.type === 'postgres') && (
                         <>
                           <button
@@ -304,17 +434,41 @@ export default function DatabasePanel({
                               setDbListModal({ type: db.type, databases: dbs })
                               setLoading(false)
                             }}
-                            className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
                           >
-                            <List size={10} /> Databases
+                            <List size={10} /> DBs
                           </button>
                           <button
                             onClick={() => { setQuickQueryModal({ type: db.type, port: db.port }); setQueryInput(''); setQueryResult('') }}
-                            className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
                           >
                             <Terminal size={10} /> Query
                           </button>
+                          <button
+                            onClick={() => {
+                              setBackupDbName('')
+                              setBackupSqlPath('')
+                              setBackupStatusMsg('')
+                              setBackupActionType('export')
+                              setQuickBackupModal({ type: db.type, port: db.port })
+                            }}
+                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                          >
+                            Backup
+                          </button>
                         </>
+                      )}
+                      {db.type === 'redis' && (
+                        <button
+                          onClick={() => {
+                            setShowRedisExplorer({ port: db.port })
+                            setRedisSearchPattern('*')
+                            handleFetchRedisKeys(db.port, '*')
+                          }}
+                          className="w-full flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                        >
+                          <Terminal size={10} /> Duyệt Key-Value
+                        </button>
                       )}
                     </div>
 
@@ -462,6 +616,186 @@ export default function DatabasePanel({
                   {queryResult}
                 </pre>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Redis Explorer Modal */}
+      {showRedisExplorer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowRedisExplorer(null)}>
+          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[700px] h-[80vh] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
+                Redis Key-Value Explorer (Cổng: {showRedisExplorer.port})
+              </h3>
+              <button onClick={() => setShowRedisExplorer(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+                <X size={14} />
+              </button>
+            </div>
+            
+            <div className="p-4 bg-[#11111b] border-b border-white/5 flex gap-2">
+              <input
+                type="text"
+                value={redisSearchPattern}
+                onChange={(e) => setRedisSearchPattern(e.target.value)}
+                placeholder="Nhập pattern tìm kiếm (ví dụ: user:*, *)..."
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleFetchRedisKeys(showRedisExplorer.port, redisSearchPattern)
+                  }
+                }}
+                className="flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none"
+              />
+              <button
+                onClick={() => handleFetchRedisKeys(showRedisExplorer.port, redisSearchPattern)}
+                className="px-4 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec]"
+              >
+                Tìm kiếm
+              </button>
+            </div>
+
+            <div className="flex-1 flex overflow-hidden">
+              <div className="w-64 min-w-64 border-r border-white/5 flex flex-col overflow-hidden">
+                <div className="flex-1 overflow-y-auto p-2 space-y-1.5 scrollbar-thin">
+                  {loadingRedis && redisKeys.length === 0 ? (
+                    <div className="text-center text-[#585b70] text-xs py-8 animate-pulse">Đang tải...</div>
+                  ) : redisKeys.length === 0 ? (
+                    <div className="text-center text-[#585b70] text-xs py-8">Không tìm thấy key nào.</div>
+                  ) : (
+                    redisKeys.map((key) => (
+                      <div
+                        key={key}
+                        onClick={() => handleReadRedisKey(showRedisExplorer.port, key)}
+                        className={`group flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono text-left cursor-pointer transition-all select-text ${
+                          selectedRedisKey === key ? 'bg-[#89b4fa]/15 text-[#89b4fa] font-bold' : 'text-[#a6adc8] hover:bg-white/[0.02]'
+                        }`}
+                      >
+                        <span className="truncate flex-1 mr-2">{key}</span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDeleteRedisKey(showRedisExplorer.port, key)
+                          }}
+                          className="p-0.5 rounded opacity-0 group-hover:opacity-100 hover:bg-white/5 text-[#f38ba8] transition-all"
+                          title="Xóa Key"
+                        >
+                          <X size={10} />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="flex-1 flex flex-col overflow-hidden bg-[#11111b]/20 p-4">
+                {selectedRedisKey ? (
+                  <div className="flex-1 flex flex-col overflow-hidden space-y-3">
+                    <div className="flex justify-between items-center bg-[#11111b] border border-white/5 p-2 rounded-lg text-xs font-mono">
+                      <span className="text-[#585b70]">Key: <span className="text-[#cdd6f4] font-bold select-text">{selectedRedisKey}</span></span>
+                      <span className="bg-[#cba6f7]/10 text-[#cba6f7] px-1.5 py-0.5 rounded text-[10px] font-bold font-sans uppercase">
+                        {selectedRedisType}
+                      </span>
+                    </div>
+
+                    <div className="flex-1 flex flex-col overflow-hidden">
+                      <label className="text-[10px] uppercase font-bold text-[#585b70] tracking-wider mb-1">Giá trị (Value)</label>
+                      <pre className="flex-1 overflow-auto bg-[#11111b] border border-white/[0.04] p-3 rounded-lg font-mono text-xs text-[#a6adc8] whitespace-pre-wrap select-text scrollbar-thin">
+                        {selectedRedisValue}
+                      </pre>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center text-[#585b70] text-xs">
+                    Chọn một key từ danh sách bên trái để xem giá trị chi tiết
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quick DB Backup/Restore Modal */}
+      {quickBackupModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setQuickBackupModal(null)}>
+          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[450px] max-h-[85vh] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">
+                Sao lưu & Phục hồi ({quickBackupModal.type.toUpperCase()})
+              </h3>
+              <button onClick={() => setQuickBackupModal(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"><X size={14} /></button>
+            </div>
+            
+            <div className="p-5 space-y-4 text-xs overflow-y-auto scrollbar-thin">
+              <div className="flex gap-2 p-0.5 bg-[#11111b] border border-white/5 rounded-lg">
+                <button
+                  onClick={() => setBackupActionType('export')}
+                  className={`flex-1 py-1 rounded-md transition-all ${backupActionType === 'export' ? 'bg-[#89b4fa] text-[#1e1e2e] font-bold' : 'text-[#a6adc8] hover:text-[#cdd6f4]'}`}
+                >
+                  Export (Backup)
+                </button>
+                <button
+                  onClick={() => setBackupActionType('import')}
+                  className={`flex-1 py-1 transition-all ${backupActionType === 'import' ? 'bg-[#89b4fa] text-[#1e1e2e] font-bold' : 'text-[#a6adc8] hover:text-[#cdd6f4]'}`}
+                >
+                  Import (Restore)
+                </button>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[#585b70] font-semibold">Tên Database *</label>
+                <input
+                  type="text"
+                  placeholder="wordpress_db"
+                  value={backupDbName}
+                  onChange={(e) => setBackupDbName(e.target.value)}
+                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+                  disabled={runningDbBackup}
+                />
+              </div>
+
+              {backupActionType === 'import' && (
+                <div className="space-y-1.5">
+                  <label className="text-[#585b70] font-semibold">Đường dẫn file SQL nguồn (.sql) *</label>
+                  <input
+                    type="text"
+                    placeholder="/tmp/db_wordpress_db_123456.sql"
+                    value={backupSqlPath}
+                    onChange={(e) => setBackupSqlPath(e.target.value)}
+                    className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                    disabled={runningDbBackup}
+                  />
+                </div>
+              )}
+
+              {backupStatusMsg && (
+                <div className="space-y-1.5">
+                  <label className="text-[#585b70] font-semibold">Tiến trình thực hiện</label>
+                  <pre className="h-32 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
+                    {backupStatusMsg}
+                  </pre>
+                </div>
+              )}
+
+              <div className="flex gap-2 justify-end pt-2">
+                <button
+                  type="button"
+                  onClick={() => setQuickBackupModal(null)}
+                  className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10"
+                  disabled={runningDbBackup}
+                >
+                  Hủy
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDbBackupAction}
+                  disabled={runningDbBackup}
+                  className="px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40"
+                >
+                  {runningDbBackup ? 'Đang thực hiện...' : backupActionType === 'export' ? 'Bắt đầu Export' : 'Bắt đầu Import'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

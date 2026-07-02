@@ -21,6 +21,8 @@ export function useTerminal({ sessionId, containerRef }: UseTerminalOptions) {
   const globalTheme = useSettingsStore((s) => s.theme)
   const tabTheme = useTerminalStore((s) => (sessionId ? s.tabThemes[sessionId] : undefined))
   const setTabTheme = useTerminalStore((s) => s.setTabTheme)
+  const tab = useTerminalStore((s) => (sessionId ? s.tabs.find((t) => t.sessionId === sessionId) : undefined))
+  const startupSentRef = useRef<Record<string, boolean>>({})
 
   // Resolve theme for this tab
   const activeThemeId = tabTheme ?? globalTheme
@@ -132,6 +134,20 @@ export function useTerminal({ sessionId, containerRef }: UseTerminalOptions) {
       document.removeEventListener('paste', docPasteHandler)
     }
   }, [sessionId])
+
+  // Run startup command if connection succeeds
+  useEffect(() => {
+    if (sessionId && tab) {
+      if (tab.connected && tab.startupCommand && !startupSentRef.current[sessionId]) {
+        startupSentRef.current[sessionId] = true
+        setTimeout(() => {
+          window.api.ssh.shellInput(sessionId, tab.startupCommand + '\n')
+        }, 600)
+      } else if (!tab.connected) {
+        startupSentRef.current[sessionId] = false
+      }
+    }
+  }, [sessionId, tab?.connected, tab?.startupCommand])
 
   // Context menu (theme change → rebuild menu, not SSH)
   useEffect(() => {

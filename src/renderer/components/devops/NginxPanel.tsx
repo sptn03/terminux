@@ -35,6 +35,13 @@ export default function NginxPanel({
   const [creatingSite, setCreatingSite] = useState(false)
   const [showPicker, setShowPicker] = useState(false)
 
+  // SSL Certbot Wizard states
+  const [showSslModal, setShowSslModal] = useState(false)
+  const [sslDomain, setSslDomain] = useState('')
+  const [sslEmail, setSslEmail] = useState('')
+  const [runningSsl, setRunningSsl] = useState(false)
+  const [sslLogs, setSslLogs] = useState('')
+
   const fetchNginx = useCallback(async () => {
     try {
       const checkNginx = await exec('nginx -v 2>/dev/null')
@@ -269,6 +276,62 @@ EOF
     }
   }
 
+  const handleOpenSslWizard = () => {
+    const match = nginxConfigContent.match(/server_name\s+([^;]+);/)
+    if (match && match[1]) {
+      setSslDomain(match[1].trim().split(/\s+/)[0])
+    } else {
+      setSslDomain('')
+    }
+    setSslEmail('')
+    setSslLogs('')
+    setRunningSsl(false)
+    setShowSslModal(true)
+  }
+
+  const handleRunSslCertbot = async () => {
+    if (!sslDomain.trim()) {
+      alert('Vui lòng nhập tên miền (Domain Name)!')
+      return
+    }
+    setRunningSsl(true)
+    setSslLogs('Đang kiểm tra certbot trên máy chủ...\n')
+    try {
+      const checkCertbot = await exec('which certbot')
+      if (checkCertbot.code !== 0) {
+        setSslLogs((prev) => prev + 'Không tìm thấy certbot. Đang tiến hành cài đặt certbot và plugin nginx...\n')
+        setSslLogs((prev) => prev + 'Chạy apt-get update...\n')
+        await exec('sudo apt-get update')
+        setSslLogs((prev) => prev + 'Đang cài đặt certbot python3-certbot-nginx...\n')
+        const installRes = await exec('sudo apt-get install -y certbot python3-certbot-nginx')
+        if (installRes.code !== 0) {
+          throw new Error('Cài đặt certbot thất bại: ' + installRes.stderr)
+        }
+        setSslLogs((prev) => prev + 'Cài đặt certbot thành công!\n')
+      } else {
+        setSslLogs((prev) => prev + 'Đã cài đặt certbot. Bắt đầu sinh chứng chỉ SSL...\n')
+      }
+
+      const emailArg = sslEmail.trim() ? `-m "${sslEmail.trim()}"` : '--register-unsafely-without-email'
+      const certbotCmd = `sudo certbot --nginx -d "${sslDomain.trim()}" --non-interactive --agree-tos ${emailArg}`
+      setSslLogs((prev) => prev + `Đang thực thi: ${certbotCmd}\n`)
+      
+      const res = await exec(certbotCmd)
+      setSslLogs((prev) => prev + res.stdout + '\n' + res.stderr + '\n')
+      if (res.code === 0) {
+        setSslLogs((prev) => prev + '✅ Kích hoạt SSL thành công! Website đã được chuyển hướng sang HTTPS.\n')
+        alert('Cài đặt SSL Let\'s Encrypt thành công!')
+      } else {
+        throw new Error('Sinh chứng chỉ thất bại: ' + res.stderr)
+      }
+    } catch (err: any) {
+      setSslLogs((prev) => prev + `❌ Lỗi: ${err.message}\n`)
+      alert('Lỗi cài đặt SSL: ' + err.message)
+    } finally {
+      setRunningSsl(false)
+    }
+  }
+
   const loadData = useCallback(async () => {
     setLoading(true)
     setError('')
@@ -373,10 +436,16 @@ EOF
                   <span className="font-mono text-xs text-[#a6adc8]">{selectedNginxFile}</span>
                   <div className="flex gap-2">
                     <button
+                      onClick={handleOpenSslWizard}
+                      className="px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] text-xs font-semibold hover:bg-[#86c581] active:scale-95 transition-all"
+                    >
+                      Cấu hình SSL
+                    </button>
+                    <button
                       onClick={() => setShowNginxWizard(true)}
                       className="px-3 py-1 rounded bg-[#fab387] text-[#1e1e2e] text-xs font-semibold hover:bg-[#f8a060] active:scale-95 transition-all"
                     >
-                      Mẫu Cấu Hình
+                      Mẫu Cấu Hinh
                     </button>
                     <button
                       onClick={handleSaveNginxConfig}
@@ -663,6 +732,83 @@ EOF
           onClose={() => setShowPicker(false)}
           onSelect={(path) => setNewSiteParam(path)}
         />
+      )}
+
+      {/* SSL Certbot Wizard Modal */}
+      {showSslModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setShowSslModal(false)}
+        >
+          <div
+            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[450px] max-h-[85vh] flex flex-col animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#a6e3a1]" />
+                Cấu hình SSL Let's Encrypt
+              </h3>
+              <button onClick={() => setShowSslModal(false)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+                <X size={14} />
+              </button>
+            </div>
+            <div className="p-5 space-y-4 text-xs overflow-y-auto scrollbar-thin">
+              <div className="space-y-1.5">
+                <label className="text-[#585b70] font-semibold">Tên miền (Domain Name) *</label>
+                <input
+                  type="text"
+                  value={sslDomain}
+                  onChange={(e) => setSslDomain(e.target.value)}
+                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#a6e3a1]/50"
+                  placeholder="example.com"
+                  disabled={runningSsl}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[#585b70] font-semibold">Email thông báo (Email) <span className="text-[#585b70]">(Tùy chọn)</span></label>
+                <input
+                  type="email"
+                  value={sslEmail}
+                  onChange={(e) => setSslEmail(e.target.value)}
+                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#a6e3a1]/50"
+                  placeholder="admin@example.com"
+                  disabled={runningSsl}
+                />
+                <span className="text-[10px] text-[#585b70]">Email này được dùng để Let's Encrypt gửi cảnh báo khi chứng chỉ sắp hết hạn.</span>
+              </div>
+
+              {sslLogs && (
+                <div className="space-y-1.5">
+                  <label className="text-[#585b70] font-semibold">Tiến trình thực thi (Logs)</label>
+                  <pre className="h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
+                    {sslLogs}
+                  </pre>
+                </div>
+              )}
+
+              <div className="flex gap-2 justify-end pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowSslModal(false)}
+                  className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10"
+                  disabled={runningSsl}
+                >
+                  Đóng
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRunSslCertbot}
+                  disabled={runningSsl}
+                  className="px-4 py-1.5 rounded-lg font-semibold bg-[#a6e3a1] text-[#1e1e2e] hover:bg-[#86c581] active:scale-95 transition-all disabled:opacity-40"
+                >
+                  {runningSsl ? 'Đang chạy...' : 'Cài đặt SSL'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

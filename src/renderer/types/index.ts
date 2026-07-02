@@ -77,6 +77,7 @@ export interface TerminalTab {
   config?: any
   viewMode?: 'terminal' | 'dashboard'
   alertStatus?: 'normal' | 'warning' | 'danger'
+  startupCommand?: string
 }
 
 declare global {

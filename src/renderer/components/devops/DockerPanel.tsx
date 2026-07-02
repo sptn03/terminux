@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Box, Square, Play, RefreshCw, FileText, Trash2, X } from 'lucide-react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { Box, Square, Play, RefreshCw, FileText, Trash2, X, Terminal, Plus, Edit3, FileCode, ArrowLeft } from 'lucide-react'
+import { useTerminalStore } from '../../stores/terminal-store'
 
 interface DockerContainer {
   id: string
@@ -41,6 +42,16 @@ export default function DockerPanel({
   const [images, setImages] = useState<DockerImage[]>([])
   const [selectedContainerLogs, setSelectedContainerLogs] = useState<{ id: string; name: string; logs: string } | null>(null)
 
+  // Docker Compose Editor states
+  const [selectedComposeProject, setSelectedComposeProject] = useState<{ name: string; configFiles: string } | null>(null)
+  const [composeConfigContent, setComposeConfigContent] = useState('')
+  const [savingCompose, setSavingCompose] = useState(false)
+  const [showCreateComposeModal, setShowCreateComposeModal] = useState(false)
+  const [newComposeName, setNewComposeName] = useState('')
+  const [newComposeDir, setNewComposeDir] = useState('/var/www')
+  const [creatingCompose, setCreatingCompose] = useState(false)
+  const [showComposePicker, setShowComposePicker] = useState(false)
+
   // New states for compose, networks, volumes
   const [composeProjects, setComposeProjects] = useState<{ name: string; status: string; configFiles: string }[]>([])
   const [networks, setNetworks] = useState<{ id: string; name: string; driver: string; scope: string }[]>([])
@@ -51,6 +62,15 @@ export default function DockerPanel({
   const [installLog, setInstallLog] = useState('')
   const [daemonConfig, setDaemonConfig] = useState('')
   const [savingConfig, setSavingConfig] = useState(false)
+
+  // Docker Registry & Image Pull states
+  const [pullImageName, setPullImageName] = useState('')
+  const [pullingImage, setPullingImage] = useState(false)
+  const [registryHost, setRegistryHost] = useState('')
+  const [registryUser, setRegistryUser] = useState('')
+  const [registryPass, setRegistryPass] = useState('')
+  const [loggingInRegistry, setLoggingInRegistry] = useState(false)
+  const [registryLogs, setRegistryLogs] = useState('')
 
   const fetchDocker = useCallback(async (checkVersion = false) => {
     try {
@@ -178,6 +198,58 @@ export default function DockerPanel({
     setLoading(false)
   }
 
+  const handleDockerPull = async () => {
+    if (!pullImageName.trim()) {
+      alert('Vui lòng nhập tên Image!')
+      return
+    }
+    setPullingImage(true)
+    setRegistryLogs(`Đang thực hiện pull image: ${pullImageName.trim()}...\n`)
+    try {
+      const res = await exec(`docker pull "${pullImageName.trim()}"`)
+      setRegistryLogs((prev) => prev + res.stdout + '\n' + res.stderr + '\n')
+      if (res.code === 0) {
+        setRegistryLogs((prev) => prev + '✅ Pull image thành công!\n')
+        alert('Tải Docker Image thành công!')
+        setPullImageName('')
+        await fetchDocker()
+      } else {
+        throw new Error(res.stderr || 'Pull image thất bại')
+      }
+    } catch (err: any) {
+      setRegistryLogs((prev) => prev + `❌ Lỗi: ${err.message}\n`)
+      alert('Lỗi pull image: ' + err.message)
+    } finally {
+      setPullingImage(false)
+    }
+  }
+
+  const handleDockerLogin = async () => {
+    if (!registryUser.trim() || !registryPass.trim()) {
+      alert('Vui lòng nhập Username và Password!')
+      return
+    }
+    setLoggingInRegistry(true)
+    setRegistryLogs('Bắt đầu đăng nhập registry...\n')
+    try {
+      const hostArg = registryHost.trim() ? `"${registryHost.trim()}"` : ''
+      const cmd = `echo "${registryPass.trim()}" | docker login ${hostArg} -u "${registryUser.trim()}" --password-stdin`
+      const res = await exec(cmd)
+      setRegistryLogs((prev) => prev + res.stdout + '\n' + res.stderr + '\n')
+      if (res.code === 0) {
+        setRegistryLogs((prev) => prev + '✅ Đăng nhập Registry thành công!\n')
+        alert('Đăng nhập Registry thành công!')
+      } else {
+        throw new Error(res.stderr || 'Đăng nhập thất bại')
+      }
+    } catch (err: any) {
+      setRegistryLogs((prev) => prev + `❌ Lỗi: ${err.message}\n`)
+      alert('Lỗi đăng nhập: ' + err.message)
+    } finally {
+      setLoggingInRegistry(false)
+    }
+  }
+
   const handleViewDockerContainerLogs = async (containerId: string, containerName: string) => {
     setLoading(true)
     const { stdout, stderr } = await exec(`docker logs --tail 100 ${containerId} 2>&1`)
@@ -187,6 +259,113 @@ export default function DockerPanel({
       logs: stripAnsi(stdout || stderr || 'Không tìm thấy log nào.')
     })
     setLoading(false)
+  }
+
+  const handleDockerContainerTerminal = async (containerName: string) => {
+    const tabsStore = useTerminalStore.getState()
+    const currentTab = tabsStore.tabs.find((t) => t.sessionId === sessionId)
+    if (!currentTab || !currentTab.config) {
+      alert('Không tìm thấy cấu hình kết nối SSH hiện tại.')
+      return
+    }
+
+    const execSessionId = `conn-docker-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    
+    tabsStore.addTab({
+      sessionId: execSessionId,
+      hostId: currentTab.hostId,
+      label: `Exec: ${containerName}`,
+      connected: false,
+      loading: true,
+      config: currentTab.config,
+      startupCommand: `docker exec -it "${containerName}" /bin/bash || docker exec -it "${containerName}" /bin/sh || docker exec -it "${containerName}" sh`,
+      viewMode: 'terminal'
+    })
+
+    const result = await window.api.ssh.connect(execSessionId ? { ...currentTab.config, sessionId: execSessionId } : currentTab.config)
+    tabsStore.updateTabState(execSessionId, {
+      connected: !result.error,
+      loading: false,
+      label: result.error ? `Exec: ${containerName} (error)` : `Exec: ${containerName}`
+    })
+  }
+
+  const handleReadComposeFile = async (name: string, configFiles: string) => {
+    setLoading(true)
+    setError('')
+    try {
+      const { stdout, code, stderr } = await exec(`cat "${configFiles}"`)
+      if (code !== 0) {
+        throw new Error(stderr || 'Không thể đọc file compose.')
+      }
+      setSelectedComposeProject({ name, configFiles })
+      setComposeConfigContent(stdout)
+    } catch (err: any) {
+      alert('Lỗi đọc file: ' + err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSaveComposeConfig = async () => {
+    if (!selectedComposeProject || savingCompose) return
+    setSavingCompose(true)
+    try {
+      const writeCmd = `cat << 'EOF' > "${selectedComposeProject.configFiles}"\n${composeConfigContent}\nEOF`
+      const res = await exec(writeCmd)
+      if (res.code !== 0) {
+        throw new Error(res.stderr || 'Không thể lưu file compose.')
+      }
+      alert('Đã lưu file compose thành công!')
+    } catch (err: any) {
+      alert('Lỗi: ' + err.message)
+    } finally {
+      setSavingCompose(false)
+    }
+  }
+
+  const handleCreateComposeProject = async () => {
+    if (!newComposeName.trim() || !newComposeDir.trim()) {
+      alert('Vui lòng nhập tên project và thư mục!')
+      return
+    }
+    setCreatingCompose(true)
+    try {
+      const dir = newComposeDir.trim()
+      const name = newComposeName.trim()
+      const filePath = `${dir}/docker-compose.yml`
+      const template = `version: '3.8'
+services:
+  ${name}:
+    image: nginx:alpine
+    container_name: ${name}
+    ports:
+      - "8080:80"
+    restart: always`
+
+      const initCmd = `mkdir -p "${dir}" && cat << 'EOF' > "${filePath}"\n${template}\nEOF`
+      const res = await exec(initCmd)
+      if (res.code !== 0) {
+        throw new Error(res.stderr || 'Không thể khởi tạo thư mục và tệp compose.')
+      }
+
+      setLoading(true)
+      const upRes = await exec(`cd "${dir}" && docker compose up -d`)
+      setLoading(false)
+      if (upRes.code !== 0) {
+        alert('Tạo file thành công nhưng docker compose up thất bại: ' + upRes.stderr)
+      } else {
+        alert('Đã tạo và khởi chạy Docker Compose project thành công!')
+      }
+
+      setShowCreateComposeModal(false)
+      setNewComposeName('')
+      await fetchDocker()
+    } catch (err: any) {
+      alert('Lỗi: ' + err.message)
+    } finally {
+      setCreatingCompose(false)
+    }
   }
 
   const handleInstallDocker = async () => {
@@ -383,6 +562,14 @@ export default function DockerPanel({
             >
               Config
             </button>
+            {dockerSubTab === 'compose' && !selectedComposeProject && (
+              <button
+                onClick={() => setShowCreateComposeModal(true)}
+                className="ml-auto flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold uppercase bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 active:scale-95 transition-all"
+              >
+                <Plus size={11} /> Thêm Project mới
+              </button>
+            )}
           </div>
 
           {dockerSubTab === 'containers' && (
@@ -461,6 +648,15 @@ export default function DockerPanel({
                               <Play size={12} />
                             </button>
                           )}
+                          {c.status.toLowerCase().includes('up') && (
+                            <button
+                              onClick={() => handleDockerContainerTerminal(c.name)}
+                              className="p-1 rounded hover:bg-white/5 text-[#a6e3a1]"
+                              title="Interactive Terminal"
+                            >
+                              <Terminal size={12} />
+                            </button>
+                          )}
                           <button
                             onClick={() => handleDockerContainerAction('restart', c.id)}
                             className="p-1 rounded hover:bg-white/5 text-[#89b4fa]"
@@ -492,37 +688,120 @@ export default function DockerPanel({
           )}
 
           {dockerSubTab === 'images' && (
-            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="border-b border-white/[0.04] text-[#585b70] font-semibold">
-                    <th className="p-3">Repository</th>
-                    <th className="p-3">Tag</th>
-                    <th className="p-3">Image ID</th>
-                    <th className="p-3">Size</th>
-                    <th className="p-3 text-center">Thao Tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {images.map((img, idx) => (
-                    <tr key={idx} className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors">
-                      <td className="p-3 font-bold text-[#cdd6f4]">{img.repository}</td>
-                      <td className="p-3 text-[#a6adc8]">{img.tag}</td>
-                      <td className="p-3 font-mono text-[#6c7086]">{img.id}</td>
-                      <td className="p-3 font-mono text-[#6c7086]">{img.size}</td>
-                      <td className="p-3 text-center">
-                        <button
-                          onClick={() => handleDockerImageAction('rmi', img.id)}
-                          className="p-1 rounded hover:bg-white/5 text-[#f38ba8]"
-                          title="Remove Image"
-                        >
-                          <Trash2 size={12} />
-                        </button>
-                      </td>
+            <div className="flex-1 flex flex-col gap-4 overflow-hidden">
+              <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="border-b border-white/[0.04] text-[#585b70] font-semibold">
+                      <th className="p-3">Repository</th>
+                      <th className="p-3">Tag</th>
+                      <th className="p-3">Image ID</th>
+                      <th className="p-3">Size</th>
+                      <th className="p-3 text-center">Thao Tác</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {images.map((img, idx) => (
+                      <tr key={idx} className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors">
+                        <td className="p-3 font-bold text-[#cdd6f4]">{img.repository}</td>
+                        <td className="p-3 text-[#a6adc8]">{img.tag}</td>
+                        <td className="p-3 font-mono text-[#6c7086]">{img.id}</td>
+                        <td className="p-3 font-mono text-[#6c7086]">{img.size}</td>
+                        <td className="p-3 text-center">
+                          <button
+                            onClick={() => handleDockerImageAction('rmi', img.id)}
+                            className="p-1 rounded hover:bg-white/5 text-[#f38ba8]"
+                            title="Remove Image"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Side-by-side Pull & Login forms */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 shrink-0">
+                {/* Pull Image form */}
+                <div className="bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col gap-3">
+                  <span className="text-[10px] uppercase font-bold text-[#585b70] tracking-wider">Tải Docker Image mới (Pull)</span>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="ví dụ: nginx:alpine, redis:latest..."
+                      value={pullImageName}
+                      onChange={(e) => setPullImageName(e.target.value)}
+                      className="flex-1 bg-[#11111b] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                      disabled={pullingImage}
+                    />
+                    <button
+                      onClick={handleDockerPull}
+                      disabled={pullingImage}
+                      className="px-4 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec]"
+                    >
+                      {pullingImage ? 'Pulling...' : 'Tải về'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Docker Login form */}
+                <div className="bg-[#181825] border border-white/[0.04] rounded-xl p-4 flex flex-col gap-3">
+                  <span className="text-[10px] uppercase font-bold text-[#585b70] tracking-wider">Đăng nhập Docker Registry</span>
+                  <div className="flex flex-wrap gap-2">
+                    <input
+                      type="text"
+                      placeholder="Registry Host (để trống nếu là DockerHub)"
+                      value={registryHost}
+                      onChange={(e) => setRegistryHost(e.target.value)}
+                      className="flex-1 min-w-[150px] bg-[#11111b] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                      disabled={loggingInRegistry}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      value={registryUser}
+                      onChange={(e) => setRegistryUser(e.target.value)}
+                      className="w-28 bg-[#11111b] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                      disabled={loggingInRegistry}
+                    />
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      value={registryPass}
+                      onChange={(e) => setRegistryPass(e.target.value)}
+                      className="w-28 bg-[#11111b] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                      disabled={loggingInRegistry}
+                    />
+                    <button
+                      onClick={handleDockerLogin}
+                      disabled={loggingInRegistry}
+                      className="px-4 py-1.5 rounded-lg bg-[#a6e3a1] text-[#1e1e2e] text-xs font-bold hover:bg-[#86c581]"
+                    >
+                      {loggingInRegistry ? 'Logging in...' : 'Login'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Logs Console for Pull / Login actions */}
+              {registryLogs && (
+                <div className="h-32 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden p-3 shrink-0">
+                  <div className="flex justify-between items-center mb-1 shrink-0">
+                    <span className="text-[9px] uppercase font-bold text-[#585b70] tracking-wider">Trạng thái Tiến trình Registry</span>
+                    <button
+                      onClick={() => setRegistryLogs('')}
+                      className="text-[9px] text-[#f38ba8] hover:underline"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                  <pre className="flex-1 overflow-y-auto font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap select-text bg-[#11111b] p-2.5 rounded-lg border border-white/[0.02] scrollbar-thin">
+                    {registryLogs}
+                  </pre>
+                </div>
+              )}
             </div>
           )}
 
@@ -552,9 +831,77 @@ export default function DockerPanel({
           )}
 
           {dockerSubTab === 'compose' && (
-            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin">
-              {composeProjects.length === 0 ? (
-                <div className="flex-1 flex items-center justify-center text-[#585b70] text-xs py-12">Không tìm thấy Docker Compose project nào.</div>
+            <div className="flex-1 overflow-auto bg-[#181825] border border-white/[0.04] rounded-xl scrollbar-thin flex flex-col">
+              {selectedComposeProject ? (
+                <div className="flex-1 flex flex-col overflow-hidden">
+                  <div className="px-4 py-2 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setSelectedComposeProject(null)}
+                        className="p-1 hover:bg-white/5 rounded text-[#a6adc8] hover:text-[#cdd6f4]"
+                      >
+                        <ArrowLeft size={14} />
+                      </button>
+                      <span className="font-mono text-xs text-[#a6adc8]">
+                        {selectedComposeProject.name} ({selectedComposeProject.configFiles})
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleSaveComposeConfig}
+                        disabled={savingCompose}
+                        className="px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] text-xs font-semibold hover:bg-[#74c7ec] active:scale-95 disabled:opacity-40 transition-all"
+                      >
+                        {savingCompose ? 'Đang Lưu...' : 'Lưu File'}
+                      </button>
+                      <button
+                        onClick={async () => {
+                          await handleSaveComposeConfig()
+                          setLoading(true)
+                          const parentDir = selectedComposeProject.configFiles.substring(0, selectedComposeProject.configFiles.lastIndexOf('/'))
+                          const res = await exec(`cd "${parentDir}" && docker compose up -d`)
+                          setLoading(false)
+                          if (res.code === 0) {
+                            alert('Đã chạy docker compose up -d thành công!')
+                            await fetchDocker()
+                          } else {
+                            alert('Lỗi: ' + res.stderr)
+                          }
+                        }}
+                        className="px-3 py-1 rounded bg-[#a6e3a1] text-[#1e1e2e] text-xs font-semibold hover:bg-[#86c581] active:scale-95 transition-all"
+                      >
+                        Lưu & Up
+                      </button>
+                      <button
+                        onClick={async () => {
+                          if (confirm('Chạy docker compose down cho project này?')) {
+                            setLoading(true)
+                            const parentDir = selectedComposeProject.configFiles.substring(0, selectedComposeProject.configFiles.lastIndexOf('/'))
+                            const res = await exec(`cd "${parentDir}" && docker compose down`)
+                            setLoading(false)
+                            if (res.code === 0) {
+                              alert('Đã chạy docker compose down thành công!')
+                              await fetchDocker()
+                            } else {
+                              alert('Lỗi: ' + res.stderr)
+                            }
+                          }
+                        }}
+                        className="px-3 py-1 rounded bg-[#f38ba8] text-[#1e1e2e] text-xs font-semibold hover:bg-[#e27a97] active:scale-95 transition-all"
+                      >
+                        Down Project
+                      </button>
+                    </div>
+                  </div>
+                  <textarea
+                    value={composeConfigContent}
+                    onChange={(e) => setComposeConfigContent(e.target.value)}
+                    className="flex-1 p-4 bg-[#181825] text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed"
+                    spellCheck={false}
+                  />
+                </div>
+              ) : composeProjects.length === 0 ? (
+                <div className="flex-grow flex items-center justify-center text-[#585b70] text-xs py-12">Không tìm thấy Docker Compose project nào.</div>
               ) : (
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
@@ -578,15 +925,22 @@ export default function DockerPanel({
                         <td className="p-3">
                           <div className="flex gap-1.5 justify-center">
                             <button
-                              onClick={async () => { setLoading(true); await exec(`docker compose -p ${p.name} up -d 2>/dev/null`); await fetchDocker(); setLoading(false) }}
+                              onClick={() => handleReadComposeFile(p.name, p.configFiles)}
+                              className="p-1 rounded hover:bg-white/5 text-[#fab387]"
+                              title="Edit Compose File"
+                            >
+                              <Edit3 size={12} />
+                            </button>
+                            <button
+                              onClick={async () => { setLoading(true); const parentDir = p.configFiles.substring(0, p.configFiles.lastIndexOf('/')); await exec(`cd "${parentDir}" && docker compose up -d`); await fetchDocker(); setLoading(false) }}
                               className="p-1 rounded hover:bg-white/5 text-[#a6e3a1]" title="Up"
                             ><Play size={12} /></button>
                             <button
-                              onClick={async () => { setLoading(true); await exec(`docker compose -p ${p.name} stop 2>/dev/null`); await fetchDocker(); setLoading(false) }}
+                              onClick={async () => { setLoading(true); const parentDir = p.configFiles.substring(0, p.configFiles.lastIndexOf('/')); await exec(`cd "${parentDir}" && docker compose stop`); await fetchDocker(); setLoading(false) }}
                               className="p-1 rounded hover:bg-white/5 text-[#f38ba8]" title="Stop"
                             ><Square size={12} /></button>
                             <button
-                              onClick={async () => { setLoading(true); await exec(`docker compose -p ${p.name} restart 2>/dev/null`); await fetchDocker(); setLoading(false) }}
+                              onClick={async () => { setLoading(true); const parentDir = p.configFiles.substring(0, p.configFiles.lastIndexOf('/')); await exec(`cd "${parentDir}" && docker compose restart`); await fetchDocker(); setLoading(false) }}
                               className="p-1 rounded hover:bg-white/5 text-[#89b4fa]" title="Restart"
                             ><RefreshCw size={12} /></button>
                           </div>
@@ -698,6 +1052,237 @@ export default function DockerPanel({
           </div>
         </div>
       )}
+
+      {/* Create Compose Modal */}
+      {showCreateComposeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowCreateComposeModal(false)}>
+          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[420px] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
+                <Plus size={13} className="text-[#89b4fa]" /> Tạo Docker Compose Project mới
+              </h3>
+              <button onClick={() => setShowCreateComposeModal(false)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+                <X size={14} />
+              </button>
+            </div>
+            
+            <div className="p-5 space-y-4 text-xs">
+              <div className="space-y-1.5">
+                <label className="text-[#585b70] font-semibold">Tên dịch vụ/Project (Project Name) *</label>
+                <input
+                  type="text"
+                  placeholder="ví dụ: my-web-app"
+                  value={newComposeName}
+                  onChange={(e) => setNewComposeName(e.target.value)}
+                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[#585b70] font-semibold">Thư mục lưu trữ (Directory Path) *</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="/var/www/my-web-app"
+                    value={newComposeDir}
+                    onChange={(e) => setNewComposeDir(e.target.value)}
+                    className="flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowComposePicker(true)}
+                    className="px-3 rounded-lg bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs flex items-center justify-center"
+                  >
+                    Duyệt...
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex gap-2 justify-end pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateComposeModal(false)}
+                  className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCreateComposeProject}
+                  disabled={creatingCompose}
+                  className="px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40"
+                >
+                  {creatingCompose ? 'Đang tạo...' : 'Tạo & Up'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showComposePicker && (
+        <RemotePathPicker
+          visible={true}
+          mode="dir"
+          exec={exec}
+          onClose={() => setShowComposePicker(false)}
+          onSelect={(path) => setNewComposeDir(path)}
+        />
+      )}
+    </div>
+  )
+}
+
+interface RemotePathPickerProps {
+  visible: boolean
+  mode: 'file' | 'dir'
+  exec: (cmd: string) => Promise<{ stdout: string; stderr: string; code: number }>
+  onClose: () => void
+  onSelect: (path: string) => void
+}
+
+function RemotePathPicker({ mode, exec, onClose, onSelect }: RemotePathPickerProps) {
+  const [currentPath, setCurrentPath] = useState('/')
+  const [items, setItems] = useState<{ name: string; isDir: boolean }[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const fetchDir = useCallback(async (path: string) => {
+    setLoading(true)
+    try {
+      const sanitizedPath = path.replace(/"/g, '\\"')
+      const cmd = `cd "${sanitizedPath}" && ls -F -1`
+      const res = await exec(cmd)
+      if (res.code === 0) {
+        const parsed = res.stdout
+          .split('\n')
+          .map((f) => f.trim())
+          .filter((f) => f && f !== './' && f !== '../')
+          .map((f) => {
+            const isDir = f.endsWith('/')
+            const name = isDir ? f.slice(0, -1) : f
+            return { name, isDir }
+          })
+
+        parsed.sort((a, b) => {
+          if (a.isDir && !b.isDir) return -1
+          if (!a.isDir && b.isDir) return 1
+          return a.name.localeCompare(b.name)
+        })
+
+        setItems(parsed)
+        setCurrentPath(path)
+      } else {
+        alert('Lỗi đọc thư mục: ' + res.stderr)
+      }
+    } catch (e: any) {
+      alert('Lỗi: ' + e.message)
+    } finally {
+      setLoading(false)
+    }
+  }, [exec])
+
+  useEffect(() => {
+    fetchDir('/')
+  }, [fetchDir])
+
+  const handleGoUp = () => {
+    if (currentPath === '/') return
+    const parts = currentPath.split('/').filter(Boolean)
+    parts.pop()
+    const parent = '/' + parts.join('/')
+    fetchDir(parent)
+  }
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] h-[480px] flex flex-col animate-scale-in">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#181825]">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
+            Chọn {mode === 'file' ? 'Tệp tin' : 'Thư mục'} trên Server
+          </h3>
+          <button onClick={onClose} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+            <X size={14} />
+          </button>
+        </div>
+
+        <div className="p-2.5 bg-[#11111b] border-b border-white/5 flex gap-2 items-center">
+          <button
+            onClick={handleGoUp}
+            disabled={currentPath === '/'}
+            className="px-2 py-1 rounded bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40"
+          >
+            ← Lên
+          </button>
+          <input
+            type="text"
+            readOnly
+            value={currentPath}
+            className="flex-1 bg-[#181825] border border-white/5 rounded px-2 py-1 text-xs text-[#a6adc8] font-mono outline-none"
+          />
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-2.5 space-y-0.5 scrollbar-thin">
+          {loading ? (
+            <div className="flex items-center justify-center h-full text-xs text-[#585b70] gap-2">
+              <RefreshCw size={14} className="animate-spin text-[#89b4fa]" /> Đang tải...
+            </div>
+          ) : items.length === 0 ? (
+            <div className="flex items-center justify-center h-full text-xs text-[#585b70]">
+              Thư mục trống.
+            </div>
+          ) : (
+            items.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => {
+                  const newPath = currentPath === '/' ? `/${item.name}` : `${currentPath}/${item.name}`
+                  if (item.isDir) {
+                    fetchDir(newPath)
+                  } else {
+                    if (mode === 'file') {
+                      onSelect(newPath)
+                      onClose()
+                    }
+                  }
+                }}
+                className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.02] transition-all"
+              >
+                <span className="shrink-0 text-sm">
+                  {item.isDir ? '📁' : '📄'}
+                </span>
+                <span className="truncate">{item.name}</span>
+              </button>
+            ))
+          )}
+        </div>
+
+        <div className="p-3 border-t border-white/5 bg-[#181825] flex justify-between items-center">
+          <span className="text-[9px] text-[#585b70]">
+            {mode === 'file' ? 'Click file để chọn' : 'Bấm Chọn để lấy thư mục hiện tại'}
+          </span>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10 text-xs"
+            >
+              Hủy
+            </button>
+            {mode === 'dir' && (
+              <button
+                type="button"
+                onClick={() => {
+                  onSelect(currentPath)
+                  onClose()
+                }}
+                className="px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] text-xs active:scale-95 transition-all"
+              >
+                Chọn thư mục này
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
