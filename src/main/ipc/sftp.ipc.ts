@@ -11,6 +11,14 @@ export function registerSftpIpc(): void {
     }
   })
 
+  ipcMain.handle('sftp:listDirRecursive', async (_event, sessionId: string, dirPath: string) => {
+    try {
+      return await sftpManager.listDirRecursive(sessionId, dirPath)
+    } catch (err: any) {
+      return { error: err.message }
+    }
+  })
+
   ipcMain.handle('sftp:deleteFile', async (_event, sessionId: string, filePath: string) => {
     try {
       await sftpManager.deleteFile(sessionId, filePath)

@@ -65,6 +65,9 @@ const api = {
     listDir: (sessionId, dirPath) => {
       return electron.ipcRenderer.invoke("sftp:listDir", sessionId, dirPath);
     },
+    listDirRecursive: (sessionId, dirPath) => {
+      return electron.ipcRenderer.invoke("sftp:listDirRecursive", sessionId, dirPath);
+    },
     deleteFile: (sessionId, filePath) => {
       return electron.ipcRenderer.invoke("sftp:deleteFile", sessionId, filePath);
     },

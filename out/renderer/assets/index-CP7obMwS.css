@@ -699,6 +699,9 @@ video {
 .mr-1 {
   margin-right: 0.25rem;
 }
+.mr-1\.5 {
+  margin-right: 0.375rem;
+}
 .mr-2 {
   margin-right: 0.5rem;
 }
@@ -1465,6 +1468,9 @@ video {
 .border-\[\#f9e2af\]\/10 {
   border-color: rgb(249 226 175 / 0.1);
 }
+.border-\[\#fab387\]\/30 {
+  border-color: rgb(250 179 135 / 0.3);
+}
 .border-surface-overlay {
   --tw-border-opacity: 1;
   border-color: rgb(49 50 68 / var(--tw-border-opacity, 1));
@@ -1633,6 +1639,9 @@ video {
 }
 .bg-\[\#fab387\]\/15 {
   background-color: rgb(250 179 135 / 0.15);
+}
+.bg-\[\#fab387\]\/20 {
+  background-color: rgb(250 179 135 / 0.2);
 }
 .bg-accent-blue {
   --tw-bg-opacity: 1;
@@ -2136,6 +2145,9 @@ video {
 }
 .opacity-60 {
   opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
 }
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

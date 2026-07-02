@@ -74,6 +74,9 @@ const api = {
     listDir: (sessionId: string, dirPath: string): Promise<any> => {
       return ipcRenderer.invoke('sftp:listDir', sessionId, dirPath)
     },
+    listDirRecursive: (sessionId: string, dirPath: string): Promise<any> => {
+      return ipcRenderer.invoke('sftp:listDirRecursive', sessionId, dirPath)
+    },
     deleteFile: (sessionId: string, filePath: string): Promise<any> => {
       return ipcRenderer.invoke('sftp:deleteFile', sessionId, filePath)
     },

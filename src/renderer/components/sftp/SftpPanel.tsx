@@ -420,6 +420,15 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
     return localStorage.getItem('sftp_show_time') !== 'false'
   })
 
+  // Compare mode state
+  const [compareActive, setCompareActive] = useState(false)
+
+  // Recursive search state
+  const [recursiveSearch, setRecursiveSearch] = useState(false)
+
+  // Folder sizes map state (remote path -> bytes size)
+  const [folderSizes, setFolderSizes] = useState<Record<string, number>>({})
+
   // Common popups
   const [viewFile, setViewFile] = useState<{ path: string; content: string; isRemote: boolean } | null>(null)
   const [showDeployDlg, setShowDeployDlg] = useState(false)
@@ -529,11 +538,18 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
   }, [sessionId])
 
   // Load Remote Dir
-  const loadDir = useCallback(async (dir: string) => {
+  const loadDir = useCallback(async (dir: string, forceRecursive: boolean = false) => {
     if (!sessionId) return
     setLoading(true)
     setError('')
-    const result = await window.api.sftp.listDir(sessionId, dir)
+    
+    let result;
+    if (forceRecursive || (recursiveSearch && searchQuery)) {
+      result = await window.api.sftp.listDirRecursive(sessionId, dir)
+    } else {
+      result = await window.api.sftp.listDir(sessionId, dir)
+    }
+
     if (result.error) {
       setError(result.error)
       setEntries([])
@@ -541,7 +557,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
       setEntries(result)
     }
     setLoading(false)
-  }, [sessionId])
+  }, [sessionId, recursiveSearch, searchQuery])
 
   // Load Local Dir
   const loadLocalDir = useCallback(async (dir: string) => {
@@ -659,6 +675,35 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
       return d.toLocaleDateString('vi-VN') + ' ' + d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
     } catch {
       return ''
+    }
+  }
+
+  // Open Remote path in active SSH Terminal
+  const handleOpenTerminal = () => {
+    if (!sessionId) return
+    // Gửi phím Enter kèm lệnh cd để chuyển đổi thư mục trực tiếp trên terminal SSH
+    window.api.ssh.shellInput(sessionId, `clear\ncd "${cwd}"\npwd\n`)
+    // Alert user that shell commands were sent to active Terminal
+    alert(`Đã gửi lệnh cd đến tab Terminal hoạt động: cd "${cwd}"`)
+  }
+
+  // Calculate folder size using du -sb command
+  const handleCalculateFolderSize = async (dirPath: string) => {
+    if (!sessionId) return
+    try {
+      const escapedPath = dirPath.replace(/"/g, '\\"')
+      const res = await window.api.ssh.exec(sessionId, `du -sb "${escapedPath}"`)
+      if (res.code === 0 && res.stdout) {
+        const sizeBytes = parseInt(res.stdout.trim().split(/\s+/)[0])
+        if (!isNaN(sizeBytes)) {
+          setFolderSizes(prev => ({ ...prev, [dirPath]: sizeBytes }))
+        }
+      } else {
+        // Fallback if du is not available
+        alert('Không thể tính dung lượng: Server không hỗ trợ lệnh du hoặc thư mục trống.')
+      }
+    } catch (err: any) {
+      alert(`Lỗi khi tính dung lượng: ${err.message}`)
     }
   }
 
@@ -1037,12 +1082,21 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                       setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: false })
                     }}
                     className={`group relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all pr-[80px] ${
-                      selectedLocal.includes(entry.path) ? 'bg-[#89b4fa]/15 text-[#89b4fa]' : 'hover:bg-white/[0.02]'
+                      selectedLocal.includes(entry.path)
+                        ? 'bg-[#89b4fa]/15 text-[#89b4fa]'
+                        : compareActive
+                          ? (() => {
+                              const match = entries.find(r => r.name === entry.name)
+                              if (!match) return 'hover:bg-white/[0.02] text-[#a6e3a1]' // Chỉ có ở Local
+                              if (match.size !== entry.size) return 'hover:bg-white/[0.02] text-[#fab387]' // Khác kích thước
+                              return 'hover:bg-white/[0.02] text-[#585b70]' // Khớp hoàn toàn
+                            })()
+                          : 'hover:bg-white/[0.02]'
                     }`}
                   >
                     {entry.isDirectory ? <Folder size={13} className="text-[#f9e2af] shrink-0" /> : <File size={13} className="text-[#89b4fa] shrink-0" />}
                     <span className="text-[11px] truncate flex-1 leading-none">{entry.name}</span>
-                    {entry.isFile && <span className="text-[9px] text-[#585b70] font-mono shrink-0 mr-1">{formatSize(entry.size)}</span>}
+                    {entry.isFile && <span className="text-[9px] font-mono shrink-0 mr-1 opacity-70">{formatSize(entry.size)}</span>}
                     <div className="hidden group-hover:flex gap-1 absolute right-2 top-1/2 -translate-y-1/2 bg-[#1e1e2e]/90 px-1 py-0.5 rounded shadow border border-white/5">
                       <button
                         onClick={(e) => { e.stopPropagation(); handleUploadLocalToRemote([entry.path]) }}
@@ -1080,7 +1134,29 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
               <button onClick={() => loadDir(cwd)} className="p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]" title="Tải lại"><RefreshCw size={12} /></button>
               
               <div className="flex-1" />
-              
+
+              {/* Compare toggle button */}
+              <button
+                onClick={() => setCompareActive(!compareActive)}
+                className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase transition-all ${
+                  compareActive 
+                    ? 'bg-[#fab387]/20 text-[#fab387] border border-[#fab387]/30' 
+                    : 'bg-white/5 text-[#585b70] hover:text-[#cdd6f4]'
+                }`}
+                title="So sánh thư mục (Highlight tệp tin lệch/thiếu giữa Local và Remote)"
+              >
+                Compare
+              </button>
+
+              {/* Terminal cd helper button */}
+              <button
+                onClick={handleOpenTerminal}
+                className="px-1.5 py-0.5 rounded bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 text-[8px] font-bold uppercase"
+                title="Mở Terminal và cd vào thư mục remote này"
+              >
+                Mở Terminal
+              </button>
+
               {/* Show/Hide column toggles */}
               <label className="flex items-center gap-1 text-[8px] text-[#585b70] cursor-pointer hover:text-[#cdd6f4]">
                 <input
@@ -1117,12 +1193,28 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
               <Search size={11} className="text-[#585b70]" />
               <input
                 type="text"
-                placeholder="Lọc file remote..."
+                placeholder={recursiveSearch ? "Tìm đệ quy trong thư mục con..." : "Lọc file remote..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent text-[10px] text-[#cdd6f4] outline-none placeholder-[#45475a]"
               />
-              {searchQuery && <button onClick={() => setSearchQuery('')} className="text-[#585b70] hover:text-[#cdd6f4]"><X size={10} /></button>}
+              {searchQuery && <button onClick={() => setSearchQuery('')} className="text-[#585b70] hover:text-[#cdd6f4] mr-1.5"><X size={10} /></button>}
+              
+              {/* Recursive search toggle checkbox */}
+              <label className="flex items-center gap-1 text-[8px] text-[#585b70] cursor-pointer hover:text-[#cdd6f4] shrink-0 border-l border-white/5 pl-1.5">
+                <input
+                  type="checkbox"
+                  checked={recursiveSearch}
+                  onChange={(e) => {
+                    setRecursiveSearch(e.target.checked)
+                    if (e.target.checked && searchQuery) {
+                      loadDir(cwd, true)
+                    }
+                  }}
+                  className="rounded bg-[#11111b] border-white/10 text-[#f9e2af] focus:ring-0 w-2.5 h-2.5"
+                />
+                <span>Đệ quy</span>
+              </label>
             </div>
 
             {/* Path Input (Remote) */}
@@ -1223,7 +1315,16 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                       setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: true })
                     }}
                     className={`group relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all pr-[80px] ${
-                      selectedRemote.includes(entry.path) ? 'bg-[#fab387]/15 text-[#fab387]' : 'hover:bg-white/[0.02]'
+                      selectedRemote.includes(entry.path)
+                        ? 'bg-[#fab387]/15 text-[#fab387]'
+                        : compareActive
+                          ? (() => {
+                              const match = localEntries.find(l => l.name === entry.name)
+                              if (!match) return 'hover:bg-white/[0.02] text-[#89b4fa]' // Chỉ có ở Remote
+                              if (match.size !== entry.size) return 'hover:bg-white/[0.02] text-[#fab387]' // Khác kích thước
+                              return 'hover:bg-white/[0.02] text-[#585b70]' // Khớp hoàn toàn
+                            })()
+                          : 'hover:bg-white/[0.02]'
                     }`}
                   >
                     {entry.isDirectory ? <Folder size={13} className="text-[#f9e2af] shrink-0" /> : <File size={13} className="text-[#89b4fa] shrink-0" />}
@@ -1236,7 +1337,11 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                         </div>
                       )}
                     </div>
-                    {entry.isFile && <span className="text-[9px] text-[#585b70] font-mono shrink-0 mr-1">{formatSize(entry.size)}</span>}
+                    {entry.isFile ? (
+                      <span className="text-[9px] text-[#585b70] font-mono shrink-0 mr-1">{formatSize(entry.size)}</span>
+                    ) : folderSizes[entry.path] !== undefined ? (
+                      <span className="text-[9px] text-[#a6e3a1] font-mono shrink-0 mr-1" title="Kích thước thư mục đã quét">{formatSize(folderSizes[entry.path])}</span>
+                    ) : null}
                     <div className="hidden group-hover:flex gap-1 absolute right-2 top-1/2 -translate-y-1/2 bg-[#1e1e2e]/90 px-1 py-0.5 rounded shadow border border-white/5">
                       {entry.isFile && (
                         <>
@@ -1421,6 +1526,14 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                       }
                     })
                   }},
+                  ...(ctxMenu.entry.isDirectory
+                    ? [{
+                        label: 'Tính dung lượng thư mục',
+                        icon: Search,
+                        onClick: () => handleCalculateFolderSize(ctxMenu.entry.path)
+                      }]
+                    : []
+                  ),
                   { label: 'Xóa tệp', icon: Trash2, color: '#f38ba8', onClick: () => handleDeleteRemoteMultiple(selectedRemote.includes(ctxMenu.entry.path) ? entries.filter(e => selectedRemote.includes(e.path)) : [ctxMenu.entry]) }
                 ]
               : [

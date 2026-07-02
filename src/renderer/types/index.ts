@@ -115,6 +115,7 @@ declare global {
       }
       sftp: {
         listDir: (sessionId: string, dirPath: string) => Promise<any>
+        listDirRecursive: (sessionId: string, dirPath: string) => Promise<any>
         deleteFile: (sessionId: string, filePath: string) => Promise<any>
         deleteDir: (sessionId: string, dirPath: string) => Promise<any>
         mkdir: (sessionId: string, dirPath: string) => Promise<any>

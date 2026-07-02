@@ -16612,6 +16612,9 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
   const [showTime, setShowTime] = reactExports.useState(() => {
     return localStorage.getItem("sftp_show_time") !== "false";
   });
+  const [compareActive, setCompareActive] = reactExports.useState(false);
+  const [recursiveSearch, setRecursiveSearch] = reactExports.useState(false);
+  const [folderSizes, setFolderSizes] = reactExports.useState({});
   const [viewFile, setViewFile] = reactExports.useState(null);
   const [showDeployDlg, setShowDeployDlg] = reactExports.useState(false);
   const [ctxMenu, setCtxMenu] = reactExports.useState(null);
@@ -16700,11 +16703,16 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       }
     }
   }, [sessionId]);
-  const loadDir = reactExports.useCallback(async (dir) => {
+  const loadDir = reactExports.useCallback(async (dir, forceRecursive = false) => {
     if (!sessionId) return;
     setLoading(true);
     setError("");
-    const result = await window.api.sftp.listDir(sessionId, dir);
+    let result;
+    if (forceRecursive || recursiveSearch && searchQuery) {
+      result = await window.api.sftp.listDirRecursive(sessionId, dir);
+    } else {
+      result = await window.api.sftp.listDir(sessionId, dir);
+    }
     if (result.error) {
       setError(result.error);
       setEntries([]);
@@ -16712,7 +16720,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       setEntries(result);
     }
     setLoading(false);
-  }, [sessionId]);
+  }, [sessionId, recursiveSearch, searchQuery]);
   const loadLocalDir = reactExports.useCallback(async (dir) => {
     setLocalLoading(true);
     try {
@@ -16813,6 +16821,31 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       return d.toLocaleDateString("vi-VN") + " " + d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
     } catch {
       return "";
+    }
+  };
+  const handleOpenTerminal = () => {
+    if (!sessionId) return;
+    window.api.ssh.shellInput(sessionId, `clear
+cd "${cwd}"
+pwd
+`);
+    alert(`Đã gửi lệnh cd đến tab Terminal hoạt động: cd "${cwd}"`);
+  };
+  const handleCalculateFolderSize = async (dirPath) => {
+    if (!sessionId) return;
+    try {
+      const escapedPath = dirPath.replace(/"/g, '\\"');
+      const res = await window.api.ssh.exec(sessionId, `du -sb "${escapedPath}"`);
+      if (res.code === 0 && res.stdout) {
+        const sizeBytes = parseInt(res.stdout.trim().split(/\s+/)[0]);
+        if (!isNaN(sizeBytes)) {
+          setFolderSizes((prev) => ({ ...prev, [dirPath]: sizeBytes }));
+        }
+      } else {
+        alert("Không thể tính dung lượng: Server không hỗ trợ lệnh du hoặc thư mục trống.");
+      }
+    } catch (err) {
+      alert(`Lỗi khi tính dung lượng: ${err.message}`);
     }
   };
   const addTransfer = (name, type, id2) => {
@@ -17138,11 +17171,16 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
                     setSelectedLocal((prev) => prev.includes(entry.path) ? prev : [entry.path]);
                     setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: false });
                   },
-                  className: `group relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all pr-[80px] ${selectedLocal.includes(entry.path) ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "hover:bg-white/[0.02]"}`,
+                  className: `group relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all pr-[80px] ${selectedLocal.includes(entry.path) ? "bg-[#89b4fa]/15 text-[#89b4fa]" : compareActive ? (() => {
+                    const match = entries.find((r2) => r2.name === entry.name);
+                    if (!match) return "hover:bg-white/[0.02] text-[#a6e3a1]";
+                    if (match.size !== entry.size) return "hover:bg-white/[0.02] text-[#fab387]";
+                    return "hover:bg-white/[0.02] text-[#585b70]";
+                  })() : "hover:bg-white/[0.02]"}`,
                   children: [
                     entry.isDirectory ? /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { size: 13, className: "text-[#f9e2af] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 13, className: "text-[#89b4fa] shrink-0" }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] truncate flex-1 leading-none", children: entry.name }),
-                    entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70] font-mono shrink-0 mr-1", children: formatSize(entry.size) }),
+                    entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-mono shrink-0 mr-1 opacity-70", children: formatSize(entry.size) }),
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden group-hover:flex gap-1 absolute right-2 top-1/2 -translate-y-1/2 bg-[#1e1e2e]/90 px-1 py-0.5 rounded shadow border border-white/5", children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(
                         "button",
@@ -17186,6 +17224,24 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: goBack, className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Lùi lại", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { size: 12, className: "rotate-180" }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => loadDir(cwd), className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Tải lại", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setCompareActive(!compareActive),
+                className: `px-1.5 py-0.5 rounded text-[8px] font-bold uppercase transition-all ${compareActive ? "bg-[#fab387]/20 text-[#fab387] border border-[#fab387]/30" : "bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"}`,
+                title: "So sánh thư mục (Highlight tệp tin lệch/thiếu giữa Local và Remote)",
+                children: "Compare"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: handleOpenTerminal,
+                className: "px-1.5 py-0.5 rounded bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 text-[8px] font-bold uppercase",
+                title: "Mở Terminal và cd vào thư mục remote này",
+                children: "Mở Terminal"
+              }
+            ),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-1 text-[8px] text-[#585b70] cursor-pointer hover:text-[#cdd6f4]", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "input",
@@ -17225,13 +17281,30 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
               "input",
               {
                 type: "text",
-                placeholder: "Lọc file remote...",
+                placeholder: recursiveSearch ? "Tìm đệ quy trong thư mục con..." : "Lọc file remote...",
                 value: searchQuery,
                 onChange: (e) => setSearchQuery(e.target.value),
                 className: "flex-1 bg-transparent text-[10px] text-[#cdd6f4] outline-none placeholder-[#45475a]"
               }
             ),
-            searchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSearchQuery(""), className: "text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
+            searchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSearchQuery(""), className: "text-[#585b70] hover:text-[#cdd6f4] mr-1.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-1 text-[8px] text-[#585b70] cursor-pointer hover:text-[#cdd6f4] shrink-0 border-l border-white/5 pl-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "checkbox",
+                  checked: recursiveSearch,
+                  onChange: (e) => {
+                    setRecursiveSearch(e.target.checked);
+                    if (e.target.checked && searchQuery) {
+                      loadDir(cwd, true);
+                    }
+                  },
+                  className: "rounded bg-[#11111b] border-white/10 text-[#f9e2af] focus:ring-0 w-2.5 h-2.5"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Đệ quy" })
+            ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2 py-1.5 bg-[#11111b]/40 border-b border-white/5 flex items-center gap-1 relative", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -17315,7 +17388,12 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
                     setSelectedRemote((prev) => prev.includes(entry.path) ? prev : [entry.path]);
                     setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: true });
                   },
-                  className: `group relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all pr-[80px] ${selectedRemote.includes(entry.path) ? "bg-[#fab387]/15 text-[#fab387]" : "hover:bg-white/[0.02]"}`,
+                  className: `group relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all pr-[80px] ${selectedRemote.includes(entry.path) ? "bg-[#fab387]/15 text-[#fab387]" : compareActive ? (() => {
+                    const match = localEntries.find((l2) => l2.name === entry.name);
+                    if (!match) return "hover:bg-white/[0.02] text-[#89b4fa]";
+                    if (match.size !== entry.size) return "hover:bg-white/[0.02] text-[#fab387]";
+                    return "hover:bg-white/[0.02] text-[#585b70]";
+                  })() : "hover:bg-white/[0.02]"}`,
                   children: [
                     entry.isDirectory ? /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { size: 13, className: "text-[#f9e2af] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 13, className: "text-[#89b4fa] shrink-0" }),
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0 flex flex-col justify-center", children: [
@@ -17325,7 +17403,7 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
                         showPermissions && entry.mode !== void 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[#a6adc8] bg-white/5 px-1 rounded-sm", children: formatMode(entry.mode) })
                       ] })
                     ] }),
-                    entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70] font-mono shrink-0 mr-1", children: formatSize(entry.size) }),
+                    entry.isFile ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70] font-mono shrink-0 mr-1", children: formatSize(entry.size) }) : folderSizes[entry.path] !== void 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#a6e3a1] font-mono shrink-0 mr-1", title: "Kích thước thư mục đã quét", children: formatSize(folderSizes[entry.path]) }) : null,
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden group-hover:flex gap-1 absolute right-2 top-1/2 -translate-y-1/2 bg-[#1e1e2e]/90 px-1 py-0.5 rounded shadow border border-white/5", children: [
                       entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -17504,6 +17582,11 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
               }
             });
           } },
+          ...ctxMenu.entry.isDirectory ? [{
+            label: "Tính dung lượng thư mục",
+            icon: Search,
+            onClick: () => handleCalculateFolderSize(ctxMenu.entry.path)
+          }] : [],
           { label: "Xóa tệp", icon: Trash2, color: "#f38ba8", onClick: () => handleDeleteRemoteMultiple(selectedRemote.includes(ctxMenu.entry.path) ? entries.filter((e) => selectedRemote.includes(e.path)) : [ctxMenu.entry]) }
         ] : [
           { label: "Tải lên Server", icon: FileUp, color: "#a6e3a1", onClick: () => handleUploadLocalToRemote(selectedLocal.includes(ctxMenu.entry.path) ? selectedLocal : [ctxMenu.entry.path]) },

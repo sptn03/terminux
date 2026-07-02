@@ -969,6 +969,13 @@ function registerSftpIpc() {
       return { error: err.message };
     }
   });
+  electron.ipcMain.handle("sftp:listDirRecursive", async (_event, sessionId, dirPath) => {
+    try {
+      return await sftpManager.listDirRecursive(sessionId, dirPath);
+    } catch (err) {
+      return { error: err.message };
+    }
+  });
   electron.ipcMain.handle("sftp:deleteFile", async (_event, sessionId, filePath) => {
     try {
       await sftpManager.deleteFile(sessionId, filePath);
