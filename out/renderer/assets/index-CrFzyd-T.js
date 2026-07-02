@@ -7809,6 +7809,21 @@ const Square = createLucideIcon("Square", [
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
+const Star = createLucideIcon("Star", [
+  [
+    "path",
+    {
+      d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
+      key: "r04s7s"
+    }
+  ]
+]);
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
 const Terminal = createLucideIcon("Terminal", [
   ["polyline", { points: "4 17 10 11 4 5", key: "akl6gq" }],
   ["line", { x1: "12", x2: "20", y1: "19", y2: "19", key: "q2wloq" }]
@@ -16492,17 +16507,39 @@ function FileViewer({ path, content, isRemote, onSave, onClose }) {
   ] }) });
 }
 function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
-  const [cwd, setCwd] = reactExports.useState("/");
+  const [cwd, setCwd] = reactExports.useState(() => {
+    if (sessionId) {
+      return localStorage.getItem(`sftp_remote_cwd_${sessionId}`) || "/";
+    }
+    return "/";
+  });
   const [entries, setEntries] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(false);
-  const [history, setHistory] = reactExports.useState(["/"]);
+  const [history, setHistory] = reactExports.useState(() => {
+    if (sessionId) {
+      const saved = localStorage.getItem(`sftp_remote_cwd_${sessionId}`);
+      return saved ? [saved] : ["/"];
+    }
+    return ["/"];
+  });
   const [error, setError] = reactExports.useState("");
   const [searchQuery, setSearchQuery] = reactExports.useState("");
   const [drives, setDrives] = reactExports.useState([]);
-  const [localCwd, setLocalCwd] = reactExports.useState("");
+  const [localCwd, setLocalCwd] = reactExports.useState(() => {
+    if (sessionId) {
+      return localStorage.getItem(`sftp_local_cwd_${sessionId}`) || "";
+    }
+    return "";
+  });
   const [localEntries, setLocalEntries] = reactExports.useState([]);
   const [localLoading, setLocalLoading] = reactExports.useState(false);
-  const [localHistory, setLocalHistory] = reactExports.useState([]);
+  const [localHistory, setLocalHistory] = reactExports.useState(() => {
+    if (sessionId) {
+      const saved = localStorage.getItem(`sftp_local_cwd_${sessionId}`);
+      return saved ? [saved] : [];
+    }
+    return [];
+  });
   const [localSearchQuery, setLocalSearchQuery] = reactExports.useState("");
   const [selectedLocal, setSelectedLocal] = reactExports.useState([]);
   const [selectedRemote, setSelectedRemote] = reactExports.useState([]);
@@ -16552,6 +16589,29 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
   };
   const [transfers, setTransfers] = reactExports.useState([]);
   const [showQueue, setShowQueue] = reactExports.useState(false);
+  const [localBookmarks, setLocalBookmarks] = reactExports.useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(`sftp_local_bookmarks_${sessionId}`) || "[]");
+    } catch {
+      return [];
+    }
+  });
+  const [remoteBookmarks, setRemoteBookmarks] = reactExports.useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(`sftp_remote_bookmarks_${sessionId}`) || "[]");
+    } catch {
+      return [];
+    }
+  });
+  const [showLocalBookmarks, setShowLocalBookmarks] = reactExports.useState(false);
+  const [showRemoteBookmarks, setShowRemoteBookmarks] = reactExports.useState(false);
+  const [autoSyncActive, setAutoSyncActive] = reactExports.useState(false);
+  const [showPermissions, setShowPermissions] = reactExports.useState(() => {
+    return localStorage.getItem("sftp_show_permissions") !== "false";
+  });
+  const [showTime, setShowTime] = reactExports.useState(() => {
+    return localStorage.getItem("sftp_show_time") !== "false";
+  });
   const [viewFile, setViewFile] = reactExports.useState(null);
   const [showDeployDlg, setShowDeployDlg] = reactExports.useState(false);
   const [ctxMenu, setCtxMenu] = reactExports.useState(null);
@@ -16561,7 +16621,13 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       try {
         const drvs = await window.api.local.getDrives();
         setDrives(drvs);
-        if (drvs.length > 0 && !localCwd) {
+        if (sessionId) {
+          const savedLocal = localStorage.getItem(`sftp_local_cwd_${sessionId}`);
+          if (!savedLocal && drvs.length > 0) {
+            setLocalCwd(drvs[0].path);
+            setLocalHistory([drvs[0].path]);
+          }
+        } else if (drvs.length > 0 && !localCwd) {
           setLocalCwd(drvs[0].path);
           setLocalHistory([drvs[0].path]);
         }
@@ -16569,7 +16635,71 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       }
     };
     if (visible) initLocal();
-  }, [visible]);
+  }, [visible, sessionId]);
+  reactExports.useEffect(() => {
+    if (sessionId) {
+      const savedLocal = localStorage.getItem(`sftp_local_cwd_${sessionId}`);
+      const savedRemote = localStorage.getItem(`sftp_remote_cwd_${sessionId}`);
+      if (savedLocal) {
+        setLocalCwd(savedLocal);
+        setLocalHistory([savedLocal]);
+      }
+      if (savedRemote) {
+        setCwd(savedRemote);
+        setHistory([savedRemote]);
+      }
+    }
+  }, [sessionId]);
+  reactExports.useEffect(() => {
+    if (sessionId && localCwd) {
+      localStorage.setItem(`sftp_local_cwd_${sessionId}`, localCwd);
+    }
+  }, [localCwd, sessionId]);
+  reactExports.useEffect(() => {
+    if (sessionId && cwd) {
+      localStorage.setItem(`sftp_remote_cwd_${sessionId}`, cwd);
+    }
+  }, [cwd, sessionId]);
+  reactExports.useEffect(() => {
+    const unsub = window.api.sftp.onProgress((data) => {
+      setTransfers(
+        (prev) => prev.map(
+          (t2) => t2.id === data.taskId ? { ...t2, progress: data.progress, speed: data.speed, detail: data.detail } : t2
+        )
+      );
+    });
+    return () => unsub();
+  }, []);
+  reactExports.useEffect(() => {
+    const unsub = window.api.local.onFileChanged((data) => {
+      if (autoSyncActive && data.watchId === `sync_${sessionId}`) {
+        handleUploadLocalToRemote([data.localPath]);
+      }
+    });
+    return () => {
+      unsub();
+    };
+  }, [autoSyncActive, sessionId, localCwd, cwd]);
+  reactExports.useEffect(() => {
+    const watchId = `sync_${sessionId}`;
+    if (autoSyncActive && sessionId && localCwd) {
+      window.api.local.watchDir(localCwd, watchId);
+    }
+    return () => {
+      if (sessionId) {
+        window.api.local.unwatchDir(watchId);
+      }
+    };
+  }, [autoSyncActive, sessionId, localCwd]);
+  reactExports.useEffect(() => {
+    if (sessionId) {
+      try {
+        setLocalBookmarks(JSON.parse(localStorage.getItem(`sftp_local_bookmarks_${sessionId}`) || "[]"));
+        setRemoteBookmarks(JSON.parse(localStorage.getItem(`sftp_remote_bookmarks_${sessionId}`) || "[]"));
+      } catch {
+      }
+    }
+  }, [sessionId]);
   const loadDir = reactExports.useCallback(async (dir) => {
     if (!sessionId) return;
     setLoading(true);
@@ -16622,7 +16752,39 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
       const h = localHistory.slice(0, -1);
       setLocalHistory(h);
       setLocalCwd(h[h.length - 1]);
+    } else {
+      const sep = localCwd.includes("/") ? "/" : "\\";
+      const parts = localCwd.split(sep).filter(Boolean);
+      if (parts.length > 1) {
+        parts.pop();
+        const parentPath = parts.join(sep) + (localCwd.endsWith(sep) || localCwd.startsWith("/") ? "" : "");
+        const formattedPath = parentPath.match(/^[A-Z]:$/i) ? parentPath + "\\" : parentPath;
+        setLocalCwd(formattedPath);
+        setLocalHistory([formattedPath]);
+      }
     }
+  };
+  const handleAddLocalBookmark = (path) => {
+    if (!path || localBookmarks.includes(path)) return;
+    const updated = [...localBookmarks, path];
+    setLocalBookmarks(updated);
+    localStorage.setItem(`sftp_local_bookmarks_${sessionId}`, JSON.stringify(updated));
+  };
+  const handleRemoveLocalBookmark = (path) => {
+    const updated = localBookmarks.filter((p2) => p2 !== path);
+    setLocalBookmarks(updated);
+    localStorage.setItem(`sftp_local_bookmarks_${sessionId}`, JSON.stringify(updated));
+  };
+  const handleAddRemoteBookmark = (path) => {
+    if (!path || remoteBookmarks.includes(path)) return;
+    const updated = [...remoteBookmarks, path];
+    setRemoteBookmarks(updated);
+    localStorage.setItem(`sftp_remote_bookmarks_${sessionId}`, JSON.stringify(updated));
+  };
+  const handleRemoveRemoteBookmark = (path) => {
+    const updated = remoteBookmarks.filter((p2) => p2 !== path);
+    setRemoteBookmarks(updated);
+    localStorage.setItem(`sftp_remote_bookmarks_${sessionId}`, JSON.stringify(updated));
   };
   reactExports.useEffect(() => {
     setSelectedRemote([]);
@@ -16639,23 +16801,45 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
     const i = Math.floor(Math.log(bytes) / Math.log(k2));
     return parseFloat((bytes / Math.pow(k2, i)).toFixed(1)) + " " + sizes[i];
   };
-  const addTransfer = (name, type) => {
-    const id2 = Math.random().toString(36).substring(7);
+  const formatMode = (mode) => {
+    if (mode === void 0) return "";
+    const octal = (mode & 511).toString(8);
+    return "0" + octal.padStart(3, "0");
+  };
+  const formatTime = (timeStr) => {
+    if (!timeStr) return "";
+    try {
+      const d = new Date(timeStr);
+      return d.toLocaleDateString("vi-VN") + " " + d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+    } catch {
+      return "";
+    }
+  };
+  const addTransfer = (name, type, id2) => {
     setTransfers((prev) => [{ id: id2, name, type, status: "active", progress: 30 }, ...prev]);
     setShowQueue(true);
-    return id2;
   };
   const updateTransfer = (id2, updates) => {
     setTransfers((prev) => prev.map((t2) => t2.id === id2 ? { ...t2, ...updates } : t2));
   };
+  const handleCancelTransfer = async (id2) => {
+    try {
+      await window.api.sftp.cancelTask(id2);
+      updateTransfer(id2, { status: "error", errorMsg: "Đang hủy..." });
+    } catch {
+    }
+  };
   const handleUploadLocalToRemote = async (paths) => {
     if (!sessionId || paths.length === 0) return;
     const label = paths.length === 1 ? paths[0].substring(paths[0].lastIndexOf("\\") + 1).substring(paths[0].lastIndexOf("/") + 1) : `${paths.length} tệp`;
-    const transferId = addTransfer(label, "upload");
+    const transferId = Math.random().toString(36).substring(7);
+    addTransfer(label, "upload", transferId);
     try {
       updateTransfer(transferId, { progress: 60 });
-      const result = await window.api.sftp.deploy(sessionId, localCwd, cwd, paths);
-      if (result.errors && result.errors.length > 0) {
+      const result = await window.api.sftp.deploy(sessionId, localCwd, cwd, paths, transferId);
+      if (result.canceled) {
+        updateTransfer(transferId, { status: "error", progress: 100, errorMsg: "Đã hủy bỏ" });
+      } else if (result.errors && result.errors.length > 0) {
         updateTransfer(transferId, { status: "error", progress: 100, errorMsg: result.errors[0] });
       } else {
         updateTransfer(transferId, { status: "success", progress: 100 });
@@ -16668,14 +16852,15 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
   const handleDownloadRemoteToLocal = async (paths) => {
     if (!sessionId || paths.length === 0) return;
     const label = paths.length === 1 ? paths[0].substring(paths[0].lastIndexOf("/") + 1) : `${paths.length} tệp`;
-    const transferId = addTransfer(label, "download");
+    const transferId = Math.random().toString(36).substring(7);
+    addTransfer(label, "download", transferId);
     try {
       updateTransfer(transferId, { progress: 60 });
-      const result = await window.api.sftp.downloadFiles(sessionId, paths, localCwd);
-      if (result.errors && result.errors.length > 0) {
+      const result = await window.api.sftp.downloadFiles(sessionId, paths, localCwd, transferId);
+      if (result.canceled) {
+        updateTransfer(transferId, { status: "error", progress: 100, errorMsg: "Đã hủy bỏ" });
+      } else if (result.errors && result.errors.length > 0) {
         updateTransfer(transferId, { status: "error", progress: 100, errorMsg: result.errors[0] });
-      } else if (result.canceled) {
-        updateTransfer(transferId, { status: "error", progress: 100, errorMsg: "Hủy bỏ" });
       } else {
         updateTransfer(transferId, { status: "success", progress: 100 });
         loadLocalDir(localCwd);
@@ -16820,6 +17005,29 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: goLocalBack, className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Lùi lại", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { size: 12, className: "rotate-180" }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => loadLocalDir(localCwd), className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Tải lại", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setAutoSyncActive(!autoSyncActive),
+                className: `px-1.5 py-0.5 rounded text-[8px] font-bold uppercase transition-all ${autoSyncActive ? "bg-[#a6e3a1]/10 text-[#a6e3a1] animate-pulse border border-[#a6e3a1]/20" : "bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"}`,
+                title: "Bật/Tắt chế độ Auto-Sync (Tự động theo dõi & upload thư mục local hiện tại)",
+                children: autoSyncActive ? "● Auto Sync" : "Auto Sync"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  const dir = await window.api.local.selectDir();
+                  if (dir) {
+                    handleUploadLocalToRemote([dir]);
+                  }
+                },
+                className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]",
+                title: "Chọn thư mục & Đẩy lên Server (ví dụ: dist)",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { size: 12 })
+              }
+            ),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleMkdirLocal, className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Tạo thư mục mới", children: /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 12 }) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2 py-1.5 border-b border-white/5 bg-[#11111b]/20 flex items-center gap-1.5", children: [
@@ -16836,68 +17044,180 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
             ),
             localSearchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setLocalSearchQuery(""), className: "text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-1.5 text-[9px] font-mono text-[#585b70] bg-[#11111b]/40 truncate border-b border-white/5", title: localCwd, children: localCwd }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin", children: localLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-[#585b70]" }) }) : filteredLocalEntries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] text-center py-8", children: "Thư mục trống" }) : filteredLocalEntries.map((entry, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2 py-1.5 bg-[#11111b]/40 border-b border-white/5 flex items-center gap-1 relative", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                value: localCwd,
+                onChange: (e) => setLocalCwd(e.target.value),
+                onKeyDown: (e) => {
+                  if (e.key === "Enter") {
+                    loadLocalDir(localCwd);
+                  }
+                },
+                className: "flex-1 bg-transparent text-[10px] font-mono text-[#a6adc8] outline-none border border-transparent focus:border-[#89b4fa]/20 rounded px-1.5 py-0.5",
+                title: "Đường dẫn cục bộ (Nhập và nhấn Enter để truy cập)"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleAddLocalBookmark(localCwd),
+                className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f9e2af]",
+                title: "Ghim thư mục này vào Bookmarks",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { size: 11, className: localBookmarks.includes(localCwd) ? "fill-[#f9e2af] text-[#f9e2af]" : "" })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setShowLocalBookmarks(!showLocalBookmarks),
+                className: "px-1 py-0.5 rounded bg-white/5 hover:bg-white/10 text-[8px] text-[#a6adc8]",
+                title: "Xem danh sách Bookmarks đã ghim",
+                children: "Ghim"
+              }
+            ),
+            showLocalBookmarks && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-40", onClick: () => setShowLocalBookmarks(false) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute right-2 top-8 z-50 bg-[#1e1e2e] border border-white/10 rounded-lg shadow-2xl py-1 min-w-[200px] max-w-[320px] max-h-[200px] overflow-y-auto scrollbar-thin", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-2.5 py-1 text-[8px] font-bold text-[#585b70] border-b border-white/5 uppercase", children: "Bookmarks đã ghim (Local)" }),
+                localBookmarks.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-2.5 py-1.5 text-[9px] text-[#585b70] italic", children: "Trống" }) : localBookmarks.map((b) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full flex items-center justify-between gap-2 px-2 py-1 hover:bg-white/5 text-[10px] text-[#cdd6f4]", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
+                    setLocalCwd(b);
+                    loadLocalDir(b);
+                    setShowLocalBookmarks(false);
+                  }, className: "flex-1 text-left truncate font-mono text-[9px]", children: b }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => handleRemoveLocalBookmark(b), className: "text-[#f38ba8] hover:text-[#f38ba8]/80 text-[8px] px-1", children: "Xóa" })
+                ] }, b))
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: async () => {
+                  const dir = await window.api.local.selectDir();
+                  if (dir) {
+                    setLocalCwd(dir);
+                    loadLocalDir(dir);
+                  }
+                },
+                className: "px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/10 text-[9px] text-[#cdd6f4]",
+                title: "Browse thư mục cục bộ nhanh",
+                children: "Browse"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
             "div",
             {
-              onClick: (e) => handleSelectLocal(e, entry, index),
-              onDoubleClick: () => {
-                if (entry.isDirectory) enterLocalDir(entry.path);
-                else handleOpenLocalFile(entry.path);
-              },
-              onContextMenu: (e) => {
+              onDragOver: (e) => e.preventDefault(),
+              onDrop: (e) => {
                 e.preventDefault();
-                setSelectedLocal((prev) => prev.includes(entry.path) ? prev : [entry.path]);
-                setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: false });
+                const rawData = e.dataTransfer.getData("text/plain");
+                if (rawData && rawData.startsWith("remote:")) {
+                  const paths = rawData.replace("remote:", "").split("\n");
+                  handleDownloadRemoteToLocal(paths);
+                }
               },
-              className: `group flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${selectedLocal.includes(entry.path) ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "hover:bg-white/[0.02]"}`,
-              children: [
-                entry.isDirectory ? /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { size: 13, className: "text-[#f9e2af] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 13, className: "text-[#89b4fa] shrink-0" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] truncate flex-1 leading-none", children: entry.name }),
-                entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70] font-mono", children: formatSize(entry.size) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden group-hover:flex gap-1", children: [
-                  entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        handleUploadLocalToRemote([entry.path]);
-                      },
-                      className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]",
-                      title: "Tải lên Server",
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileUp, { size: 12 })
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        handleDeleteLocalMultiple([entry]);
-                      },
-                      className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8]",
-                      title: "Xóa",
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
-                    }
-                  )
-                ] })
-              ]
-            },
-            entry.path
-          )) })
+              className: "flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin",
+              children: localLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-[#585b70]" }) }) : filteredLocalEntries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] text-center py-8", children: "Thư mục trống" }) : filteredLocalEntries.map((entry, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "div",
+                {
+                  draggable: true,
+                  onDragStart: (e) => {
+                    e.dataTransfer.setData("text/plain", `local:${entry.path}`);
+                  },
+                  onClick: (e) => handleSelectLocal(e, entry, index),
+                  onDoubleClick: () => {
+                    if (entry.isDirectory) enterLocalDir(entry.path);
+                    else handleOpenLocalFile(entry.path);
+                  },
+                  onContextMenu: (e) => {
+                    e.preventDefault();
+                    setSelectedLocal((prev) => prev.includes(entry.path) ? prev : [entry.path]);
+                    setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: false });
+                  },
+                  className: `group relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all pr-[80px] ${selectedLocal.includes(entry.path) ? "bg-[#89b4fa]/15 text-[#89b4fa]" : "hover:bg-white/[0.02]"}`,
+                  children: [
+                    entry.isDirectory ? /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { size: 13, className: "text-[#f9e2af] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 13, className: "text-[#89b4fa] shrink-0" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] truncate flex-1 leading-none", children: entry.name }),
+                    entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70] font-mono shrink-0 mr-1", children: formatSize(entry.size) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden group-hover:flex gap-1 absolute right-2 top-1/2 -translate-y-1/2 bg-[#1e1e2e]/90 px-1 py-0.5 rounded shadow border border-white/5", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "button",
+                        {
+                          onClick: (e) => {
+                            e.stopPropagation();
+                            handleUploadLocalToRemote([entry.path]);
+                          },
+                          className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]",
+                          title: entry.isDirectory ? "Tải thư mục lên Server" : "Tải file lên Server",
+                          children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileUp, { size: 12 })
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "button",
+                        {
+                          onClick: (e) => {
+                            e.stopPropagation();
+                            handleDeleteLocalMultiple([entry]);
+                          },
+                          className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8]",
+                          title: "Xóa",
+                          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+                        }
+                      )
+                    ] })
+                  ]
+                },
+                entry.path
+              ))
+            }
+          )
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col bg-[#11111b]/10", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3 py-2 border-b border-white/5 bg-[#181825] flex justify-between items-center", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-bold text-[#f9e2af] uppercase tracking-wider", children: "Remote Server" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-mono text-[#585b70]", children: "SFTP connection active" })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 px-2 py-1.5 border-b border-white/5 bg-[#1e1e2e]/50", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 px-2 py-1.5 border-b border-white/5 bg-[#1e1e2e]/50", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: goHome, className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Gốc (Home)", children: /* @__PURE__ */ jsxRuntimeExports.jsx(House, { size: 12 }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: goBack, className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Lùi lại", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { size: 12, className: "rotate-180" }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => loadDir(cwd), className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Tải lại", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12 }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-1 text-[8px] text-[#585b70] cursor-pointer hover:text-[#cdd6f4]", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "checkbox",
+                  checked: showTime,
+                  onChange: (e) => {
+                    setShowTime(e.target.checked);
+                    localStorage.setItem("sftp_show_time", String(e.target.checked));
+                  },
+                  className: "rounded bg-[#11111b] border-white/10 text-[#89b4fa] focus:ring-0 w-2.5 h-2.5"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Thời gian" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-1 text-[8px] text-[#585b70] cursor-pointer hover:text-[#cdd6f4]", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "checkbox",
+                  checked: showPermissions,
+                  onChange: (e) => {
+                    setShowPermissions(e.target.checked);
+                    localStorage.setItem("sftp_show_permissions", String(e.target.checked));
+                  },
+                  className: "rounded bg-[#11111b] border-white/10 text-[#89b4fa] focus:ring-0 w-2.5 h-2.5"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Quyền" })
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleMkdirRemote, className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]", title: "Tạo thư mục mới", children: /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 12 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowDeployDlg(true), className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]", title: "Upload thư mục", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { size: 12 }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowDeployDlg(true), className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]", title: "Upload thư mục nâng cao", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { size: 12 }) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2 py-1.5 border-b border-white/5 bg-[#11111b]/20 flex items-center gap-1.5", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 11, className: "text-[#585b70]" }),
@@ -16913,69 +17233,145 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
             ),
             searchQuery && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSearchQuery(""), className: "text-[#585b70] hover:text-[#cdd6f4]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 10 }) })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-1.5 text-[9px] font-mono text-[#585b70] bg-[#11111b]/40 truncate border-b border-white/5", title: cwd, children: cwd }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-[#585b70]" }) }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#f38ba8] px-3 py-4", children: error }) : filteredRemoteEntries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] text-center py-8", children: "Thư mục trống hoặc đã lọc hết" }) : filteredRemoteEntries.map((entry, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2 py-1.5 bg-[#11111b]/40 border-b border-white/5 flex items-center gap-1 relative", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                value: cwd,
+                onChange: (e) => setCwd(e.target.value),
+                onKeyDown: (e) => {
+                  if (e.key === "Enter") {
+                    loadDir(cwd);
+                  }
+                },
+                className: "flex-1 bg-transparent text-[10px] font-mono text-[#fab387] outline-none border border-transparent focus:border-[#fab387]/20 rounded px-1.5 py-0.5",
+                title: "Đường dẫn Remote (Nhập và nhấn Enter để truy cập)"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleAddRemoteBookmark(cwd),
+                className: "p-1 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f9e2af]",
+                title: "Ghim thư mục remote này vào Bookmarks",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { size: 11, className: remoteBookmarks.includes(cwd) ? "fill-[#f9e2af] text-[#f9e2af]" : "" })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setShowRemoteBookmarks(!showRemoteBookmarks),
+                className: "px-1 py-0.5 rounded bg-white/5 hover:bg-white/10 text-[8px] text-[#a6adc8]",
+                title: "Xem danh sách Bookmarks Remote",
+                children: "Ghim"
+              }
+            ),
+            showRemoteBookmarks && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-40", onClick: () => setShowRemoteBookmarks(false) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute right-2 top-8 z-50 bg-[#1e1e2e] border border-white/10 rounded-lg shadow-2xl py-1 min-w-[200px] max-w-[320px] max-h-[200px] overflow-y-auto scrollbar-thin", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-2.5 py-1 text-[8px] font-bold text-[#585b70] border-b border-white/5 uppercase", children: "Bookmarks đã ghim (Remote)" }),
+                remoteBookmarks.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-2.5 py-1.5 text-[9px] text-[#585b70] italic", children: "Trống" }) : remoteBookmarks.map((b) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full flex items-center justify-between gap-2 px-2 py-1 hover:bg-white/5 text-[10px] text-[#cdd6f4]", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
+                    setCwd(b);
+                    loadDir(b);
+                    setShowRemoteBookmarks(false);
+                  }, className: "flex-1 text-left truncate font-mono text-[9px]", children: b }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => handleRemoveRemoteBookmark(b), className: "text-[#f38ba8] hover:text-[#f38ba8]/80 text-[8px] px-1", children: "Xóa" })
+                ] }, b))
+              ] })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
             "div",
             {
-              onClick: (e) => handleSelectRemote(e, entry, index),
-              onDoubleClick: () => {
-                if (entry.isDirectory) enterDir(entry.path);
-                else handleOpenRemoteFile(entry.path);
-              },
-              onContextMenu: (e) => {
+              onDragOver: (e) => e.preventDefault(),
+              onDrop: (e) => {
                 e.preventDefault();
-                setSelectedRemote((prev) => prev.includes(entry.path) ? prev : [entry.path]);
-                setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: true });
+                const rawData = e.dataTransfer.getData("text/plain");
+                if (rawData && rawData.startsWith("local:")) {
+                  const paths = rawData.replace("local:", "").split("\n");
+                  handleUploadLocalToRemote(paths);
+                } else if (e.dataTransfer.files.length > 0) {
+                  const paths = Array.from(e.dataTransfer.files).map((f2) => f2.path);
+                  handleUploadLocalToRemote(paths);
+                }
               },
-              className: `group flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${selectedRemote.includes(entry.path) ? "bg-[#fab387]/15 text-[#fab387]" : "hover:bg-white/[0.02]"}`,
-              children: [
-                entry.isDirectory ? /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { size: 13, className: "text-[#f9e2af] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 13, className: "text-[#89b4fa] shrink-0" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] truncate flex-1 leading-none", children: entry.name }),
-                entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70] font-mono", children: formatSize(entry.size) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden group-hover:flex gap-1", children: [
-                  entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "button",
-                      {
-                        onClick: (e) => {
-                          e.stopPropagation();
-                          handleOpenRemoteFile(entry.path);
-                        },
-                        className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#89b4fa]",
-                        title: "Xem & Sửa file",
-                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { size: 12 })
-                      }
-                    ),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "button",
-                      {
-                        onClick: (e) => {
-                          e.stopPropagation();
-                          handleDownloadRemoteToLocal([entry.path]);
-                        },
-                        className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]",
-                        title: "Tải về máy tính",
-                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileDown, { size: 12 })
-                      }
-                    )
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        handleDeleteRemoteMultiple([entry]);
-                      },
-                      className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8]",
-                      title: "Xóa",
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
-                    }
-                  )
-                ] })
-              ]
-            },
-            entry.path
-          )) })
+              className: "flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin",
+              children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-[#585b70]" }) }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#f38ba8] px-3 py-4", children: error }) : filteredRemoteEntries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[10px] text-[#45475a] text-center py-8", children: "Thư mục trống hoặc đã lọc hết" }) : filteredRemoteEntries.map((entry, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "div",
+                {
+                  draggable: true,
+                  onDragStart: (e) => {
+                    e.dataTransfer.setData("text/plain", `remote:${entry.path}`);
+                  },
+                  onClick: (e) => handleSelectRemote(e, entry, index),
+                  onDoubleClick: () => {
+                    if (entry.isDirectory) enterDir(entry.path);
+                    else handleOpenRemoteFile(entry.path);
+                  },
+                  onContextMenu: (e) => {
+                    e.preventDefault();
+                    setSelectedRemote((prev) => prev.includes(entry.path) ? prev : [entry.path]);
+                    setCtxMenu({ x: e.clientX, y: e.clientY, entry, isRemote: true });
+                  },
+                  className: `group relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all pr-[80px] ${selectedRemote.includes(entry.path) ? "bg-[#fab387]/15 text-[#fab387]" : "hover:bg-white/[0.02]"}`,
+                  children: [
+                    entry.isDirectory ? /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { size: 13, className: "text-[#f9e2af] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(File, { size: 13, className: "text-[#89b4fa] shrink-0" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0 flex flex-col justify-center", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] truncate leading-none mb-0.5", children: entry.name }),
+                      (showTime || showPermissions) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-[8px] text-[#585b70]", children: [
+                        showTime && entry.modifiedAt && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatTime(entry.modifiedAt) }),
+                        showPermissions && entry.mode !== void 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[#a6adc8] bg-white/5 px-1 rounded-sm", children: formatMode(entry.mode) })
+                      ] })
+                    ] }),
+                    entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#585b70] font-mono shrink-0 mr-1", children: formatSize(entry.size) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden group-hover:flex gap-1 absolute right-2 top-1/2 -translate-y-1/2 bg-[#1e1e2e]/90 px-1 py-0.5 rounded shadow border border-white/5", children: [
+                      entry.isFile && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          "button",
+                          {
+                            onClick: (e) => {
+                              e.stopPropagation();
+                              handleOpenRemoteFile(entry.path);
+                            },
+                            className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#89b4fa]",
+                            title: "Xem & Sửa file",
+                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { size: 12 })
+                          }
+                        ),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          "button",
+                          {
+                            onClick: (e) => {
+                              e.stopPropagation();
+                              handleDownloadRemoteToLocal([entry.path]);
+                            },
+                            className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#a6e3a1]",
+                            title: "Tải về máy tính",
+                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileDown, { size: 12 })
+                          }
+                        )
+                      ] }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "button",
+                        {
+                          onClick: (e) => {
+                            e.stopPropagation();
+                            handleDeleteRemoteMultiple([entry]);
+                          },
+                          className: "p-0.5 rounded hover:bg-white/5 text-[#585b70] hover:text-[#f38ba8]",
+                          title: "Xóa",
+                          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 })
+                        }
+                      )
+                    ] })
+                  ]
+                },
+                entry.path
+              ))
+            }
+          )
         ] })
       ] }),
       transfers.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/5 bg-[#181825] shrink-0 flex flex-col max-h-[160px] overflow-hidden", children: [
@@ -17001,24 +17397,41 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
           }
         ),
         showQueue && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-2.5 space-y-1.5 bg-[#11111b]/30 scrollbar-thin", children: transfers.map((t2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-4 text-[10px] bg-white/[0.01] border border-white/[0.03] rounded-lg px-2.5 py-1.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 truncate max-w-[200px]", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 truncate max-w-[180px]", children: [
             t2.type === "upload" ? /* @__PURE__ */ jsxRuntimeExports.jsx(FileUp, { size: 11, className: "text-[#a6e3a1] shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(FileDown, { size: 11, className: "text-[#89b4fa] shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-semibold text-[#cdd6f4] truncate", title: t2.name, children: t2.name })
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col truncate", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-semibold text-[#cdd6f4] truncate", title: t2.name, children: t2.name }),
+              t2.status === "active" && t2.detail && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] text-[#585b70]", children: t2.detail })
+            ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex items-center gap-2 max-w-[220px]", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 h-1 bg-[#313244] rounded-full overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex items-center gap-2 max-w-[240px]", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col gap-0.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center text-[8px] text-[#585b70] font-mono px-0.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t2.speed || "" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                t2.progress,
+                "%"
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-1 bg-[#313244] rounded-full overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "div",
               {
                 className: `h-full rounded-full transition-all duration-300 ${t2.status === "error" ? "bg-[#f38ba8]" : t2.status === "success" ? "bg-[#a6e3a1]" : "bg-[#89b4fa]"}`,
                 style: { width: `${t2.progress}%` }
               }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[9px] text-[#585b70] w-6 text-right", children: [
-              t2.progress,
-              "%"
-            ] })
+            ) })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[9px] font-bold uppercase ${t2.status === "success" ? "text-[#a6e3a1]" : t2.status === "error" ? "text-[#f38ba8]" : "text-[#89b4fa]"}`, children: t2.status === "success" ? "Hoàn tất" : t2.status === "error" ? "Lỗi/Hủy" : "Đang tải" }),
+            t2.status === "active" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => handleCancelTransfer(t2.id),
+                className: "px-1.5 py-0.5 rounded bg-[#f38ba8]/10 hover:bg-[#f38ba8]/20 text-[#f38ba8] text-[9px]",
+                title: "Hủy tiến trình truyền tải này",
+                children: "Hủy"
+              }
+            )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[9px] font-bold uppercase ${t2.status === "success" ? "text-[#a6e3a1]" : t2.status === "error" ? "text-[#f38ba8]" : "text-[#89b4fa]"}`, children: t2.status === "success" ? "Hoàn tất" : t2.status === "error" ? "Lỗi" : "Đang tải" }),
           t2.errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#f38ba8] truncate max-w-[120px]", title: t2.errorMsg, children: t2.errorMsg })
         ] }, t2.id)) })
       ] })
@@ -17054,6 +17467,43 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
               loadDir(cwd);
             }
           }) },
+          { label: "Nén thành Zip (Remote)", icon: FolderPlus, color: "#f9e2af", onClick: () => {
+            const tarName = ctxMenu.entry.name + ".tar.gz";
+            window.api.sftp.zip(sessionId || "", ctxMenu.entry.path, cwd.endsWith("/") ? cwd + tarName : cwd + "/" + tarName).then((res) => {
+              if (res.error) alert(res.error);
+              else loadDir(cwd);
+            });
+          } },
+          ...ctxMenu.entry.name.endsWith(".zip") || ctxMenu.entry.name.endsWith(".gz") || ctxMenu.entry.name.endsWith(".tar") ? [{
+            label: "Giải nén tại đây (Remote)",
+            icon: FileDown,
+            color: "#a6e3a1",
+            onClick: () => {
+              window.api.sftp.unzip(sessionId || "", ctxMenu.entry.path, cwd).then((res) => {
+                if (res.error) alert(res.error);
+                else loadDir(cwd);
+              });
+            }
+          }] : [],
+          { label: "Phân quyền tệp (Chmod)", icon: PenLine, onClick: () => {
+            const currentMode = formatMode(ctxMenu.entry.mode) || "0644";
+            setInputDlg({
+              title: `Đặt quyền hạn tệp (Octal, vd: 0755, 0644) cho: ${ctxMenu.entry.name}`,
+              defaultValue: currentMode,
+              onConfirm: async (modeStr) => {
+                setInputDlg(null);
+                if (!modeStr || !sessionId) return;
+                const newMode = parseInt(modeStr, 8);
+                if (isNaN(newMode)) {
+                  alert("Quyền hạn octal không hợp lệ! Vui lòng nhập số như 0755 hoặc 0644.");
+                  return;
+                }
+                const res = await window.api.sftp.chmod(sessionId, ctxMenu.entry.path, newMode);
+                if (res.error) alert(res.error);
+                else loadDir(cwd);
+              }
+            });
+          } },
           { label: "Xóa tệp", icon: Trash2, color: "#f38ba8", onClick: () => handleDeleteRemoteMultiple(selectedRemote.includes(ctxMenu.entry.path) ? entries.filter((e) => selectedRemote.includes(e.path)) : [ctxMenu.entry]) }
         ] : [
           { label: "Tải lên Server", icon: FileUp, color: "#a6e3a1", onClick: () => handleUploadLocalToRemote(selectedLocal.includes(ctxMenu.entry.path) ? selectedLocal : [ctxMenu.entry.path]) },
@@ -17069,6 +17519,25 @@ function SftpPanel({ sessionId, visible, onToggle, embedded = false }) {
               loadLocalDir(localCwd);
             }
           }) },
+          { label: "Nén thành Zip (Local)", icon: FolderPlus, color: "#89b4fa", onClick: () => {
+            const zipName = ctxMenu.entry.name + ".zip";
+            const sep = localCwd.endsWith("\\") || localCwd.endsWith("/") ? "" : "/";
+            window.api.local.zip(ctxMenu.entry.path, localCwd + sep + zipName).then((res) => {
+              if (res.error) alert(res.error);
+              else loadLocalDir(localCwd);
+            });
+          } },
+          ...ctxMenu.entry.name.endsWith(".zip") ? [{
+            label: "Giải nén tại đây (Local)",
+            icon: FileDown,
+            color: "#a6e3a1",
+            onClick: () => {
+              window.api.local.unzip(ctxMenu.entry.path, localCwd).then((res) => {
+                if (res.error) alert(res.error);
+                else loadLocalDir(localCwd);
+              });
+            }
+          }] : [],
           { label: "Xóa tệp", icon: Trash2, color: "#f38ba8", onClick: () => handleDeleteLocalMultiple(selectedLocal.includes(ctxMenu.entry.path) ? localEntries.filter((e) => selectedLocal.includes(e.path)) : [ctxMenu.entry]) }
         ]
       }

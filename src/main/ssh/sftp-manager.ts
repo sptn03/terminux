@@ -64,7 +64,7 @@ class SftpManager {
             mode: f.attrs.mode,
             isDirectory: f.attrs.isDirectory(),
             isFile: f.attrs.isFile(),
-            modifiedAt: null
+            modifiedAt: (f.attrs as any).mtime ? new Date((f.attrs as any).mtime * 1000) : null
           }))
         resolve(files)
       })
@@ -195,6 +195,18 @@ class SftpManager {
 
     await walk(dirPath)
     return result
+  }
+
+  async chmod(sessionId: string, remotePath: string, mode: number): Promise<void> {
+    const session = this.sessions.get(sessionId)
+    if (!session) throw new Error('SFTP session not found')
+
+    return new Promise((resolve, reject) => {
+      session.sftp.chmod(remotePath, mode, (err) => {
+        if (err) { reject(err); return }
+        resolve()
+      })
+    })
   }
 }
 

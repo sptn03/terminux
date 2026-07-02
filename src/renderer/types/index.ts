@@ -122,11 +122,15 @@ declare global {
         upload: (sessionId: string, remotePath: string) => Promise<any>
         download: (sessionId: string, remotePath: string) => Promise<any>
         readFile: (sessionId: string, remotePath: string) => Promise<{ content?: string; isText?: boolean; error?: string }>
-        deploy: (sessionId: string, localDir: string, remoteDir: string, filePaths?: string[]) => Promise<{ uploaded: number; total: number; errors: string[] }>
-        downloadFiles: (sessionId: string, remotePaths: string[], targetLocalDir?: string) => Promise<{ downloaded: number; total: number; errors: string[]; canceled?: boolean }>
+        deploy: (sessionId: string, localDir: string, remoteDir: string, filePaths?: string[], taskId?: string) => Promise<{ uploaded: number; total: number; errors: string[]; canceled?: boolean }>
+        downloadFiles: (sessionId: string, remotePaths: string[], targetLocalDir?: string, taskId?: string) => Promise<{ downloaded: number; total: number; errors: string[]; canceled?: boolean }>
         duplicate: (sessionId: string, remotePath: string) => Promise<{ success?: boolean; error?: string; path?: string }>
         move: (sessionId: string, oldPath: string, newPath: string) => Promise<{ success?: boolean; error?: string }>
         writeFile: (sessionId: string, remotePath: string, content: string) => Promise<{ success?: boolean; error?: string }>
+        zip: (sessionId: string, targetPath: string, outputPath: string) => Promise<{ success?: boolean; error?: string }>
+        unzip: (sessionId: string, zipPath: string, targetDir: string) => Promise<{ success?: boolean; error?: string }>
+        onProgress: (callback: (data: { taskId: string; progress: number; speed: string; detail: string }) => void) => () => void
+        chmod: (sessionId: string, remotePath: string, mode: number) => Promise<{ success?: boolean; error?: string }>
       }
       local: {
         listDir: (dirPath: string) => Promise<LocalEntry[]>
@@ -136,6 +140,11 @@ declare global {
         rename: (oldPath: string, newPath: string) => Promise<{ success?: boolean; error?: string }>
         delete: (targetPath: string) => Promise<{ success?: boolean; error?: string }>
         writeFile: (filePath: string, content: string) => Promise<{ success?: boolean; error?: string }>
+        zip: (targetPath: string, outputPath: string) => Promise<{ success?: boolean; error?: string }>
+        unzip: (zipPath: string, targetDir: string) => Promise<{ success?: boolean; error?: string }>
+        watchDir: (dirPath: string, watchId: string) => Promise<{ success?: boolean; error?: string }>
+        unwatchDir: (watchId: string) => Promise<{ success?: boolean; error?: string }>
+        onFileChanged: (callback: (data: { watchId: string; localPath: string; relativePath: string }) => void) => () => void
       }
       tunnel: {
         startLocal: (sessionId: string, name: string, localPort: number, remoteHost: string, remotePort: number) => Promise<any>

@@ -132,4 +132,89 @@ export function registerLocalIpc(): void {
       return { error: err.message }
     }
   })
+
+  // Zip a file or directory locally
+  ipcMain.handle('local:zip', async (_event, targetPath: string, outputPath: string) => {
+    try {
+      const AdmZip = require('adm-zip')
+      const zip = new AdmZip()
+      const fs = require('fs')
+      const stat = fs.statSync(targetPath)
+      if (stat.isDirectory()) {
+        zip.addLocalFolder(targetPath)
+      } else {
+        zip.addLocalFile(targetPath)
+      }
+      zip.writeZip(outputPath)
+      return { success: true }
+    } catch (err: any) {
+      return { error: err.message }
+    }
+  })
+
+  // Unzip a zip file locally
+  ipcMain.handle('local:unzip', async (_event, zipPath: string, targetDir: string) => {
+    try {
+      const AdmZip = require('adm-zip')
+      const zip = new AdmZip(zipPath)
+      zip.extractAllTo(targetDir, true)
+      return { success: true }
+    } catch (err: any) {
+      return { error: err.message }
+    }
+  })
+
+  // Watch directory changes for Auto-Sync
+  const activeWatchers = new Map<string, any>()
+
+  ipcMain.handle('local:watchDir', async (_event, dirPath: string, watchId: string) => {
+    try {
+      const fs = require('fs')
+      const path = require('path')
+      const { BrowserWindow } = require('electron')
+
+      if (activeWatchers.has(watchId)) {
+        activeWatchers.get(watchId).close()
+      }
+
+      // Simple recursive folder watcher or single folder watcher
+      let debounceTimeout: any = null
+      const watcher = fs.watch(dirPath, { recursive: true }, (eventType: string, filename: string) => {
+        if (!filename) return
+        
+        // Debounce to prevent rapid fire uploads
+        if (debounceTimeout) clearTimeout(debounceTimeout)
+        debounceTimeout = setTimeout(() => {
+          const fullLocalPath = path.join(dirPath, filename).replace(/\\/g, '/')
+          try {
+            if (fs.existsSync(fullLocalPath) && fs.statSync(fullLocalPath).isFile()) {
+              const win = BrowserWindow.getAllWindows()[0]
+              if (win && !win.isDestroyed()) {
+                win.webContents.send('local:file-changed', {
+                  watchId,
+                  localPath: fullLocalPath,
+                  relativePath: filename.replace(/\\/g, '/')
+                })
+              }
+            }
+          } catch {}
+        }, 1000)
+      })
+
+      activeWatchers.set(watchId, watcher)
+      return { success: true }
+    } catch (err: any) {
+      return { error: err.message }
+    }
+  })
+
+  ipcMain.handle('local:unwatchDir', async (_event, watchId: string) => {
+    const watcher = activeWatchers.get(watchId)
+    if (watcher) {
+      watcher.close()
+      activeWatchers.delete(watchId)
+      return { success: true }
+    }
+    return { error: 'Không tìm thấy watcher' }
+  })
 }

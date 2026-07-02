@@ -102,7 +102,15 @@ Build: npm run build
 
 Preview: npm run preview
 
+Package to exe/installer: npm run dist
+
+Package only Windows: npm run dist:win
+
+Package portable exe (no install): npm run dist:portable
+
 Postinstall: electron-rebuild -f -w better-sqlite3,ssh2 (runs automatically)
+
+Output directory: dist/ (contains .exe installer + portable)
 
 
 ==================================================

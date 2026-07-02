@@ -541,7 +541,7 @@ class SftpManager {
           mode: f.attrs.mode,
           isDirectory: f.attrs.isDirectory(),
           isFile: f.attrs.isFile(),
-          modifiedAt: null
+          modifiedAt: f.attrs.mtime ? new Date(f.attrs.mtime * 1e3) : null
         }));
         resolve(files);
       });
@@ -677,6 +677,19 @@ class SftpManager {
     }
     await walk(dirPath);
     return result;
+  }
+  async chmod(sessionId, remotePath, mode) {
+    const session = this.sessions.get(sessionId);
+    if (!session) throw new Error("SFTP session not found");
+    return new Promise((resolve, reject) => {
+      session.sftp.chmod(remotePath, mode, (err) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve();
+      });
+    });
   }
 }
 const sftpManager = new SftpManager();
@@ -1033,35 +1046,83 @@ function registerSftpIpc() {
       return { error: err.message };
     }
   });
-  electron.ipcMain.handle("sftp:deploy", async (_event, sessionId, localDir, remoteDir, filePaths) => {
+  const activeTasks = /* @__PURE__ */ new Map();
+  electron.ipcMain.handle("sftp:cancelTask", async (_event, taskId) => {
+    const task = activeTasks.get(taskId);
+    if (task) {
+      task.canceled = true;
+      return { success: true };
+    }
+    return { error: "Không tìm thấy tiến trình đang chạy" };
+  });
+  electron.ipcMain.handle("sftp:deploy", async (_event, sessionId, localDir, remoteDir, filePaths, taskId) => {
     const fs2 = require("fs");
     const path2 = require("path");
-    let files;
+    const { BrowserWindow } = require("electron");
+    const taskObj = { canceled: false };
+    if (taskId) {
+      activeTasks.set(taskId, taskObj);
+    }
+    let files = [];
+    function scan(dir, prefix = "") {
+      try {
+        const items = fs2.readdirSync(dir, { withFileTypes: true });
+        for (const item of items) {
+          const fullPath = path2.join(dir, item.name);
+          const rel = prefix ? prefix + "/" + item.name : item.name;
+          if (item.isDirectory()) {
+            scan(fullPath, rel);
+          } else if (item.isFile()) {
+            const stat = fs2.statSync(fullPath);
+            files.push({ localPath: fullPath, relativePath: rel, size: stat.size });
+          }
+        }
+      } catch {
+      }
+    }
     if (filePaths && filePaths.length > 0) {
-      files = filePaths.map((fp) => ({
-        localPath: fp,
-        relativePath: path2.basename(fp)
-      }));
-    } else {
-      let scan = function(dir, prefix = "") {
+      for (const fp of filePaths) {
         try {
-          const items = fs2.readdirSync(dir, { withFileTypes: true });
-          for (const item of items) {
-            const fullPath = path2.join(dir, item.name);
-            const rel = prefix ? prefix + "/" + item.name : item.name;
-            if (item.isDirectory()) scan(fullPath, rel);
-            else if (item.isFile()) files.push({ localPath: fullPath, relativePath: rel });
+          const stat = fs2.statSync(fp);
+          if (stat.isDirectory()) {
+            const baseName = path2.basename(fp);
+            const scanSub = (dir, prefix) => {
+              const items = fs2.readdirSync(dir, { withFileTypes: true });
+              for (const item of items) {
+                const fullPath = path2.join(dir, item.name);
+                const rel = prefix ? prefix + "/" + item.name : item.name;
+                if (item.isDirectory()) {
+                  scanSub(fullPath, rel);
+                } else if (item.isFile()) {
+                  const s = fs2.statSync(fullPath);
+                  files.push({ localPath: fullPath, relativePath: rel, size: s.size });
+                }
+              }
+            };
+            scanSub(fp, baseName);
+          } else {
+            files.push({
+              localPath: fp,
+              relativePath: path2.basename(fp),
+              size: stat.size
+            });
           }
         } catch {
         }
-      };
-      files = [];
+      }
+    } else {
       scan(localDir);
     }
     const total = files.length;
     let uploaded = 0;
+    let totalBytesTransferred = 0;
     const errors = [];
+    const startTime = Date.now();
     for (const file of files) {
+      if (taskId && taskObj.canceled) {
+        errors.push("Đã hủy bỏ bởi người dùng");
+        break;
+      }
       try {
         const remoteFilePath = remoteDir.endsWith("/") ? remoteDir + file.relativePath : remoteDir + "/" + file.relativePath;
         const remoteFileDir = path2.dirname(remoteFilePath).replace(/\\/g, "/");
@@ -1072,21 +1133,53 @@ function registerSftpIpc() {
         const data = fs2.readFileSync(file.localPath);
         await sftpManager.writeFile(sessionId, remoteFilePath.replace(/\\/g, "/"), data);
         uploaded++;
+        totalBytesTransferred += file.size;
+        if (taskId) {
+          const elapsed = (Date.now() - startTime) / 1e3 || 1;
+          const speedBytes = totalBytesTransferred / elapsed;
+          let speedStr = "";
+          if (speedBytes > 1048576) {
+            speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`;
+          } else {
+            speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`;
+          }
+          const progressPercent = Math.round(uploaded / total * 100);
+          const win = BrowserWindow.getAllWindows()[0];
+          if (win && !win.isDestroyed()) {
+            win.webContents.send("sftp:progress", {
+              taskId,
+              progress: progressPercent,
+              speed: speedStr,
+              detail: `${uploaded}/${total} tệp`
+            });
+          }
+        }
       } catch (err) {
         errors.push(`${file.relativePath}: ${err.message}`);
       }
     }
-    return { uploaded, total, errors };
+    if (taskId) {
+      activeTasks.delete(taskId);
+    }
+    return { uploaded, total, errors, canceled: taskObj.canceled };
   });
-  electron.ipcMain.handle("sftp:downloadFiles", async (_event, sessionId, remotePaths, targetLocalDir) => {
+  electron.ipcMain.handle("sftp:downloadFiles", async (_event, sessionId, remotePaths, targetLocalDir, taskId) => {
     const fs2 = require("fs");
     const path2 = require("path");
+    const { BrowserWindow } = require("electron");
+    const taskObj = { canceled: false };
+    if (taskId) {
+      activeTasks.set(taskId, taskObj);
+    }
     let localDir = targetLocalDir;
     if (!localDir) {
       const result = await electron.dialog.showOpenDialog({
         properties: ["openDirectory", "createDirectory"]
       });
-      if (result.canceled || !result.filePaths[0]) return { canceled: true };
+      if (result.canceled || !result.filePaths[0]) {
+        if (taskId) activeTasks.delete(taskId);
+        return { canceled: true };
+      }
       localDir = result.filePaths[0];
     }
     const files = [];
@@ -1097,16 +1190,22 @@ function registerSftpIpc() {
       if (stat.isDirectory) {
         for (const f of remoteFiles) {
           const rel = f.path.startsWith(rp) ? f.path.slice(rp.length + 1) : path2.basename(f.path);
-          files.push({ remotePath: f.path, relativePath: path2.join(baseName, rel) });
+          files.push({ remotePath: f.path, relativePath: path2.join(baseName, rel), size: f.size });
         }
       } else {
-        files.push({ remotePath: rp, relativePath: path2.basename(rp) });
+        files.push({ remotePath: rp, relativePath: path2.basename(rp), size: stat.size });
       }
     }
     const total = files.length;
     let downloaded = 0;
+    let totalBytesTransferred = 0;
     const errors = [];
+    const startTime = Date.now();
     for (const file of files) {
+      if (taskId && taskObj.canceled) {
+        errors.push("Đã hủy bỏ bởi người dùng");
+        break;
+      }
       try {
         const destPath = path2.join(localDir, file.relativePath);
         const destDir = path2.dirname(destPath);
@@ -1114,11 +1213,35 @@ function registerSftpIpc() {
         const data = await sftpManager.readFile(sessionId, file.remotePath);
         fs2.writeFileSync(destPath, data);
         downloaded++;
+        totalBytesTransferred += file.size;
+        if (taskId) {
+          const elapsed = (Date.now() - startTime) / 1e3 || 1;
+          const speedBytes = totalBytesTransferred / elapsed;
+          let speedStr = "";
+          if (speedBytes > 1048576) {
+            speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`;
+          } else {
+            speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`;
+          }
+          const progressPercent = Math.round(downloaded / total * 100);
+          const win = BrowserWindow.getAllWindows()[0];
+          if (win && !win.isDestroyed()) {
+            win.webContents.send("sftp:progress", {
+              taskId,
+              progress: progressPercent,
+              speed: speedStr,
+              detail: `${downloaded}/${total} tệp`
+            });
+          }
+        }
       } catch (err) {
         errors.push(`${file.relativePath}: ${err.message}`);
       }
     }
-    return { downloaded, total, errors };
+    if (taskId) {
+      activeTasks.delete(taskId);
+    }
+    return { downloaded, total, errors, canceled: taskObj.canceled };
   });
   electron.ipcMain.handle("sftp:duplicate", async (_event, sessionId, remotePath) => {
     try {
@@ -1146,6 +1269,53 @@ function registerSftpIpc() {
     try {
       const data = Buffer.from(content, "utf-8");
       await sftpManager.writeFile(sessionId, remotePath, data);
+      return { success: true };
+    } catch (err) {
+      return { error: err.message };
+    }
+  });
+  electron.ipcMain.handle("sftp:zip", async (_event, sessionId, targetPath, outputPath) => {
+    try {
+      const isZip = outputPath.endsWith(".zip");
+      const path2 = require("path");
+      const parentDir = path2.dirname(targetPath).replace(/\\/g, "/");
+      const baseName = path2.basename(targetPath);
+      let cmd = "";
+      if (isZip) {
+        cmd = `cd "${parentDir}" && zip -r "${outputPath}" "${baseName}"`;
+      } else {
+        cmd = `cd "${parentDir}" && tar -czf "${outputPath}" "${baseName}"`;
+      }
+      const { stdout, stderr, code } = await sshManager.exec(sessionId, cmd);
+      if (code !== 0) {
+        throw new Error(stderr || stdout || `Command exited with code ${code}`);
+      }
+      return { success: true };
+    } catch (err) {
+      return { error: err.message };
+    }
+  });
+  electron.ipcMain.handle("sftp:unzip", async (_event, sessionId, zipPath, targetDir) => {
+    try {
+      const isZip = zipPath.endsWith(".zip");
+      let cmd = "";
+      if (isZip) {
+        cmd = `unzip -o "${zipPath}" -d "${targetDir}"`;
+      } else {
+        cmd = `tar -xzf "${zipPath}" -C "${targetDir}"`;
+      }
+      const { stdout, stderr, code } = await sshManager.exec(sessionId, cmd);
+      if (code !== 0) {
+        throw new Error(stderr || stdout || `Command exited with code ${code}`);
+      }
+      return { success: true };
+    } catch (err) {
+      return { error: err.message };
+    }
+  });
+  electron.ipcMain.handle("sftp:chmod", async (_event, sessionId, remotePath, mode) => {
+    try {
+      await sftpManager.chmod(sessionId, remotePath, mode);
       return { success: true };
     } catch (err) {
       return { error: err.message };
@@ -1314,6 +1484,78 @@ function registerLocalIpc() {
     } catch (err) {
       return { error: err.message };
     }
+  });
+  electron.ipcMain.handle("local:zip", async (_event, targetPath, outputPath) => {
+    try {
+      const AdmZip = require("adm-zip");
+      const zip = new AdmZip();
+      const fs2 = require("fs");
+      const stat = fs2.statSync(targetPath);
+      if (stat.isDirectory()) {
+        zip.addLocalFolder(targetPath);
+      } else {
+        zip.addLocalFile(targetPath);
+      }
+      zip.writeZip(outputPath);
+      return { success: true };
+    } catch (err) {
+      return { error: err.message };
+    }
+  });
+  electron.ipcMain.handle("local:unzip", async (_event, zipPath, targetDir) => {
+    try {
+      const AdmZip = require("adm-zip");
+      const zip = new AdmZip(zipPath);
+      zip.extractAllTo(targetDir, true);
+      return { success: true };
+    } catch (err) {
+      return { error: err.message };
+    }
+  });
+  const activeWatchers = /* @__PURE__ */ new Map();
+  electron.ipcMain.handle("local:watchDir", async (_event, dirPath, watchId) => {
+    try {
+      const fs2 = require("fs");
+      const path2 = require("path");
+      const { BrowserWindow } = require("electron");
+      if (activeWatchers.has(watchId)) {
+        activeWatchers.get(watchId).close();
+      }
+      let debounceTimeout = null;
+      const watcher = fs2.watch(dirPath, { recursive: true }, (eventType, filename) => {
+        if (!filename) return;
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+          const fullLocalPath = path2.join(dirPath, filename).replace(/\\/g, "/");
+          try {
+            if (fs2.existsSync(fullLocalPath) && fs2.statSync(fullLocalPath).isFile()) {
+              const win = BrowserWindow.getAllWindows()[0];
+              if (win && !win.isDestroyed()) {
+                win.webContents.send("local:file-changed", {
+                  watchId,
+                  localPath: fullLocalPath,
+                  relativePath: filename.replace(/\\/g, "/")
+                });
+              }
+            }
+          } catch {
+          }
+        }, 1e3);
+      });
+      activeWatchers.set(watchId, watcher);
+      return { success: true };
+    } catch (err) {
+      return { error: err.message };
+    }
+  });
+  electron.ipcMain.handle("local:unwatchDir", async (_event, watchId) => {
+    const watcher = activeWatchers.get(watchId);
+    if (watcher) {
+      watcher.close();
+      activeWatchers.delete(watchId);
+      return { success: true };
+    }
+    return { error: "Không tìm thấy watcher" };
   });
 }
 let mainWindow$1 = null;

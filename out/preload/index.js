@@ -86,11 +86,11 @@ const api = {
     readFile: (sessionId, remotePath) => {
       return electron.ipcRenderer.invoke("sftp:readFile", sessionId, remotePath);
     },
-    deploy: (sessionId, localDir, remoteDir, filePaths) => {
-      return electron.ipcRenderer.invoke("sftp:deploy", sessionId, localDir, remoteDir, filePaths);
+    deploy: (sessionId, localDir, remoteDir, filePaths, taskId) => {
+      return electron.ipcRenderer.invoke("sftp:deploy", sessionId, localDir, remoteDir, filePaths, taskId);
     },
-    downloadFiles: (sessionId, remotePaths, targetLocalDir) => {
-      return electron.ipcRenderer.invoke("sftp:downloadFiles", sessionId, remotePaths, targetLocalDir);
+    downloadFiles: (sessionId, remotePaths, targetLocalDir, taskId) => {
+      return electron.ipcRenderer.invoke("sftp:downloadFiles", sessionId, remotePaths, targetLocalDir, taskId);
     },
     duplicate: (sessionId, remotePath) => {
       return electron.ipcRenderer.invoke("sftp:duplicate", sessionId, remotePath);
@@ -100,6 +100,23 @@ const api = {
     },
     writeFile: (sessionId, remotePath, content) => {
       return electron.ipcRenderer.invoke("sftp:writeFile", sessionId, remotePath, content);
+    },
+    zip: (sessionId, targetPath, outputPath) => {
+      return electron.ipcRenderer.invoke("sftp:zip", sessionId, targetPath, outputPath);
+    },
+    unzip: (sessionId, zipPath, targetDir) => {
+      return electron.ipcRenderer.invoke("sftp:unzip", sessionId, zipPath, targetDir);
+    },
+    cancelTask: (taskId) => {
+      return electron.ipcRenderer.invoke("sftp:cancelTask", taskId);
+    },
+    onProgress: (callback) => {
+      const handler = (_, data) => callback(data);
+      electron.ipcRenderer.on("sftp:progress", handler);
+      return () => electron.ipcRenderer.removeListener("sftp:progress", handler);
+    },
+    chmod: (sessionId, remotePath, mode) => {
+      return electron.ipcRenderer.invoke("sftp:chmod", sessionId, remotePath, mode);
     }
   },
   local: {
@@ -123,6 +140,23 @@ const api = {
     },
     writeFile: (filePath, content) => {
       return electron.ipcRenderer.invoke("local:writeFile", filePath, content);
+    },
+    zip: (targetPath, outputPath) => {
+      return electron.ipcRenderer.invoke("local:zip", targetPath, outputPath);
+    },
+    unzip: (zipPath, targetDir) => {
+      return electron.ipcRenderer.invoke("local:unzip", zipPath, targetDir);
+    },
+    watchDir: (dirPath, watchId) => {
+      return electron.ipcRenderer.invoke("local:watchDir", dirPath, watchId);
+    },
+    unwatchDir: (watchId) => {
+      return electron.ipcRenderer.invoke("local:unwatchDir", watchId);
+    },
+    onFileChanged: (callback) => {
+      const handler = (_, data) => callback(data);
+      electron.ipcRenderer.on("local:file-changed", handler);
+      return () => electron.ipcRenderer.removeListener("local:file-changed", handler);
     }
   },
   tunnel: {

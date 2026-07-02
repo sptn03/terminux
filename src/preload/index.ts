@@ -95,11 +95,11 @@ const api = {
     readFile: (sessionId: string, remotePath: string): Promise<any> => {
       return ipcRenderer.invoke('sftp:readFile', sessionId, remotePath)
     },
-    deploy: (sessionId: string, localDir: string, remoteDir: string, filePaths?: string[]): Promise<any> => {
-      return ipcRenderer.invoke('sftp:deploy', sessionId, localDir, remoteDir, filePaths)
+    deploy: (sessionId: string, localDir: string, remoteDir: string, filePaths?: string[], taskId?: string): Promise<any> => {
+      return ipcRenderer.invoke('sftp:deploy', sessionId, localDir, remoteDir, filePaths, taskId)
     },
-    downloadFiles: (sessionId: string, remotePaths: string[], targetLocalDir?: string): Promise<{ downloaded: number; total: number; errors: string[]; canceled?: boolean }> => {
-      return ipcRenderer.invoke('sftp:downloadFiles', sessionId, remotePaths, targetLocalDir)
+    downloadFiles: (sessionId: string, remotePaths: string[], targetLocalDir?: string, taskId?: string): Promise<{ downloaded: number; total: number; errors: string[]; canceled?: boolean }> => {
+      return ipcRenderer.invoke('sftp:downloadFiles', sessionId, remotePaths, targetLocalDir, taskId)
     },
     duplicate: (sessionId: string, remotePath: string): Promise<{ success?: boolean; error?: string; path?: string }> => {
       return ipcRenderer.invoke('sftp:duplicate', sessionId, remotePath)
@@ -109,6 +109,23 @@ const api = {
     },
     writeFile: (sessionId: string, remotePath: string, content: string): Promise<any> => {
       return ipcRenderer.invoke('sftp:writeFile', sessionId, remotePath, content)
+    },
+    zip: (sessionId: string, targetPath: string, outputPath: string): Promise<any> => {
+      return ipcRenderer.invoke('sftp:zip', sessionId, targetPath, outputPath)
+    },
+    unzip: (sessionId: string, zipPath: string, targetDir: string): Promise<any> => {
+      return ipcRenderer.invoke('sftp:unzip', sessionId, zipPath, targetDir)
+    },
+    cancelTask: (taskId: string): Promise<any> => {
+      return ipcRenderer.invoke('sftp:cancelTask', taskId)
+    },
+    onProgress: (callback: (data: { taskId: string; progress: number; speed: string; detail: string }) => void): (() => void) => {
+      const handler = (_: any, data: any) => callback(data)
+      ipcRenderer.on('sftp:progress', handler)
+      return () => ipcRenderer.removeListener('sftp:progress', handler)
+    },
+    chmod: (sessionId: string, remotePath: string, mode: number): Promise<any> => {
+      return ipcRenderer.invoke('sftp:chmod', sessionId, remotePath, mode)
     }
   },
   local: {
@@ -132,6 +149,23 @@ const api = {
     },
     writeFile: (filePath: string, content: string): Promise<any> => {
       return ipcRenderer.invoke('local:writeFile', filePath, content)
+    },
+    zip: (targetPath: string, outputPath: string): Promise<any> => {
+      return ipcRenderer.invoke('local:zip', targetPath, outputPath)
+    },
+    unzip: (zipPath: string, targetDir: string): Promise<any> => {
+      return ipcRenderer.invoke('local:unzip', zipPath, targetDir)
+    },
+    watchDir: (dirPath: string, watchId: string): Promise<any> => {
+      return ipcRenderer.invoke('local:watchDir', dirPath, watchId)
+    },
+    unwatchDir: (watchId: string): Promise<any> => {
+      return ipcRenderer.invoke('local:unwatchDir', watchId)
+    },
+    onFileChanged: (callback: (data: { watchId: string; localPath: string; relativePath: string }) => void): (() => void) => {
+      const handler = (_: any, data: any) => callback(data)
+      ipcRenderer.on('local:file-changed', handler)
+      return () => ipcRenderer.removeListener('local:file-changed', handler)
     }
   },
   tunnel: {
