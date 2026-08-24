@@ -185,50 +185,85 @@ export function registerSftpIpc(): void {
     const errors: string[] = []
     const startTime = Date.now()
 
+    // Extract unique directories to pre-create them once, avoiding redundant operations
+    const uniqueDirs = new Set<string>()
     for (const file of files) {
+      const remoteFilePath = remoteDir.endsWith('/') ? remoteDir + file.relativePath : remoteDir + '/' + file.relativePath
+      const remoteFileDir = path.dirname(remoteFilePath).replace(/\\/g, '/')
+      uniqueDirs.add(remoteFileDir)
+    }
+
+    // Pre-create unique directories sorted by path length (parent folders first)
+    const sortedDirs = Array.from(uniqueDirs).sort((a, b) => a.length - b.length)
+    for (const dir of sortedDirs) {
       if (taskId && taskObj.canceled) {
-        errors.push('Đã hủy bỏ bởi người dùng')
         break
       }
       try {
-        const remoteFilePath = remoteDir.endsWith('/') ? remoteDir + file.relativePath : remoteDir + '/' + file.relativePath
-        const remoteFileDir = path.dirname(remoteFilePath).replace(/\\/g, '/')
+        await sftpManager.mkdirRecursive(sessionId, dir)
+      } catch {}
+    }
 
-        // Ensure remote directory exists (mkdir -p style)
-        try { await sftpManager.mkdirRecursive(sessionId, remoteFileDir) } catch {}
+    // Upload files concurrently (concurrency limit = 10)
+    const concurrency = 10
+    const queue = [...files]
 
-        const data = fs.readFileSync(file.localPath)
-        await sftpManager.writeFile(sessionId, remoteFilePath.replace(/\\/g, '/'), data)
-        
-        uploaded++
-        totalBytesTransferred += file.size
-
-        if (taskId) {
-          const elapsed = (Date.now() - startTime) / 1000 || 1
-          const speedBytes = totalBytesTransferred / elapsed
-          let speedStr = ''
-          if (speedBytes > 1048576) {
-            speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`
-          } else {
-            speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`
-          }
-
-          const progressPercent = Math.round((uploaded / total) * 100)
-          
-          // Send progress to renderer
-          const win = BrowserWindow.getAllWindows()[0]
-          if (win && !win.isDestroyed()) {
-            win.webContents.send('sftp:progress', {
-              taskId,
-              progress: progressPercent,
-              speed: speedStr,
-              detail: `${uploaded}/${total} tệp`
-            })
-          }
+    async function worker() {
+      while (queue.length > 0) {
+        if (taskId && taskObj.canceled) {
+          break
         }
-      } catch (err: any) {
-        errors.push(`${file.relativePath}: ${err.message}`)
+        const file = queue.shift()
+        if (!file) continue
+
+        try {
+          const remoteFilePath = remoteDir.endsWith('/') ? remoteDir + file.relativePath : remoteDir + '/' + file.relativePath
+          const data = fs.readFileSync(file.localPath)
+          await sftpManager.writeFile(sessionId, remoteFilePath.replace(/\\/g, '/'), data)
+          
+          uploaded++
+          totalBytesTransferred += file.size
+
+          if (taskId) {
+            const elapsed = (Date.now() - startTime) / 1000 || 1
+            const speedBytes = totalBytesTransferred / elapsed
+            let speedStr = ''
+            if (speedBytes > 1048576) {
+              speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`
+            } else {
+              speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`
+            }
+
+            const progressPercent = Math.round((uploaded / total) * 100)
+            
+            // Send progress to renderer
+            const win = BrowserWindow.getAllWindows()[0]
+            if (win && !win.isDestroyed()) {
+              win.webContents.send('sftp:progress', {
+                taskId,
+                progress: progressPercent,
+                speed: speedStr,
+                detail: `${uploaded}/${total} tệp`
+              })
+            }
+          }
+        } catch (err: any) {
+          errors.push(`${file.relativePath}: ${err.message}`)
+        }
       }
+    }
+
+    if (files.length > 0) {
+      const workers = []
+      const workerCount = Math.min(concurrency, files.length)
+      for (let i = 0; i < workerCount; i++) {
+        workers.push(worker())
+      }
+      await Promise.all(workers)
+    }
+
+    if (taskId && taskObj.canceled && errors.length === 0) {
+      errors.push('Đã hủy bỏ bởi người dùng')
     }
 
     if (taskId) {
@@ -282,46 +317,83 @@ export function registerSftpIpc(): void {
     const errors: string[] = []
     const startTime = Date.now()
 
+    // Pre-create local directories to avoid redundant synchronous IO checks
+    const uniqueLocalDirs = new Set<string>()
     for (const file of files) {
+      const destPath = path.join(localDir, file.relativePath)
+      const destDir = path.dirname(destPath)
+      uniqueLocalDirs.add(destDir)
+    }
+    for (const dir of uniqueLocalDirs) {
       if (taskId && taskObj.canceled) {
-        errors.push('Đã hủy bỏ bởi người dùng')
         break
       }
       try {
-        const destPath = path.join(localDir, file.relativePath)
-        const destDir = path.dirname(destPath)
-        if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true })
-        const data = await sftpManager.readFile(sessionId, file.remotePath)
-        fs.writeFileSync(destPath, data)
-        
-        downloaded++
-        totalBytesTransferred += file.size
-
-        if (taskId) {
-          const elapsed = (Date.now() - startTime) / 1000 || 1
-          const speedBytes = totalBytesTransferred / elapsed
-          let speedStr = ''
-          if (speedBytes > 1048576) {
-            speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`
-          } else {
-            speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`
-          }
-
-          const progressPercent = Math.round((downloaded / total) * 100)
-
-          const win = BrowserWindow.getAllWindows()[0]
-          if (win && !win.isDestroyed()) {
-            win.webContents.send('sftp:progress', {
-              taskId,
-              progress: progressPercent,
-              speed: speedStr,
-              detail: `${downloaded}/${total} tệp`
-            })
-          }
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true })
         }
-      } catch (err: any) {
-        errors.push(`${file.relativePath}: ${err.message}`)
+      } catch {}
+    }
+
+    // Download files concurrently (concurrency limit = 10)
+    const concurrency = 10
+    const queue = [...files]
+
+    async function worker() {
+      while (queue.length > 0) {
+        if (taskId && taskObj.canceled) {
+          break
+        }
+        const file = queue.shift()
+        if (!file) continue
+
+        try {
+          const destPath = path.join(localDir, file.relativePath)
+          const data = await sftpManager.readFile(sessionId, file.remotePath)
+          fs.writeFileSync(destPath, data)
+          
+          downloaded++
+          totalBytesTransferred += file.size
+
+          if (taskId) {
+            const elapsed = (Date.now() - startTime) / 1000 || 1
+            const speedBytes = totalBytesTransferred / elapsed
+            let speedStr = ''
+            if (speedBytes > 1048576) {
+              speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`
+            } else {
+              speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`
+            }
+
+            const progressPercent = Math.round((downloaded / total) * 100)
+
+            const win = BrowserWindow.getAllWindows()[0]
+            if (win && !win.isDestroyed()) {
+              win.webContents.send('sftp:progress', {
+                taskId,
+                progress: progressPercent,
+                speed: speedStr,
+                detail: `${downloaded}/${total} tệp`
+              })
+            }
+          }
+        } catch (err: any) {
+          errors.push(`${file.relativePath}: ${err.message}`)
+        }
       }
+    }
+
+    if (files.length > 0) {
+      const workers = []
+      const workerCount = Math.min(concurrency, files.length)
+      for (let i = 0; i < workerCount; i++) {
+        workers.push(worker())
+      }
+      await Promise.all(workers)
+    }
+
+    if (taskId && taskObj.canceled && errors.length === 0) {
+      errors.push('Đã hủy bỏ bởi người dùng')
     }
 
     if (taskId) {

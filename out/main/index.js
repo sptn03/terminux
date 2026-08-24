@@ -1125,45 +1125,72 @@ function registerSftpIpc() {
     let totalBytesTransferred = 0;
     const errors = [];
     const startTime = Date.now();
+    const uniqueDirs = /* @__PURE__ */ new Set();
     for (const file of files) {
+      const remoteFilePath = remoteDir.endsWith("/") ? remoteDir + file.relativePath : remoteDir + "/" + file.relativePath;
+      const remoteFileDir = path2.dirname(remoteFilePath).replace(/\\/g, "/");
+      uniqueDirs.add(remoteFileDir);
+    }
+    const sortedDirs = Array.from(uniqueDirs).sort((a, b) => a.length - b.length);
+    for (const dir of sortedDirs) {
       if (taskId && taskObj.canceled) {
-        errors.push("Đã hủy bỏ bởi người dùng");
         break;
       }
       try {
-        const remoteFilePath = remoteDir.endsWith("/") ? remoteDir + file.relativePath : remoteDir + "/" + file.relativePath;
-        const remoteFileDir = path2.dirname(remoteFilePath).replace(/\\/g, "/");
-        try {
-          await sftpManager.mkdirRecursive(sessionId, remoteFileDir);
-        } catch {
-        }
-        const data = fs2.readFileSync(file.localPath);
-        await sftpManager.writeFile(sessionId, remoteFilePath.replace(/\\/g, "/"), data);
-        uploaded++;
-        totalBytesTransferred += file.size;
-        if (taskId) {
-          const elapsed = (Date.now() - startTime) / 1e3 || 1;
-          const speedBytes = totalBytesTransferred / elapsed;
-          let speedStr = "";
-          if (speedBytes > 1048576) {
-            speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`;
-          } else {
-            speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`;
-          }
-          const progressPercent = Math.round(uploaded / total * 100);
-          const win = BrowserWindow.getAllWindows()[0];
-          if (win && !win.isDestroyed()) {
-            win.webContents.send("sftp:progress", {
-              taskId,
-              progress: progressPercent,
-              speed: speedStr,
-              detail: `${uploaded}/${total} tệp`
-            });
-          }
-        }
-      } catch (err) {
-        errors.push(`${file.relativePath}: ${err.message}`);
+        await sftpManager.mkdirRecursive(sessionId, dir);
+      } catch {
       }
+    }
+    const concurrency = 10;
+    const queue = [...files];
+    async function worker() {
+      while (queue.length > 0) {
+        if (taskId && taskObj.canceled) {
+          break;
+        }
+        const file = queue.shift();
+        if (!file) continue;
+        try {
+          const remoteFilePath = remoteDir.endsWith("/") ? remoteDir + file.relativePath : remoteDir + "/" + file.relativePath;
+          const data = fs2.readFileSync(file.localPath);
+          await sftpManager.writeFile(sessionId, remoteFilePath.replace(/\\/g, "/"), data);
+          uploaded++;
+          totalBytesTransferred += file.size;
+          if (taskId) {
+            const elapsed = (Date.now() - startTime) / 1e3 || 1;
+            const speedBytes = totalBytesTransferred / elapsed;
+            let speedStr = "";
+            if (speedBytes > 1048576) {
+              speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`;
+            } else {
+              speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`;
+            }
+            const progressPercent = Math.round(uploaded / total * 100);
+            const win = BrowserWindow.getAllWindows()[0];
+            if (win && !win.isDestroyed()) {
+              win.webContents.send("sftp:progress", {
+                taskId,
+                progress: progressPercent,
+                speed: speedStr,
+                detail: `${uploaded}/${total} tệp`
+              });
+            }
+          }
+        } catch (err) {
+          errors.push(`${file.relativePath}: ${err.message}`);
+        }
+      }
+    }
+    if (files.length > 0) {
+      const workers = [];
+      const workerCount = Math.min(concurrency, files.length);
+      for (let i = 0; i < workerCount; i++) {
+        workers.push(worker());
+      }
+      await Promise.all(workers);
+    }
+    if (taskId && taskObj.canceled && errors.length === 0) {
+      errors.push("Đã hủy bỏ bởi người dùng");
     }
     if (taskId) {
       activeTasks.delete(taskId);
@@ -1208,42 +1235,73 @@ function registerSftpIpc() {
     let totalBytesTransferred = 0;
     const errors = [];
     const startTime = Date.now();
+    const uniqueLocalDirs = /* @__PURE__ */ new Set();
     for (const file of files) {
+      const destPath = path2.join(localDir, file.relativePath);
+      const destDir = path2.dirname(destPath);
+      uniqueLocalDirs.add(destDir);
+    }
+    for (const dir of uniqueLocalDirs) {
       if (taskId && taskObj.canceled) {
-        errors.push("Đã hủy bỏ bởi người dùng");
         break;
       }
       try {
-        const destPath = path2.join(localDir, file.relativePath);
-        const destDir = path2.dirname(destPath);
-        if (!fs2.existsSync(destDir)) fs2.mkdirSync(destDir, { recursive: true });
-        const data = await sftpManager.readFile(sessionId, file.remotePath);
-        fs2.writeFileSync(destPath, data);
-        downloaded++;
-        totalBytesTransferred += file.size;
-        if (taskId) {
-          const elapsed = (Date.now() - startTime) / 1e3 || 1;
-          const speedBytes = totalBytesTransferred / elapsed;
-          let speedStr = "";
-          if (speedBytes > 1048576) {
-            speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`;
-          } else {
-            speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`;
-          }
-          const progressPercent = Math.round(downloaded / total * 100);
-          const win = BrowserWindow.getAllWindows()[0];
-          if (win && !win.isDestroyed()) {
-            win.webContents.send("sftp:progress", {
-              taskId,
-              progress: progressPercent,
-              speed: speedStr,
-              detail: `${downloaded}/${total} tệp`
-            });
-          }
+        if (!fs2.existsSync(dir)) {
+          fs2.mkdirSync(dir, { recursive: true });
         }
-      } catch (err) {
-        errors.push(`${file.relativePath}: ${err.message}`);
+      } catch {
       }
+    }
+    const concurrency = 10;
+    const queue = [...files];
+    async function worker() {
+      while (queue.length > 0) {
+        if (taskId && taskObj.canceled) {
+          break;
+        }
+        const file = queue.shift();
+        if (!file) continue;
+        try {
+          const destPath = path2.join(localDir, file.relativePath);
+          const data = await sftpManager.readFile(sessionId, file.remotePath);
+          fs2.writeFileSync(destPath, data);
+          downloaded++;
+          totalBytesTransferred += file.size;
+          if (taskId) {
+            const elapsed = (Date.now() - startTime) / 1e3 || 1;
+            const speedBytes = totalBytesTransferred / elapsed;
+            let speedStr = "";
+            if (speedBytes > 1048576) {
+              speedStr = `${(speedBytes / 1048576).toFixed(1)} MB/s`;
+            } else {
+              speedStr = `${(speedBytes / 1024).toFixed(1)} KB/s`;
+            }
+            const progressPercent = Math.round(downloaded / total * 100);
+            const win = BrowserWindow.getAllWindows()[0];
+            if (win && !win.isDestroyed()) {
+              win.webContents.send("sftp:progress", {
+                taskId,
+                progress: progressPercent,
+                speed: speedStr,
+                detail: `${downloaded}/${total} tệp`
+              });
+            }
+          }
+        } catch (err) {
+          errors.push(`${file.relativePath}: ${err.message}`);
+        }
+      }
+    }
+    if (files.length > 0) {
+      const workers = [];
+      const workerCount = Math.min(concurrency, files.length);
+      for (let i = 0; i < workerCount; i++) {
+        workers.push(worker());
+      }
+      await Promise.all(workers);
+    }
+    if (taskId && taskObj.canceled && errors.length === 0) {
+      errors.push("Đã hủy bỏ bởi người dùng");
     }
     if (taskId) {
       activeTasks.delete(taskId);

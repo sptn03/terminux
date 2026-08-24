@@ -202,6 +202,8 @@ Future AI agents should know:
 - FirewallPanel: Quản lý tường lửa UFW trực quan (bật/tắt, xem quy tắc, thêm rule cấm/cho phép theo IP & cổng mạng, xóa rule).
 - GitPanel: Quản lý danh sách repo Git, theo dõi trạng thái branch, modified files, commit history và chạy lệnh Pull/Fetch/Reset Hard/Deploy tự động.
 - SslTrackerPanel: Theo dõi danh sách tên miền website, tự động đọc và tính toán ngày hết hạn SSL qua `openssl` từ xa.
+- SFTP Optimization: Truyền tải tệp tin (upload/download) được tối ưu hóa chạy song song (concurrency limit = 10). Các thư mục đích được quét và khởi tạo một lần duy nhất trước khi truyền tải tệp để giảm tải tối đa độ trễ mạng (network latency) từ các lệnh mkdir trùng lặp.
+
 
 
 
