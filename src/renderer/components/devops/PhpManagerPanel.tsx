@@ -13,7 +13,12 @@ import {
   Terminal,
   Layers,
   Sparkles,
-  Download
+  Download,
+  Check,
+  Zap,
+  HardDrive,
+  Cpu,
+  X
 } from 'lucide-react'
 
 interface PhpManagerPanelProps {
@@ -25,7 +30,7 @@ interface PhpManagerPanelProps {
 }
 
 interface PhpVersionInfo {
-  version: string // e.g. "8.2"
+  version: string
   fpmActive: boolean
   fpmEnabled: boolean
   iniPath: string
@@ -33,18 +38,18 @@ interface PhpVersionInfo {
 }
 
 const COMMON_EXTENSIONS = [
-  { name: 'mysqli / pdo_mysql', pkg: 'mysql', desc: 'Kết nối cơ sở dữ liệu MySQL / MariaDB' },
-  { name: 'pdo_pgsql / pgsql', pkg: 'pgsql', desc: 'Kết nối cơ sở dữ liệu PostgreSQL' },
-  { name: 'redis', pkg: 'redis', desc: 'Extension cache Redis tăng tốc ứng dụng' },
-  { name: 'gd', pkg: 'gd', desc: 'Xử lý và resize hình ảnh đồ họa' },
-  { name: 'mbstring', pkg: 'mbstring', desc: 'Xử lý chuỗi ký tự đa byte (UTF-8)' },
-  { name: 'zip', pkg: 'zip', desc: 'Nén và giải nén tệp tin zip' },
-  { name: 'curl', pkg: 'curl', desc: 'Gửi request HTTP / REST API' },
-  { name: 'xml / dom', pkg: 'xml', desc: 'Xử lý XML và SOAP' },
-  { name: 'bcmath', pkg: 'bcmath', desc: 'Phép tính số học độ chính xác cao' },
-  { name: 'intl', pkg: 'intl', desc: 'Quốc tế hóa đa ngôn ngữ' },
-  { name: 'imagick', pkg: 'imagick', desc: 'ImageMagick xử lý ảnh nâng cao' },
-  { name: 'opcache', pkg: 'opcache', desc: 'Cache bytecode PHP tăng tốc 3-5 lần' }
+  { name: 'MySQL / MariaDB', pkg: 'mysql', desc: 'Kết nối MySQL/MariaDB qua mysqli & PDO' },
+  { name: 'PostgreSQL', pkg: 'pgsql', desc: 'Kết nối cơ sở dữ liệu PostgreSQL' },
+  { name: 'Redis Cache', pkg: 'redis', desc: 'Bộ nhớ đệm Redis tốc độ cao' },
+  { name: 'GD Graphics', pkg: 'gd', desc: 'Xử lý và chuyển đổi hình ảnh' },
+  { name: 'MBString', pkg: 'mbstring', desc: 'Hỗ trợ ký tự đa byte UTF-8' },
+  { name: 'ZIP Archive', pkg: 'zip', desc: 'Nén và giải nén tệp tin .zip' },
+  { name: 'cURL HTTP', pkg: 'curl', desc: 'Truy vấn REST API qua HTTP Client' },
+  { name: 'XML & DOM', pkg: 'xml', desc: 'Xử lý XML, RSS và SOAP' },
+  { name: 'BCMath', pkg: 'bcmath', desc: 'Phép toán số học độ chính xác cao' },
+  { name: 'Intl i18n', pkg: 'intl', desc: 'Hỗ trợ đa ngôn ngữ quốc tế hóa' },
+  { name: 'ImageMagick', pkg: 'imagick', desc: 'Thư viện xử lý đồ họa vector & bitmap' },
+  { name: 'Zend OPcache', pkg: 'opcache', desc: 'Bộ nhớ đệm bytecode tăng tốc 3x' }
 ]
 
 export default function PhpManagerPanel({
@@ -86,7 +91,6 @@ export default function PhpManagerPanel({
 
   const fetchPhpVersions = useCallback(async () => {
     try {
-      // Find all installed php versions
       const checkCmd = `
         for d in /etc/php/*/; do
           [ -d "$d" ] || continue
@@ -145,7 +149,6 @@ export default function PhpManagerPanel({
         const content = checkIni.stdout || ''
         setRawIniContent(content)
 
-        // Parse key values
         const memMatch = content.match(/^memory_limit\s*=\s*([^\s;]+)/m)
         const uploadMatch = content.match(/^upload_max_filesize\s*=\s*([^\s;]+)/m)
         const postMatch = content.match(/^post_max_size\s*=\s*([^\s;]+)/m)
@@ -162,7 +165,6 @@ export default function PhpManagerPanel({
         if (dispMatch) setDisplayErrors(dispMatch[1])
         if (opMatch) setOpcacheEnabled(opMatch[1])
 
-        // Load extensions
         const extRes = await exec(`php${version} -m 2>/dev/null || php -m 2>/dev/null`)
         const exts = extRes.stdout
           .toLowerCase()
@@ -209,7 +211,6 @@ export default function PhpManagerPanel({
         sudo sed -i 's/^display_errors\s*=.*/display_errors = ${displayErrors}/g' "$ini"
         sudo sed -i 's/^;\\?opcache.enable\s*=.*/opcache.enable = ${opcacheEnabled}/g' "$ini"
 
-        # Restart FPM
         sudo systemctl restart php${selectedVersion}-fpm 2>/dev/null || true
       `
       const res = await exec(script)
@@ -359,29 +360,33 @@ EOF
   const activePhpInfo = phpVersions.find((p) => p.version === selectedVersion)
 
   return (
-    <div className="flex-1 flex gap-4 overflow-hidden">
-      {/* Left PHP Versions Sidebar */}
-      <div className="w-64 min-w-64 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden">
-        <div className="px-3 py-2.5 bg-[#11111b]/50 border-b border-white/[0.04] text-[10px] font-semibold text-[#585b70] uppercase tracking-wider flex justify-between items-center">
-          <span className="flex items-center gap-1.5">
-            <Layers size={13} className="text-[#89b4fa]" /> Phiên bản PHP ({phpVersions.length})
-          </span>
+    <div className="flex-1 flex gap-4 overflow-hidden animate-fade-in">
+      {/* Left Sidebar */}
+      <div className="w-72 min-w-72 bg-[#181825]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden shadow-xl">
+        <div className="p-3.5 bg-[#11111b]/50 border-b border-white/[0.04] flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#cba6f7] shadow-[0_0_8px_#cba6f7]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4]">PHP Engines</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/5 text-[#a6adc8] font-mono">
+              {phpVersions.length}
+            </span>
+          </div>
           <button
             onClick={() => setShowInstallPhpModal(true)}
-            className="px-2 py-1 bg-[#89b4fa]/15 hover:bg-[#89b4fa]/25 text-[#89b4fa] rounded-lg text-xs font-semibold flex items-center gap-1 transition-all"
-            title="Cài thêm phiên bản PHP"
+            className="px-2.5 py-1 bg-[#cba6f7]/15 hover:bg-[#cba6f7]/25 text-[#cba6f7] rounded-lg text-xs font-semibold flex items-center gap-1 border border-[#cba6f7]/30 transition-all shadow-sm"
           >
-            <Plus size={12} /> Cài PHP
+            <Plus size={13} /> Cài PHP
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-2 space-y-1.5 scrollbar-thin">
           {phpVersions.length === 0 ? (
-            <div className="text-center text-[#585b70] text-xs py-8">
-              Chưa phát hiện phiên bản PHP nào.
+            <div className="text-center text-[#585b70] text-xs py-12 flex flex-col items-center gap-2">
+              <Layers size={24} className="opacity-30" />
+              <span>Chưa phát hiện phiên bản PHP</span>
               <button
                 onClick={() => setShowInstallPhpModal(true)}
-                className="mt-2 block mx-auto text-[#89b4fa] underline text-xs"
+                className="mt-1 text-[#89b4fa] underline text-xs font-semibold"
               >
                 Cài đặt PHP ngay
               </button>
@@ -391,35 +396,42 @@ EOF
               <div
                 key={p.version}
                 onClick={() => setSelectedVersion(p.version)}
-                className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
+                className={`p-3 rounded-xl border transition-all cursor-pointer ${
                   selectedVersion === p.version
-                    ? 'bg-[#89b4fa]/15 border-[#89b4fa]/40 text-[#cdd6f4]'
-                    : 'bg-[#11111b]/30 border-white/[0.02] text-[#a6adc8] hover:bg-white/[0.03]'
+                    ? 'bg-[#cba6f7]/15 border-[#cba6f7]/40 shadow-[0_4px_16px_rgba(203,166,247,0.12)]'
+                    : 'bg-[#11111b]/30 border-white/[0.03] hover:bg-white/[0.03] hover:border-white/[0.08]'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-xs text-[#cdd6f4]">PHP {p.version}</span>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`w-2 h-2 rounded-full ${
+                        p.fpmActive ? 'bg-[#a6e3a1] shadow-[0_0_8px_#a6e3a1]' : 'bg-[#f38ba8]'
+                      }`}
+                    />
+                    <span className="font-bold text-xs text-[#cdd6f4]">PHP {p.version}</span>
+                  </div>
                   <span
-                    className={`text-[9px] font-semibold px-2 py-0.5 rounded-full ${
-                      p.fpmActive ? 'bg-[#a6e3a1]/20 text-[#a6e3a1]' : 'bg-[#f38ba8]/20 text-[#f38ba8]'
+                    className={`text-[9px] font-bold px-2 py-0.5 rounded-md ${
+                      p.fpmActive ? 'bg-[#a6e3a1]/15 text-[#a6e3a1]' : 'bg-[#f38ba8]/15 text-[#f38ba8]'
                     }`}
                   >
-                    {p.fpmActive ? 'FPM Đang Chạy' : 'FPM Dừng'}
+                    {p.fpmActive ? 'RUNNING' : 'STOPPED'}
                   </span>
                 </div>
-                <div className="text-[10px] text-[#585b70] font-mono truncate mt-1">{p.socketPath}</div>
+                <div className="text-[10px] text-[#585b70] font-mono truncate mt-1.5">{p.socketPath}</div>
               </div>
             ))
           )}
         </div>
 
-        {/* Composer Status Box */}
-        <div className="p-3 border-t border-white/[0.04] bg-[#11111b]/40 flex flex-col gap-2">
+        {/* Composer Card */}
+        <div className="p-3.5 border-t border-white/[0.04] bg-[#11111b]/50 space-y-2">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-[#585b70] font-semibold flex items-center gap-1.5">
-              <Package size={12} className="text-[#fab387]" /> Composer
+            <span className="text-[#a6adc8] font-bold flex items-center gap-1.5">
+              <Package size={13} className="text-[#fab387]" /> Composer CLI
             </span>
-            <span className="text-[#a6adc8] font-mono text-[10px]">
+            <span className="text-[#89b4fa] font-mono text-[10px] bg-[#89b4fa]/10 px-1.5 py-0.5 rounded">
               {composerVersion ? composerVersion.split(' ')[2] || 'OK' : 'Chưa cài'}
             </span>
           </div>
@@ -427,16 +439,16 @@ EOF
             <button
               onClick={handleComposerUpdate}
               disabled={runningComposer}
-              className="w-full py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-[#cdd6f4] transition-all flex items-center justify-center gap-1"
+              className="w-full py-1.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-[#cdd6f4] transition-all flex items-center justify-center gap-1.5 border border-white/5"
             >
-              <RotateCw size={11} className={runningComposer ? 'animate-spin' : ''} />
+              <RotateCw size={12} className={runningComposer ? 'animate-spin' : ''} />
               Self Update Composer
             </button>
           ) : (
             <button
               onClick={handleInstallComposer}
               disabled={runningComposer}
-              className="w-full py-1.5 rounded-lg text-xs font-semibold bg-[#fab387]/20 hover:bg-[#fab387]/30 text-[#fab387] transition-all"
+              className="w-full py-1.5 rounded-xl text-xs font-bold bg-[#fab387]/20 hover:bg-[#fab387]/30 text-[#fab387] border border-[#fab387]/30 transition-all"
             >
               Cài Composer 1-Click
             </button>
@@ -444,24 +456,38 @@ EOF
         </div>
       </div>
 
-      {/* Main PHP Details & Config Area */}
-      <div className="flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden">
+      {/* Main Content Area */}
+      <div className="flex-1 bg-[#181825]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden shadow-xl">
         {selectedVersion ? (
           <div className="flex-1 flex flex-col overflow-hidden">
-            {/* Header Toolbar */}
-            <div className="px-5 py-3 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between">
+            {/* Header */}
+            <div className="px-6 py-3.5 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-bold text-[#cdd6f4]">PHP {selectedVersion} Manager</span>
-                <span className="text-xs text-[#585b70] font-mono">
-                  Socket: /run/php/php{selectedVersion}-fpm.sock
-                </span>
+                <div className="p-2.5 rounded-xl bg-[#cba6f7]/10 text-[#cba6f7] border border-[#cba6f7]/20">
+                  <Layers size={18} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-[#cdd6f4]">PHP {selectedVersion} Runtime</h3>
+                    <span
+                      className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                        activePhpInfo?.fpmActive ? 'bg-[#a6e3a1]/20 text-[#a6e3a1]' : 'bg-[#f38ba8]/20 text-[#f38ba8]'
+                      }`}
+                    >
+                      php{selectedVersion}-fpm
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-[#585b70] font-mono">
+                    FastCGI Socket: /run/php/php{selectedVersion}-fpm.sock
+                  </span>
+                </div>
               </div>
 
-              {/* Service Controls */}
+              {/* FPM Controls */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleControlFpm('restart')}
-                  className="px-3 py-1 rounded-lg bg-[#89b4fa]/15 hover:bg-[#89b4fa]/25 text-[#89b4fa] text-xs font-semibold flex items-center gap-1 transition-all"
+                  className="px-3.5 py-1.5 rounded-xl bg-[#89b4fa]/15 hover:bg-[#89b4fa]/25 text-[#89b4fa] text-xs font-semibold flex items-center gap-1.5 border border-[#89b4fa]/30 transition-all"
                   title="Khởi động lại PHP-FPM"
                 >
                   <RotateCw size={12} /> Restart FPM
@@ -469,34 +495,34 @@ EOF
                 {activePhpInfo?.fpmActive ? (
                   <button
                     onClick={() => handleControlFpm('stop')}
-                    className="px-3 py-1 rounded-lg bg-[#f38ba8]/15 hover:bg-[#f38ba8]/25 text-[#f38ba8] text-xs font-semibold flex items-center gap-1 transition-all"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#f38ba8]/15 hover:bg-[#f38ba8]/25 text-[#f38ba8] text-xs font-semibold flex items-center gap-1.5 border border-[#f38ba8]/30 transition-all"
                   >
-                    <Square size={12} /> Dừng FPM
+                    <Square size={12} /> Dừng
                   </button>
                 ) : (
                   <button
                     onClick={() => handleControlFpm('start')}
-                    className="px-3 py-1 rounded-lg bg-[#a6e3a1]/15 hover:bg-[#a6e3a1]/25 text-[#a6e3a1] text-xs font-semibold flex items-center gap-1 transition-all"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#a6e3a1]/15 hover:bg-[#a6e3a1]/25 text-[#a6e3a1] text-xs font-semibold flex items-center gap-1.5 border border-[#a6e3a1]/30 transition-all"
                   >
-                    <Play size={12} /> Bật FPM
+                    <Play size={12} /> Khởi động
                   </button>
                 )}
               </div>
             </div>
 
             {/* Sub-tabs Header */}
-            <div className="px-5 border-b border-white/[0.04] bg-[#181825] flex gap-4 text-xs font-semibold">
+            <div className="px-6 border-b border-white/[0.04] bg-[#181825] flex gap-6 text-xs font-semibold">
               {[
                 { id: 'settings', label: 'Cấu hình php.ini (Trực quan)' },
                 { id: 'extensions', label: 'Quản lý Extensions' },
-                { id: 'raw_ini', label: 'Trình soạn thảo Raw php.ini' }
+                { id: 'raw_ini', label: 'Soạn thảo Raw INI' }
               ].map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveSubTab(tab.id as any)}
                   className={`py-3 border-b-2 transition-all ${
                     activeSubTab === tab.id
-                      ? 'border-[#89b4fa] text-[#89b4fa]'
+                      ? 'border-[#cba6f7] text-[#cba6f7]'
                       : 'border-transparent text-[#a6adc8] hover:text-[#cdd6f4]'
                   }`}
                 >
@@ -505,125 +531,178 @@ EOF
               ))}
             </div>
 
-            {/* Sub-tab 1: Visual INI Settings */}
+            {/* Visual php.ini Editor */}
             {activeSubTab === 'settings' && (
-              <div className="flex-1 overflow-y-auto p-6 space-y-5 scrollbar-thin">
-                <div className="grid grid-cols-2 gap-5 max-w-2xl">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#a6adc8]">memory_limit (Giới hạn RAM)</label>
-                    <input
-                      type="text"
-                      value={memoryLimit}
-                      onChange={(e) => setMemoryLimit(e.target.value)}
-                      placeholder="256M"
-                      className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#89b4fa]"
-                    />
-                    <span className="text-[10px] text-[#585b70]">Ví dụ: 128M, 256M, 512M, 1024M hoặc -1</span>
+              <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin">
+                <div className="grid grid-cols-2 gap-5 max-w-3xl">
+                  {/* Memory */}
+                  <div className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] space-y-2">
+                    <label className="text-xs font-bold text-[#cdd6f4] flex items-center gap-1.5">
+                      <Cpu size={14} className="text-[#89b4fa]" /> memory_limit (Giới hạn RAM)
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={memoryLimit}
+                        onChange={(e) => setMemoryLimit(e.target.value)}
+                        className="flex-1 bg-[#181825] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#cba6f7]"
+                      />
+                      {['128M', '256M', '512M', '1024M'].map((val) => (
+                        <button
+                          key={val}
+                          type="button"
+                          onClick={() => setMemoryLimit(val)}
+                          className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-[#a6adc8]"
+                        >
+                          {val}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#a6adc8]">upload_max_filesize (Dung lượng Upload tối đa)</label>
-                    <input
-                      type="text"
-                      value={uploadMaxFilesize}
-                      onChange={(e) => setUploadMaxFilesize(e.target.value)}
-                      placeholder="64M"
-                      className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#89b4fa]"
-                    />
-                    <span className="text-[10px] text-[#585b70]">Ví dụ: 32M, 64M, 128M, 500M</span>
+                  {/* Upload Max */}
+                  <div className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] space-y-2">
+                    <label className="text-xs font-bold text-[#cdd6f4] flex items-center gap-1.5">
+                      <Download size={14} className="text-[#a6e3a1]" /> upload_max_filesize (Upload Tối Đa)
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={uploadMaxFilesize}
+                        onChange={(e) => setUploadMaxFilesize(e.target.value)}
+                        className="flex-1 bg-[#181825] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#cba6f7]"
+                      />
+                      {['32M', '64M', '128M', '512M'].map((val) => (
+                        <button
+                          key={val}
+                          type="button"
+                          onClick={() => setUploadMaxFilesize(val)}
+                          className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-[#a6adc8]"
+                        >
+                          {val}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#a6adc8]">post_max_size (Dung lượng POST tối đa)</label>
-                    <input
-                      type="text"
-                      value={postMaxSize}
-                      onChange={(e) => setPostMaxSize(e.target.value)}
-                      placeholder="64M"
-                      className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#89b4fa]"
-                    />
-                    <span className="text-[10px] text-[#585b70]">Nên lớn hơn hoặc bằng upload_max_filesize</span>
+                  {/* Post Max */}
+                  <div className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] space-y-2">
+                    <label className="text-xs font-bold text-[#cdd6f4]">post_max_size (Dung Lượng POST)</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={postMaxSize}
+                        onChange={(e) => setPostMaxSize(e.target.value)}
+                        className="flex-1 bg-[#181825] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#cba6f7]"
+                      />
+                      {['64M', '128M', '512M'].map((val) => (
+                        <button
+                          key={val}
+                          type="button"
+                          onClick={() => setPostMaxSize(val)}
+                          className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-[#a6adc8]"
+                        >
+                          {val}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#a6adc8]">max_execution_time (Thời gian chạy tối đa - giây)</label>
-                    <input
-                      type="text"
-                      value={maxExecutionTime}
-                      onChange={(e) => setMaxExecutionTime(e.target.value)}
-                      placeholder="120"
-                      className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#89b4fa]"
-                    />
-                    <span className="text-[10px] text-[#585b70]">Mặc định 30, khuyến nghị 120 - 300 cho web tải nặng</span>
+                  {/* Max Execution Time */}
+                  <div className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] space-y-2">
+                    <label className="text-xs font-bold text-[#cdd6f4]">max_execution_time (Thời Gian Chạy - Giây)</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={maxExecutionTime}
+                        onChange={(e) => setMaxExecutionTime(e.target.value)}
+                        className="flex-1 bg-[#181825] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#cba6f7]"
+                      />
+                      {['30', '60', '120', '300'].map((val) => (
+                        <button
+                          key={val}
+                          type="button"
+                          onClick={() => setMaxExecutionTime(val)}
+                          className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-[#a6adc8]"
+                        >
+                          {val}s
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#a6adc8]">display_errors (Hiển thị lỗi)</label>
+                  {/* Display Errors */}
+                  <div className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] space-y-2">
+                    <label className="text-xs font-bold text-[#cdd6f4]">display_errors (Hiển Thị Lỗi)</label>
                     <select
                       value={displayErrors}
                       onChange={(e) => setDisplayErrors(e.target.value)}
-                      className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#89b4fa]"
+                      className="w-full bg-[#181825] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none"
                     >
                       <option value="Off">Off (Khuyến nghị cho Production)</option>
-                      <option value="On">On (Dùng khi debug phát triển)</option>
+                      <option value="On">On (Debug phát triển)</option>
                     </select>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#a6adc8]">opcache.enable (Tăng tốc OPcache)</label>
+                  {/* OPcache */}
+                  <div className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] space-y-2">
+                    <label className="text-xs font-bold text-[#cdd6f4] flex items-center gap-1.5">
+                      <Zap size={14} className="text-[#fab387]" /> opcache.enable (Tăng Tốc Bytecode)
+                    </label>
                     <select
                       value={opcacheEnabled}
                       onChange={(e) => setOpcacheEnabled(e.target.value)}
-                      className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#89b4fa]"
+                      className="w-full bg-[#181825] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none"
                     >
-                      <option value="1">1 (Bật - Tối ưu hiệu năng cao)</option>
+                      <option value="1">1 (Bật - Tối ưu tốc độ cao)</option>
                       <option value="0">0 (Tắt)</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="pt-4 flex gap-3 max-w-2xl">
+                <div className="pt-2 max-w-3xl">
                   <button
                     onClick={handleSaveIniForm}
                     disabled={savingIni}
-                    className="px-6 py-2 rounded-xl bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40"
+                    className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#cba6f7] to-[#89b4fa] text-[#11111b] text-xs font-bold hover:shadow-[0_0_20px_rgba(203,166,247,0.4)] active:scale-95 transition-all disabled:opacity-40 flex items-center gap-2"
                   >
-                    {savingIni ? 'Đang lưu & restart FPM...' : 'Lưu cấu hình & Áp dụng'}
+                    <CheckCircle size={14} />
+                    {savingIni ? 'Đang lưu cấu hình & restart FPM...' : 'Lưu Cấu Hình & Áp Dụng Tức Thì'}
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Sub-tab 2: Extensions */}
+            {/* Extensions */}
             {activeSubTab === 'extensions' && (
-              <div className="flex-1 overflow-y-auto p-6 space-y-3 scrollbar-thin">
-                <div className="grid grid-cols-2 gap-3 max-w-4xl">
+              <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin">
+                <div className="grid grid-cols-2 gap-3.5 max-w-4xl">
                   {COMMON_EXTENSIONS.map((ext) => {
                     const isInstalled = installedExts.some((e) => e.includes(ext.pkg) || ext.name.toLowerCase().includes(e))
                     return (
                       <div
                         key={ext.pkg}
-                        className="p-3.5 rounded-xl bg-[#11111b]/40 border border-white/5 flex items-center justify-between gap-3"
+                        className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] flex items-center justify-between gap-3 hover:border-white/10 transition-all"
                       >
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-bold text-xs text-[#cdd6f4] truncate">{ext.name}</h4>
+                            <h4 className="font-bold text-xs text-[#cdd6f4]">{ext.name}</h4>
                             {isInstalled && (
-                              <span className="text-[9px] px-1.5 py-0.2 bg-[#a6e3a1]/20 text-[#a6e3a1] font-semibold rounded">
-                                Đã cài
+                              <span className="text-[9px] px-2 py-0.5 bg-[#a6e3a1]/20 text-[#a6e3a1] font-bold rounded-md flex items-center gap-1">
+                                <Check size={10} /> Đã Cài
                               </span>
                             )}
                           </div>
-                          <p className="text-[10px] text-[#585b70] mt-0.5 truncate">{ext.desc}</p>
+                          <p className="text-[11px] text-[#585b70] mt-1">{ext.desc}</p>
                         </div>
 
                         {!isInstalled && (
                           <button
                             onClick={() => handleInstallExtension(ext.pkg)}
                             disabled={loadingExts}
-                            className="px-3 py-1.5 rounded-lg bg-[#89b4fa]/15 hover:bg-[#89b4fa]/25 text-[#89b4fa] text-xs font-semibold shrink-0"
+                            className="px-3.5 py-1.5 rounded-xl bg-[#cba6f7]/15 hover:bg-[#cba6f7]/25 text-[#cba6f7] text-xs font-semibold shrink-0 border border-[#cba6f7]/30 transition-all"
                           >
-                            Cài đặt
+                            + Cài đặt
                           </button>
                         )}
                       </div>
@@ -633,23 +712,23 @@ EOF
               </div>
             )}
 
-            {/* Sub-tab 3: Raw INI */}
+            {/* Raw INI */}
             {activeSubTab === 'raw_ini' && (
-              <div className="flex-1 flex flex-col overflow-hidden">
-                <div className="p-2 border-b border-white/[0.04] bg-[#11111b]/40 flex justify-between items-center px-4">
+              <div className="flex-1 flex flex-col overflow-hidden bg-[#11111b]/30">
+                <div className="p-3 bg-[#11111b]/60 border-b border-white/[0.04] flex justify-between items-center px-5">
                   <span className="text-xs text-[#585b70] font-mono">/etc/php/{selectedVersion}/fpm/php.ini</span>
                   <button
                     onClick={handleSaveRawIni}
                     disabled={savingIni}
-                    className="px-4 py-1 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] active:scale-95 transition-all"
+                    className="px-5 py-1.5 rounded-xl bg-[#cba6f7] text-[#11111b] text-xs font-bold hover:bg-[#b4befe] active:scale-95 transition-all shadow-sm"
                   >
-                    {savingIni ? 'Đang Lưu...' : 'Lưu Tệp INI'}
+                    {savingIni ? 'Đang Lưu...' : 'Lưu File Raw INI'}
                   </button>
                 </div>
                 <textarea
                   value={rawIniContent}
                   onChange={(e) => setRawIniContent(e.target.value)}
-                  className="flex-1 p-4 bg-[#181825] text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed"
+                  className="flex-1 p-5 bg-[#11111b]/40 text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed select-text"
                   spellCheck={false}
                 />
               </div>
@@ -657,7 +736,7 @@ EOF
           </div>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-[#585b70]">
-            <Sliders size={40} className="opacity-30 text-[#89b4fa] mb-2" />
+            <Sliders size={48} className="opacity-20 text-[#cba6f7] mb-2" />
             <span className="text-xs">Chọn một phiên bản PHP từ danh sách bên trái</span>
           </div>
         )}
@@ -665,23 +744,29 @@ EOF
 
       {/* Install PHP Version Modal */}
       {showInstallPhpModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowInstallPhpModal(false)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in"
+          onClick={() => setShowInstallPhpModal(false)}
+        >
           <div
-            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[460px] flex flex-col animate-scale-in"
+            className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[480px] flex flex-col animate-scale-in overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
-                <Plus size={14} className="text-[#89b4fa]" /> Cài Đặt Thêm Phiên Bản PHP
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4] flex items-center gap-2">
+                <Plus size={14} className="text-[#cba6f7]" /> Cài Đặt Thêm Phiên Bản PHP
               </h3>
-              <button onClick={() => setShowInstallPhpModal(false)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
-                X
+              <button
+                onClick={() => setShowInstallPhpModal(false)}
+                className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4]"
+              >
+                <X size={14} />
               </button>
             </div>
 
-            <div className="p-5 space-y-3 text-xs">
+            <div className="p-6 space-y-4 text-xs">
               <p className="text-[#a6adc8] text-xs leading-relaxed">
-                Hệ thống sẽ tự động thêm repository chính thức <code>ppa:ondrej/php</code> và cài đặt đầy đủ gói PHP-FPM kèm các extension cốt lõi.
+                Hệ thống sẽ tự động thêm repository chính thức <code>ppa:ondrej/php</code> và cài đặt gói PHP-FPM kèm các module cốt lõi.
               </p>
 
               <div className="grid grid-cols-2 gap-3 pt-2">
@@ -692,15 +777,15 @@ EOF
                       key={v}
                       disabled={already || installingPhpVersion !== null}
                       onClick={() => handleInstallPhpVersion(v)}
-                      className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-1 font-bold transition-all ${
+                      className={`p-4 rounded-2xl border flex flex-col items-center justify-center gap-1 font-bold transition-all ${
                         already
                           ? 'bg-white/[0.02] border-white/5 text-[#585b70] cursor-not-allowed'
-                          : 'bg-[#89b4fa]/10 border-[#89b4fa]/30 text-[#89b4fa] hover:bg-[#89b4fa]/20 active:scale-95'
+                          : 'bg-[#cba6f7]/10 border-[#cba6f7]/30 text-[#cba6f7] hover:bg-[#cba6f7]/20 active:scale-95 shadow-sm'
                       }`}
                     >
-                      <span className="text-sm">PHP {v}</span>
+                      <span className="text-base">PHP {v}</span>
                       <span className="text-[10px] font-normal">
-                        {already ? 'Đã cài đặt' : installingPhpVersion === v ? 'Đang cài...' : 'Bấm để cài'}
+                        {already ? 'Đã cài đặt' : installingPhpVersion === v ? 'Đang cài...' : 'Bấm để cài đặt'}
                       </span>
                     </button>
                   )
@@ -709,8 +794,7 @@ EOF
 
               {actionLog && (
                 <div className="space-y-1.5 pt-2">
-                  <label className="text-[#585b70] font-semibold">Tiến trình cài đặt</label>
-                  <pre className="h-32 overflow-y-auto bg-[#11111b] p-2.5 rounded-lg font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
+                  <pre className="h-32 overflow-y-auto p-3 bg-[#11111b] rounded-xl font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
                     {actionLog}
                   </pre>
                 </div>

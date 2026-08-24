@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
   FileCode,
   RefreshCw,
@@ -11,7 +11,20 @@ import {
   ShieldCheck,
   Zap,
   Terminal,
-  Globe
+  Globe,
+  Search,
+  ExternalLink,
+  Copy,
+  Check,
+  ShieldAlert,
+  Sliders,
+  FolderOpen,
+  ArrowUpRight,
+  Shield,
+  Layers,
+  Lock,
+  ChevronRight,
+  Sparkles
 } from 'lucide-react'
 
 interface NginxPanelProps {
@@ -28,6 +41,7 @@ interface SiteItem {
   hasSsl: boolean
   serverName: string
   siteType: 'php' | 'proxy' | 'static' | 'redirect' | 'other'
+  rootOrPort?: string
 }
 
 export default function NginxPanel({
@@ -43,10 +57,15 @@ export default function NginxPanel({
   const [nginxTestResult, setNginxTestResult] = useState<{ success: boolean; message: string } | null>(null)
   const [savingNginx, setSavingNginx] = useState(false)
   const [detectedPhpSockets, setDetectedPhpSockets] = useState<string[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filterType, setFilterType] = useState<'all' | 'enabled' | 'disabled' | 'ssl'>('all')
+
+  const [activeTab, setActiveTab] = useState<'editor' | 'snippets' | 'logs' | 'ssl'>('editor')
 
   const [nginxInstalled, setNginxInstalled] = useState(true)
   const [installing, setInstalling] = useState(false)
   const [installLog, setInstallLog] = useState('')
+  const [copiedDomain, setCopiedDomain] = useState<string | null>(null)
 
   // Create Site Modal states
   const [showCreateSiteModal, setShowCreateSiteModal] = useState(false)
@@ -68,13 +87,9 @@ export default function NginxPanel({
   const [sslLogs, setSslLogs] = useState('')
 
   // Site Logs Modal states
-  const [showLogsModal, setShowLogsModal] = useState(false)
-  const [logType, setLogType] = useState<'access' | 'error'>('error')
+  const [logType, setLogType] = useState<'error' | 'access'>('error')
   const [logContent, setLogContent] = useState('')
   const [loadingLog, setLoadingLog] = useState(false)
-
-  // Snippets Modal
-  const [showSnippetsModal, setShowSnippetsModal] = useState(false)
 
   // Detect PHP-FPM sockets available on server
   const detectPhpSockets = useCallback(async () => {
@@ -104,7 +119,6 @@ export default function NginxPanel({
       }
       setNginxInstalled(true)
 
-      // Get available sites and enabled sites
       const getSitesCmd = `
         av_dir="/etc/nginx/sites-available"
         en_dir="/etc/nginx/sites-enabled"
@@ -160,10 +174,13 @@ export default function NginxPanel({
         })
 
       setSiteList(parsed)
+      if (parsed.length > 0 && !selectedNginxFile) {
+        handleReadNginxFile(parsed[0].name)
+      }
     } catch (e: any) {
       setError(e.message || 'Lỗi tải Virtual Hosts')
     }
-  }, [exec, setError])
+  }, [exec, selectedNginxFile, setError])
 
   const handleReadNginxFile = async (filename: string) => {
     setLoading(true)
@@ -286,6 +303,7 @@ EOF
 
     index index.php index.html index.htm;
 
+    # Gzip Compression
     gzip on;
     gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
 
@@ -293,13 +311,16 @@ EOF
         try_files $uri $uri/ /index.php?$query_string;
     }
 
+    # PHP-FPM FastCGI
     location ~ \\.php$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:${socketPath};
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
+        fastcgi_hide_header X-Powered-By;
     }
 
+    # Security Rules
     location ~ /\\. {
         deny all;
     }
@@ -307,6 +328,7 @@ EOF
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-XSS-Protection "1; mode=block" always;
     add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
 
     access_log /var/log/nginx/${newSiteDomain.trim()}_access.log;
     error_log /var/log/nginx/${newSiteDomain.trim()}_error.log;
@@ -328,6 +350,7 @@ EOF
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 90;
     }
 
     access_log /var/log/nginx/${newSiteDomain.trim()}_access.log;
@@ -349,6 +372,11 @@ EOF
         try_files $uri $uri/ /index.html;
     }
 
+    location ~* \\.(jpg|jpeg|png|gif|ico|css|js|webp|svg|woff|woff2|ttf)$ {
+        expires 30d;
+        add_header Cache-Control "public, no-transform";
+    }
+
     access_log /var/log/nginx/${newSiteDomain.trim()}_access.log;
     error_log /var/log/nginx/${newSiteDomain.trim()}_error.log;
 }`
@@ -361,7 +389,6 @@ EOF
 }`
       }
 
-      // Auto-create directory and sample index if requested
       if (newSiteAutoCreateDir && (newSiteType === 'php' || newSiteType === 'static')) {
         const targetRoot = newSiteParam.trim() || (newSiteType === 'php' ? `/var/www/${newSiteDomain.trim()}/public` : `/var/www/${newSiteDomain.trim()}`)
         const initScript = `
@@ -530,15 +557,13 @@ EOF
   const handleFetchSiteLogs = async (type: 'access' | 'error') => {
     setLogType(type)
     setLoadingLog(true)
-    setShowLogsModal(true)
-
     try {
       const match = nginxConfigContent.match(new RegExp(`${type}_log\\s+([^;]+);`))
       let logPath = match ? match[1].trim().split(/\s+/)[0] : `/var/log/nginx/${type}.log`
       if (logPath === 'off') logPath = `/var/log/nginx/${type}.log`
 
       const { stdout, stderr } = await exec(`sudo tail -n 120 "${logPath}" 2>/dev/null || tail -n 120 /var/log/nginx/${type}.log 2>/dev/null`)
-      setLogContent(stdout || stderr || '(Log trống hoặc chưa có dữ liệu)')
+      setLogContent(stdout || stderr || '(Chưa có dữ liệu log mới)')
     } catch (err: any) {
       setLogContent('Lỗi đọc file log: ' + err.message)
     } finally {
@@ -554,15 +579,35 @@ EOF
       }
       return prev + '\n' + snippet
     })
-    setShowSnippetsModal(false)
+    setActiveTab('editor')
   }
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    setCopiedDomain(text)
+    setTimeout(() => setCopiedDomain(null), 2000)
+  }
+
+  const filteredSites = useMemo(() => {
+    return siteList.filter((site) => {
+      const matchQuery = site.serverName.toLowerCase().includes(searchQuery.toLowerCase()) || site.name.toLowerCase().includes(searchQuery.toLowerCase())
+      if (!matchQuery) return false
+      if (filterType === 'enabled') return site.enabled
+      if (filterType === 'disabled') return !site.enabled
+      if (filterType === 'ssl') return site.hasSsl
+      return true
+    })
+  }, [siteList, searchQuery, filterType])
+
+  const selectedSiteItem = useMemo(() => {
+    return siteList.find((s) => s.name === selectedNginxFile)
+  }, [siteList, selectedNginxFile])
 
   const loadData = useCallback(async () => {
     setLoading(true)
     setError('')
     await detectPhpSockets()
     await fetchNginx()
-    setSelectedNginxFile(null)
     setNginxTestResult(null)
     setLoading(false)
   }, [detectPhpSockets, fetchNginx, setLoading, setError])
@@ -572,245 +617,514 @@ EOF
   }, [loadData, refreshKey])
 
   return (
-    <div className="flex-1 flex gap-4 overflow-hidden">
+    <div className="flex-1 flex gap-4 overflow-hidden animate-fade-in">
       {!nginxInstalled ? (
-        <div className="flex-grow flex flex-col items-center justify-center text-[#585b70] max-w-md mx-auto p-6 text-center space-y-4">
-          <FileCode size={48} className="text-[#89b4fa] opacity-60 animate-bounce" />
-          <div className="space-y-1">
-            <h3 className="text-sm font-bold text-[#cdd6f4]">Nginx chưa được cài đặt trên máy chủ</h3>
-            <p className="text-xs text-[#585b70]">
-              Không tìm thấy lệnh nginx trên máy chủ SSH này. Bạn có thể tự động cài đặt Nginx qua 1-click.
-            </p>
+        <div className="flex-grow flex flex-col items-center justify-center max-w-md mx-auto p-8 text-center bg-[#181825]/60 backdrop-blur-xl border border-white/[0.06] rounded-3xl shadow-2xl">
+          <div className="w-16 h-16 rounded-2xl bg-[#89b4fa]/10 border border-[#89b4fa]/20 flex items-center justify-center text-[#89b4fa] mb-4 shadow-[0_0_30px_rgba(137,180,250,0.2)]">
+            <Globe size={32} />
           </div>
+          <h3 className="text-base font-bold text-[#cdd6f4]">Nginx Web Server Chưa Sẵn Sàng</h3>
+          <p className="text-xs text-[#a6adc8] mt-2 mb-6 leading-relaxed">
+            Chưa tìm thấy dịch vụ Nginx trên máy chủ. Bạn có thể cài đặt tự động với cấu hình tối ưu chỉ bằng 1-click.
+          </p>
 
           {installing ? (
-            <div className="w-full bg-[#181825] border border-white/5 rounded-xl p-4 flex flex-col text-left space-y-2">
-              <span className="text-[10px] uppercase font-bold text-[#89b4fa] tracking-wider animate-pulse flex items-center gap-1.5">
-                <RefreshCw size={11} className="animate-spin" /> Đang cài đặt Nginx...
+            <div className="w-full bg-[#11111b] border border-white/5 rounded-2xl p-4 flex flex-col text-left space-y-2">
+              <span className="text-[11px] uppercase font-bold text-[#89b4fa] tracking-wider flex items-center gap-2">
+                <RefreshCw size={12} className="animate-spin" /> Đang thiết lập Nginx & Services...
               </span>
-              <pre className="h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[9px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
+              <pre className="h-40 overflow-y-auto p-3 bg-[#181825] rounded-xl font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
                 {installLog}
               </pre>
             </div>
           ) : (
             <button
               onClick={handleInstallNginx}
-              className="px-4 py-2 rounded-xl bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#89b4fa] to-[#74c7ec] text-[#11111b] text-xs font-bold hover:shadow-[0_0_20px_rgba(137,180,250,0.4)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2"
             >
-              Cài đặt Nginx tự động
+              <Sparkles size={14} /> Cài đặt Nginx Tự Động
             </button>
           )}
         </div>
       ) : (
         <div className="flex-grow flex-shrink flex-basis-0 min-w-0 flex gap-4 overflow-hidden">
-          {/* Left Virtual Hosts Sidebar */}
-          <div className="w-72 min-w-72 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden">
-            <div className="px-3 py-2.5 bg-[#11111b]/50 border-b border-white/[0.04] text-[10px] font-semibold text-[#585b70] uppercase tracking-wider flex justify-between items-center">
-              <span className="flex items-center gap-1.5">
-                <Globe size={13} className="text-[#89b4fa]" /> Websites ({siteList.length})
-              </span>
-              <button
-                onClick={() => {
-                  setNewSiteFilename('')
-                  setNewSiteDomain('example.com')
-                  setNewSiteSubdomains('www.example.com')
-                  setNewSiteParam('/var/www/example.com/public')
-                  setShowCreateSiteModal(true)
-                }}
-                className="px-2 py-1 bg-[#89b4fa]/15 hover:bg-[#89b4fa]/25 text-[#89b4fa] rounded-lg text-xs font-semibold flex items-center gap-1 transition-all"
-                title="Tạo Website / Virtual Host mới"
-              >
-                <Plus size={12} /> Thêm Site
-              </button>
+          {/* Left Master Sites Sidebar */}
+          <div className="w-80 min-w-80 bg-[#181825]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden shadow-xl">
+            {/* Header & Search */}
+            <div className="p-3 bg-[#11111b]/40 border-b border-white/[0.04] space-y-2.5">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#89b4fa] shadow-[0_0_8px_#89b4fa]" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4]">Websites</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/5 text-[#a6adc8] font-mono">
+                    {siteList.length}
+                  </span>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setNewSiteFilename('')
+                    setNewSiteDomain('example.com')
+                    setNewSiteSubdomains('www.example.com')
+                    setNewSiteParam('/var/www/example.com/public')
+                    setShowCreateSiteModal(true)
+                  }}
+                  className="px-2.5 py-1 bg-[#89b4fa]/15 hover:bg-[#89b4fa]/25 text-[#89b4fa] hover:text-[#b4befe] rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-[#89b4fa]/30 transition-all shadow-sm"
+                >
+                  <Plus size={13} /> Thêm Site
+                </button>
+              </div>
+
+              {/* Search Bar */}
+              <div className="relative flex items-center">
+                <Search size={13} className="absolute left-2.5 text-[#585b70]" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Tìm theo domain hoặc filename..."
+                  className="w-full bg-[#11111b] border border-white/[0.06] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[#cdd6f4] placeholder-[#585b70] outline-none focus:border-[#89b4fa]/40 transition-all font-mono"
+                />
+              </div>
+
+              {/* Filter Pills */}
+              <div className="flex gap-1">
+                {[
+                  { id: 'all', label: 'Tất cả' },
+                  { id: 'enabled', label: 'Đang bật' },
+                  { id: 'disabled', label: 'Đang tắt' },
+                  { id: 'ssl', label: 'Có SSL' }
+                ].map((f) => (
+                  <button
+                    key={f.id}
+                    onClick={() => setFilterType(f.id as any)}
+                    className={`flex-1 py-1 rounded-lg text-[10px] font-semibold transition-all ${
+                      filterType === f.id
+                        ? 'bg-white/10 text-[#cdd6f4] shadow-sm'
+                        : 'text-[#585b70] hover:text-[#a6adc8] hover:bg-white/[0.02]'
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-2 space-y-1 scrollbar-thin">
-              {siteList.length === 0 ? (
-                <div className="text-center text-[#585b70] text-xs py-8">Chưa có Virtual Host nào.</div>
+            {/* Sites List */}
+            <div className="flex-1 overflow-y-auto p-2 space-y-1.5 scrollbar-thin">
+              {filteredSites.length === 0 ? (
+                <div className="text-center text-[#585b70] text-xs py-12 flex flex-col items-center gap-2">
+                  <Globe size={24} className="opacity-30" />
+                  <span>Không tìm thấy website nào</span>
+                </div>
               ) : (
-                siteList.map((site) => (
+                filteredSites.map((site) => (
                   <div
                     key={site.name}
                     onClick={() => handleReadNginxFile(site.name)}
-                    className={`group flex items-center justify-between p-2 rounded-xl border transition-all cursor-pointer ${
+                    className={`group relative p-3 rounded-xl border transition-all cursor-pointer ${
                       selectedNginxFile === site.name
-                        ? 'bg-[#89b4fa]/10 border-[#89b4fa]/40 text-[#cdd6f4]'
-                        : 'bg-[#11111b]/30 border-white/[0.02] text-[#a6adc8] hover:bg-white/[0.03] hover:border-white/[0.06]'
+                        ? 'bg-[#89b4fa]/15 border-[#89b4fa]/40 shadow-[0_4px_16px_rgba(137,180,250,0.12)]'
+                        : 'bg-[#11111b]/30 border-white/[0.03] hover:bg-white/[0.03] hover:border-white/[0.08]'
                     }`}
                   >
-                    <div className="flex-1 min-w-0 pr-2">
-                      <div className="flex items-center gap-1.5">
-                        <span
-                          className={`w-2 h-2 rounded-full shrink-0 ${
-                            site.enabled ? 'bg-[#a6e3a1] shadow-[0_0_8px_rgba(166,227,161,0.5)]' : 'bg-[#585b70]'
-                          }`}
-                          title={site.enabled ? 'Site đang bật' : 'Site đang tắt'}
-                        />
-                        <span className="font-semibold text-xs text-[#cdd6f4] truncate">{site.serverName || site.name}</span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-1 text-[10px] text-[#585b70]">
-                        <span className="uppercase font-mono font-bold px-1.5 py-0.2 bg-white/5 rounded text-[#89b4fa]">
-                          {site.siteType}
-                        </span>
-                        {site.hasSsl && (
-                          <span className="text-[#a6e3a1] flex items-center gap-0.5" title="Có chứng chỉ SSL">
-                            <ShieldCheck size={10} /> SSL
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`w-2 h-2 rounded-full shrink-0 ${
+                              site.enabled
+                                ? 'bg-[#a6e3a1] shadow-[0_0_8px_rgba(166,227,161,0.6)]'
+                                : 'bg-[#585b70]'
+                            }`}
+                          />
+                          <span className="font-bold text-xs text-[#cdd6f4] truncate">
+                            {site.serverName || site.name}
                           </span>
-                        )}
-                        <span className="truncate opacity-75">{site.name}</span>
-                      </div>
-                    </div>
+                        </div>
 
-                    <div className="flex items-center gap-1 shrink-0">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleToggleSite(site)
-                        }}
-                        className={`p-1.5 rounded-lg transition-all ${
-                          site.enabled
-                            ? 'text-[#a6e3a1] hover:bg-[#a6e3a1]/15'
-                            : 'text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/5'
-                        }`}
-                        title={site.enabled ? 'Tắt website này' : 'Bật website này'}
-                      >
-                        <Power size={13} />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleDeleteSite(site.name)
-                        }}
-                        className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-[#f38ba8]/15 text-[#f38ba8] transition-all"
-                        title="Xóa Site"
-                      >
-                        <Trash2 size={13} />
-                      </button>
+                        <div className="flex items-center gap-1.5 mt-1.5">
+                          <span
+                            className={`text-[9px] uppercase font-bold font-mono px-1.5 py-0.5 rounded-md ${
+                              site.siteType === 'php'
+                                ? 'bg-[#89b4fa]/20 text-[#89b4fa]'
+                                : site.siteType === 'proxy'
+                                ? 'bg-[#cba6f7]/20 text-[#cba6f7]'
+                                : site.siteType === 'static'
+                                ? 'bg-[#a6e3a1]/20 text-[#a6e3a1]'
+                                : 'bg-[#fab387]/20 text-[#fab387]'
+                            }`}
+                          >
+                            {site.siteType}
+                          </span>
+
+                          {site.hasSsl && (
+                            <span className="text-[9px] font-semibold text-[#a6e3a1] flex items-center gap-0.5 bg-[#a6e3a1]/10 px-1.5 py-0.5 rounded-md">
+                              <ShieldCheck size={10} /> SSL
+                            </span>
+                          )}
+
+                          <span className="text-[10px] text-[#585b70] font-mono truncate">{site.name}</span>
+                        </div>
+                      </div>
+
+                      {/* Action buttons on card hover */}
+                      <div className="flex items-center gap-0.5 shrink-0">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleToggleSite(site)
+                          }}
+                          className={`p-1.5 rounded-lg transition-all ${
+                            site.enabled
+                              ? 'text-[#a6e3a1] hover:bg-[#a6e3a1]/20'
+                              : 'text-[#585b70] hover:text-[#cdd6f4] hover:bg-white/10'
+                          }`}
+                          title={site.enabled ? 'Tạm dừng website' : 'Kích hoạt website'}
+                        >
+                          <Power size={13} />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDeleteSite(site.name)
+                          }}
+                          className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-[#f38ba8]/20 text-[#f38ba8] transition-all"
+                          title="Xóa Website"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))
               )}
             </div>
 
-            <div className="p-2.5 border-t border-white/[0.04] bg-[#11111b]/35 flex gap-2">
+            {/* Reload Nginx Button */}
+            <div className="p-3 border-t border-white/[0.04] bg-[#11111b]/40">
               <button
                 onClick={handleReloadNginx}
-                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold bg-[#89b4fa]/10 text-[#89b4fa] hover:bg-[#89b4fa]/20 active:scale-95 transition-all"
+                className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold bg-[#89b4fa]/10 hover:bg-[#89b4fa]/20 text-[#89b4fa] border border-[#89b4fa]/20 active:scale-95 transition-all shadow-sm"
               >
-                <RefreshCw size={12} /> Reload Nginx
+                <RefreshCw size={13} /> Reload Nginx Server
               </button>
             </div>
           </div>
 
-          {/* Right Editor & Controls Area */}
-          <div className="flex-1 bg-[#181825] border border-white/[0.04] rounded-xl flex flex-col overflow-hidden relative">
+          {/* Right Main Detail & Work Area */}
+          <div className="flex-1 bg-[#181825]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden shadow-xl relative">
             {selectedNginxFile ? (
               <div className="flex-1 flex flex-col overflow-hidden">
-                {/* Header Toolbar */}
-                <div className="px-4 py-2.5 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <FileCode size={14} className="text-[#89b4fa]" />
-                    <span className="font-mono text-xs font-bold text-[#cdd6f4]">{selectedNginxFile}</span>
+                {/* Header Bar */}
+                <div className="px-5 py-3 border-b border-white/[0.04] bg-[#11111b]/50 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-xl bg-[#89b4fa]/10 text-[#89b4fa] border border-[#89b4fa]/20">
+                      <Globe size={18} />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-[#cdd6f4]">
+                          {selectedSiteItem?.serverName || selectedNginxFile}
+                        </h3>
+                        <button
+                          onClick={() => copyToClipboard(selectedSiteItem?.serverName || selectedNginxFile)}
+                          className="text-[#585b70] hover:text-[#89b4fa] p-1 rounded transition-all"
+                          title="Copy Domain"
+                        >
+                          {copiedDomain ? <Check size={12} className="text-[#a6e3a1]" /> : <Copy size={12} />}
+                        </button>
+                        <a
+                          href={`http://${selectedSiteItem?.serverName || 'localhost'}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[#585b70] hover:text-[#89b4fa] p-1 rounded transition-all"
+                          title="Mở trong trình duyệt"
+                        >
+                          <ExternalLink size={12} />
+                        </a>
+                      </div>
+                      <span className="text-[11px] text-[#585b70] font-mono">{selectedNginxFile}</span>
+                    </div>
                   </div>
 
+                  {/* Primary Save Button */}
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => handleFetchSiteLogs('error')}
-                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-[#f38ba8] flex items-center gap-1 transition-all"
-                      title="Xem Error Log"
-                    >
-                      <Terminal size={12} /> Error Log
-                    </button>
-                    <button
-                      onClick={() => handleFetchSiteLogs('access')}
-                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-[#a6adc8] flex items-center gap-1 transition-all"
-                      title="Xem Access Log"
-                    >
-                      <Terminal size={12} /> Access Log
-                    </button>
-
-                    <button
-                      onClick={handleOpenSslWizard}
-                      className="px-3 py-1 rounded-lg bg-[#a6e3a1]/15 text-[#a6e3a1] hover:bg-[#a6e3a1]/25 text-xs font-semibold flex items-center gap-1 transition-all"
-                    >
-                      <ShieldCheck size={12} /> SSL Let's Encrypt
-                    </button>
-
-                    <button
-                      onClick={() => setShowSnippetsModal(true)}
-                      className="px-3 py-1 rounded-lg bg-[#fab387]/15 text-[#fab387] hover:bg-[#fab387]/25 text-xs font-semibold flex items-center gap-1 transition-all"
-                    >
-                      <Zap size={12} /> Snippets
-                    </button>
-
                     <button
                       onClick={handleSaveNginxConfig}
                       disabled={savingNginx}
-                      className="px-3.5 py-1 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] active:scale-95 disabled:opacity-40 transition-all flex items-center gap-1"
+                      className="px-4 py-1.5 rounded-xl bg-[#89b4fa] text-[#11111b] text-xs font-bold hover:bg-[#74c7ec] hover:shadow-[0_0_15px_rgba(137,180,250,0.3)] active:scale-95 disabled:opacity-40 transition-all flex items-center gap-1.5 shadow-sm"
                     >
-                      {savingNginx ? 'Đang Lưu...' : 'Lưu & Test Config'}
+                      <CheckCircle size={13} />
+                      {savingNginx ? 'Đang Kiểm Tra & Lưu...' : 'Lưu & Test Config'}
                     </button>
                   </div>
                 </div>
 
-                <textarea
-                  value={nginxConfigContent}
-                  onChange={(e) => setNginxConfigContent(e.target.value)}
-                  className="flex-1 p-4 bg-[#181825] text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed"
-                  spellCheck={false}
-                />
+                {/* Tab Navigation */}
+                <div className="px-5 border-b border-white/[0.04] bg-[#181825] flex gap-6 text-xs font-semibold">
+                  {[
+                    { id: 'editor', label: 'Cấu hình Virtual Host', icon: FileCode },
+                    { id: 'snippets', label: 'Snippets & Tối ưu Bảo mật', icon: Zap },
+                    { id: 'ssl', label: 'Chứng chỉ SSL (HTTPS)', icon: ShieldCheck },
+                    { id: 'logs', label: 'Realtime Logs', icon: Terminal }
+                  ].map((tab) => {
+                    const Icon = tab.icon
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => {
+                          setActiveTab(tab.id as any)
+                          if (tab.id === 'logs') handleFetchSiteLogs('error')
+                        }}
+                        className={`py-3 border-b-2 flex items-center gap-2 transition-all ${
+                          activeTab === tab.id
+                            ? 'border-[#89b4fa] text-[#89b4fa]'
+                            : 'border-transparent text-[#a6adc8] hover:text-[#cdd6f4]'
+                        }`}
+                      >
+                        <Icon size={14} />
+                        <span>{tab.label}</span>
+                      </button>
+                    )
+                  })}
+                </div>
 
-                {nginxTestResult && (
-                  <div
-                    className={`p-3 border-t text-xs font-mono flex items-start gap-2 ${
-                      nginxTestResult.success
-                        ? 'bg-[#a6e3a1]/10 border-[#a6e3a1]/25 text-[#a6e3a1]'
-                        : 'bg-[#f38ba8]/10 border-[#f38ba8]/25 text-[#f38ba8]'
-                    }`}
-                  >
-                    {nginxTestResult.success ? (
-                      <CheckCircle size={15} className="shrink-0 mt-0.5" />
-                    ) : (
-                      <AlertTriangle size={15} className="shrink-0 mt-0.5" />
+                {/* Tab 1: Monaco-like Config Editor */}
+                {activeTab === 'editor' && (
+                  <div className="flex-1 flex flex-col overflow-hidden bg-[#11111b]/20">
+                    <textarea
+                      value={nginxConfigContent}
+                      onChange={(e) => setNginxConfigContent(e.target.value)}
+                      className="flex-1 p-5 bg-[#11111b]/40 text-xs text-[#cdd6f4] outline-none font-mono resize-none leading-relaxed select-text selection:bg-[#89b4fa]/30"
+                      spellCheck={false}
+                    />
+
+                    {nginxTestResult && (
+                      <div
+                        className={`p-3.5 border-t text-xs font-mono flex items-start gap-2.5 ${
+                          nginxTestResult.success
+                            ? 'bg-[#a6e3a1]/10 border-[#a6e3a1]/25 text-[#a6e3a1]'
+                            : 'bg-[#f38ba8]/10 border-[#f38ba8]/25 text-[#f38ba8]'
+                        }`}
+                      >
+                        {nginxTestResult.success ? (
+                          <CheckCircle size={16} className="shrink-0 mt-0.5" />
+                        ) : (
+                          <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+                        )}
+                        <div className="flex-1 overflow-auto whitespace-pre-wrap max-h-24 leading-relaxed font-sans">
+                          {nginxTestResult.message}
+                        </div>
+                      </div>
                     )}
-                    <div className="flex-1 overflow-auto whitespace-pre-wrap max-h-28">{nginxTestResult.message}</div>
+                  </div>
+                )}
+
+                {/* Tab 2: Snippets & Security */}
+                {activeTab === 'snippets' && (
+                  <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin">
+                    <div className="max-w-3xl space-y-3">
+                      {[
+                        {
+                          name: 'Chống Hotlink Ảnh & Video (Hotlink Protection)',
+                          desc: 'Chặn các website khác nhúng trực tiếp hình ảnh, giảm thất thoát băng thông server',
+                          code: `    # Hotlink Protection
+    location ~* \\.(gif|jpg|jpeg|png|webp|mp4|zip)$ {
+        valid_referers none blocked server_names ~\\.google\\. ~\\.bing\\. ~\\.facebook\\.;
+        if ($invalid_referer) {
+            return 403;
+        }
+    }`
+                        },
+                        {
+                          name: 'Rate Limiting / Chống Flood Brute-Force',
+                          desc: 'Giới hạn số lượng request trên mỗi giây từ một IP để ngăn chặn DDoS & bot scanning',
+                          code: `    # Rate Limiting Rule
+    limit_req zone=one burst=20 nodelay;`
+                        },
+                        {
+                          name: 'Security Headers Chuẩn OWASP',
+                          desc: 'Bảo vệ website khỏi các lỗ hổng XSS, Clickjacking, MIME Type Sniffing',
+                          code: `    # Security Headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;`
+                        },
+                        {
+                          name: 'Browser Caching 30 Ngày (Tăng Tốc Web)',
+                          desc: 'Thiết lập header Cache-Control cho toàn bộ CSS, JS, Fonts, Ảnh tĩnh',
+                          code: `    # Static Assets Cache
+    location ~* \\.(jpg|jpeg|png|gif|ico|css|js|woff|woff2|svg)$ {
+        expires 30d;
+        add_header Cache-Control "public, no-transform";
+        access_log off;
+    }`
+                        }
+                      ].map((snip) => (
+                        <div
+                          key={snip.name}
+                          className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] hover:border-white/10 transition-all flex items-center justify-between gap-4"
+                        >
+                          <div>
+                            <h4 className="font-bold text-xs text-[#cdd6f4]">{snip.name}</h4>
+                            <p className="text-[11px] text-[#585b70] mt-1">{snip.desc}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleInsertSnippet(snip.code)}
+                            className="px-3.5 py-1.5 rounded-xl bg-[#89b4fa]/15 hover:bg-[#89b4fa]/25 text-[#89b4fa] text-xs font-semibold shrink-0 border border-[#89b4fa]/30 transition-all"
+                          >
+                            + Chèn vào config
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Tab 3: SSL Manager */}
+                {activeTab === 'ssl' && (
+                  <div className="flex-1 overflow-y-auto p-6 space-y-5 scrollbar-thin">
+                    <div className="max-w-xl space-y-4">
+                      <div className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] space-y-3">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2.5 rounded-xl bg-[#a6e3a1]/15 text-[#a6e3a1] border border-[#a6e3a1]/30">
+                            <ShieldCheck size={20} />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-xs text-[#cdd6f4]">Chứng chỉ SSL Let's Encrypt</h4>
+                            <p className="text-[11px] text-[#585b70]">
+                              Tự động cấp phát chứng chỉ SSL miễn phí và kích hoạt chuyển hướng HTTPS an toàn
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2 pt-2">
+                          <label className="text-[11px] font-semibold text-[#a6adc8]">Tên miền chính</label>
+                          <input
+                            type="text"
+                            value={sslDomain || selectedSiteItem?.serverName || ''}
+                            onChange={(e) => setSslDomain(e.target.value)}
+                            className="w-full bg-[#181825] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#a6e3a1]"
+                            placeholder="example.com"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-semibold text-[#a6adc8]">Email nhận thông báo gia hạn</label>
+                          <input
+                            type="email"
+                            value={sslEmail}
+                            onChange={(e) => setSslEmail(e.target.value)}
+                            className="w-full bg-[#181825] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#a6e3a1]"
+                            placeholder="admin@example.com"
+                          />
+                        </div>
+
+                        {sslLogs && (
+                          <pre className="h-36 overflow-y-auto p-3 bg-[#181825] rounded-xl font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
+                            {sslLogs}
+                          </pre>
+                        )}
+
+                        <button
+                          onClick={handleRunSslCertbot}
+                          disabled={runningSsl}
+                          className="w-full py-2.5 rounded-xl bg-[#a6e3a1] text-[#11111b] text-xs font-bold hover:bg-[#94e2d5] active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
+                        >
+                          <ShieldCheck size={14} />
+                          {runningSsl ? 'Đang tạo chứng chỉ...' : 'Cấp Phát SSL Ngay (1-Click)'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tab 4: Logs */}
+                {activeTab === 'logs' && (
+                  <div className="flex-1 flex flex-col overflow-hidden bg-[#11111b]/30">
+                    <div className="p-3 bg-[#11111b]/60 border-b border-white/[0.04] flex items-center justify-between px-5">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleFetchSiteLogs('error')}
+                          className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                            logType === 'error'
+                              ? 'bg-[#f38ba8]/20 text-[#f38ba8] border border-[#f38ba8]/40'
+                              : 'bg-white/5 text-[#585b70] hover:text-[#cdd6f4]'
+                          }`}
+                        >
+                          Error Log
+                        </button>
+                        <button
+                          onClick={() => handleFetchSiteLogs('access')}
+                          className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                            logType === 'access'
+                              ? 'bg-[#89b4fa]/20 text-[#89b4fa] border border-[#89b4fa]/40'
+                              : 'bg-white/5 text-[#585b70] hover:text-[#cdd6f4]'
+                          }`}
+                        >
+                          Access Log
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={() => handleFetchSiteLogs(logType)}
+                        className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#89b4fa] transition-all"
+                        title="Tải lại log"
+                      >
+                        <RefreshCw size={13} className={loadingLog ? 'animate-spin' : ''} />
+                      </button>
+                    </div>
+
+                    <pre className="flex-1 p-5 overflow-y-auto font-mono text-[11px] text-[#cdd6f4] leading-relaxed whitespace-pre-wrap scrollbar-thin select-text">
+                      {logContent}
+                    </pre>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="flex-1 flex flex-col items-center justify-center text-[#585b70] space-y-2">
-                <Globe size={40} className="opacity-30 text-[#89b4fa]" />
-                <span className="text-xs font-medium">Chọn một Website từ danh sách bên trái hoặc bấm [Thêm Site]</span>
+              <div className="flex-1 flex flex-col items-center justify-center text-[#585b70] space-y-3">
+                <Globe size={48} className="opacity-20 text-[#89b4fa]" />
+                <span className="text-xs font-medium">Chọn một Website từ danh sách bên trái để chỉnh sửa</span>
               </div>
             )}
           </div>
         </div>
       )}
 
-      {/* Create Site Modal */}
+      {/* Advanced Create Site Modal */}
       {showCreateSiteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowCreateSiteModal(false)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in"
+          onClick={() => setShowCreateSiteModal(false)}
+        >
           <div
-            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[520px] max-h-[90vh] flex flex-col animate-scale-in"
+            className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[540px] max-h-[90vh] flex flex-col animate-scale-in overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4] flex items-center gap-2">
                 <Plus size={14} className="text-[#89b4fa]" /> Tạo Website / Virtual Host Mới
               </h3>
-              <button onClick={() => setShowCreateSiteModal(false)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+              <button
+                onClick={() => setShowCreateSiteModal(false)}
+                className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4] transition-all"
+              >
                 <X size={14} />
               </button>
             </div>
 
-            <div className="p-5 space-y-4 text-xs overflow-y-auto scrollbar-thin">
+            <div className="p-6 space-y-4 text-xs overflow-y-auto scrollbar-thin">
+              {/* Type Select */}
               <div className="space-y-1.5">
-                <label className="text-[#585b70] font-semibold">Loại Website / Framework</label>
+                <label className="text-[#a6adc8] font-semibold">Loại Website / Framework</label>
                 <div className="grid grid-cols-4 gap-2">
                   {[
                     { id: 'php', label: 'PHP / Laravel' },
                     { id: 'proxy', label: 'Node / Proxy' },
-                    { id: 'static', label: 'Static / HTML' },
+                    { id: 'static', label: 'Static HTML' },
                     { id: 'redirect', label: 'Redirect 301' }
                   ].map((t) => (
                     <button
@@ -826,10 +1140,10 @@ EOF
                           setNewSiteParam('3000')
                         }
                       }}
-                      className={`py-2 px-2 rounded-xl border text-center font-medium transition-all ${
+                      className={`py-2 px-2 rounded-xl border text-center font-semibold transition-all ${
                         newSiteType === t.id
-                          ? 'bg-[#89b4fa]/20 border-[#89b4fa] text-[#89b4fa] font-bold'
-                          : 'bg-[#181825] border-white/5 text-[#a6adc8] hover:bg-white/5'
+                          ? 'bg-[#89b4fa]/20 border-[#89b4fa] text-[#89b4fa] shadow-sm'
+                          : 'bg-[#11111b] border-white/5 text-[#a6adc8] hover:bg-white/5'
                       }`}
                     >
                       {t.label}
@@ -838,9 +1152,10 @@ EOF
                 </div>
               </div>
 
+              {/* Domains */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-[#585b70] font-semibold">Tên miền chính (Primary Domain) *</label>
+                  <label className="text-[#a6adc8] font-semibold">Tên miền chính *</label>
                   <input
                     type="text"
                     placeholder="example.com"
@@ -856,40 +1171,42 @@ EOF
                         setNewSiteParam(`/var/www/${e.target.value}`)
                       }
                     }}
-                    className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                    className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[#585b70] font-semibold">Subdomains / Alias</label>
+                  <label className="text-[#a6adc8] font-semibold">Subdomains / Alias</label>
                   <input
                     type="text"
                     placeholder="www.example.com"
                     value={newSiteSubdomains}
                     onChange={(e) => setNewSiteSubdomains(e.target.value)}
-                    className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                    className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                   />
                 </div>
               </div>
 
+              {/* Filename */}
               <div className="space-y-1.5">
-                <label className="text-[#585b70] font-semibold">Tên file cấu hình (.conf) *</label>
+                <label className="text-[#a6adc8] font-semibold">Tên file cấu hình (.conf) *</label>
                 <input
                   type="text"
                   placeholder="example.com.conf"
                   value={newSiteFilename}
                   onChange={(e) => setNewSiteFilename(e.target.value)}
-                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                  className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                 />
               </div>
 
+              {/* PHP Socket */}
               {newSiteType === 'php' && (
                 <div className="space-y-1.5">
-                  <label className="text-[#585b70] font-semibold">Phiên bản PHP (PHP-FPM Socket)</label>
+                  <label className="text-[#a6adc8] font-semibold">Phiên bản PHP (Socket)</label>
                   <select
                     value={newSitePhpSocket}
                     onChange={(e) => setNewSitePhpSocket(e.target.value)}
-                    className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                    className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                   >
                     {detectedPhpSockets.map((sock) => (
                       <option key={sock} value={sock}>
@@ -900,9 +1217,10 @@ EOF
                 </div>
               )}
 
+              {/* Root / Port */}
               {newSiteType !== 'redirect' && (
                 <div className="space-y-1.5">
-                  <label className="text-[#585b70] font-semibold">
+                  <label className="text-[#a6adc8] font-semibold">
                     {newSiteType === 'proxy' ? 'Cổng ứng dụng Local (Port Proxy) *' : 'Thư mục Web Root *'}
                   </label>
                   {newSiteType === 'proxy' ? (
@@ -911,7 +1229,7 @@ EOF
                       placeholder="3000"
                       value={newSiteParam}
                       onChange={(e) => setNewSiteParam(e.target.value)}
-                      className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                      className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                     />
                   ) : (
                     <div className="flex gap-2">
@@ -920,12 +1238,12 @@ EOF
                         placeholder="/var/www/domain/public"
                         value={newSiteParam}
                         onChange={(e) => setNewSiteParam(e.target.value)}
-                        className="flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                        className="flex-1 bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPicker(true)}
-                        className="px-3 rounded-lg bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs"
+                        className="px-3 rounded-xl bg-white/5 text-[#cdd6f4] hover:bg-white/10 text-xs border border-white/5"
                       >
                         Duyệt...
                       </button>
@@ -940,7 +1258,7 @@ EOF
                     type="checkbox"
                     checked={newSiteAutoCreateDir}
                     onChange={(e) => setNewSiteAutoCreateDir(e.target.checked)}
-                    className="rounded border-white/10 bg-[#181825] text-[#89b4fa]"
+                    className="rounded border-white/10 bg-[#11111b] text-[#89b4fa]"
                   />
                   <span className="text-[#cdd6f4] text-xs">
                     Tự động tạo thư mục và file index mẫu (chown www-data:www-data)
@@ -948,11 +1266,11 @@ EOF
                 </label>
               )}
 
-              <div className="flex gap-2 justify-end pt-3">
+              <div className="flex gap-2 justify-end pt-3 border-t border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() => setShowCreateSiteModal(false)}
-                  className="px-4 py-1.5 rounded-xl font-semibold bg-white/5 hover:bg-white/10"
+                  className="px-4 py-2 rounded-xl font-semibold bg-white/5 hover:bg-white/10 text-[#cdd6f4] transition-all"
                 >
                   Hủy
                 </button>
@@ -960,7 +1278,7 @@ EOF
                   type="button"
                   onClick={handleCreateSiteFromModal}
                   disabled={creatingSite}
-                  className="px-5 py-1.5 rounded-xl font-bold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40"
+                  className="px-6 py-2 rounded-xl font-bold bg-[#89b4fa] text-[#11111b] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40"
                 >
                   {creatingSite ? 'Đang tạo...' : 'Tạo Website Ngay'}
                 </button>
@@ -978,191 +1296,6 @@ EOF
           onClose={() => setShowPicker(false)}
           onSelect={(path) => setNewSiteParam(path)}
         />
-      )}
-
-      {/* Snippets Modal */}
-      {showSnippetsModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowSnippetsModal(false)}>
-          <div
-            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[500px] flex flex-col animate-scale-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
-                <Zap size={14} className="text-[#fab387]" /> Thư Viện Nginx Snippets & Tối Ưu
-              </h3>
-              <button onClick={() => setShowSnippetsModal(false)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
-                <X size={14} />
-              </button>
-            </div>
-
-            <div className="p-5 space-y-3 text-xs">
-              {[
-                {
-                  name: 'Chống Hotlink Ảnh (Hotlink Protection)',
-                  desc: 'Chặn các trang web khác nhúng link trực tiếp hình ảnh/video',
-                  code: `
-    location ~* \\.(gif|jpg|jpeg|png|webp|mp4|zip)$ {
-        valid_referers none blocked server_names ~\\.google\\. ~\\.bing\\. ~\\.facebook\\.;
-        if ($invalid_referer) {
-            return 403;
-        }
-    }`
-                },
-                {
-                  name: 'Rate Limiting / Chống Brute-force',
-                  desc: 'Giới hạn tần suất request để chống flood bot',
-                  code: `
-    limit_req zone=one burst=20 nodelay;`
-                },
-                {
-                  name: 'Security Headers Chuẩn OWASP',
-                  desc: 'Bảo vệ XSS, Clickjacking, MIME sniffing',
-                  code: `
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;`
-                },
-                {
-                  name: 'Static Assets Caching (Browser Cache 30 ngày)',
-                  desc: 'Tăng tốc tải trang với header Cache-Control cho CSS/JS/Image',
-                  code: `
-    location ~* \\.(jpg|jpeg|png|gif|ico|css|js|woff|woff2|svg)$ {
-        expires 30d;
-        add_header Cache-Control "public, no-transform";
-        access_log off;
-    }`
-                }
-              ].map((snip) => (
-                <div key={snip.name} className="p-3 rounded-xl bg-[#181825] border border-white/5 flex items-center justify-between gap-3">
-                  <div>
-                    <h4 className="font-bold text-[#cdd6f4]">{snip.name}</h4>
-                    <p className="text-[11px] text-[#585b70] mt-0.5">{snip.desc}</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleInsertSnippet(snip.code)}
-                    className="px-3 py-1.5 rounded-lg bg-[#fab387]/15 text-[#fab387] hover:bg-[#fab387]/25 text-xs font-semibold shrink-0"
-                  >
-                    Chèn vào config
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* SSL Certbot Wizard Modal */}
-      {showSslModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowSslModal(false)}>
-          <div
-            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[460px] max-h-[85vh] flex flex-col animate-scale-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#a6e3a1]" />
-                Cài đặt SSL Let's Encrypt Tự Động
-              </h3>
-              <button onClick={() => setShowSslModal(false)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
-                <X size={14} />
-              </button>
-            </div>
-            <div className="p-5 space-y-4 text-xs overflow-y-auto scrollbar-thin">
-              <div className="space-y-1.5">
-                <label className="text-[#585b70] font-semibold">Tên miền (Domain Name) *</label>
-                <input
-                  type="text"
-                  value={sslDomain}
-                  onChange={(e) => setSslDomain(e.target.value)}
-                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#a6e3a1]/50"
-                  placeholder="example.com"
-                  disabled={runningSsl}
-                />
-                <span className="text-[10px] text-[#585b70]">Đảm bảo tên miền đã trỏ bản ghi A/CNAME về địa chỉ IP của máy chủ này.</span>
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[#585b70] font-semibold">Email thông báo gia hạn</label>
-                <input
-                  type="email"
-                  value={sslEmail}
-                  onChange={(e) => setSslEmail(e.target.value)}
-                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
-                  placeholder="admin@example.com"
-                  disabled={runningSsl}
-                />
-              </div>
-
-              {sslLogs && (
-                <div className="space-y-1.5">
-                  <label className="text-[#585b70] font-semibold">Tiến trình thực thi</label>
-                  <pre className="h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
-                    {sslLogs}
-                  </pre>
-                </div>
-              )}
-
-              <div className="flex gap-2 justify-end pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowSslModal(false)}
-                  className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10"
-                  disabled={runningSsl}
-                >
-                  Đóng
-                </button>
-                <button
-                  type="button"
-                  onClick={handleRunSslCertbot}
-                  disabled={runningSsl}
-                  className="px-4 py-1.5 rounded-lg font-semibold bg-[#a6e3a1] text-[#1e1e2e] hover:bg-[#86c581] active:scale-95 transition-all disabled:opacity-40"
-                >
-                  {runningSsl ? 'Đang cấp chứng chỉ...' : 'Cài đặt SSL Ngay'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Realtime Logs Modal */}
-      {showLogsModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowLogsModal(false)}>
-          <div
-            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[680px] h-[520px] flex flex-col animate-scale-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <div className="flex items-center gap-3">
-                <Terminal size={14} className="text-[#89b4fa]" />
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">
-                  {logType === 'error' ? 'Nginx Error Log' : 'Nginx Access Log'} ({selectedNginxFile})
-                </h3>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleFetchSiteLogs(logType)}
-                  className="p-1 rounded hover:bg-white/5 text-[#89b4fa]"
-                  title="Tải lại log"
-                >
-                  <RefreshCw size={12} className={loadingLog ? 'animate-spin' : ''} />
-                </button>
-                <button onClick={() => setShowLogsModal(false)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
-                  <X size={14} />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex-1 p-4 bg-[#11111b] overflow-hidden flex flex-col">
-              <pre className="flex-1 overflow-y-auto font-mono text-[10px] text-[#cdd6f4] leading-relaxed whitespace-pre-wrap scrollbar-thin">
-                {logContent}
-              </pre>
-            </div>
-          </div>
-        </div>
       )}
     </div>
   )
@@ -1229,22 +1362,22 @@ function RemotePathPicker({ mode, exec, onClose, onSelect }: RemotePathPickerPro
   }
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[400px] h-[480px] flex flex-col animate-scale-in">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#181825]">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
-            Chọn {mode === 'file' ? 'Tệp tin' : 'Thư mục'} trên Server
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in">
+      <div className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[420px] h-[500px] flex flex-col animate-scale-in overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4]">
+            Chọn Thư Mục trên Server
           </h3>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+          <button onClick={onClose} className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4]">
             <X size={14} />
           </button>
         </div>
 
-        <div className="p-2.5 bg-[#11111b] border-b border-white/5 flex gap-2 items-center">
+        <div className="p-3 bg-[#11111b] border-b border-white/5 flex gap-2 items-center">
           <button
             onClick={handleGoUp}
             disabled={currentPath === '/'}
-            className="px-2 py-1 rounded bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40"
+            className="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40"
           >
             ← Lên
           </button>
@@ -1252,11 +1385,11 @@ function RemotePathPicker({ mode, exec, onClose, onSelect }: RemotePathPickerPro
             type="text"
             readOnly
             value={currentPath}
-            className="flex-1 bg-[#181825] border border-white/5 rounded px-2 py-1 text-xs text-[#a6adc8] font-mono outline-none"
+            className="flex-1 bg-[#181825] border border-white/5 rounded-lg px-2.5 py-1 text-xs text-[#a6adc8] font-mono outline-none"
           />
         </div>
 
-        <div className="flex-1 overflow-y-auto p-2.5 space-y-0.5 scrollbar-thin">
+        <div className="flex-1 overflow-y-auto p-3 space-y-1 scrollbar-thin">
           {loading ? (
             <div className="flex items-center justify-center h-full text-xs text-[#585b70] gap-2">
               <RefreshCw size={14} className="animate-spin text-[#89b4fa]" /> Đang tải...
@@ -1280,42 +1413,35 @@ function RemotePathPicker({ mode, exec, onClose, onSelect }: RemotePathPickerPro
                     }
                   }
                 }}
-                className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.02] transition-all"
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all"
               >
-                <span className="shrink-0 text-sm">
-                  {item.isDir ? '📁' : '📄'}
-                </span>
+                <span className="shrink-0">{item.isDir ? '📁' : '📄'}</span>
                 <span className="truncate">{item.name}</span>
               </button>
             ))
           )}
         </div>
 
-        <div className="p-3 border-t border-white/5 bg-[#181825] flex justify-between items-center">
-          <span className="text-[9px] text-[#585b70]">
-            {mode === 'file' ? 'Click file để chọn' : 'Bấm Chọn để lấy thư mục hiện tại'}
-          </span>
-          <div className="flex gap-2">
+        <div className="p-4 border-t border-white/[0.06] bg-[#11111b]/50 flex justify-between items-center">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-[#cdd6f4]"
+          >
+            Hủy
+          </button>
+          {mode === 'dir' && (
             <button
               type="button"
-              onClick={onClose}
-              className="px-3 py-1 rounded bg-white/5 hover:bg-white/10 text-xs text-[#cdd6f4]"
+              onClick={() => {
+                onSelect(currentPath)
+                onClose()
+              }}
+              className="px-4 py-1.5 rounded-xl bg-[#89b4fa] text-[#11111b] hover:bg-[#74c7ec] text-xs font-bold shadow-sm"
             >
-              Hủy
+              Chọn thư mục này
             </button>
-            {mode === 'dir' && (
-              <button
-                type="button"
-                onClick={() => {
-                  onSelect(currentPath)
-                  onClose()
-                }}
-                className="px-3 py-1 rounded bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] text-xs font-bold"
-              >
-                Chọn thư mục này
-              </button>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>

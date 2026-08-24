@@ -1,5 +1,21 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Database, Square, ArrowRight, X, Terminal, List } from 'lucide-react'
+import {
+  Database,
+  Square,
+  ArrowRight,
+  X,
+  Terminal,
+  List,
+  Plus,
+  RefreshCw,
+  Trash2,
+  DownloadCloud,
+  Search,
+  CheckCircle,
+  Key,
+  Shield,
+  Activity
+} from 'lucide-react'
 
 interface DbInstance {
   type: 'mysql' | 'postgres' | 'redis' | 'mongodb' | 'unknown'
@@ -142,7 +158,7 @@ export default function DatabasePanel({
       setDbInstances(instances)
       await fetchTunnels()
 
-      // Fetch stats for detected instances
+      // Fetch stats
       const statsMap: Record<string, { version: string; connections: string }> = {}
       for (const inst of instances) {
         try {
@@ -222,7 +238,7 @@ export default function DatabasePanel({
     try {
       const cmd = `redis-cli -p ${port} --scan --pattern "${pattern || '*'}" LIMIT 100 2>/dev/null || redis-cli -p ${port} KEYS "${pattern || '*'}" 2>/dev/null | head -n 100 || echo ""`
       const { stdout } = await exec(cmd)
-      const keys = stdout.split('\n').map(s => s.trim()).filter(Boolean)
+      const keys = stdout.split('\n').map((s) => s.trim()).filter(Boolean)
       setRedisKeys(keys)
       setSelectedRedisKey(null)
       setSelectedRedisValue('')
@@ -252,7 +268,7 @@ export default function DatabasePanel({
       } else {
         valCmd = `redis-cli -p ${port} DUMP "${key}"`
       }
-      
+
       const valRes = await exec(valCmd)
       setSelectedRedisKey(key)
       setSelectedRedisValue(valRes.stdout || valRes.stderr || '(Trống)')
@@ -347,12 +363,12 @@ export default function DatabasePanel({
   }, [fetchTunnels])
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
+    <div className="flex-1 flex flex-col overflow-hidden animate-fade-in">
       {dbInstances.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center text-[#585b70]">
-          <Database size={36} className="mb-3 opacity-30" />
-          <span className="text-xs font-semibold">Không phát hiện hệ quản trị CSDL nào đang hoạt động</span>
-          <span className="text-[10px] mt-1 text-[#45475a] max-w-xs text-center leading-relaxed">
+          <Database size={48} className="mb-3 opacity-20 text-[#fab387]" />
+          <span className="text-xs font-bold text-[#cdd6f4]">Không phát hiện hệ quản trị CSDL nào đang hoạt động</span>
+          <span className="text-[11px] mt-1 text-[#585b70] max-w-sm text-center leading-relaxed">
             Để sử dụng tính năng này, hãy đảm bảo MySQL, Postgres, Redis hoặc MongoDB đang lắng nghe trên server.
           </span>
         </div>
@@ -365,38 +381,40 @@ export default function DatabasePanel({
               return (
                 <div
                   key={idx}
-                  className="bg-[#181825] border border-white/[0.04] rounded-xl p-5 flex flex-col justify-between hover:border-white/[0.08] transition-all"
+                  className="bg-[#181825]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 flex flex-col justify-between hover:border-white/10 transition-all shadow-xl"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-[#fab387]/10 text-[#fab387]">
-                        <Database size={18} />
+                      <div className="p-2.5 rounded-xl bg-[#fab387]/10 text-[#fab387] border border-[#fab387]/20">
+                        <Database size={20} />
                       </div>
                       <div>
                         <h4 className="text-xs font-bold text-[#cdd6f4] uppercase">{db.type} Server</h4>
-                        <span className="text-[10px] font-mono text-[#585b70]">
+                        <span className="text-[11px] font-mono text-[#585b70]">
                           Port {db.port} | {db.processName}
                         </span>
                       </div>
                     </div>
 
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider ${
-                        activeTunnel ? 'bg-[#a6e3a1]/10 text-[#a6e3a1]' : 'bg-[#585b70]/10 text-[#585b70]'
+                      className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                        activeTunnel
+                          ? 'bg-[#a6e3a1]/15 text-[#a6e3a1] border border-[#a6e3a1]/30 shadow-[0_0_8px_rgba(166,227,161,0.2)]'
+                          : 'bg-white/5 text-[#585b70]'
                       }`}
                     >
-                      {activeTunnel ? 'Tunnel Active' : 'Disconnected'}
+                      {activeTunnel ? 'TUNNEL ACTIVE' : 'LOCAL ONLY'}
                     </span>
                   </div>
 
                   {activeTunnel && (
-                    <div className="mt-4 bg-[#11111b] border border-white/[0.02] rounded-lg p-2.5 text-[10px] font-mono text-[#a6adc8] space-y-1">
+                    <div className="mt-4 bg-[#11111b] border border-white/[0.04] rounded-xl p-3 text-[11px] font-mono text-[#a6adc8] space-y-1">
                       <div className="flex justify-between">
-                        <span className="text-[#585b70]">Cổng Cục Bộ:</span>
+                        <span className="text-[#585b70]">Local Port:</span>
                         <span className="font-bold text-[#89b4fa]">{activeTunnel.listenPort}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#585b70]">Kết Nối:</span>
+                        <span className="text-[#585b70]">Host kết nối:</span>
                         <span>localhost:{activeTunnel.listenPort}</span>
                       </div>
                     </div>
@@ -404,19 +422,21 @@ export default function DatabasePanel({
 
                   {/* DB Stats */}
                   {dbStats[`${db.type}-${db.port}`] && (
-                    <div className="mt-3 bg-[#11111b] border border-white/[0.02] rounded-lg p-2.5 text-[10px] font-mono text-[#a6adc8] space-y-1">
+                    <div className="mt-3 bg-[#11111b]/60 border border-white/[0.04] rounded-xl p-3 text-[11px] font-mono text-[#a6adc8] space-y-1">
                       <div className="flex justify-between">
-                        <span className="text-[#585b70]">Version:</span>
-                        <span className="text-[#cdd6f4] truncate max-w-[150px]" title={dbStats[`${db.type}-${db.port}`].version}>{dbStats[`${db.type}-${db.port}`].version}</span>
+                        <span className="text-[#585b70]">Phiên bản:</span>
+                        <span className="text-[#cdd6f4] truncate max-w-[150px]" title={dbStats[`${db.type}-${db.port}`].version}>
+                          {dbStats[`${db.type}-${db.port}`].version}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#585b70]">Connections:</span>
+                        <span className="text-[#585b70]">Kết nối hiện thời:</span>
                         <span className="text-[#a6e3a1] font-bold">{dbStats[`${db.type}-${db.port}`].connections}</span>
                       </div>
                     </div>
                   )}
 
-                  <div className="mt-4 space-y-2">
+                  <div className="mt-5 space-y-2">
                     <div className="flex flex-wrap gap-2">
                       {(db.type === 'mysql' || db.type === 'postgres') && (
                         <>
@@ -430,19 +450,23 @@ export default function DatabasePanel({
                                 cmd = "sudo -u postgres psql -t -c 'SELECT datname FROM pg_database WHERE datistemplate = false' 2>/dev/null || echo 'Không có quyền'"
                               }
                               const { stdout } = await exec(cmd)
-                              const dbs = stdout.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('+') && !s.startsWith('|') && s !== 'Database')
+                              const dbs = stdout.split('\n').map((s) => s.trim()).filter((s) => s && !s.startsWith('+') && !s.startsWith('|') && s !== 'Database')
                               setDbListModal({ type: db.type, databases: dbs })
                               setLoading(false)
                             }}
-                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 text-[#cdd6f4] hover:bg-white/10 border border-white/5 transition-all shadow-sm"
                           >
-                            <List size={10} /> DBs
+                            <List size={12} className="text-[#89b4fa]" /> Quản Lý DBs
                           </button>
                           <button
-                            onClick={() => { setQuickQueryModal({ type: db.type, port: db.port }); setQueryInput(''); setQueryResult('') }}
-                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                            onClick={() => {
+                              setQuickQueryModal({ type: db.type, port: db.port })
+                              setQueryInput('')
+                              setQueryResult('')
+                            }}
+                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 text-[#cdd6f4] hover:bg-white/10 border border-white/5 transition-all shadow-sm"
                           >
-                            <Terminal size={10} /> Query
+                            <Terminal size={12} className="text-[#fab387]" /> Query
                           </button>
                           <button
                             onClick={() => {
@@ -452,9 +476,9 @@ export default function DatabasePanel({
                               setBackupActionType('export')
                               setQuickBackupModal({ type: db.type, port: db.port })
                             }}
-                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 text-[#cdd6f4] hover:bg-white/10 border border-white/5 transition-all shadow-sm"
                           >
-                            Backup
+                            <DownloadCloud size={12} className="text-[#a6e3a1]" /> Backup
                           </button>
                         </>
                       )}
@@ -465,9 +489,9 @@ export default function DatabasePanel({
                             setRedisSearchPattern('*')
                             handleFetchRedisKeys(db.port, '*')
                           }}
-                          className="w-full flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-[#a6adc8] hover:bg-white/10 transition-all"
+                          className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold bg-[#cba6f7]/15 hover:bg-[#cba6f7]/25 text-[#cba6f7] border border-[#cba6f7]/30 transition-all shadow-sm"
                         >
-                          <Terminal size={10} /> Duyệt Key-Value
+                          <Terminal size={13} /> Duyệt Key-Value Explorer
                         </button>
                       )}
                     </div>
@@ -475,18 +499,18 @@ export default function DatabasePanel({
                     {activeTunnel ? (
                       <button
                         onClick={() => handleStopTunnel(activeTunnel.id)}
-                        className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#f38ba8]/10 text-[#f38ba8] hover:bg-[#f38ba8]/20 transition-all active:scale-95"
+                        className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold bg-[#f38ba8]/15 text-[#f38ba8] hover:bg-[#f38ba8]/25 border border-[#f38ba8]/30 transition-all active:scale-95 shadow-sm"
                       >
-                        <Square size={11} />
+                        <Square size={12} />
                         Hủy SSH Tunnel
                       </button>
                     ) : (
                       <button
                         onClick={() => handleOpenTunnelModal(db.port, db.type)}
-                        className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] transition-all active:scale-95"
+                        className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold bg-[#89b4fa] text-[#11111b] hover:bg-[#74c7ec] transition-all active:scale-95 shadow-sm"
                       >
-                        <ArrowRight size={11} />
-                        Tạo SSH Tunnel
+                        <ArrowRight size={13} />
+                        Tạo SSH Tunnel (Local Connect)
                       </button>
                     )}
                   </div>
@@ -500,86 +524,87 @@ export default function DatabasePanel({
       {/* Create Tunnel Modal */}
       {showCreateTunnelModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in"
           onClick={() => setShowCreateTunnelModal(null)}
         >
           <div
-            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[380px] flex flex-col animate-scale-in"
+            className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[420px] flex flex-col animate-scale-in overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4] flex items-center gap-2">
                 Kích hoạt SSH Tunnel ({showCreateTunnelModal.dbType.toUpperCase()})
               </h3>
-              <button onClick={() => setShowCreateTunnelModal(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+              <button onClick={() => setShowCreateTunnelModal(null)} className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4]">
                 <X size={14} />
               </button>
             </div>
-            <div className="p-5 space-y-4 text-xs">
+            <div className="p-6 space-y-4 text-xs">
               <div className="space-y-1.5">
-                <label className="text-[#585b70] font-semibold">Tên Kết Nối (Tunnel Name)</label>
+                <label className="text-[#a6adc8] font-semibold">Tên Kết Nối</label>
                 <input
                   type="text"
                   value={tunnelNameInput}
                   onChange={(e) => setTunnelNameInput(e.target.value)}
-                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]/50"
+                  className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[#585b70] font-semibold">Cổng Cục Bộ Máy Bạn (Local Listen Port)</label>
+                <label className="text-[#a6adc8] font-semibold">Cổng Cục Bộ Trên Máy Bạn (Local Listen Port)</label>
                 <input
                   type="number"
                   placeholder="3307, 5433, 6380..."
                   value={tunnelLocalPortInput}
                   onChange={(e) => setTunnelLocalPortInput(e.target.value)}
-                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]/50"
+                  className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                 />
-                <span className="text-[10px] text-[#585b70] block leading-relaxed">
-                  Cổng này sẽ được mở trên máy tính cá nhân của bạn. Kết nối tới `localhost:cổng` sẽ tự động chuyển hướng tới database trên server.
+                <span className="text-[11px] text-[#585b70] block leading-relaxed mt-1">
+                  Kết nối tới `localhost:cổng` bằng DBeaver / TablePlus / Navicat sẽ tự động thông suốt qua SSH Tunnel.
                 </span>
               </div>
 
-              <div className="flex gap-2 justify-end pt-2">
+              <div className="flex gap-2 justify-end pt-3 border-t border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() => setShowCreateTunnelModal(null)}
-                  className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10"
+                  className="px-4 py-2 rounded-xl font-semibold bg-white/5 hover:bg-white/10 text-[#cdd6f4]"
                 >
                   Hủy
                 </button>
                 <button
                   type="button"
                   onClick={handleCreateTunnel}
-                  className="px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all"
+                  className="px-6 py-2 rounded-xl font-bold bg-[#89b4fa] text-[#11111b] hover:bg-[#74c7ec] active:scale-95 transition-all shadow-sm"
                 >
-                  Tạo Tunnel
+                  Tạo Tunnel Ngay
                 </button>
               </div>
             </div>
           </div>
         </div>
       )}
+
       {/* DB List & Management Modal */}
       {dbListModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setDbListModal(null)}>
-          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[500px] max-h-[75vh] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
-                <Database size={13} className="text-[#89b4fa]" /> Quản Lý Databases ({dbListModal.type.toUpperCase()})
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in" onClick={() => setDbListModal(null)}>
+          <div className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[520px] max-h-[75vh] flex flex-col animate-scale-in overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4] flex items-center gap-2">
+                <Database size={14} className="text-[#89b4fa]" /> Quản Lý Databases ({dbListModal.type.toUpperCase()})
               </h3>
-              <button onClick={() => setDbListModal(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+              <button onClick={() => setDbListModal(null)} className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4]">
                 <X size={14} />
               </button>
             </div>
 
-            {/* Quick Actions Header */}
-            <div className="p-3 bg-[#11111b] border-b border-white/5 flex gap-2">
+            {/* Quick Create Header */}
+            <div className="p-4 bg-[#11111b]/60 border-b border-white/[0.04] flex gap-2">
               <input
                 type="text"
                 id="new_db_name_input"
                 placeholder="Nhập tên Database mới..."
-                className="flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] font-mono outline-none"
+                className="flex-1 bg-[#181825] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#89b4fa]"
               />
               <button
                 onClick={async () => {
@@ -598,12 +623,15 @@ export default function DatabasePanel({
                     if (res.code === 0) {
                       alert(`Đã tạo Database "${dbName}" thành công!`)
                       input.value = ''
-                      // Reload DBs
-                      let reloadCmd = dbListModal.type === 'mysql'
-                        ? "mysql -e 'SHOW DATABASES' 2>/dev/null || echo ''"
-                        : "sudo -u postgres psql -t -c 'SELECT datname FROM pg_database WHERE datistemplate = false' 2>/dev/null || echo ''"
+                      let reloadCmd =
+                        dbListModal.type === 'mysql'
+                          ? "mysql -e 'SHOW DATABASES' 2>/dev/null || echo ''"
+                          : "sudo -u postgres psql -t -c 'SELECT datname FROM pg_database WHERE datistemplate = false' 2>/dev/null || echo ''"
                       const { stdout } = await exec(reloadCmd)
-                      const dbs = stdout.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('+') && !s.startsWith('|') && s !== 'Database')
+                      const dbs = stdout
+                        .split('\n')
+                        .map((s) => s.trim())
+                        .filter((s) => s && !s.startsWith('+') && !s.startsWith('|') && s !== 'Database')
                       setDbListModal({ type: dbListModal.type, databases: dbs })
                     } else {
                       alert('Lỗi tạo Database: ' + res.stdout)
@@ -614,29 +642,28 @@ export default function DatabasePanel({
                     setLoading(false)
                   }
                 }}
-                className="px-3 py-1.5 bg-[#89b4fa] text-[#1e1e2e] rounded-lg text-xs font-bold hover:bg-[#74c7ec] transition-all"
+                className="px-4 py-2 bg-[#89b4fa] text-[#11111b] rounded-xl text-xs font-bold hover:bg-[#74c7ec] transition-all shadow-sm"
               >
                 + Tạo DB
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-1.5 scrollbar-thin">
+            <div className="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-thin">
               {dbListModal.databases.map((db, i) => (
-                <div key={i} className="px-3 py-2 bg-[#181825] border border-white/[0.04] rounded-xl flex items-center justify-between group">
-                  <div className="flex items-center gap-2">
-                    <Database size={12} className="text-[#89b4fa]" />
-                    <span className="text-xs font-mono font-semibold text-[#cdd6f4]">{db}</span>
+                <div key={i} className="px-4 py-3 bg-[#11111b]/40 border border-white/[0.04] rounded-2xl flex items-center justify-between group hover:border-white/10 transition-all">
+                  <div className="flex items-center gap-2.5">
+                    <Database size={14} className="text-[#89b4fa]" />
+                    <span className="text-xs font-mono font-bold text-[#cdd6f4]">{db}</span>
                   </div>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => {
                         setBackupDbName(db)
                         setBackupActionType('export')
                         setQuickBackupModal({ type: dbListModal.type, port: '3306' })
                       }}
-                      className="px-2 py-1 bg-white/5 hover:bg-white/10 rounded text-[10px] text-[#a6adc8] transition-all"
-                      title="Backup database này"
+                      className="px-2.5 py-1 bg-white/5 hover:bg-white/10 rounded-lg text-[11px] text-[#a6adc8] transition-all border border-white/5"
                     >
                       Backup
                     </button>
@@ -646,13 +673,11 @@ export default function DatabasePanel({
                           if (!confirm(`Bạn có CHẮC CHẮN muốn xóa vĩnh viễn database "${db}" không?`)) return
                           setLoading(true)
                           try {
-                            let cmd = dbListModal.type === 'mysql'
-                              ? `mysql -e "DROP DATABASE \\\`${db}\\\`;"`
-                              : `sudo -u postgres dropdb "${db}"`
+                            let cmd = dbListModal.type === 'mysql' ? `mysql -e "DROP DATABASE \\\`${db}\\\`;"` : `sudo -u postgres dropdb "${db}"`
                             const res = await exec(cmd)
                             if (res.code === 0) {
                               alert(`Đã xóa database "${db}" thành công!`)
-                              setDbListModal(prev => prev ? { ...prev, databases: prev.databases.filter(d => d !== db) } : null)
+                              setDbListModal((prev) => (prev ? { ...prev, databases: prev.databases.filter((d) => d !== db) } : null))
                             } else {
                               alert('Lỗi xóa DB: ' + res.stderr)
                             }
@@ -662,16 +687,16 @@ export default function DatabasePanel({
                             setLoading(false)
                           }
                         }}
-                        className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-[#f38ba8]/15 text-[#f38ba8] transition-all"
+                        className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-[#f38ba8]/20 text-[#f38ba8] transition-all"
                         title="Xóa database"
                       >
-                        <X size={13} />
+                        <Trash2 size={13} />
                       </button>
                     )}
                   </div>
                 </div>
               ))}
-              {dbListModal.databases.length === 0 && <div className="text-[#585b70] text-center text-xs py-4">Không tìm thấy database nào.</div>}
+              {dbListModal.databases.length === 0 && <div className="text-[#585b70] text-center text-xs py-8">Không tìm thấy database nào.</div>}
             </div>
           </div>
         </div>
@@ -679,18 +704,18 @@ export default function DatabasePanel({
 
       {/* Quick Query Modal */}
       {quickQueryModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setQuickQueryModal(null)}>
-          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[600px] max-h-[80vh] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">Quick Query ({quickQueryModal.type.toUpperCase()})</h3>
-              <button onClick={() => setQuickQueryModal(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"><X size={14} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in" onClick={() => setQuickQueryModal(null)}>
+          <div className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[640px] max-h-[85vh] flex flex-col animate-scale-in overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4]">Quick Query ({quickQueryModal.type.toUpperCase()})</h3>
+              <button onClick={() => setQuickQueryModal(null)} className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4]"><X size={14} /></button>
             </div>
-            <div className="p-5 space-y-3">
+            <div className="p-6 space-y-3">
               <textarea
                 value={queryInput}
                 onChange={(e) => setQueryInput(e.target.value)}
                 placeholder={quickQueryModal.type === 'mysql' ? 'SELECT * FROM users LIMIT 10;' : 'SELECT * FROM pg_stat_activity;'}
-                className="w-full h-20 bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono resize-none"
+                className="w-full h-24 bg-[#11111b] border border-white/10 rounded-2xl p-3 text-xs text-[#cdd6f4] outline-none font-mono resize-none focus:border-[#89b4fa]"
               />
               <button
                 onClick={async () => {
@@ -706,12 +731,12 @@ export default function DatabasePanel({
                   setQueryResult(stdout || 'Không có kết quả.')
                   setLoading(false)
                 }}
-                className="w-full py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all"
+                className="w-full py-2 rounded-xl bg-[#89b4fa] text-[#11111b] text-xs font-bold hover:bg-[#74c7ec] transition-all shadow-sm"
               >
                 Execute Query
               </button>
               {queryResult && (
-                <pre className="max-h-48 overflow-auto bg-[#11111b] border border-white/[0.04] rounded-lg p-3 text-[11px] font-mono text-[#a6adc8] whitespace-pre-wrap select-text">
+                <pre className="max-h-56 overflow-auto bg-[#11111b] border border-white/[0.04] rounded-2xl p-4 text-[11px] font-mono text-[#a6adc8] whitespace-pre-wrap select-text scrollbar-thin">
                   {queryResult}
                 </pre>
               )}
@@ -722,18 +747,18 @@ export default function DatabasePanel({
 
       {/* Redis Explorer Modal */}
       {showRedisExplorer && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowRedisExplorer(null)}>
-          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[700px] h-[80vh] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
-                Redis Key-Value Explorer (Cổng: {showRedisExplorer.port})
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in" onClick={() => setShowRedisExplorer(null)}>
+          <div className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[740px] h-[80vh] flex flex-col animate-scale-in overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4] flex items-center gap-2">
+                <Terminal size={14} className="text-[#cba6f7]" /> Redis Key-Value Explorer (Port: {showRedisExplorer.port})
               </h3>
-              <button onClick={() => setShowRedisExplorer(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]">
+              <button onClick={() => setShowRedisExplorer(null)} className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4]">
                 <X size={14} />
               </button>
             </div>
-            
-            <div className="p-4 bg-[#11111b] border-b border-white/5 flex gap-2">
+
+            <div className="p-4 bg-[#11111b]/60 border-b border-white/[0.04] flex gap-2">
               <input
                 type="text"
                 value={redisSearchPattern}
@@ -744,30 +769,30 @@ export default function DatabasePanel({
                     handleFetchRedisKeys(showRedisExplorer.port, redisSearchPattern)
                   }
                 }}
-                className="flex-1 bg-[#181825] border border-white/5 rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] outline-none"
+                className="flex-1 bg-[#181825] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#cba6f7]"
               />
               <button
                 onClick={() => handleFetchRedisKeys(showRedisExplorer.port, redisSearchPattern)}
-                className="px-4 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec]"
+                className="px-5 py-2 rounded-xl bg-[#cba6f7] text-[#11111b] text-xs font-bold hover:bg-[#b4befe] shadow-sm transition-all"
               >
-                Tìm kiếm
+                Tìm Kiếm
               </button>
             </div>
 
             <div className="flex-1 flex overflow-hidden">
-              <div className="w-64 min-w-64 border-r border-white/5 flex flex-col overflow-hidden">
-                <div className="flex-1 overflow-y-auto p-2 space-y-1.5 scrollbar-thin">
+              <div className="w-72 min-w-72 border-r border-white/5 flex flex-col overflow-hidden bg-[#11111b]/20">
+                <div className="flex-1 overflow-y-auto p-2 space-y-1 scrollbar-thin">
                   {loadingRedis && redisKeys.length === 0 ? (
-                    <div className="text-center text-[#585b70] text-xs py-8 animate-pulse">Đang tải...</div>
+                    <div className="text-center text-[#585b70] text-xs py-12 animate-pulse">Đang tải keys...</div>
                   ) : redisKeys.length === 0 ? (
-                    <div className="text-center text-[#585b70] text-xs py-8">Không tìm thấy key nào.</div>
+                    <div className="text-center text-[#585b70] text-xs py-12">Không tìm thấy key nào.</div>
                   ) : (
                     redisKeys.map((key) => (
                       <div
                         key={key}
                         onClick={() => handleReadRedisKey(showRedisExplorer.port, key)}
-                        className={`group flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono text-left cursor-pointer transition-all select-text ${
-                          selectedRedisKey === key ? 'bg-[#89b4fa]/15 text-[#89b4fa] font-bold' : 'text-[#a6adc8] hover:bg-white/[0.02]'
+                        className={`group flex items-center justify-between px-3 py-2 rounded-xl text-xs font-mono text-left cursor-pointer transition-all ${
+                          selectedRedisKey === key ? 'bg-[#cba6f7]/15 text-[#cba6f7] font-bold border border-[#cba6f7]/30' : 'text-[#a6adc8] hover:bg-white/[0.03]'
                         }`}
                       >
                         <span className="truncate flex-1 mr-2">{key}</span>
@@ -776,10 +801,10 @@ export default function DatabasePanel({
                             e.stopPropagation()
                             handleDeleteRedisKey(showRedisExplorer.port, key)
                           }}
-                          className="p-0.5 rounded opacity-0 group-hover:opacity-100 hover:bg-white/5 text-[#f38ba8] transition-all"
+                          className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-[#f38ba8]/20 text-[#f38ba8] transition-all"
                           title="Xóa Key"
                         >
-                          <X size={10} />
+                          <Trash2 size={11} />
                         </button>
                       </div>
                     ))
@@ -787,19 +812,19 @@ export default function DatabasePanel({
                 </div>
               </div>
 
-              <div className="flex-1 flex flex-col overflow-hidden bg-[#11111b]/20 p-4">
+              <div className="flex-1 flex flex-col overflow-hidden bg-[#11111b]/30 p-5">
                 {selectedRedisKey ? (
                   <div className="flex-1 flex flex-col overflow-hidden space-y-3">
-                    <div className="flex justify-between items-center bg-[#11111b] border border-white/5 p-2 rounded-lg text-xs font-mono">
+                    <div className="flex justify-between items-center bg-[#11111b] border border-white/5 p-3 rounded-2xl text-xs font-mono">
                       <span className="text-[#585b70]">Key: <span className="text-[#cdd6f4] font-bold select-text">{selectedRedisKey}</span></span>
-                      <span className="bg-[#cba6f7]/10 text-[#cba6f7] px-1.5 py-0.5 rounded text-[10px] font-bold font-sans uppercase">
+                      <span className="bg-[#cba6f7]/15 text-[#cba6f7] px-2 py-0.5 rounded-md text-[10px] font-bold font-sans uppercase">
                         {selectedRedisType}
                       </span>
                     </div>
 
                     <div className="flex-1 flex flex-col overflow-hidden">
-                      <label className="text-[10px] uppercase font-bold text-[#585b70] tracking-wider mb-1">Giá trị (Value)</label>
-                      <pre className="flex-1 overflow-auto bg-[#11111b] border border-white/[0.04] p-3 rounded-lg font-mono text-xs text-[#a6adc8] whitespace-pre-wrap select-text scrollbar-thin">
+                      <label className="text-[10px] uppercase font-bold text-[#585b70] tracking-wider mb-1.5">Giá trị (Value)</label>
+                      <pre className="flex-1 overflow-auto bg-[#11111b] border border-white/[0.04] p-4 rounded-2xl font-mono text-xs text-[#cdd6f4] whitespace-pre-wrap select-text scrollbar-thin">
                         {selectedRedisValue}
                       </pre>
                     </div>
@@ -817,52 +842,52 @@ export default function DatabasePanel({
 
       {/* Quick DB Backup/Restore Modal */}
       {quickBackupModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setQuickBackupModal(null)}>
-          <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[450px] max-h-[85vh] flex flex-col animate-scale-in" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in" onClick={() => setQuickBackupModal(null)}>
+          <div className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[480px] max-h-[85vh] flex flex-col animate-scale-in overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4]">
                 Sao lưu & Phục hồi ({quickBackupModal.type.toUpperCase()})
               </h3>
-              <button onClick={() => setQuickBackupModal(null)} className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"><X size={14} /></button>
+              <button onClick={() => setQuickBackupModal(null)} className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4]"><X size={14} /></button>
             </div>
-            
-            <div className="p-5 space-y-4 text-xs overflow-y-auto scrollbar-thin">
-              <div className="flex gap-2 p-0.5 bg-[#11111b] border border-white/5 rounded-lg">
+
+            <div className="p-6 space-y-4 text-xs overflow-y-auto scrollbar-thin">
+              <div className="flex gap-2 p-1 bg-[#11111b] border border-white/5 rounded-xl">
                 <button
                   onClick={() => setBackupActionType('export')}
-                  className={`flex-1 py-1 rounded-md transition-all ${backupActionType === 'export' ? 'bg-[#89b4fa] text-[#1e1e2e] font-bold' : 'text-[#a6adc8] hover:text-[#cdd6f4]'}`}
+                  className={`flex-1 py-1.5 rounded-lg font-semibold transition-all ${backupActionType === 'export' ? 'bg-[#89b4fa] text-[#11111b]' : 'text-[#a6adc8] hover:text-[#cdd6f4]'}`}
                 >
                   Export (Backup)
                 </button>
                 <button
                   onClick={() => setBackupActionType('import')}
-                  className={`flex-1 py-1 transition-all ${backupActionType === 'import' ? 'bg-[#89b4fa] text-[#1e1e2e] font-bold' : 'text-[#a6adc8] hover:text-[#cdd6f4]'}`}
+                  className={`flex-1 py-1.5 rounded-lg font-semibold transition-all ${backupActionType === 'import' ? 'bg-[#89b4fa] text-[#11111b]' : 'text-[#a6adc8] hover:text-[#cdd6f4]'}`}
                 >
                   Import (Restore)
                 </button>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[#585b70] font-semibold">Tên Database *</label>
+                <label className="text-[#a6adc8] font-semibold">Tên Database *</label>
                 <input
                   type="text"
                   placeholder="wordpress_db"
                   value={backupDbName}
                   onChange={(e) => setBackupDbName(e.target.value)}
-                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+                  className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                   disabled={runningDbBackup}
                 />
               </div>
 
               {backupActionType === 'import' && (
                 <div className="space-y-1.5">
-                  <label className="text-[#585b70] font-semibold">Đường dẫn file SQL nguồn (.sql) *</label>
+                  <label className="text-[#a6adc8] font-semibold">Đường dẫn file SQL nguồn (.sql) *</label>
                   <input
                     type="text"
                     placeholder="/tmp/db_wordpress_db_123456.sql"
                     value={backupSqlPath}
                     onChange={(e) => setBackupSqlPath(e.target.value)}
-                    className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono"
+                    className="w-full bg-[#11111b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#cdd6f4] outline-none font-mono focus:border-[#89b4fa]"
                     disabled={runningDbBackup}
                   />
                 </div>
@@ -870,18 +895,17 @@ export default function DatabasePanel({
 
               {backupStatusMsg && (
                 <div className="space-y-1.5">
-                  <label className="text-[#585b70] font-semibold">Tiến trình thực hiện</label>
-                  <pre className="h-32 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
+                  <pre className="h-32 overflow-y-auto p-3 bg-[#11111b] rounded-2xl font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
                     {backupStatusMsg}
                   </pre>
                 </div>
               )}
 
-              <div className="flex gap-2 justify-end pt-2">
+              <div className="flex gap-2 justify-end pt-3 border-t border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() => setQuickBackupModal(null)}
-                  className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10"
+                  className="px-4 py-2 rounded-xl font-semibold bg-white/5 hover:bg-white/10 text-[#cdd6f4]"
                   disabled={runningDbBackup}
                 >
                   Hủy
@@ -890,7 +914,7 @@ export default function DatabasePanel({
                   type="button"
                   onClick={handleDbBackupAction}
                   disabled={runningDbBackup}
-                  className="px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40"
+                  className="px-6 py-2 rounded-xl font-bold bg-[#89b4fa] text-[#11111b] hover:bg-[#74c7ec] active:scale-95 transition-all disabled:opacity-40 shadow-sm"
                 >
                   {runningDbBackup ? 'Đang thực hiện...' : backupActionType === 'export' ? 'Bắt đầu Export' : 'Bắt đầu Import'}
                 </button>
