@@ -17,7 +17,9 @@ import {
   DownloadCloud,
   Shield,
   GitBranch,
-  ShieldCheck
+  ShieldCheck,
+  Code,
+  Globe
 } from 'lucide-react'
 import { useTerminalStore } from '../../stores/terminal-store'
 import SftpPanel from '../sftp/SftpPanel'
@@ -33,6 +35,8 @@ import PackagesPanel from './PackagesPanel'
 import LogsPanel from './LogsPanel'
 import ServicesPanel from './ServicesPanel'
 import NginxPanel from './NginxPanel'
+import PhpManagerPanel from './PhpManagerPanel'
+import WordPressPanel from './WordPressPanel'
 import AlertsPanel from './AlertsPanel'
 import BackupPanel from './BackupPanel'
 import FirewallPanel from './FirewallPanel'
@@ -46,9 +50,11 @@ interface DevOpsDashboardProps {
 export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
   const [activeSubTab, setActiveSubTab] = useState<
     | 'overview'
+    | 'nginx'
+    | 'php'
+    | 'wordpress'
     | 'pm2'
     | 'services'
-    | 'nginx'
     | 'docker'
     | 'logs'
     | 'database'
@@ -172,11 +178,13 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
       ]
     },
     {
-      title: 'Ứng dụng & Dịch vụ',
+      title: 'Ứng dụng & Website',
       items: [
+        { id: 'nginx', name: 'Websites (Nginx)', icon: FolderOpen },
+        { id: 'php', name: 'PHP Manager', icon: Code },
+        { id: 'wordpress', name: 'WordPress Toolkit', icon: Globe },
         { id: 'pm2', name: 'PM2', icon: Layers },
         { id: 'docker', name: 'Docker', icon: Box },
-        { id: 'nginx', name: 'Nginx', icon: FolderOpen },
         { id: 'cron', name: 'Cron Jobs', icon: Clock },
         { id: 'git', name: 'Git & Deploy', icon: GitBranch }
       ]
@@ -316,6 +324,14 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
 
             {activeSubTab === 'nginx' && (
               <NginxPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
+            )}
+
+            {activeSubTab === 'php' && (
+              <PhpManagerPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
+            )}
+
+            {activeSubTab === 'wordpress' && (
+              <WordPressPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
             )}
 
             {activeSubTab === 'alerts' && (

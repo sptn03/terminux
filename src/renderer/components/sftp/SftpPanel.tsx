@@ -1284,7 +1284,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                   handleUploadLocalToRemote(paths)
                 } else if (e.dataTransfer.files.length > 0) {
                   // Drop from external Windows Explorer -> upload
-                  const paths = Array.from(e.dataTransfer.files).map(f => f.path)
+                  const paths = Array.from(e.dataTransfer.files).map((f: any) => f.path).filter(Boolean)
                   handleUploadLocalToRemote(paths)
                 }
               }}

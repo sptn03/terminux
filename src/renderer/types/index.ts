@@ -131,6 +131,7 @@ declare global {
         writeFile: (sessionId: string, remotePath: string, content: string) => Promise<{ success?: boolean; error?: string }>
         zip: (sessionId: string, targetPath: string, outputPath: string) => Promise<{ success?: boolean; error?: string }>
         unzip: (sessionId: string, zipPath: string, targetDir: string) => Promise<{ success?: boolean; error?: string }>
+        cancelTask: (taskId: string) => Promise<any>
         onProgress: (callback: (data: { taskId: string; progress: number; speed: string; detail: string }) => void) => () => void
         chmod: (sessionId: string, remotePath: string, mode: number) => Promise<{ success?: boolean; error?: string }>
       }
