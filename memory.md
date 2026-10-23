@@ -78,6 +78,12 @@ Architecture decisions: DECISIONS.md (mục 2026-10-23: Electron → Web)
 | src/renderer/stores/*.ts | Zustand stores (host, snippet, settings, terminal) |
 | src/renderer/components/devops/DevOpsDashboard.tsx | DevOps dashboard container and sub-tab navigator |
 | src/renderer/components/devops/*Panel.tsx | DevOps sub-panel components (Overview, PM2, Docker, etc.) |
+| src/renderer/components/devops/FtpPanel.tsx | Quản lý tài khoản FTP (vsftpd/pure-ftpd/proftpd): cài đặt, tạo/xoá/khoá user, chroot, passive ports, cấu hình |
+| src/renderer/components/devops/FirewallPanel.tsx | Tường lửa đa engine: UFW, firewalld, nftables, iptables + fail2ban (jail, ban/unban IP) |
+| src/renderer/components/devops/DatabasePanel.tsx | Instance DB, quản lý DB, user DB (MySQL/PostgreSQL), query, Redis explorer, backup/restore, cài engine |
+| src/renderer/components/devops/UserManagementPanel.tsx | Quản lý user hệ thống + sudo + authorized_keys |
+| src/renderer/components/devops/MultiExecPanel.tsx | Chạy một lệnh trên nhiều máy chủ (cluster) song song |
+| src/renderer/components/devops/RemotePathPicker.tsx | Component duyệt tệp/thư mục trên server dùng chung cho các panel mới |
 | vite.config.ts | Build SPA vào dist/web + proxy dev sang server :3000 |
 | scripts/build-server.mjs | esbuild bundle server → dist/server/index.js |
 | scripts/dev.mjs | Chạy song song Vite dev (:5173) và server (:3000) |
@@ -225,6 +231,9 @@ Future AI agents should know:
 - Upload/download: browser → `/api/upload` → SFTP; SFTP → `data/downloads` → `/api/download` (client tự bấm link tải).
 - `vite.config.ts` đặt `root: src/renderer` nên PostCSS/Tailwind được nạp thủ công từ gốc repo.
 - Chạy `npm test` trước khi kết thúc: nó dựng server thật + SSH server giả và kiểm tra cả luồng terminal.
+- Panel mới (2026-10-23): **FTP Accounts** (quản lý tài khoản FTP, cài vsftpd, chroot, passive port, mở firewall), **Firewall** (đa engine: UFW / firewalld / nftables / iptables + fail2ban), **Database** (thêm tab Người dùng: tạo/xoá user MySQL-PostgreSQL, cấp quyền, xem grants; và trình cài MariaDB/PostgreSQL/Redis), **System Users**, **Multi-Exec**.
+- Panel **System Users** và **Multi-Exec** trước đây đã có file nhưng KHÔNG được import ở đâu (tính năng chết) — nay đã nối vào menu nhóm "Mạng & Tiện ích".
+- Khi truyền mật khẩu / SSH key / nội dung file qua `exec()` trong các panel, luôn dùng `echo '<base64>' | base64 -d | ...` để tránh shell diễn giải ký tự đặc biệt (đã áp dụng ở FtpPanel, DatabasePanel, UserManagementPanel).
 - This is greenfield project, no legacy code.
 - Catppuccin Mocha theme colors: bg #1e1e2e, surface #181825, surface1 #313244, overlay0 #6c7086, subtext0 #a6adc8, text #cdd6f4.
 - Built-in themes: One Dark, Solarized Dark, Dracula, Catppuccin Mocha.

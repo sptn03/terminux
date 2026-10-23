@@ -32,6 +32,13 @@ interface ActiveTunnel {
   active: boolean
 }
 
+interface DbUser {
+  name: string
+  host: string
+  superuser: boolean
+  canLogin: boolean
+}
+
 interface DatabasePanelProps {
   sessionId: string
   exec: (cmd: string) => Promise<{ stdout: string; stderr: string; code: number }>
@@ -74,6 +81,229 @@ export default function DatabasePanel({
   const [backupSqlPath, setBackupSqlPath] = useState('')
   const [backupStatusMsg, setBackupStatusMsg] = useState('')
   const [runningDbBackup, setRunningDbBackup] = useState(false)
+
+  // Người dùng database
+  const [userModal, setUserModal] = useState<{ type: 'mysql' | 'postgres'; port: string } | null>(null)
+  const [dbUsers, setDbUsers] = useState<DbUser[]>([])
+  const [loadingUsers, setLoadingUsers] = useState(false)
+  const [newUserName, setNewUserName] = useState('')
+  const [newUserPassword, setNewUserPassword] = useState('')
+  const [newUserHost, setNewUserHost] = useState('%')
+  const [newUserGrants, setNewUserGrants] = useState('ALL PRIVILEGES')
+  const [newUserDb, setNewUserDb] = useState('*')
+  const [creatingUser, setCreatingUser] = useState(false)
+  const [grantsModal, setGrantsModal] = useState<{ title: string; content: string } | null>(null)
+
+  // Cài đặt engine
+  const [installingEngine, setInstallingEngine] = useState<string | null>(null)
+  const [installLog, setInstallLog] = useState('')
+
+  /** Mã hoá base64 để tránh lỗi quoting khi truyền mật khẩu qua shell. */
+  const toBase64 = (text: string): string => {
+    const bytes = new TextEncoder().encode(text)
+    let binary = ''
+    for (const byte of bytes) binary += String.fromCharCode(byte)
+    return btoa(binary)
+  }
+
+  const fetchDbUsers = useCallback(
+    async (type: 'mysql' | 'postgres') => {
+      setLoadingUsers(true)
+      try {
+        if (type === 'mysql') {
+          const { stdout } = await exec(
+            "sudo mysql -N -B -e \"SELECT User, Host FROM mysql.user WHERE User NOT LIKE 'mysql.%' ORDER BY User\" 2>/dev/null || mysql -N -B -e \"SELECT User, Host FROM mysql.user WHERE User NOT LIKE 'mysql.%' ORDER BY User\" 2>/dev/null || echo ''"
+          )
+          const users: DbUser[] = stdout
+            .split('\n')
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((line) => {
+              const [name, host] = line.split('\t')
+              return { name: name || line, host: host || '%', superuser: name === 'root', canLogin: true }
+            })
+          setDbUsers(users)
+        } else {
+          const { stdout } = await exec(
+            "sudo -u postgres psql -t -A -F'|' -c \"SELECT rolname, rolsuper, rolcanlogin FROM pg_roles ORDER BY rolname\" 2>/dev/null || echo ''"
+          )
+          const users: DbUser[] = stdout
+            .split('\n')
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((line) => {
+              const [name, isSuper, canLogin] = line.split('|')
+              return { name: name || line, host: '-', superuser: isSuper === 't', canLogin: canLogin === 't' }
+            })
+          setDbUsers(users)
+        }
+      } catch (e: any) {
+        setError(e.message || 'Lỗi tải danh sách user database')
+      } finally {
+        setLoadingUsers(false)
+      }
+    },
+    [exec, setError]
+  )
+
+  /** Đưa câu lệnh SQL qua base64 để mật khẩu không bị shell diễn giải. */
+  const runSql = async (type: 'mysql' | 'postgres', sql: string, database?: string) => {
+    const payload = `echo '${toBase64(sql)}' | base64 -d | `
+    if (type === 'postgres') {
+      const dbArg = database ? `-d "${database}" ` : ''
+      return exec(`${payload}sudo -u postgres psql ${dbArg}-v ON_ERROR_STOP=1 2>&1`)
+    }
+    // MySQL/MariaDB: chọn client nào chạy được (có thể cần sudo)
+    const probe = await exec('(sudo mysql -e "SELECT 1" >/dev/null 2>&1 && echo sudo) || (mysql -e "SELECT 1" >/dev/null 2>&1 && echo plain) || echo none')
+    const mode = probe.stdout.trim()
+    if (mode === 'sudo') return exec(`${payload}sudo mysql 2>&1`)
+    if (mode === 'plain') return exec(`${payload}mysql 2>&1`)
+    return { stdout: '', stderr: 'Không đăng nhập được MySQL (thiếu quyền hoặc sai mật khẩu root).', code: 1 }
+  }
+
+  const handleCreateDbUser = async () => {
+    if (!userModal) return
+    const name = newUserName.trim()
+    if (!name) return alert('Vui lòng nhập tên user!')
+    if (!/^[A-Za-z_][A-Za-z0-9_$-]{0,31}$/.test(name)) {
+      return alert('Tên user chỉ gồm chữ, số, gạch dưới/gạch ngang (tối đa 32 ký tự).')
+    }
+    if (newUserPassword.length < 6) return alert('Mật khẩu cần tối thiểu 6 ký tự!')
+    if (newUserPassword.includes('\n')) return alert('Mật khẩu không được chứa ký tự xuống dòng.')
+
+    setCreatingUser(true)
+    try {
+      const sqlPassword = newUserPassword.replace(/'/g, "''")
+      const dbName = newUserDb.trim()
+
+      if (userModal.type === 'mysql') {
+        const target = dbName ? `${dbName}.*` : '*.*'
+        const sql = [
+          `CREATE USER IF NOT EXISTS '${name}'@'${newUserHost}' IDENTIFIED BY '${sqlPassword}';`,
+          `ALTER USER '${name}'@'${newUserHost}' IDENTIFIED BY '${sqlPassword}';`,
+          `GRANT ${newUserGrants} ON ${target} TO '${name}'@'${newUserHost}';`,
+          'FLUSH PRIVILEGES;'
+        ].join('\n')
+        const res = await runSql('mysql', sql)
+        if (res.code !== 0 || /ERROR/i.test(res.stdout + res.stderr)) {
+          throw new Error((res.stderr || res.stdout).trim() || 'Không tạo được user MySQL')
+        }
+      } else {
+        const database = dbName || 'postgres'
+        const sql = [
+          `DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${name}') THEN CREATE ROLE "${name}" LOGIN; END IF; END $$;`,
+          `ALTER ROLE "${name}" WITH LOGIN PASSWORD '${sqlPassword}';`,
+          `GRANT ${newUserGrants} ON DATABASE "${database}" TO "${name}";`
+        ].join('\n')
+        const res = await runSql('postgres', sql)
+        if (res.code !== 0 || /ERROR/i.test(res.stdout + res.stderr)) {
+          throw new Error((res.stderr || res.stdout).trim() || 'Không tạo được role PostgreSQL')
+        }
+        // Cấp quyền trên schema public của database đích
+        await runSql(
+          'postgres',
+          `GRANT ALL ON SCHEMA public TO "${name}"; GRANT ALL ON ALL TABLES IN SCHEMA public TO "${name}"; GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO "${name}";`,
+          database
+        )
+      }
+
+      setNewUserName('')
+      setNewUserPassword('')
+      setNewUserDb('')
+      await fetchDbUsers(userModal.type)
+      alert(`Đã tạo user ${name}.`)
+    } catch (e: any) {
+      alert('Lỗi: ' + e.message)
+    } finally {
+      setCreatingUser(false)
+    }
+  }
+
+  const handleDropDbUser = async (user: DbUser) => {
+    if (!userModal) return
+    if (!confirm(`Xóa user "${user.name}"? Hành động này không thể hoàn tác.`)) return
+    try {
+      const sql =
+        userModal.type === 'mysql'
+          ? `DROP USER '${user.name}'@'${user.host}'; FLUSH PRIVILEGES;`
+          : `DROP ROLE "${user.name}";`
+      const res = await runSql(userModal.type, sql)
+      if (res.code !== 0 || /ERROR/i.test(res.stdout + res.stderr)) {
+        throw new Error((res.stderr || res.stdout).trim() || 'Không xóa được user')
+      }
+      await fetchDbUsers(userModal.type)
+    } catch (e: any) {
+      alert('Lỗi: ' + e.message)
+    }
+  }
+
+  const handleChangeDbUserPassword = async (user: DbUser) => {
+    if (!userModal) return
+    const password = prompt(`Mật khẩu mới cho "${user.name}":`)
+    if (!password) return
+    if (password.includes('\n')) return alert('Mật khẩu không được chứa ký tự xuống dòng.')
+    try {
+      const sqlPassword = password.replace(/'/g, "''")
+      const sql =
+        userModal.type === 'mysql'
+          ? `ALTER USER '${user.name}'@'${user.host}' IDENTIFIED BY '${sqlPassword}'; FLUSH PRIVILEGES;`
+          : `ALTER ROLE "${user.name}" WITH LOGIN PASSWORD '${sqlPassword}';`
+      const res = await runSql(userModal.type, sql)
+      if (res.code !== 0 || /ERROR/i.test(res.stdout + res.stderr)) {
+        throw new Error((res.stderr || res.stdout).trim() || 'Không đổi được mật khẩu')
+      }
+      alert(`Đã đổi mật khẩu cho ${user.name}.`)
+    } catch (e: any) {
+      alert('Lỗi: ' + e.message)
+    }
+  }
+
+  const handleShowGrants = async (user: DbUser) => {
+    if (!userModal) return
+    const cmd =
+      userModal.type === 'mysql'
+        ? `sudo mysql -e "SHOW GRANTS FOR '${user.name}'@'${user.host}'" 2>&1 || mysql -e "SHOW GRANTS FOR '${user.name}'@'${user.host}'" 2>&1`
+        : `sudo -u postgres psql -c "\\du+ ${user.name}" 2>&1`
+    const { stdout, stderr } = await exec(cmd)
+    setGrantsModal({
+      title: `Quyền của ${user.name}`,
+      content: (stdout || stderr || 'Không đọc được quyền.').trim()
+    })
+  }
+
+  const handleInstallEngine = async (engine: 'mariadb' | 'postgresql' | 'redis') => {
+    setInstallingEngine(engine)
+    setInstallLog(`Bắt đầu cài đặt ${engine}...\n`)
+    try {
+      const packages =
+        engine === 'mariadb'
+          ? 'mariadb-server mariadb-client'
+          : engine === 'postgresql'
+            ? 'postgresql postgresql-contrib'
+            : 'redis-server'
+      const service = engine === 'mariadb' ? 'mariadb' : engine
+
+      setInstallLog((prev) => prev + 'Cập nhật danh sách gói...\n')
+      await exec('sudo apt-get update')
+
+      setInstallLog((prev) => prev + `Cài đặt: ${packages}\n`)
+      const res = await exec(`sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ${packages}`)
+      if (res.code !== 0) throw new Error(res.stderr || 'apt-get install thất bại')
+
+      setInstallLog((prev) => prev + `Khởi động dịch vụ ${service}...\n`)
+      await exec(`sudo systemctl start ${service} 2>/dev/null || sudo systemctl start ${engine} 2>/dev/null`)
+      await exec(`sudo systemctl enable ${service} 2>/dev/null || sudo systemctl enable ${engine} 2>/dev/null`)
+
+      setInstallLog((prev) => prev + 'Hoàn tất! Đang làm mới danh sách...\n')
+      await fetchDatabaseInstances()
+    } catch (e: any) {
+      setInstallLog((prev) => prev + `Lỗi: ${e.message}\n`)
+      setError('Cài đặt thất bại: ' + e.message)
+    } finally {
+      setInstallingEngine(null)
+    }
+  }
+
 
   const fetchTunnels = useCallback(async () => {
     try {
@@ -365,12 +595,45 @@ export default function DatabasePanel({
   return (
     <div className="flex-1 flex flex-col overflow-hidden animate-fade-in">
       {dbInstances.length === 0 ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-[#585b70]">
-          <Database size={48} className="mb-3 opacity-20 text-[#fab387]" />
-          <span className="text-xs font-bold text-[#cdd6f4]">Không phát hiện hệ quản trị CSDL nào đang hoạt động</span>
-          <span className="text-[11px] mt-1 text-[#585b70] max-w-sm text-center leading-relaxed">
-            Để sử dụng tính năng này, hãy đảm bảo MySQL, Postgres, Redis hoặc MongoDB đang lắng nghe trên server.
-          </span>
+        <div className="flex-1 flex flex-col items-center justify-center text-[#585b70] gap-3 p-6">
+          <Database size={48} className="opacity-20 text-[#fab387]" />
+          <div className="text-center space-y-1">
+            <span className="text-xs font-bold text-[#cdd6f4] block">
+              Không phát hiện hệ quản trị CSDL nào đang hoạt động
+            </span>
+            <span className="text-[11px] text-[#585b70] block max-w-md leading-relaxed">
+              Cài đặt trực tiếp tại đây — panel sẽ tự cài, bật và khởi động dịch vụ qua apt-get (Debian/Ubuntu).
+            </span>
+          </div>
+
+          {installingEngine ? (
+            <div className="w-full max-w-md bg-[#181825] border border-white/5 rounded-xl p-4 space-y-2">
+              <span className="text-[10px] uppercase font-bold text-[#89b4fa] tracking-wider animate-pulse flex items-center gap-1.5">
+                <RefreshCw size={11} className="animate-spin" /> Đang cài đặt {installingEngine}...
+              </span>
+              <pre className="h-40 overflow-y-auto bg-[#11111b] p-3 rounded-lg font-mono text-[9px] text-[#a6adc8] whitespace-pre-wrap scrollbar-thin">
+                {installLog}
+              </pre>
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-2 justify-center">
+              {(
+                [
+                  ['mariadb', 'MariaDB / MySQL'],
+                  ['postgresql', 'PostgreSQL'],
+                  ['redis', 'Redis']
+                ] as const
+              ).map(([engine, label]) => (
+                <button
+                  key={engine}
+                  onClick={() => handleInstallEngine(engine)}
+                  className="px-4 py-2 rounded-xl bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all"
+                >
+                  Cài {label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto pr-1">
@@ -479,6 +742,20 @@ export default function DatabasePanel({
                             className="flex-1 min-w-[70px] flex items-center justify-center gap-1.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 text-[#cdd6f4] hover:bg-white/10 border border-white/5 transition-all shadow-sm"
                           >
                             <DownloadCloud size={12} className="text-[#a6e3a1]" /> Backup
+                          </button>
+                          <button
+                            onClick={() => {
+                              const type = db.type as 'mysql' | 'postgres'
+                              setUserModal({ type, port: db.port })
+                              setNewUserName('')
+                              setNewUserPassword('')
+                              setNewUserHost('%')
+                              setNewUserDb('')
+                              fetchDbUsers(type)
+                            }}
+                            className="flex-1 min-w-[70px] flex items-center justify-center gap-1.5 py-1.5 rounded-xl text-xs font-semibold bg-[#cba6f7]/10 text-[#cba6f7] hover:bg-[#cba6f7]/20 border border-[#cba6f7]/25 transition-all shadow-sm"
+                          >
+                            <Key size={12} /> Người dùng
                           </button>
                         </>
                       )}
@@ -920,6 +1197,207 @@ export default function DatabasePanel({
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+      {/* Người dùng database Modal */}
+      {userModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setUserModal(null)}
+        >
+          <div
+            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[640px] max-w-[94vw] max-h-[86vh] flex flex-col animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
+                <Key size={13} />
+                Người dùng {userModal.type === 'mysql' ? 'MySQL / MariaDB' : 'PostgreSQL'} · cổng {userModal.port}
+              </h3>
+              <button
+                onClick={() => setUserModal(null)}
+                className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto scrollbar-thin p-5 space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#a6adc8]">
+                    Danh sách user ({dbUsers.length})
+                  </span>
+                  <button
+                    onClick={() => fetchDbUsers(userModal.type)}
+                    disabled={loadingUsers}
+                    className="text-[10px] px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[#a6adc8] disabled:opacity-40 flex items-center gap-1"
+                  >
+                    <RefreshCw size={10} className={loadingUsers ? 'animate-spin' : ''} /> Làm mới
+                  </button>
+                </div>
+
+                {loadingUsers && <div className="text-center text-xs text-[#585b70] py-4">Đang tải...</div>}
+
+                {!loadingUsers && dbUsers.length === 0 && (
+                  <div className="text-center text-xs text-[#45475a] py-4">
+                    Không đọc được user nào. Cần quyền sudo truy cập MySQL/Postgres.
+                  </div>
+                )}
+
+                {dbUsers.map((user) => (
+                  <div
+                    key={`${user.name}@${user.host}`}
+                    className="bg-[#181825] border border-white/[0.04] rounded-xl px-3 py-2 flex flex-wrap items-center gap-2"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono font-bold text-[#cdd6f4]">{user.name}</span>
+                        {user.host !== '-' && <span className="text-[10px] font-mono text-[#585b70]">@{user.host}</span>}
+                        {user.superuser && (
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#f9e2af]/15 text-[#f9e2af] font-bold">
+                            SUPERUSER
+                          </span>
+                        )}
+                        {!user.canLogin && (
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#585b70]/20 text-[#a6adc8] font-bold">
+                            NO LOGIN
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handleShowGrants(user)}
+                        className="text-[10px] px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[#a6adc8]"
+                      >
+                        Xem quyền
+                      </button>
+                      <button
+                        onClick={() => handleChangeDbUserPassword(user)}
+                        className="text-[10px] px-2 py-1 rounded-lg bg-[#f9e2af]/15 hover:bg-[#f9e2af]/25 text-[#f9e2af]"
+                      >
+                        Đổi mật khẩu
+                      </button>
+                      <button
+                        onClick={() => handleDropDbUser(user)}
+                        className="p-1.5 rounded-lg bg-[#f38ba8]/10 hover:bg-[#f38ba8]/20 text-[#f38ba8]"
+                        title="Xóa user"
+                      >
+                        <Trash2 size={11} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-[#181825] border border-white/[0.04] rounded-xl p-3 space-y-3">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-1.5">
+                  <Plus size={11} /> Tạo user mới
+                </span>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <label className="text-[10px] text-[#585b70] space-y-1 block">
+                    Tên user *
+                    <input
+                      type="text"
+                      value={newUserName}
+                      onChange={(e) => setNewUserName(e.target.value)}
+                      placeholder="webapp_user"
+                      className="w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                    />
+                  </label>
+                  <label className="text-[10px] text-[#585b70] space-y-1 block">
+                    Mật khẩu *
+                    <input
+                      type="password"
+                      value={newUserPassword}
+                      onChange={(e) => setNewUserPassword(e.target.value)}
+                      placeholder="tối thiểu 6 ký tự"
+                      className="w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                    />
+                  </label>
+
+                  {userModal.type === 'mysql' && (
+                    <label className="text-[10px] text-[#585b70] space-y-1 block">
+                      Host được phép kết nối
+                      <input
+                        type="text"
+                        value={newUserHost}
+                        onChange={(e) => setNewUserHost(e.target.value)}
+                        placeholder="% hoặc 127.0.0.1"
+                        className="w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                      />
+                    </label>
+                  )}
+
+                  <label className="text-[10px] text-[#585b70] space-y-1 block">
+                    Database áp dụng
+                    <input
+                      type="text"
+                      value={newUserDb}
+                      onChange={(e) => setNewUserDb(e.target.value)}
+                      placeholder={userModal.type === 'mysql' ? '* (tất cả)' : 'postgres'}
+                      className="w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] outline-none font-mono select-text"
+                    />
+                  </label>
+
+                  <label className="text-[10px] text-[#585b70] space-y-1 block md:col-span-2">
+                    Quyền được cấp
+                    <select
+                      value={newUserGrants}
+                      onChange={(e) => setNewUserGrants(e.target.value)}
+                      className="w-full bg-[#11111b] border border-white/5 rounded-lg px-2.5 py-1.5 text-xs text-[#cdd6f4] outline-none"
+                    >
+                      <option value="ALL PRIVILEGES">ALL PRIVILEGES (toàn quyền)</option>
+                      <option value="SELECT">SELECT (chỉ đọc)</option>
+                      <option value="SELECT, INSERT, UPDATE, DELETE">SELECT, INSERT, UPDATE, DELETE</option>
+                      <option value="CREATE, ALTER, DROP, INDEX">
+                        {userModal.type === 'mysql' ? 'CREATE, ALTER, DROP, INDEX' : 'CREATE'}
+                      </option>
+                      <option value="CONNECT">CONNECT (chỉ kết nối)</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleCreateDbUser}
+                    disabled={creatingUser}
+                    className="px-4 py-1.5 rounded-lg text-xs font-bold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] disabled:opacity-40"
+                  >
+                    {creatingUser ? 'Đang tạo...' : 'Tạo user'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Grants viewer */}
+      {grantsModal && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setGrantsModal(null)}
+        >
+          <div
+            className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[560px] max-w-[92vw] flex flex-col animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-3 border-b border-white/5 bg-[#181825]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8]">{grantsModal.title}</h3>
+              <button
+                onClick={() => setGrantsModal(null)}
+                className="p-1 rounded-lg hover:bg-white/5 text-[#585b70] hover:text-[#cdd6f4]"
+              >
+                <X size={14} />
+              </button>
+            </div>
+            <pre className="max-h-[60vh] overflow-auto scrollbar-thin bg-[#11111b] m-4 p-3 rounded-lg font-mono text-[10px] text-[#a6adc8] whitespace-pre-wrap select-text">
+              {grantsModal.content}
+            </pre>
           </div>
         </div>
       )}

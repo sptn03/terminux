@@ -39,6 +39,7 @@ export default function UserManagementPanel({
   const [showAddKeyModal, setShowAddKeyModal] = useState(false)
   const [newUsername, setNewUsername] = useState('')
   const [newPassword, setNewPassword] = useState('')
+  const [newShell, setNewShell] = useState('/bin/bash')
   const [newKeyContent, setNewKeyContent] = useState('')
   const [userSubTab, setUserSubTab] = useState<'users' | 'keys'>('users')
 
@@ -118,6 +119,14 @@ export default function UserManagementPanel({
     await fetchSshKeys(user)
   }
 
+  /** base64 tránh mọi lỗi quoting/expansion của shell với mật khẩu và SSH key. */
+  const toBase64 = (text: string): string => {
+    const bytes = new TextEncoder().encode(text)
+    let binary = ''
+    for (const byte of bytes) binary += String.fromCharCode(byte)
+    return btoa(binary)
+  }
+
   const handleAddUser = async () => {
     const username = newUsername.trim()
     if (!username) return
@@ -125,12 +134,19 @@ export default function UserManagementPanel({
       alert('Tên user không hợp lệ. Chỉ dùng chữ thường, số, gạch ngang.')
       return
     }
+    if (newPassword && newPassword.includes('\n')) {
+      alert('Mật khẩu không được chứa ký tự xuống dòng.')
+      return
+    }
     setLoading(true)
-    const { code, stderr } = await exec(`sudo useradd -m -s /bin/bash "${username}"`)
+    const { code, stderr } = await exec(`sudo useradd -m -s ${newShell} "${username}"`)
     if (code !== 0) {
       alert('Lỗi tạo user: ' + stderr)
     } else if (newPassword) {
-      await exec(`echo "${username}:${newPassword}" | sudo chpasswd`)
+      const res = await exec(
+        `echo '${toBase64(`${username}:${newPassword}`)}' | base64 -d | sudo chpasswd`
+      )
+      if (res.code !== 0) alert('Đã tạo user nhưng đặt mật khẩu thất bại: ' + (res.stderr || res.stdout))
     }
     await fetchUsers()
     setShowAddUserModal(false)
@@ -166,8 +182,17 @@ export default function UserManagementPanel({
   const handleAddSshKey = async () => {
     if (!selectedUser || !newKeyContent.trim()) return
     setLoading(true)
-    const keyContent = newKeyContent.trim().replace(/'/g, "\\'")
-    await exec(`sudo mkdir -p ${selectedUser.home}/.ssh && echo '${keyContent}' | sudo tee -a ${selectedUser.home}/.ssh/authorized_keys > /dev/null && sudo chmod 600 ${selectedUser.home}/.ssh/authorized_keys && sudo chown ${selectedUser.username}: ${selectedUser.home}/.ssh/authorized_keys`)
+    const keyLine = newKeyContent.trim() + '\n'
+    const res = await exec(
+      [
+        `sudo mkdir -p "${selectedUser.home}/.ssh"`,
+        `echo '${toBase64(keyLine)}' | base64 -d | sudo tee -a "${selectedUser.home}/.ssh/authorized_keys" > /dev/null`,
+        `sudo chmod 700 "${selectedUser.home}/.ssh"`,
+        `sudo chmod 600 "${selectedUser.home}/.ssh/authorized_keys"`,
+        `sudo chown -R "${selectedUser.username}":"${selectedUser.username}" "${selectedUser.home}/.ssh"`
+      ].join(' && ')
+    )
+    if (res.code !== 0) alert('Lỗi thêm key: ' + (res.stderr || res.stdout))
     await fetchSshKeys(selectedUser)
     setShowAddKeyModal(false)
     setNewKeyContent('')
@@ -315,10 +340,16 @@ export default function UserManagementPanel({
                         onClick={async () => {
                           const input = document.getElementById('change-pass-input') as HTMLInputElement
                           if (!input?.value) return
+                          if (input.value.includes('\n')) {
+                            alert('Mật khẩu không được chứa ký tự xuống dòng.')
+                            return
+                          }
                           setLoading(true)
-                          await exec(`echo "${selectedUser.username}:${input.value}" | sudo chpasswd`)
+                          const res = await exec(
+                            `echo '${toBase64(`${selectedUser.username}:${input.value}`)}' | base64 -d | sudo chpasswd`
+                          )
                           input.value = ''
-                          alert('Đã đổi mật khẩu thành công')
+                          alert(res.code === 0 ? 'Đã đổi mật khẩu thành công' : 'Lỗi: ' + (res.stderr || res.stdout))
                           setLoading(false)
                         }}
                         className="px-3 py-1.5 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all"
@@ -389,6 +420,21 @@ export default function UserManagementPanel({
               <div className="space-y-1.5">
                 <label className="text-[#585b70] font-semibold">Password (tùy chọn)</label>
                 <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Để trống nếu không cần" className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[#585b70] font-semibold">Shell đăng nhập</label>
+                <select
+                  value={newShell}
+                  onChange={(e) => setNewShell(e.target.value)}
+                  className="w-full bg-[#181825] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+                >
+                  <option value="/bin/bash">/bin/bash (đăng nhập + SFTP)</option>
+                  <option value="/bin/sh">/bin/sh</option>
+                  <option value="/usr/sbin/nologin">/usr/sbin/nologin (chỉ FTP/dịch vụ)</option>
+                </select>
+                <p className="text-[10px] text-[#45475a]">
+                  Chọn nologin nếu tài khoản chỉ dùng cho FTP hoặc chạy dịch vụ.
+                </p>
               </div>
               <div className="flex gap-2 justify-end pt-2">
                 <button onClick={() => setShowAddUserModal(false)} className="px-4 py-1.5 rounded-lg font-semibold bg-white/5 hover:bg-white/10">Hủy</button>

@@ -1,18 +1,24 @@
 import { useState } from 'react'
-import { Send } from 'lucide-react'
+import { Send, RefreshCw } from 'lucide-react'
 import { useTerminalStore } from '../../stores/terminal-store'
 
 interface MultiExecPanelProps {
   sessionId: string
   exec: (cmd: string) => Promise<{ stdout: string; stderr: string; code: number }>
+  refreshKey: number
+  setLoading: (loading: boolean) => void
+  setError: (error: string) => void
 }
 
 export default function MultiExecPanel({
   sessionId,
-  exec
+  exec,
+  setLoading,
+  setError
 }: MultiExecPanelProps) {
   const [multiCmd, setMultiCmd] = useState('')
   const [selectedSessions, setSelectedSessions] = useState<Record<string, boolean>>({})
+  const [running, setRunning] = useState(false)
   const [multiOutputs, setMultiOutputs] = useState<
     Record<
       string,
@@ -20,32 +26,54 @@ export default function MultiExecPanel({
     >
   >({})
 
-  const handleBroadcast = async () => {
-    const targetIds = [sessionId, ...Object.keys(selectedSessions).filter((id) => selectedSessions[id])]
-    const freshOutputs: typeof multiOutputs = {}
-    targetIds.forEach((id) => {
-      freshOutputs[id] = { label: '', output: '', status: 'running' }
-    })
-    setMultiOutputs(freshOutputs)
+  const tabs = useTerminalStore((s) => s.tabs)
+  const otherTabs = tabs.filter((t) => t.connected && t.sessionId !== sessionId)
 
-    targetIds.forEach(async (id) => {
-      try {
-        const result = await window.api.ssh.exec(id, multiCmd)
-        setMultiOutputs((prev) => ({
-          ...prev,
-          [id]: {
-            label: '',
-            output: result.stdout || result.stderr || 'Command finished with no output.',
-            status: result.code === 0 ? 'done' : 'error'
-          }
-        }))
-      } catch (err: any) {
-        setMultiOutputs((prev) => ({
-          ...prev,
-          [id]: { label: '', output: 'Lỗi kết nối: ' + err.message, status: 'error' }
-        }))
-      }
-    })
+  const labelFor = (id: string): string =>
+    id === sessionId ? 'Máy chủ hiện tại (Local)' : tabs.find((t) => t.sessionId === id)?.label || id
+
+  const handleBroadcast = async () => {
+    const command = multiCmd.trim()
+    if (!command) return alert('Vui lòng nhập lệnh cần chạy!')
+
+    const targetIds = Array.from(
+      new Set([sessionId, ...Object.keys(selectedSessions).filter((id) => selectedSessions[id])])
+    )
+
+    const freshOutputs: typeof multiOutputs = {}
+    for (const id of targetIds) {
+      freshOutputs[id] = { label: labelFor(id), output: '', status: 'running' }
+    }
+    setMultiOutputs(freshOutputs)
+    setRunning(true)
+    setLoading(true)
+    setError('')
+
+    await Promise.all(
+      targetIds.map(async (id) => {
+        try {
+          // Lệnh trên máy chủ hiện tại đi qua prop `exec`, các máy chủ khác gọi trực tiếp.
+          const result = id === sessionId ? await exec(command) : await window.api.ssh.exec(id, command)
+          const output = result.stdout || result.stderr || '(lệnh không trả về nội dung)'
+          setMultiOutputs((prev) => ({
+            ...prev,
+            [id]: {
+              label: labelFor(id),
+              output: result.code === 0 ? output : `${output}\n[exit code: ${result.code}]`,
+              status: result.code === 0 ? 'done' : 'error'
+            }
+          }))
+        } catch (err: any) {
+          setMultiOutputs((prev) => ({
+            ...prev,
+            [id]: { label: labelFor(id), output: 'Lỗi thực thi: ' + err.message, status: 'error' }
+          }))
+        }
+      })
+    )
+
+    setRunning(false)
+    setLoading(false)
   }
 
   return (
@@ -55,26 +83,23 @@ export default function MultiExecPanel({
         <div className="col-span-1 bg-[#181825] border border-white/[0.04] rounded-xl p-3 flex flex-col overflow-hidden">
           <span className="text-[10px] uppercase font-semibold text-[#585b70] tracking-wider mb-2">Chọn Server đích</span>
           <div className="flex-1 overflow-y-auto space-y-2">
-            {useTerminalStore
-              .getState()
-              .tabs.filter((t) => t.connected && t.sessionId !== sessionId)
-              .map((t) => (
-                <label
-                  key={t.sessionId}
-                  className="flex items-center gap-2 p-2 bg-[#11111b] border border-white/5 rounded-lg text-xs hover:bg-white/[0.02] cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={!!selectedSessions[t.sessionId]}
-                    onChange={(e) => {
-                      setSelectedSessions((prev) => ({ ...prev, [t.sessionId]: e.target.checked }))
-                    }}
-                    className="rounded text-[#89b4fa] focus:ring-0 bg-[#1e1e2e] border-white/5"
-                  />
-                  <span className="truncate text-[#cdd6f4] font-semibold">{t.label}</span>
-                </label>
-              ))}
-            {useTerminalStore.getState().tabs.filter((t) => t.connected && t.sessionId !== sessionId).length === 0 && (
+            {otherTabs.map((t) => (
+              <label
+                key={t.sessionId}
+                className="flex items-center gap-2 p-2 bg-[#11111b] border border-white/5 rounded-lg text-xs hover:bg-white/[0.02] cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  checked={!!selectedSessions[t.sessionId]}
+                  onChange={(e) => {
+                    setSelectedSessions((prev) => ({ ...prev, [t.sessionId]: e.target.checked }))
+                  }}
+                  className="rounded text-[#89b4fa] focus:ring-0 bg-[#1e1e2e] border-white/5"
+                />
+                <span className="truncate text-[#cdd6f4] font-semibold">{t.label}</span>
+              </label>
+            ))}
+            {otherTabs.length === 0 && (
               <div className="text-[10px] text-[#585b70] italic text-center py-8">
                 Không có tab SSH nào khác đang mở. Hãy mở thêm kết nối để chạy cluster.
               </div>
@@ -111,11 +136,13 @@ export default function MultiExecPanel({
             {Object.keys(selectedSessions)
               .filter((id) => selectedSessions[id])
               .map((id) => {
-                const sessionInfo = useTerminalStore.getState().tabs.find((t) => t.sessionId === id)
+                const sessionInfo = tabs.find((t) => t.sessionId === id)
                 return (
                   <div key={id} className="bg-[#181825] border border-white/5 rounded-lg p-2.5 flex flex-col overflow-hidden max-h-[250px]">
                     <div className="flex justify-between items-center mb-1 text-[10px]">
-                      <span className="font-bold text-[#a6e3a1] truncate max-w-[120px]">{sessionInfo?.label || 'Server'}</span>
+                      <span className="font-bold text-[#a6e3a1] truncate max-w-[120px]">
+                        {multiOutputs[id]?.label || sessionInfo?.label || 'Server'}
+                      </span>
                       <span
                         className={`font-mono text-[9px] px-1 py-0.5 rounded ${
                           multiOutputs[id]?.status === 'running'
@@ -154,9 +181,11 @@ export default function MultiExecPanel({
         />
         <button
           onClick={handleBroadcast}
-          className="px-4 py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center gap-1.5"
+          disabled={running}
+          className="px-4 py-2 rounded-lg bg-[#89b4fa] text-[#1e1e2e] text-xs font-bold hover:bg-[#74c7ec] transition-all flex items-center gap-1.5 disabled:opacity-40"
         >
-          <Send size={12} /> Broadcast
+          {running ? <RefreshCw size={12} className="animate-spin" /> : <Send size={12} />}
+          {running ? 'Đang chạy...' : 'Broadcast'}
         </button>
       </div>
     </div>

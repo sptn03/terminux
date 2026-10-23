@@ -19,7 +19,9 @@ import {
   GitBranch,
   ShieldCheck,
   Code,
-  Globe
+  Globe,
+  FolderTree,
+  Users
 } from 'lucide-react'
 import { useTerminalStore } from '../../stores/terminal-store'
 import SftpPanel from '../sftp/SftpPanel'
@@ -42,6 +44,9 @@ import BackupPanel from './BackupPanel'
 import FirewallPanel from './FirewallPanel'
 import GitPanel from './GitPanel'
 import SslTrackerPanel from './SslTrackerPanel'
+import FtpPanel from './FtpPanel'
+import MultiExecPanel from './MultiExecPanel'
+import UserManagementPanel from './UserManagementPanel'
 
 interface DevOpsDashboardProps {
   sessionId: string
@@ -69,6 +74,9 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
     | 'firewall'
     | 'git'
     | 'ssl'
+    | 'ftp'
+    | 'users'
+    | 'multiexec'
   >('overview')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -181,6 +189,7 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
       title: 'Ứng dụng & Website',
       items: [
         { id: 'nginx', name: 'Websites (Nginx)', icon: FolderOpen },
+        { id: 'ftp', name: 'FTP Accounts', icon: FolderTree },
         { id: 'php', name: 'PHP Manager', icon: Code },
         { id: 'wordpress', name: 'WordPress Toolkit', icon: Globe },
         { id: 'pm2', name: 'PM2', icon: Layers },
@@ -203,7 +212,9 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
         { id: 'tunnel', name: 'Tunnel', icon: ArrowRight },
         { id: 'packages', name: 'Packages', icon: Package },
         { id: 'firewall', name: 'Firewall', icon: Shield },
-        { id: 'ssl', name: 'SSL Tracker', icon: ShieldCheck }
+        { id: 'ssl', name: 'SSL Tracker', icon: ShieldCheck },
+        { id: 'users', name: 'System Users', icon: Users },
+        { id: 'multiexec', name: 'Multi-Exec', icon: Send }
       ]
     }
   ] as const
@@ -363,6 +374,18 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
 
             {activeSubTab === 'ssl' && (
               <SslTrackerPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
+            )}
+
+            {activeSubTab === 'ftp' && (
+              <FtpPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
+            )}
+
+            {activeSubTab === 'users' && (
+              <UserManagementPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
+            )}
+
+            {activeSubTab === 'multiexec' && (
+              <MultiExecPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />
             )}
           </div>
 

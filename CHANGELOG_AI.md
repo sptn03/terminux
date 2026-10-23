@@ -9,6 +9,32 @@ Every AI modification.
 
 Date: 2026-10-23
 AI: Cline (Claude)
+Task: Rà soát và hoàn thiện bộ panel quản trị (firewall đa engine, FTP, user database, cài engine DB)
+Files added:
+- src/renderer/components/devops/FtpPanel.tsx (quản lý tài khoản FTP: vsftpd/pure-ftpd/proftpd, cài đặt, tạo/xoá/khoá user, chroot, passive ports, sửa cấu hình, mở firewall)
+- src/renderer/components/devops/RemotePathPicker.tsx (component duyệt tệp/thư mục trên server dùng chung)
+Files changed:
+- src/renderer/components/devops/FirewallPanel.tsx (viết lại: UFW + firewalld + nftables + iptables + fail2ban, chính sách mặc định, log, cài engine)
+- src/renderer/components/devops/DatabasePanel.tsx (thêm tab Người dùng DB: liệt kê/tạo/xoá user MySQL-PostgreSQL, cấp quyền, đổi mật khẩu, xem grants; thêm trình cài MariaDB/PostgreSQL/Redis ở màn hình trống)
+- src/renderer/components/devops/DevOpsDashboard.tsx (nối FtpPanel, UserManagementPanel, MultiExecPanel vào menu; thêm nhóm menu)
+- src/renderer/components/devops/MultiExecPanel.tsx (nhận props chuẩn của dashboard, dùng prop exec, hiển thị đúng tên máy chủ, trạng thái đang chạy, exit code)
+- src/renderer/components/devops/UserManagementPanel.tsx (dùng base64 cho mật khẩu + SSH key, thêm lựa chọn shell khi tạo user, báo lỗi rõ ràng)
+- memory.md
+What changed:
+- Hoàn thiện quản trị toàn diện: tường lửa mọi engine phổ biến, quản lý tài khoản FTP, quản lý user database, cài đặt MySQL/PostgreSQL/Redis ngay trong panel.
+- Sửa lỗi tính năng chết: `MultiExecPanel` và `UserManagementPanel` đã có file nhưng không được import ở đâu → nay truy cập được từ menu.
+- Sửa lỗi shell injection/quoting: mật khẩu và SSH key truyền qua shell nay được mã hoá base64 (`base64 -d | chpasswd` / `tee`), mật khẩu có ký tự đặc biệt không còn làm hỏng lệnh.
+- Tách `RemotePathPicker` dùng chung cho các panel mới thay vì copy thêm.
+Reason: Yêu cầu rà soát, hoàn thiện và bổ sung panel quản trị (firewall các loại, FTP account, database user, cài mysql/postgres/redis).
+Risk: Trung bình — các panel chạy lệnh sudo trên máy chủ đích; mọi thao tác phá hoại đều có bước xác nhận.
+Verification: `npx tsc --noEmit` sạch; `npm run build` thành công (SPA + server bundle); `npm test` → 31/31 pass; kiểm tra chuỗi trong bundle xác nhận các panel mới đã được đóng gói.
+
+
+==================================================
+
+
+Date: 2026-10-23
+AI: Cline (Claude)
 Task: Chuyển Terminux từ app desktop Electron (build .exe Windows) sang web app chạy trên Node.js
 Files added:
 - src/main/index.ts (viết lại: HTTP + WebSocket server, Basic auth, static SPA, upload/download)
