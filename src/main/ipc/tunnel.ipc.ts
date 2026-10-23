@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { ipcMain } from './ipc-bus'
 import { tunnelManager } from '../ssh/tunnel-manager'
 
 export function registerTunnelIpc(): void {

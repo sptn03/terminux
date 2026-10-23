@@ -3,7 +3,7 @@ import { SSHConfig, ShellSession } from './types'
 import { createShellSession } from './shell-session'
 import { sftpManager } from './sftp-manager'
 import { tunnelManager } from './tunnel-manager'
-import { BrowserWindow } from 'electron'
+import { broadcast } from '../ipc/ipc-bus'
 import { getDb } from '../db'
 
 class SSHManager {
@@ -44,17 +44,11 @@ class SSHManager {
       }
 
       session.onData((data: string) => {
-        const win = BrowserWindow.getAllWindows()[0]
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('shell:output', session.sessionId, data)
-        }
+        broadcast('shell:output', session.sessionId, data)
       })
 
       session.onExit((code: number | null) => {
-        const win = BrowserWindow.getAllWindows()[0]
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('shell:exit', session.sessionId, code)
-        }
+        broadcast('shell:exit', session.sessionId, code)
         // Update ended_at in history
         try {
           const db = getDb()
@@ -66,19 +60,13 @@ class SSHManager {
       })
 
       session.onError((err: Error) => {
-        const win = BrowserWindow.getAllWindows()[0]
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('shell:error', session.sessionId, err.message)
-        }
+        broadcast('shell:error', session.sessionId, err.message)
       })
 
       return { sessionId: session.sessionId }
     } catch (err: any) {
       this.pending.delete(sessionId)
-      const win = BrowserWindow.getAllWindows()[0]
-      if (win && !win.isDestroyed()) {
-        win.webContents.send('shell:error', sessionId, err.message || 'Connection failed')
-      }
+      broadcast('shell:error', sessionId, err.message || 'Connection failed')
       return { sessionId: '', error: err.message || 'Connection failed' }
     }
   }

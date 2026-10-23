@@ -219,6 +219,55 @@ Phù hợp với:
 
 ------------------------------------------------------------------------
 
+## 13. Chạy Terminux dưới dạng web app
+
+Ứng dụng chạy như một web server bằng Node.js, mở bằng trình duyệt (không cần
+cài đặt, không build .exe).
+
+### Cài đặt & chạy
+
+```bash
+npm install
+npm run build     # build giao diện (dist/web) + server (dist/server)
+npm start         # chạy server, mặc định http://127.0.0.1:3000
+```
+
+Chế độ phát triển (hot reload):
+
+```bash
+npm run dev       # Vite :5173 (giao diện) + server :3000 (API/SSH)
+# mở http://localhost:5173
+```
+
+Kiểm thử: `npm test` (31 kiểm tra API + SSH + xác thực)
+
+### Cấu hình (biến môi trường)
+
+| Biến | Mặc định | Ý nghĩa |
+|---|---|---|
+| `TERMINUX_PORT` | `3000` | Cổng HTTP |
+| `TERMINUX_HOST` | `127.0.0.1` | Địa chỉ bind (dùng `0.0.0.0` để truy cập từ máy khác) |
+| `TERMINUX_USER` / `TERMINUX_PASSWORD` | `admin` / (rỗng) | Đăng nhập HTTP Basic. **Bắt buộc đặt** nếu mở ra ngoài localhost |
+| `TERMINUX_DATA_DIR` | `./data` | Nơi chứa database, log phiên, khoá mã hoá, tệp tạm |
+| `TERMINUX_FS_ROOT` | (rỗng) | Giới hạn API filesystem trong một thư mục |
+| `TERMINUX_WEB_DIR` | `./dist/web` | Thư mục chứa bản build giao diện |
+
+Ví dụ chạy cho cả LAN:
+
+```bash
+TERMINUX_HOST=0.0.0.0 TERMINUX_PASSWORD='mat-khau-manh' npm start
+```
+
+### Lưu ý khi chuyển từ bản desktop sang web
+
+- Trang **SFTP / Local** giờ thao tác trên ổ đĩa của **máy chạy server**, không
+  phải máy người dùng. Upload: trình duyệt → thư mục tạm trên server → SFTP.
+  Download: SFTP → `data/downloads` → trình duyệt tải về.
+- Nút thu nhỏ / phóng to / đóng cửa sổ không còn (dùng tab của trình duyệt).
+- Chọn private key / thư mục dùng hộp thoại chọn đường dẫn trong ứng dụng.
+
+------------------------------------------------------------------------
+
 ## Kết luận
 
 Termius là một công cụ quản lý SSH toàn diện, kết hợp terminal, truyền

@@ -1,7 +1,6 @@
 import Database from 'better-sqlite3'
-import { app } from 'electron'
 import { join } from 'path'
-import { writeFileSync, existsSync, mkdirSync } from 'fs'
+import { getDbDir } from '../paths'
 import { CREATE_TABLES, DEFAULT_SETTINGS, BUILTIN_THEMES } from './schema'
 
 let db: Database.Database | null = null
@@ -12,13 +11,7 @@ export function getDb(): Database.Database {
 }
 
 export function initDatabase(): void {
-  const userDataPath = app.getPath('userData')
-  const dbDir = join(userDataPath, 'data')
-  if (!existsSync(dbDir)) {
-    mkdirSync(dbDir, { recursive: true })
-  }
-
-  const dbPath = join(dbDir, 'terminux.db')
+  const dbPath = join(getDbDir(), 'terminux.db')
   db = new Database(dbPath)
   db.pragma('journal_mode = WAL')
   db.pragma('foreign_keys = ON')

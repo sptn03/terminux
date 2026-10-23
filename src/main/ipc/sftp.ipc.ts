@@ -1,6 +1,11 @@
-import { ipcMain, dialog } from 'electron'
+import { basename, dirname, extname, join } from 'path'
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
+import AdmZip from 'adm-zip'
+import { ipcMain, broadcast } from './ipc-bus'
 import { sftpManager } from '../ssh/sftp-manager'
 import { sshManager } from '../ssh/ssh-manager'
+import { assertInsideFsRoot } from '../paths'
+import { downloadUrlFor, getDownloadDir } from '../downloads'
 
 export function registerSftpIpc(): void {
   ipcMain.handle('sftp:listDir', async (_event, sessionId: string, dirPath: string) => {
@@ -55,38 +60,35 @@ export function registerSftpIpc(): void {
     }
   })
 
-  ipcMain.handle('sftp:upload', async (_event, sessionId: string, remotePath: string) => {
-    const result = await dialog.showOpenDialog({
-      properties: ['openFile', 'multiSelections']
-    })
-    if (result.canceled || result.filePaths.length === 0) return { canceled: true }
+  // Browser upload: the client first POSTs the picked files to /api/upload,
+  // which stores them in the server temp dir and returns their local paths.
+  ipcMain.handle('sftp:upload', async (_event, sessionId: string, remotePath: string, localPaths?: string[]) => {
+    if (!localPaths || localPaths.length === 0) return { canceled: true }
 
     const results = []
-    for (const localPath of result.filePaths) {
-      const fs = require('fs')
+    for (const localPath of localPaths) {
       try {
-        const data = fs.readFileSync(localPath)
-        const filename = require('path').basename(localPath)
+        const data = readFileSync(assertInsideFsRoot(localPath))
+        const filename = basename(localPath)
         const remoteFile = remotePath.endsWith('/') ? remotePath + filename : remotePath + '/' + filename
         await sftpManager.writeFile(sessionId, remoteFile, data)
         results.push({ filename, success: true })
       } catch (err: any) {
-        results.push({ filename: require('path').basename(localPath), error: err.message })
+        results.push({ filename: basename(localPath), error: err.message })
       }
     }
     return { results }
   })
 
+  // Browser download: copy the remote file into the server download dir and
+  // hand the client a URL it can open (the client triggers the download).
   ipcMain.handle('sftp:download', async (_event, sessionId: string, remotePath: string) => {
-    const result = await dialog.showSaveDialog({
-      defaultPath: require('path').basename(remotePath)
-    })
-    if (result.canceled || !result.filePath) return { canceled: true }
-
     try {
       const data = await sftpManager.readFile(sessionId, remotePath)
-      require('fs').writeFileSync(result.filePath, data)
-      return { success: true }
+      const filename = basename(remotePath)
+      const target = join(getDownloadDir(), filename)
+      writeFileSync(target, data)
+      return { success: true, downloadUrl: downloadUrlFor(target, filename) }
     } catch (err: any) {
       return { error: err.message }
     }
@@ -121,7 +123,6 @@ export function registerSftpIpc(): void {
   ipcMain.handle('sftp:deploy', async (_event, sessionId: string, localDir: string, remoteDir: string, filePaths?: string[], taskId?: string) => {
     const fs = require('fs')
     const path = require('path')
-    const { BrowserWindow } = require('electron')
 
     const taskObj = { canceled: false }
     if (taskId) {
@@ -176,7 +177,7 @@ export function registerSftpIpc(): void {
         } catch {}
       }
     } else {
-      scan(localDir)
+      scan(assertInsideFsRoot(localDir))
     }
 
     const total = files.length
@@ -218,7 +219,7 @@ export function registerSftpIpc(): void {
 
         try {
           const remoteFilePath = remoteDir.endsWith('/') ? remoteDir + file.relativePath : remoteDir + '/' + file.relativePath
-          const data = fs.readFileSync(file.localPath)
+          const data = fs.readFileSync(assertInsideFsRoot(file.localPath))
           await sftpManager.writeFile(sessionId, remoteFilePath.replace(/\\/g, '/'), data)
           
           uploaded++
@@ -236,16 +237,13 @@ export function registerSftpIpc(): void {
 
             const progressPercent = Math.round((uploaded / total) * 100)
             
-            // Send progress to renderer
-            const win = BrowserWindow.getAllWindows()[0]
-            if (win && !win.isDestroyed()) {
-              win.webContents.send('sftp:progress', {
-                taskId,
-                progress: progressPercent,
-                speed: speedStr,
-                detail: `${uploaded}/${total} tệp`
-              })
-            }
+            // Send progress to the browser
+            broadcast('sftp:progress', {
+              taskId,
+              progress: progressPercent,
+              speed: speedStr,
+              detail: `${uploaded}/${total} tệp`
+            })
           }
         } catch (err: any) {
           errors.push(`${file.relativePath}: ${err.message}`)
@@ -277,25 +275,21 @@ export function registerSftpIpc(): void {
   ipcMain.handle('sftp:downloadFiles', async (_event, sessionId: string, remotePaths: string[], targetLocalDir?: string, taskId?: string) => {
     const fs = require('fs')
     const path = require('path')
-    const { BrowserWindow } = require('electron')
 
     const taskObj = { canceled: false }
     if (taskId) {
       activeTasks.set(taskId, taskObj)
     }
- 
+
+    // No target directory: stage the files in the server download dir and hand
+    // the browser a URL (a single file, or a zip when several were requested).
     let localDir = targetLocalDir
-    if (!localDir) {
-      const result = await dialog.showOpenDialog({
-        properties: ['openDirectory', 'createDirectory']
-      })
-      if (result.canceled || !result.filePaths[0]) {
-        if (taskId) activeTasks.delete(taskId)
-        return { canceled: true }
-      }
-      localDir = result.filePaths[0]
+    const staged = !localDir
+    if (staged) {
+      localDir = join(getDownloadDir(), `dl-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`)
+      mkdirSync(localDir, { recursive: true })
     }
- 
+
     const files: Array<{ remotePath: string; relativePath: string; size: number }> = []
     for (const rp of remotePaths) {
       const remoteFiles = await sftpManager.listDirRecursive(sessionId, rp)
@@ -329,8 +323,9 @@ export function registerSftpIpc(): void {
         break
       }
       try {
-        if (!fs.existsSync(dir)) {
-          fs.mkdirSync(dir, { recursive: true })
+        const safeDir = assertInsideFsRoot(dir)
+        if (!fs.existsSync(safeDir)) {
+          fs.mkdirSync(safeDir, { recursive: true })
         }
       } catch {}
     }
@@ -350,7 +345,7 @@ export function registerSftpIpc(): void {
         try {
           const destPath = path.join(localDir, file.relativePath)
           const data = await sftpManager.readFile(sessionId, file.remotePath)
-          fs.writeFileSync(destPath, data)
+          fs.writeFileSync(assertInsideFsRoot(destPath), data)
           
           downloaded++
           totalBytesTransferred += file.size
@@ -367,15 +362,13 @@ export function registerSftpIpc(): void {
 
             const progressPercent = Math.round((downloaded / total) * 100)
 
-            const win = BrowserWindow.getAllWindows()[0]
-            if (win && !win.isDestroyed()) {
-              win.webContents.send('sftp:progress', {
-                taskId,
-                progress: progressPercent,
-                speed: speedStr,
-                detail: `${downloaded}/${total} tệp`
-              })
-            }
+            // Send progress to the browser
+            broadcast('sftp:progress', {
+              taskId,
+              progress: progressPercent,
+              speed: speedStr,
+              detail: `${downloaded}/${total} tệp`
+            })
           }
         } catch (err: any) {
           errors.push(`${file.relativePath}: ${err.message}`)
@@ -398,6 +391,31 @@ export function registerSftpIpc(): void {
 
     if (taskId) {
       activeTasks.delete(taskId)
+    }
+
+    // Staged download: hand the browser a URL for the single file, or a zip
+    // archive when more than one file was produced.
+    if (staged) {
+      const stagedDir = localDir as string
+      let downloadUrl: string | undefined
+      try {
+        const entries = readdirSync(stagedDir)
+        if (entries.length === 1) {
+          const only = join(stagedDir, entries[0])
+          if (statSync(only).isFile()) downloadUrl = downloadUrlFor(only, entries[0])
+        }
+        if (!downloadUrl && entries.length > 0) {
+          const zipName = `terminux-download-${Date.now().toString(36)}.zip`
+          const zip = new AdmZip()
+          zip.addLocalFolder(stagedDir)
+          const zipPath = join(getDownloadDir(), zipName)
+          zip.writeZip(zipPath)
+          downloadUrl = downloadUrlFor(zipPath, zipName)
+        }
+      } catch (err: any) {
+        errors.push(`Đóng gói tệp tải về thất bại: ${err.message}`)
+      }
+      return { downloaded, total, errors, canceled: taskObj.canceled, downloadUrl }
     }
 
     return { downloaded, total, errors, canceled: taskObj.canceled }

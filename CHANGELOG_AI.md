@@ -7,6 +7,40 @@ Every AI modification.
 ==================================================
 
 
+Date: 2026-10-23
+AI: Cline (Claude)
+Task: Chuyển Terminux từ app desktop Electron (build .exe Windows) sang web app chạy trên Node.js
+Files added:
+- src/main/index.ts (viết lại: HTTP + WebSocket server, Basic auth, static SPA, upload/download)
+- src/main/ipc/ipc-bus.ts (shim `ipcMain` + `broadcast` thay Electron IPC)
+- src/main/paths.ts (data dir, session logs, temp, filesystem jail)
+- src/main/crypto.ts (AES-256-GCM thay `safeStorage`)
+- src/main/downloads.ts (staging download + URL /api/download)
+- src/renderer/lib/web-api.ts (browser implementation của `window.api`)
+- src/renderer/lib/path-picker.ts (modal chọn file/thư mục trên máy chủ)
+- vite.config.ts, scripts/build.mjs, scripts/build-server.mjs, scripts/dev.mjs, scripts/smoke-test.mjs
+Files changed:
+- package.json (bỏ electron/electron-builder/electron-rebuild/electron-vite; thêm ws, esbuild, @types/node, @types/ws; đổi scripts sang vite/esbuild/node)
+- src/main/db/index.ts, src/main/ssh/ssh-manager.ts, src/main/ssh/shell-session.ts (bỏ `app.getPath`/`BrowserWindow`)
+- src/main/ipc/{app,db,ssh,sftp,tunnel,port,local}.ipc.ts (import ./ipc-bus; bỏ dialog/clipboard/safeStorage; broadcast progress; upload/download qua HTTP)
+- src/renderer/main.tsx (installWebApi), src/renderer/App.tsx (background image qua /api/file), src/renderer/components/layout/TitleBar.tsx (ẩn nút cửa sổ trên web)
+- memory.md, DECISIONS.md, .gitignore
+Files removed:
+- src/preload/index.ts, electron.vite.config.ts, electron.vite.config.1782873572180.mjs, out/ (output Electron cũ)
+What changed:
+- Thay toàn bộ lớp truyền thông Electron IPC bằng HTTP (`/api/invoke`, `/api/send`) + WebSocket (`/api/events`).
+- Thêm xác thực HTTP Basic cho HTTP và WebSocket upgrade; bind mặc định 127.0.0.1.
+- Thêm khoá filesystem tuỳ chọn (TERMINUX_FS_ROOT) chống path traversal.
+- File picker của Electron thay bằng modal nội bộ + HTTP upload/download.
+- Build tách thành SPA (`dist/web`) + server bundle (`dist/server`).
+Reason: Yêu cầu bỏ build ứng dụng Windows, chạy trên web.
+Risk: Trung bình — thay đổi kiến trúc, nhưng giữ nguyên toàn bộ logic nghiệp vụ SSH/SFTP/DB.
+Verification: `npm run typecheck` sạch; `npm run build` thành công; `npm test` → 31/31 kiểm tra pass (bao gồm luồng SSH thật với SSH server giả, broadcast WebSocket, xác thực và filesystem jail).
+
+
+==================================================
+
+
 Date: 2026-06-30
 AI: Antigravity (Gemini 3.5 Flash)
 Task: Nâng cấp toàn diện DevOps Dashboard hoàn thiện tính năng cho DevOps (7 tính năng)

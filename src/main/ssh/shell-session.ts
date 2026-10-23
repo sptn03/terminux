@@ -1,5 +1,8 @@
 import { Client, ClientChannel } from 'ssh2'
+import { appendFileSync } from 'fs'
+import { join } from 'path'
 import { SSHConfig, ShellSession } from './types'
+import { getSessionLogsDir } from '../paths'
 
 export function createShellSession(config: SSHConfig, sessionId?: string, client?: Client): Promise<ShellSession> {
   return new Promise((resolve, reject) => {
@@ -31,19 +34,14 @@ export function createShellSession(config: SSHConfig, sessionId?: string, client
 
           channel = stream
 
-          const userDataPath = require('electron').app.getPath('userData')
-          const logsDir = require('path').join(userDataPath, 'session_logs')
-          if (!require('fs').existsSync(logsDir)) {
-            require('fs').mkdirSync(logsDir, { recursive: true })
-          }
-          const logFilePath = require('path').join(logsDir, `${id}.log`)
+          const logFilePath = join(getSessionLogsDir(), `${id}.log`)
 
           stream.on('data', (data: Buffer) => {
             const str = data.toString('utf-8')
             if (dataCallback) dataCallback(str)
             else buffer.push(str)
             try {
-              require('fs').appendFileSync(logFilePath, data)
+              appendFileSync(logFilePath, data)
             } catch {}
           })
 
@@ -52,7 +50,7 @@ export function createShellSession(config: SSHConfig, sessionId?: string, client
             if (dataCallback) dataCallback(str)
             else buffer.push(str)
             try {
-              require('fs').appendFileSync(logFilePath, data)
+              appendFileSync(logFilePath, data)
             } catch {}
           })
 

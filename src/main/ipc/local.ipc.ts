@@ -1,6 +1,8 @@
-import { ipcMain, dialog } from 'electron'
-import { readdirSync, statSync, mkdirSync, renameSync, unlinkSync, rmSync } from 'fs'
+import { readdirSync, statSync, mkdirSync, renameSync, unlinkSync, rmSync, writeFileSync, watch, existsSync } from 'fs'
 import { join, basename } from 'path'
+import AdmZip from 'adm-zip'
+import { ipcMain, broadcast } from './ipc-bus'
+import { assertInsideFsRoot } from '../paths'
 
 export interface LocalEntry {
   name: string
@@ -13,12 +15,13 @@ export interface LocalEntry {
 
 function listLocalDir(dirPath: string): LocalEntry[] {
   try {
-    const items = readdirSync(dirPath, { withFileTypes: true })
+    const safeDir = assertInsideFsRoot(dirPath)
+    const items = readdirSync(safeDir, { withFileTypes: true })
     const entries: LocalEntry[] = []
     for (const item of items) {
       if (item.name.startsWith('.')) continue
       try {
-        const fullPath = join(dirPath, item.name)
+        const fullPath = join(safeDir, item.name)
         const stat = statSync(fullPath)
         entries.push({
           name: item.name,
@@ -43,13 +46,8 @@ export function registerLocalIpc(): void {
     return listLocalDir(dirPath)
   })
 
-  ipcMain.handle('local:selectDir', async () => {
-    const result = await dialog.showOpenDialog({
-      properties: ['openDirectory']
-    })
-    if (result.canceled || !result.filePaths[0]) return null
-    return result.filePaths[0]
-  })
+  // No native dialog in a browser — the client shows its own directory picker.
+  ipcMain.handle('local:selectDir', async () => null)
 
   ipcMain.handle('local:getDrives', async () => {
     if (process.platform === 'win32') {
@@ -93,7 +91,7 @@ export function registerLocalIpc(): void {
 
   ipcMain.handle('local:mkdir', async (_event, dirPath: string) => {
     try {
-      mkdirSync(dirPath, { recursive: true })
+      mkdirSync(assertInsideFsRoot(dirPath), { recursive: true })
       return { success: true }
     } catch (err: any) {
       return { error: err.message }
@@ -102,7 +100,7 @@ export function registerLocalIpc(): void {
 
   ipcMain.handle('local:rename', async (_event, oldPath: string, newPath: string) => {
     try {
-      renameSync(oldPath, newPath)
+      renameSync(assertInsideFsRoot(oldPath), assertInsideFsRoot(newPath))
       return { success: true }
     } catch (err: any) {
       return { error: err.message }
@@ -111,11 +109,12 @@ export function registerLocalIpc(): void {
 
   ipcMain.handle('local:delete', async (_event, targetPath: string) => {
     try {
-      const stat = statSync(targetPath)
+      const safePath = assertInsideFsRoot(targetPath)
+      const stat = statSync(safePath)
       if (stat.isDirectory()) {
-        rmSync(targetPath, { recursive: true, force: true })
+        rmSync(safePath, { recursive: true, force: true })
       } else {
-        unlinkSync(targetPath)
+        unlinkSync(safePath)
       }
       return { success: true }
     } catch (err: any) {
@@ -126,7 +125,7 @@ export function registerLocalIpc(): void {
   // Write local file content
   ipcMain.handle('local:writeFile', async (_event, filePath: string, content: string) => {
     try {
-      require('fs').writeFileSync(filePath, content, 'utf-8')
+      writeFileSync(assertInsideFsRoot(filePath), content, 'utf-8')
       return { success: true }
     } catch (err: any) {
       return { error: err.message }
@@ -136,16 +135,16 @@ export function registerLocalIpc(): void {
   // Zip a file or directory locally
   ipcMain.handle('local:zip', async (_event, targetPath: string, outputPath: string) => {
     try {
-      const AdmZip = require('adm-zip')
+      const safeTarget = assertInsideFsRoot(targetPath)
+      const safeOutput = assertInsideFsRoot(outputPath)
       const zip = new AdmZip()
-      const fs = require('fs')
-      const stat = fs.statSync(targetPath)
+      const stat = statSync(safeTarget)
       if (stat.isDirectory()) {
-        zip.addLocalFolder(targetPath)
+        zip.addLocalFolder(safeTarget)
       } else {
-        zip.addLocalFile(targetPath)
+        zip.addLocalFile(safeTarget)
       }
-      zip.writeZip(outputPath)
+      zip.writeZip(safeOutput)
       return { success: true }
     } catch (err: any) {
       return { error: err.message }
@@ -155,9 +154,8 @@ export function registerLocalIpc(): void {
   // Unzip a zip file locally
   ipcMain.handle('local:unzip', async (_event, zipPath: string, targetDir: string) => {
     try {
-      const AdmZip = require('adm-zip')
-      const zip = new AdmZip(zipPath)
-      zip.extractAllTo(targetDir, true)
+      const zip = new AdmZip(assertInsideFsRoot(zipPath))
+      zip.extractAllTo(assertInsideFsRoot(targetDir), true)
       return { success: true }
     } catch (err: any) {
       return { error: err.message }
@@ -169,9 +167,7 @@ export function registerLocalIpc(): void {
 
   ipcMain.handle('local:watchDir', async (_event, dirPath: string, watchId: string) => {
     try {
-      const fs = require('fs')
-      const path = require('path')
-      const { BrowserWindow } = require('electron')
+      const safeDir = assertInsideFsRoot(dirPath)
 
       if (activeWatchers.has(watchId)) {
         activeWatchers.get(watchId).close()
@@ -179,23 +175,20 @@ export function registerLocalIpc(): void {
 
       // Simple recursive folder watcher or single folder watcher
       let debounceTimeout: any = null
-      const watcher = fs.watch(dirPath, { recursive: true }, (eventType: string, filename: string) => {
+      const watcher = watch(safeDir, { recursive: true }, (eventType: string, filename: string | null) => {
         if (!filename) return
-        
+
         // Debounce to prevent rapid fire uploads
         if (debounceTimeout) clearTimeout(debounceTimeout)
         debounceTimeout = setTimeout(() => {
-          const fullLocalPath = path.join(dirPath, filename).replace(/\\/g, '/')
+          const fullLocalPath = join(safeDir, filename).replace(/\\/g, '/')
           try {
-            if (fs.existsSync(fullLocalPath) && fs.statSync(fullLocalPath).isFile()) {
-              const win = BrowserWindow.getAllWindows()[0]
-              if (win && !win.isDestroyed()) {
-                win.webContents.send('local:file-changed', {
-                  watchId,
-                  localPath: fullLocalPath,
-                  relativePath: filename.replace(/\\/g, '/')
-                })
-              }
+            if (existsSync(fullLocalPath) && statSync(fullLocalPath).isFile()) {
+              broadcast('local:file-changed', {
+                watchId,
+                localPath: fullLocalPath,
+                relativePath: filename.replace(/\\/g, '/')
+              })
             }
           } catch {}
         }, 1000)

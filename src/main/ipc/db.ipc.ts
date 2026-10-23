@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { ipcMain } from './ipc-bus'
 import { getDb } from '../db'
 
 export function registerDbIpc(): void {

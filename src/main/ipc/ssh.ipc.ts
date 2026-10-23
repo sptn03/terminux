@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { ipcMain } from './ipc-bus'
 import { sshManager } from '../ssh/ssh-manager'
 import { SSHConfig } from '../ssh/types'
 

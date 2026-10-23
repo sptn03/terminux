@@ -2,15 +2,18 @@ import { useEffect, useState } from 'react'
 import { Terminal, Minus, Square, X, PanelLeft, PanelLeftClose } from 'lucide-react'
 import { useSettingsStore } from '../../stores/settings-store'
 
+/** Window controls only make sense when running inside a desktop shell. */
+const IS_DESKTOP_SHELL = typeof (window as any).electron !== 'undefined'
+
 export default function TitleBar() {
   const [maximized, setMaximized] = useState(false)
   const sidebarCollapsed = useSettingsStore((s) => s.sidebarCollapsed)
   const toggleSidebar = useSettingsStore((s) => s.toggleSidebar)
 
   useEffect(() => {
+    if (!IS_DESKTOP_SHELL) return
     window.api.window.isMaximized().then(setMaximized)
-    const unsub = window.api.window.onMaximizedChange(setMaximized)
-    return unsub
+    return window.api.window.onMaximizedChange(setMaximized)
   }, [])
 
   return (
@@ -41,27 +44,31 @@ export default function TitleBar() {
 
       {/* Traffic lights + logo — right side */}
       <div className="flex items-center gap-[7px] pr-[14px] pl-3" style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}>
-        <button
-          onClick={() => window.api.window.minimize()}
-          className="w-[12px] h-[12px] rounded-full bg-[#f9e2af] opacity-40 hover:opacity-100 transition-all duration-150 hover:scale-110 group"
-          title="Minimize"
-        >
-          <Minus size={7} className="text-[#11111b] opacity-0 group-hover:opacity-100 mx-auto mt-[2.5px]" strokeWidth={3} />
-        </button>
-        <button
-          onClick={() => window.api.window.maximize()}
-          className="w-[12px] h-[12px] rounded-full bg-[#a6e3a1] opacity-40 hover:opacity-100 transition-all duration-150 hover:scale-110 group"
-          title={maximized ? 'Restore' : 'Maximize'}
-        >
-          <Square size={6} className="text-[#11111b] opacity-0 group-hover:opacity-100 mx-auto mt-[2px]" strokeWidth={3} />
-        </button>
-        <button
-          onClick={() => window.api.window.close()}
-          className="w-[12px] h-[12px] rounded-full bg-[#f38ba8] opacity-40 hover:opacity-100 transition-all duration-150 hover:scale-110 group"
-          title="Close"
-        >
-          <X size={7} className="text-[#11111b] opacity-0 group-hover:opacity-100 mx-auto mt-[2.5px]" strokeWidth={3} />
-        </button>
+        {IS_DESKTOP_SHELL && (
+          <>
+            <button
+              onClick={() => window.api.window.minimize()}
+              className="w-[12px] h-[12px] rounded-full bg-[#f9e2af] opacity-40 hover:opacity-100 transition-all duration-150 hover:scale-110 group"
+              title="Minimize"
+            >
+              <Minus size={7} className="text-[#11111b] opacity-0 group-hover:opacity-100 mx-auto mt-[2.5px]" strokeWidth={3} />
+            </button>
+            <button
+              onClick={() => window.api.window.maximize()}
+              className="w-[12px] h-[12px] rounded-full bg-[#a6e3a1] opacity-40 hover:opacity-100 transition-all duration-150 hover:scale-110 group"
+              title={maximized ? 'Restore' : 'Maximize'}
+            >
+              <Square size={6} className="text-[#11111b] opacity-0 group-hover:opacity-100 mx-auto mt-[2px]" strokeWidth={3} />
+            </button>
+            <button
+              onClick={() => window.api.window.close()}
+              className="w-[12px] h-[12px] rounded-full bg-[#f38ba8] opacity-40 hover:opacity-100 transition-all duration-150 hover:scale-110 group"
+              title="Close"
+            >
+              <X size={7} className="text-[#11111b] opacity-0 group-hover:opacity-100 mx-auto mt-[2.5px]" strokeWidth={3} />
+            </button>
+          </>
+        )}
       </div>
     </div>
   )

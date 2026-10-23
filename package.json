@@ -1,66 +1,40 @@
 {
   "name": "terminux",
   "version": "1.0.0",
-  "description": "Local SSH Client — terminal, host manager, snippets",
-  "main": "./out/main/index.js",
+  "description": "Web SSH Client — terminal, host manager, snippets",
+  "main": "dist/server/index.js",
   "scripts": {
-    "dev": "electron-vite dev",
-    "build": "electron-vite build",
-    "preview": "electron-vite preview",
-    "postinstall": "electron-rebuild -f -w better-sqlite3,ssh2",
-    "dist": "npm run build && electron-builder",
-    "dist:win": "npm run build && electron-builder --win",
-    "dist:portable": "npm run build && electron-builder --win portable"
-  },
-  "build": {
-    "appId": "com.terminux.app",
-    "productName": "Terminux",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "out/**/*"
-    ],
-    "win": {
-      "target": [
-        "nsis",
-        "portable"
-      ],
-      "icon": null
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
-    },
-    "portable": {
-      "artifactName": "${productName}-${version}-portable.${ext}"
-    }
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
+    "build:web": "vite build",
+    "build:server": "node scripts/build-server.mjs",
+    "start": "node dist/server/index.js",
+    "test": "node scripts/smoke-test.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.10.0",
+    "adm-zip": "^0.5.18",
     "better-sqlite3": "^12.11.1",
     "lucide-react": "^0.462.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "ssh2": "^1.16.0",
+    "ws": "^8.18.0",
     "xterm": "^5.3.0",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.8",
     "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/ssh2": "^1.15.1",
+    "@types/ws": "^8.5.13",
     "@vitejs/plugin-react": "^4.3.4",
-    "adm-zip": "^0.5.18",
     "autoprefixer": "^10.4.20",
-    "electron": "^43.0.0",
-    "electron-builder": "^26.15.3",
-    "electron-rebuild": "^3.2.9",
-    "electron-vite": "^2.3.0",
+    "esbuild": "^0.21.5",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",

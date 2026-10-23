@@ -1,11 +1,9 @@
-import { ipcMain, clipboard, dialog, safeStorage, BrowserWindow, app } from 'electron'
+import { existsSync, readFileSync, readdirSync, unlinkSync } from 'fs'
+import { join } from 'path'
+import { ipcMain } from './ipc-bus'
 import { getDb } from '../db'
-
-let mainWindow: BrowserWindow | null = null
-
-export function setMainWindow(w: BrowserWindow): void {
-  mainWindow = w
-}
+import { encryptString, decryptString } from '../crypto'
+import { getSessionLogsDir } from '../paths'
 
 export function registerAppIpc(): void {
   ipcMain.handle('app:listThemes', () => {
@@ -13,53 +11,38 @@ export function registerAppIpc(): void {
     return db.prepare('SELECT * FROM terminal_themes ORDER BY is_builtin DESC, name ASC').all()
   })
 
-  ipcMain.handle('app:copyToClipboard', (_event, text: string) => {
-    clipboard.writeText(text)
+  // Handled in the browser (navigator.clipboard) — channel kept for parity.
+  ipcMain.handle('app:copyToClipboard', () => {
+    /* client-side */
   })
 
-  ipcMain.handle('app:selectFile', async (_event, filters?: Array<{ name: string; extensions: string[] }>) => {
-    const result = await dialog.showOpenDialog({
-      properties: ['openFile'],
-      filters: filters ?? [{ name: 'All Files', extensions: ['*'] }]
-    })
-    return result.canceled ? null : result.filePaths[0] ?? null
-  })
+  // A browser cannot open a native file dialog; the client shows an in-app
+  // picker that browses the server filesystem instead.
+  ipcMain.handle('app:selectFile', () => null)
 
   ipcMain.handle('app:encryptPassword', (_event, plaintext: string) => {
-    if (!safeStorage.isEncryptionAvailable()) return plaintext
-    const encrypted = safeStorage.encryptString(plaintext)
-    return encrypted.toString('base64')
+    try {
+      return encryptString(plaintext)
+    } catch (err: any) {
+      console.error('[terminux] encryptPassword failed:', err.message)
+      return plaintext
+    }
   })
 
   ipcMain.handle('app:decryptPassword', (_event, encrypted: string) => {
-    if (!safeStorage.isEncryptionAvailable()) return encrypted
     try {
-      return safeStorage.decryptString(Buffer.from(encrypted, 'base64'))
+      return decryptString(encrypted)
     } catch {
+      // Not encrypted with this server's key (or legacy plaintext)
       return encrypted
     }
   })
 
-  // Window controls
-  ipcMain.handle('app:minimize', () => {
-    mainWindow?.minimize()
-  })
-
-  ipcMain.handle('app:maximize', () => {
-    if (mainWindow?.isMaximized()) {
-      mainWindow.unmaximize()
-    } else {
-      mainWindow?.maximize()
-    }
-  })
-
-  ipcMain.handle('app:close', () => {
-    mainWindow?.close()
-  })
-
-  ipcMain.handle('app:isMaximized', () => {
-    return mainWindow?.isMaximized() ?? false
-  })
+  // Window controls have no meaning in a browser tab.
+  ipcMain.handle('app:minimize', () => {})
+  ipcMain.handle('app:maximize', () => {})
+  ipcMain.handle('app:close', () => {})
+  ipcMain.handle('app:isMaximized', () => false)
 
   // History logs handlers
   ipcMain.handle('history:list', () => {
@@ -73,13 +56,10 @@ export function registerAppIpc(): void {
   })
 
   ipcMain.handle('history:readLog', (_event, sessionId: string) => {
-    const fs = require('fs')
-    const path = require('path')
-    const userDataPath = app.getPath('userData')
-    const logFilePath = path.join(userDataPath, 'session_logs', `${sessionId}.log`)
-    if (fs.existsSync(logFilePath)) {
+    const logFilePath = join(getSessionLogsDir(), `${sessionId}.log`)
+    if (existsSync(logFilePath)) {
       try {
-        return fs.readFileSync(logFilePath, 'utf-8')
+        return readFileSync(logFilePath, 'utf-8')
       } catch (err: any) {
         return `Lỗi đọc nhật ký: ${err.message}`
       }
@@ -91,15 +71,11 @@ export function registerAppIpc(): void {
     try {
       const db = getDb()
       db.prepare('DELETE FROM session_history').run()
-      const fs = require('fs')
-      const path = require('path')
-      const userDataPath = app.getPath('userData')
-      const logsDir = path.join(userDataPath, 'session_logs')
-      if (fs.existsSync(logsDir)) {
-        const files = fs.readdirSync(logsDir)
-        for (const file of files) {
+      const logsDir = getSessionLogsDir()
+      if (existsSync(logsDir)) {
+        for (const file of readdirSync(logsDir)) {
           try {
-            fs.unlinkSync(path.join(logsDir, file))
+            unlinkSync(join(logsDir, file))
           } catch {}
         }
       }

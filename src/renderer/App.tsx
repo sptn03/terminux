@@ -27,12 +27,14 @@ export default function App() {
   const backgroundBlur = useSettingsStore((s) => s.backgroundBlur)
   const opacity = useSettingsStore((s) => s.opacity)
 
-  // Normalize background image path for file:// protocol
+  // Background images either live behind a URL or on the server filesystem,
+  // which is served through /api/file.
   const bgSrc = useMemo(() => {
     if (!backgroundImage) return ''
     if (backgroundImage.startsWith('http://') || backgroundImage.startsWith('https://')) return backgroundImage
-    const normalized = backgroundImage.replace(/\\/g, '/')
-    return normalized.startsWith('file://') ? normalized : 'file:///' + normalized
+    if (backgroundImage.startsWith('/api/')) return backgroundImage
+    const normalized = backgroundImage.replace(/^file:\/\//, '').replace(/\\/g, '/')
+    return `/api/file?path=${encodeURIComponent(normalized)}`
   }, [backgroundImage])
 
   const quickConnectRef = useRef<HTMLInputElement>(null)
