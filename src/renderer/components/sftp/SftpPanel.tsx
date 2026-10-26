@@ -748,6 +748,26 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
     }
   }
 
+  // Action: Upload files dropped from the OS (browser File objects).
+  const handleUploadDroppedFiles = async (files: File[]) => {
+    if (!sessionId || files.length === 0) return
+    const transferId = Math.random().toString(36).substring(7)
+    addTransfer(files.length === 1 ? files[0].name : `${files.length} tệp`, 'upload', transferId)
+    try {
+      const result = await window.api.sftp.uploadFiles(sessionId, cwd, files)
+      if (result.canceled) {
+        updateTransfer(transferId, { status: 'error', progress: 100, errorMsg: 'Đã hủy bỏ' })
+      } else if (result.errors && result.errors.length > 0) {
+        updateTransfer(transferId, { status: 'error', progress: 100, errorMsg: result.errors[0] })
+      } else {
+        updateTransfer(transferId, { status: 'success', progress: 100 })
+        loadDir(cwd)
+      }
+    } catch (err: any) {
+      updateTransfer(transferId, { status: 'error', progress: 100, errorMsg: err.message })
+    }
+  }
+
   // Action: Download (Remote -> Local)
   const handleDownloadRemoteToLocal = async (paths: string[]) => {
     if (!sessionId || paths.length === 0) return
@@ -787,10 +807,12 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
 
   const handleOpenLocalFile = async (path: string) => {
     try {
-      const result = await window.api.sftp.readFile(sessionId || '', path)
+      // `local:*` reads the server's filesystem — never use sftp.readFile here.
+      const result = await window.api.local.readFile(path)
       if (result.error) {
-        const content = await window.api.history.readLog(path)
-        setViewFile({ path, content, isRemote: false })
+        alert('Lỗi đọc tệp cục bộ: ' + result.error)
+      } else if (!result.isText) {
+        alert('Không thể chỉnh sửa file Binary trực tiếp!')
       } else {
         setViewFile({ path, content: result.content || '', isRemote: false })
       }
@@ -1283,9 +1305,9 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
                   const paths = rawData.replace('local:', '').split('\n')
                   handleUploadLocalToRemote(paths)
                 } else if (e.dataTransfer.files.length > 0) {
-                  // Drop from external Windows Explorer -> upload
-                  const paths = Array.from(e.dataTransfer.files).map((f: any) => f.path).filter(Boolean)
-                  handleUploadLocalToRemote(paths)
+                  // Files dropped from the OS: a browser has no File.path, so
+                  // upload the blobs through /api/upload first.
+                  handleUploadDroppedFiles(Array.from(e.dataTransfer.files))
                 }
               }}
               className="flex-1 overflow-y-auto p-1 space-y-0.5 scrollbar-thin"

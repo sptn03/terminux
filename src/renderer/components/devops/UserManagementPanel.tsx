@@ -81,6 +81,8 @@ export default function UserManagementPanel({
         }
       })
       setUsers(userList)
+      // Keep the selected user in sync (sudo/home changes would otherwise stay stale).
+      setSelectedUser((prev) => (prev ? userList.find((u) => u.username === prev.username) ?? prev : prev))
     } catch (e: any) {
       setError(e.message || 'Lỗi tải danh sách users')
     }
@@ -203,8 +205,21 @@ export default function UserManagementPanel({
     if (!selectedUser) return
     if (!confirm('Xóa SSH key này?')) return
     setLoading(true)
-    // Remove the specific line from authorized_keys
-    await exec(`sudo sed -i '${keyIndex + 1}d' ${selectedUser.home}/.ssh/authorized_keys`)
+    // Delete by exact content: parsed indices skip blank/comment lines, so
+    // `sed '<n>d'` could remove a different line and lock the user out.
+    const keyLine = sshKeys[keyIndex]?.line
+    if (keyLine) {
+      const keyFile = `${selectedUser.home}/.ssh/authorized_keys`
+      await exec(
+        [
+          `echo '${toBase64(keyLine + '\n')}' | base64 -d > /tmp/.terminux_key`,
+          `sudo grep -vxF -f /tmp/.terminux_key "${keyFile}" > /tmp/.terminux_ak || true`,
+          `sudo mv /tmp/.terminux_ak "${keyFile}"`,
+          `sudo chown "${selectedUser.username}":"${selectedUser.username}" "${keyFile}"`,
+          `rm -f /tmp/.terminux_key`
+        ].join(' && ')
+      )
+    }
     await fetchSshKeys(selectedUser)
     setLoading(false)
   }

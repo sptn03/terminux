@@ -95,10 +95,14 @@ export default function GitPanel({
       })
       setRecentCommits(commits)
     } catch (err: any) {
-      console.error(err)
+      // Never leave the panel showing a fake "Clean" state.
+      setGitBranch('Không đọc được trạng thái Git')
+      setModifiedFiles([])
+      setRecentCommits([])
+      setError('Lỗi đọc Git: ' + (err.message || 'không xác định'))
     }
     setLoadingGit(false)
-  }, [exec])
+  }, [exec, setError])
 
   const handleAddRepo = async () => {
     if (!newRepoName.trim() || !newRepoPath.trim()) {

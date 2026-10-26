@@ -32,6 +32,14 @@ export default function BackupPanel({
   const [dbUser, setDbUser] = useState('root')
   const [dbPass, setDbPass] = useState('')
 
+  /** base64 để mật khẩu không bị shell diễn giải. */
+  const toBase64 = (text: string): string => {
+    const bytes = new TextEncoder().encode(text)
+    let binary = ''
+    for (const byte of bytes) binary += String.fromCharCode(byte)
+    return btoa(binary)
+  }
+
   const fetchBackupHistory = useCallback(async () => {
     try {
       const { stdout } = await exec('ls -lh /tmp/backup_* /tmp/db_* 2>/dev/null || echo ""')
@@ -88,13 +96,14 @@ export default function BackupPanel({
       }
 
       setBackupStatus((prev) => prev + `Đang chạy mysqldump cho database ${dbName}...\n`)
-      const passArg = dbPass ? `-p"${dbPass}"` : ''
-      const dumpCmd = `mysqldump -u "${dbUser}" ${passArg} "${dbName}" > /tmp/db_${dbName}_${timestamp}.sql`
+      const passPrefix = dbPass ? `mp=$(echo '${toBase64(dbPass)}' | base64 -d); MYSQL_PWD="$mp" ` : ''
+      const dumpCmd = `${passPrefix}mysqldump -u "${dbUser}" "${dbName}" > /tmp/db_mysql_${dbName}_${timestamp}.sql`
       const result = await exec(dumpCmd)
 
       if (result.code === 0) {
         setBackupStatus(
-          (prev) => prev + `✅ Xuất database thành công!\nTệp backup tại: /tmp/db_${dbName}_${timestamp}.sql\nBạn có thể quản lý và tải về qua SFTP.`
+          (prev) =>
+            prev + `✅ Xuất database thành công!\nTệp backup tại: /tmp/db_mysql_${dbName}_${timestamp}.sql\nBạn có thể quản lý và tải về qua SFTP.`
         )
       } else {
         setBackupStatus((prev) => prev + `❌ Lỗi xuất database: ${result.stderr}`)
@@ -108,12 +117,13 @@ export default function BackupPanel({
       }
 
       setBackupStatus((prev) => prev + `Đang chạy pg_dump cho database ${dbName}...\n`)
-      const dumpCmd = `sudo -u postgres pg_dump "${dbName}" > /tmp/db_${dbName}_${timestamp}.sql`
+      const dumpCmd = `sudo -u postgres pg_dump "${dbName}" > /tmp/db_postgres_${dbName}_${timestamp}.sql`
       const result = await exec(dumpCmd)
 
       if (result.code === 0) {
         setBackupStatus(
-          (prev) => prev + `✅ Xuất PostgreSQL thành công!\nTệp backup tại: /tmp/db_${dbName}_${timestamp}.sql`
+          (prev) =>
+            prev + `✅ Xuất PostgreSQL thành công!\nTệp backup tại: /tmp/db_postgres_${dbName}_${timestamp}.sql`
         )
       } else {
         setBackupStatus((prev) => prev + `❌ Lỗi xuất database: ${result.stderr}`)
@@ -142,14 +152,16 @@ export default function BackupPanel({
       if (!targetDb) return
       setLoading(true)
       setBackupStatus(`Đang import ${item.path} vào database ${targetDb}...\n`)
-      // Auto-detect mysql vs postgres from filename or let user decide
-      const isMysql = item.path.includes('mysql') || !item.path.includes('pg_')
-      let cmd: string
-      if (isMysql) {
-        cmd = `mysql "${targetDb}" < "${item.path}"`
-      } else {
-        cmd = `sudo -u postgres psql "${targetDb}" < "${item.path}"`
-      }
+      // Engine is encoded in the filename (db_mysql_* / db_postgres_*).
+      // Legacy files without a prefix fall back to asking the user.
+      let engine: 'mysql' | 'postgres'
+      if (item.path.includes('_mysql_')) engine = 'mysql'
+      else if (item.path.includes('_postgres_')) engine = 'postgres'
+      else engine = confirm('Không xác định được loại database từ tên tệp. Đây có phải bản backup PostgreSQL?') ? 'postgres' : 'mysql'
+
+      const cmd = engine === 'mysql'
+        ? `mysql "${targetDb}" < "${item.path}"`
+        : `sudo -u postgres psql "${targetDb}" < "${item.path}"`
       const result = await exec(cmd)
       if (result.code === 0) {
         setBackupStatus((prev) => prev + `✅ Import thành công vào ${targetDb}`)
@@ -184,15 +196,15 @@ export default function BackupPanel({
           setLoading(false)
           return
         }
-        const passArg = dbPass ? `-p"${dbPass}"` : ''
-        backupCmd = `mysqldump -u "${dbUser}" ${passArg} "${dbName}" > /tmp/db_${dbName}_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).sql`
+        const passPrefix = dbPass ? `mp=$(echo '${toBase64(dbPass)}' | base64 -d); MYSQL_PWD="$mp" ` : ''
+        backupCmd = `${passPrefix}mysqldump -u "${dbUser}" "${dbName}" > /tmp/db_mysql_${dbName}_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).sql`
       } else {
         if (!dbName) {
           alert('Vui lòng nhập tên Database!')
           setLoading(false)
           return
         }
-        backupCmd = `sudo -u postgres pg_dump "${dbName}" > /tmp/db_${dbName}_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).sql`
+        backupCmd = `sudo -u postgres pg_dump "${dbName}" > /tmp/db_postgres_${dbName}_$(date +\\%Y\\%m\\%d_\\%H\\%M\\%S).sql`
       }
 
       const cronJobLine = `${cronSchedule} ${backupCmd}`

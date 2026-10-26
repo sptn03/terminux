@@ -60,7 +60,7 @@ export default function DatabasePanel({
   const [tunnelLocalPortInput, setTunnelLocalPortInput] = useState<string>('')
   const [tunnelNameInput, setTunnelNameInput] = useState<string>('')
   const [dbStats, setDbStats] = useState<Record<string, { version: string; connections: string }>>({})
-  const [dbListModal, setDbListModal] = useState<{ type: string; databases: string[] } | null>(null)
+  const [dbListModal, setDbListModal] = useState<{ type: string; databases: string[]; port: string } | null>(null)
   const [quickQueryModal, setQuickQueryModal] = useState<{ type: string; port: string } | null>(null)
   const [queryInput, setQueryInput] = useState('')
   const [queryResult, setQueryResult] = useState('')
@@ -466,7 +466,10 @@ export default function DatabasePanel({
   const handleFetchRedisKeys = async (port: string, pattern: string) => {
     setLoadingRedis(true)
     try {
-      const cmd = `redis-cli -p ${port} --scan --pattern "${pattern || '*'}" LIMIT 100 2>/dev/null || redis-cli -p ${port} KEYS "${pattern || '*'}" 2>/dev/null | head -n 100 || echo ""`
+      // `redis-cli --scan` has no LIMIT flag; pipe through head instead.
+      // Pattern is base64-decoded so quotes/specials cannot break the shell.
+      const patVar = `pat=$(echo '${toBase64(pattern || '*')}' | base64 -d); `
+      const cmd = `${patVar}redis-cli -p ${port} --scan --pattern "$pat" 2>/dev/null | head -n 100 || redis-cli -p ${port} KEYS "$pat" 2>/dev/null | head -n 100 || echo ""`
       const { stdout } = await exec(cmd)
       const keys = stdout.split('\n').map((s) => s.trim()).filter(Boolean)
       setRedisKeys(keys)
@@ -480,23 +483,24 @@ export default function DatabasePanel({
   const handleReadRedisKey = async (port: string, key: string) => {
     setLoadingRedis(true)
     try {
-      const typeRes = await exec(`redis-cli -p ${port} TYPE "${key}"`)
+      const keyVar = `rk=$(echo '${toBase64(key)}' | base64 -d); `
+      const typeRes = await exec(`${keyVar}redis-cli -p ${port} TYPE "$rk"`)
       const type = typeRes.stdout.trim()
       setSelectedRedisType(type)
 
       let valCmd = ''
       if (type === 'string') {
-        valCmd = `redis-cli -p ${port} GET "${key}"`
+        valCmd = `${keyVar}redis-cli -p ${port} GET "$rk"`
       } else if (type === 'hash') {
-        valCmd = `redis-cli -p ${port} HGETALL "${key}"`
+        valCmd = `${keyVar}redis-cli -p ${port} HGETALL "$rk"`
       } else if (type === 'list') {
-        valCmd = `redis-cli -p ${port} LRANGE "${key}" 0 -1`
+        valCmd = `${keyVar}redis-cli -p ${port} LRANGE "$rk" 0 -1`
       } else if (type === 'set') {
-        valCmd = `redis-cli -p ${port} SMEMBERS "${key}"`
+        valCmd = `${keyVar}redis-cli -p ${port} SMEMBERS "$rk"`
       } else if (type === 'zset') {
-        valCmd = `redis-cli -p ${port} ZRANGE "${key}" 0 -1 WITHSCORES`
+        valCmd = `${keyVar}redis-cli -p ${port} ZRANGE "$rk" 0 -1 WITHSCORES`
       } else {
-        valCmd = `redis-cli -p ${port} DUMP "${key}"`
+        valCmd = `${keyVar}redis-cli -p ${port} DUMP "$rk"`
       }
 
       const valRes = await exec(valCmd)
@@ -512,7 +516,7 @@ export default function DatabasePanel({
     if (!confirm(`Xóa key "${key}" này chứ?`)) return
     setLoadingRedis(true)
     try {
-      await exec(`redis-cli -p ${port} DEL "${key}"`)
+      await exec(`rk=$(echo '${toBase64(key)}' | base64 -d); redis-cli -p ${port} DEL "$rk"`)
       alert('Đã xóa key thành công!')
       await handleFetchRedisKeys(port, redisSearchPattern)
     } catch (err: any) {
@@ -714,7 +718,7 @@ export default function DatabasePanel({
                               }
                               const { stdout } = await exec(cmd)
                               const dbs = stdout.split('\n').map((s) => s.trim()).filter((s) => s && !s.startsWith('+') && !s.startsWith('|') && s !== 'Database')
-                              setDbListModal({ type: db.type, databases: dbs })
+                              setDbListModal({ type: db.type, databases: dbs, port: db.port })
                               setLoading(false)
                             }}
                             className="flex-1 min-w-[70px] flex items-center justify-center gap-1.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 text-[#cdd6f4] hover:bg-white/10 border border-white/5 transition-all shadow-sm"
@@ -909,7 +913,7 @@ export default function DatabasePanel({
                         .split('\n')
                         .map((s) => s.trim())
                         .filter((s) => s && !s.startsWith('+') && !s.startsWith('|') && s !== 'Database')
-                      setDbListModal({ type: dbListModal.type, databases: dbs })
+                      setDbListModal({ type: dbListModal.type, databases: dbs, port: dbListModal.port })
                     } else {
                       alert('Lỗi tạo Database: ' + res.stdout)
                     }
@@ -938,7 +942,7 @@ export default function DatabasePanel({
                       onClick={() => {
                         setBackupDbName(db)
                         setBackupActionType('export')
-                        setQuickBackupModal({ type: dbListModal.type, port: '3306' })
+                        setQuickBackupModal({ type: dbListModal.type, port: dbListModal.port })
                       }}
                       className="px-2.5 py-1 bg-white/5 hover:bg-white/10 rounded-lg text-[11px] text-[#a6adc8] transition-all border border-white/5"
                     >
@@ -1353,7 +1357,7 @@ export default function DatabasePanel({
                       <option value="ALL PRIVILEGES">ALL PRIVILEGES (toàn quyền)</option>
                       <option value="SELECT">SELECT (chỉ đọc)</option>
                       <option value="SELECT, INSERT, UPDATE, DELETE">SELECT, INSERT, UPDATE, DELETE</option>
-                      <option value="CREATE, ALTER, DROP, INDEX">
+                      <option value={userModal.type === 'mysql' ? 'CREATE, ALTER, DROP, INDEX' : 'CREATE'}>
                         {userModal.type === 'mysql' ? 'CREATE, ALTER, DROP, INDEX' : 'CREATE'}
                       </option>
                       <option value="CONNECT">CONNECT (chỉ kết nối)</option>

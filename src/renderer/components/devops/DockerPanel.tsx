@@ -233,7 +233,12 @@ export default function DockerPanel({
     setRegistryLogs('Bắt đầu đăng nhập registry...\n')
     try {
       const hostArg = registryHost.trim() ? `"${registryHost.trim()}"` : ''
-      const cmd = `echo "${registryPass.trim()}" | docker login ${hostArg} -u "${registryUser.trim()}" --password-stdin`
+      // base64 so special characters in the password are not interpreted by the shell.
+      const bytes = new TextEncoder().encode(registryPass.trim())
+      let binary = ''
+      for (const byte of bytes) binary += String.fromCharCode(byte)
+      const passB64 = btoa(binary)
+      const cmd = `echo '${passB64}' | base64 -d | docker login ${hostArg} -u "${registryUser.trim()}" --password-stdin`
       const res = await exec(cmd)
       setRegistryLogs((prev) => prev + res.stdout + '\n' + res.stderr + '\n')
       if (res.code === 0) {

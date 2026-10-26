@@ -620,7 +620,7 @@ export default function FirewallPanel({ exec, refreshKey, setLoading, setError }
                         >
                           {current || '—'}
                         </span>
-                        {['DENY', 'ALLOW', 'REJECT', 'LIMIT'].map((policy) => (
+                        {['DENY', 'ALLOW', 'REJECT'].map((policy) => (
                           <button
                             key={policy}
                             onClick={() => handleSetDefaultPolicy(direction, policy)}

@@ -40,10 +40,10 @@ export default function SslTrackerPanel({
       if (rows.length > 0 && rows[0].value) {
         setDomains(JSON.parse(rows[0].value))
       } else {
-        setDomains(['google.com', 'github.com'])
+        setDomains([])
       }
     } catch {
-      setDomains(['google.com', 'github.com'])
+      setDomains([])
     }
   }, [])
 

@@ -108,7 +108,16 @@ export function useTerminal({ sessionId, containerRef }: UseTerminalOptions) {
     }, 50)
 
     const unsubOutput = window.api.ssh.onOutput((sid, data) => { if (sid === sessionId) term.write(data) })
-    const unsubExit = window.api.ssh.onExit((sid) => { if (sid === sessionId) term.write('\r\n\x1b[31m[Connection closed]\x1b[0m\r\n') })
+    const unsubExit = window.api.ssh.onExit((sid, code) => {
+      if (sid !== sessionId) return
+      term.write(`\r\n\x1b[31m[Connection closed${code !== null && code !== undefined ? ` (code ${code})` : ''}]\x1b[0m\r\n`)
+      const state = useTerminalStore.getState()
+      const current = state.tabs.find((t) => t.sessionId === sessionId)
+      // A missing tab means the user closed it on purpose — nothing to reconnect.
+      if (!current || !current.connected) return
+      state.updateTabState(sessionId, { connected: false, loading: false })
+      window.dispatchEvent(new CustomEvent('terminux:connection-lost', { detail: { sessionId, code } }))
+    })
     const unsubError = window.api.ssh.onError((sid, err) => { if (sid === sessionId) term.write(`\r\n\x1b[31m[Error: ${err}]\x1b[0m\r\n`) })
     const unsubData = term.onData((data) => window.api.ssh.shellInput(sessionId, data))
     const unsubResize = term.onResize(({ cols, rows }) => { if (cols > 0 && rows > 0) window.api.ssh.shellResize(sessionId, cols, rows) })

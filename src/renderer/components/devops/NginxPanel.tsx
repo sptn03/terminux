@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import {
   FileCode,
   RefreshCw,
@@ -53,6 +53,11 @@ export default function NginxPanel({
 }: NginxPanelProps) {
   const [siteList, setSiteList] = useState<SiteItem[]>([])
   const [selectedNginxFile, setSelectedNginxFile] = useState<string | null>(null)
+  const selectedNginxFileRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    selectedNginxFileRef.current = selectedNginxFile
+  }, [selectedNginxFile])
   const [nginxConfigContent, setNginxConfigContent] = useState('')
   const [nginxTestResult, setNginxTestResult] = useState<{ success: boolean; message: string } | null>(null)
   const [savingNginx, setSavingNginx] = useState(false)
@@ -174,13 +179,13 @@ export default function NginxPanel({
         })
 
       setSiteList(parsed)
-      if (parsed.length > 0 && !selectedNginxFile) {
+      if (parsed.length > 0 && !selectedNginxFileRef.current) {
         handleReadNginxFile(parsed[0].name)
       }
     } catch (e: any) {
       setError(e.message || 'Lỗi tải Virtual Hosts')
     }
-  }, [exec, selectedNginxFile, setError])
+  }, [exec, setError])
 
   const handleReadNginxFile = async (filename: string) => {
     setLoading(true)

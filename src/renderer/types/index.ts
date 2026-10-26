@@ -122,6 +122,7 @@ declare global {
         mkdir: (sessionId: string, dirPath: string) => Promise<any>
         rename: (sessionId: string, oldPath: string, newPath: string) => Promise<any>
         upload: (sessionId: string, remotePath: string) => Promise<any>
+        uploadFiles: (sessionId: string, remotePath: string, files: File[]) => Promise<any>
         download: (sessionId: string, remotePath: string) => Promise<any>
         readFile: (sessionId: string, remotePath: string) => Promise<{ content?: string; isText?: boolean; error?: string }>
         deploy: (sessionId: string, localDir: string, remoteDir: string, filePaths?: string[], taskId?: string) => Promise<{ uploaded: number; total: number; errors: string[]; canceled?: boolean }>
@@ -138,6 +139,7 @@ declare global {
       local: {
         listDir: (dirPath: string) => Promise<LocalEntry[]>
         selectDir: () => Promise<string | null>
+        readFile: (filePath: string) => Promise<{ content?: string; isText?: boolean; error?: string }>
         getDrives: () => Promise<{ name: string; path: string; isDirectory: boolean }[]>
         mkdir: (dirPath: string) => Promise<{ success?: boolean; error?: string }>
         rename: (oldPath: string, newPath: string) => Promise<{ success?: boolean; error?: string }>

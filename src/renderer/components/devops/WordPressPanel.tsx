@@ -41,7 +41,7 @@ interface WpSiteInfo {
 
 interface WpPlugin {
   name: string
-  status: 'active' | 'inactive' | 'must-use'
+  status: 'active' | 'inactive' | 'must-use' | 'unknown'
   update: string
   version: string
 }
@@ -103,8 +103,8 @@ export default function WordPressPanel({
           [ -f "$cfg" ] || continue
           dir=$(dirname "$cfg")
           
-          dbname=$(grep "DB_NAME" "$cfg" | sed -E "s/.*'DB_NAME',\s*'([^']+)'.*/\\1/" | head -n 1)
-          dbuser=$(grep "DB_USER" "$cfg" | sed -E "s/.*'DB_USER',\s*'([^']+)'.*/\\1/" | head -n 1)
+          dbname=$(grep "DB_NAME" "$cfg" | sed -E "s/.*'DB_NAME',[[:space:]]*'([^']+)'.*/\\1/" | head -n 1)
+          dbuser=$(grep "DB_USER" "$cfg" | sed -E "s/.*'DB_USER',[[:space:]]*'([^']+)'.*/\\1/" | head -n 1)
           
           dname=$(basename "$dir")
           if [ "$dname" = "public" ] || [ "$dname" = "html" ]; then
@@ -138,13 +138,11 @@ export default function WordPressPanel({
         })
 
       setWpSites(list)
-      if (list.length > 0 && !selectedSite) {
-        setSelectedSite(list[0])
-      }
+      setSelectedSite((current) => current ?? (list.length > 0 ? list[0] : null))
     } catch (e: any) {
       setError(e.message || 'Lỗi quét website WordPress')
     }
-  }, [exec, selectedSite, setError])
+  }, [exec, setError])
 
   const fetchPluginsForSite = useCallback(
     async (sitePath: string) => {
@@ -164,9 +162,10 @@ export default function WordPressPanel({
             .filter(Boolean)
             .map((p) => ({
               name: p,
-              status: 'active',
-              update: 'none',
-              version: '1.0'
+              // WP-CLI is unavailable, so the real status/version is unknown.
+              status: 'unknown' as const,
+              update: 'unknown',
+              version: '—'
             }))
           setPluginsList(fallbackList)
         }
@@ -306,7 +305,7 @@ EOF
   }
 
   const handleTogglePlugin = async (pluginName: string, currentStatus: string) => {
-    if (!selectedSite) return
+    if (!selectedSite || currentStatus === 'unknown') return
     const action = currentStatus === 'active' ? 'deactivate' : 'activate'
     setLoadingPlugins(true)
     try {
@@ -494,25 +493,33 @@ EOF
                       <div className="flex items-center gap-3">
                         <span
                           className={`w-2.5 h-2.5 rounded-full ${
-                            p.status === 'active' ? 'bg-[#a6e3a1] shadow-[0_0_8px_#a6e3a1]' : 'bg-[#585b70]'
+                            p.status === 'active'
+                              ? 'bg-[#a6e3a1] shadow-[0_0_8px_#a6e3a1]'
+                              : p.status === 'unknown'
+                              ? 'bg-[#f9e2af]/60'
+                              : 'bg-[#585b70]'
                           }`}
                         />
                         <div>
                           <h5 className="text-xs font-bold text-[#cdd6f4]">{p.name}</h5>
-                          <span className="text-[10px] text-[#585b70] font-mono">Phiên bản: v{p.version}</span>
+                          <span className="text-[10px] text-[#585b70] font-mono">
+                            {p.status === 'unknown' ? 'Trạng thái: không xác định (thiếu WP-CLI)' : `Phiên bản: v${p.version}`}
+                          </span>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleTogglePlugin(p.name, p.status)}
-                          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                          disabled={p.status === 'unknown'}
+                          title={p.status === 'unknown' ? 'Cần cài WP-CLI để bật/tắt plugin' : undefined}
+                          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
                             p.status === 'active'
                               ? 'bg-[#f38ba8]/15 hover:bg-[#f38ba8]/25 text-[#f38ba8] border border-[#f38ba8]/30'
                               : 'bg-[#a6e3a1]/15 hover:bg-[#a6e3a1]/25 text-[#a6e3a1] border border-[#a6e3a1]/30'
                           }`}
                         >
-                          {p.status === 'active' ? 'Vô hiệu hóa' : 'Kích hoạt'}
+                          {p.status === 'unknown' ? 'Không xác định' : p.status === 'active' ? 'Vô hiệu hóa' : 'Kích hoạt'}
                         </button>
                       </div>
                     </div>

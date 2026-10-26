@@ -203,13 +203,15 @@ export default function PhpManagerPanel({
         [ -f "$ini" ] || ini="/etc/php/${selectedVersion}/cli/php.ini"
         
         sudo cp "$ini" "$ini.bak" 2>/dev/null || true
-        sudo sed -i 's/^memory_limit\s*=.*/memory_limit = ${memoryLimit}/g' "$ini"
-        sudo sed -i 's/^upload_max_filesize\s*=.*/upload_max_filesize = ${uploadMaxFilesize}/g' "$ini"
-        sudo sed -i 's/^post_max_size\s*=.*/post_max_size = ${postMaxSize}/g' "$ini"
-        sudo sed -i 's/^max_execution_time\s*=.*/max_execution_time = ${maxExecutionTime}/g' "$ini"
-        sudo sed -i 's/^max_input_time\s*=.*/max_input_time = ${maxInputTime}/g' "$ini"
-        sudo sed -i 's/^display_errors\s*=.*/display_errors = ${displayErrors}/g' "$ini"
-        sudo sed -i 's/^;\\?opcache.enable\s*=.*/opcache.enable = ${opcacheEnabled}/g' "$ini"
+        sudo sed -i 's/^memory_limit[[:space:]]*=.*/memory_limit = ${memoryLimit}/g' "$ini"
+        sudo sed -i 's/^upload_max_filesize[[:space:]]*=.*/upload_max_filesize = ${uploadMaxFilesize}/g' "$ini"
+        sudo sed -i 's/^post_max_size[[:space:]]*=.*/post_max_size = ${postMaxSize}/g' "$ini"
+        sudo sed -i 's/^max_execution_time[[:space:]]*=.*/max_execution_time = ${maxExecutionTime}/g' "$ini"
+        sudo sed -i 's/^max_input_time[[:space:]]*=.*/max_input_time = ${maxInputTime}/g' "$ini"
+        sudo sed -i 's/^display_errors[[:space:]]*=.*/display_errors = ${displayErrors}/g' "$ini"
+        sudo sed -i 's/^;\\?[[:space:]]*opcache.enable[[:space:]]*=.*/opcache.enable = ${opcacheEnabled}/g' "$ini"
+
+        grep -q "^memory_limit[[:space:]]*=[[:space:]]*${memoryLimit}" "$ini" || { echo "Không ghi được memory_limit vào $ini" >&2; exit 1; }
 
         sudo systemctl restart php${selectedVersion}-fpm 2>/dev/null || true
       `
@@ -623,6 +625,29 @@ EOF
                           key={val}
                           type="button"
                           onClick={() => setMaxExecutionTime(val)}
+                          className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-[#a6adc8]"
+                        >
+                          {val}s
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Max Input Time */}
+                  <div className="p-4 rounded-2xl bg-[#11111b]/40 border border-white/[0.06] space-y-2">
+                    <label className="text-xs font-bold text-[#cdd6f4]">max_input_time (Thời Gian Nhận Input - Giây)</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={maxInputTime}
+                        onChange={(e) => setMaxInputTime(e.target.value)}
+                        className="flex-1 bg-[#181825] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-[#cdd6f4] font-mono outline-none focus:border-[#cba6f7]"
+                      />
+                      {['30', '60', '120', '300'].map((val) => (
+                        <button
+                          key={val}
+                          type="button"
+                          onClick={() => setMaxInputTime(val)}
                           className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-[#a6adc8]"
                         >
                           {val}s

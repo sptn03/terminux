@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Bell, Trash2, Copy, Power } from 'lucide-react'
+import { Copy, Power } from 'lucide-react'
 
 interface AlertsPanelProps {
   alertCpu: number
@@ -12,6 +11,10 @@ interface AlertsPanelProps {
   setWebhookUrl: (val: string) => void
   webhookType: string
   setWebhookType: (val: string) => void
+  telegramChatId: string
+  setTelegramChatId: (val: string) => void
+  alertsEnabled: boolean
+  setAlertsEnabled: (val: boolean) => void
   alertsHistory: string[]
   setLoading: (loading: boolean) => void
 }
@@ -27,20 +30,13 @@ export default function AlertsPanel({
   setWebhookUrl,
   webhookType,
   setWebhookType,
+  telegramChatId,
+  setTelegramChatId,
+  alertsEnabled,
+  setAlertsEnabled,
   alertsHistory,
   setLoading
 }: AlertsPanelProps) {
-  const [alertsEnabled, setAlertsEnabled] = useState(true)
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const rows = await window.api.db.all("SELECT value FROM app_settings WHERE key = 'devops_alerts_enabled'")
-        if (rows.length > 0) setAlertsEnabled(rows[0].value !== 'false')
-      } catch {}
-    })()
-  }, [])
-
   const toggleAlerts = async (val: boolean) => {
     setAlertsEnabled(val)
     await window.api.db.run("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_alerts_enabled', ?)", [String(val)])
@@ -145,10 +141,33 @@ export default function AlertsPanel({
             />
           </div>
 
+          {webhookType === 'telegram' && (
+            <div className="space-y-1.5">
+              <label className="text-[10px] uppercase font-semibold text-[#585b70] tracking-wider">Telegram Chat ID</label>
+              <input
+                type="text"
+                value={telegramChatId}
+                placeholder="ví dụ: 123456789"
+                onChange={async (e) => {
+                  setTelegramChatId(e.target.value)
+                  await window.api.db.run("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('devops_telegram_chat_id', ?)", [e.target.value])
+                }}
+                className="w-full bg-[#11111b] border border-white/5 rounded-lg px-3 py-2 text-xs text-[#cdd6f4] outline-none"
+              />
+              <p className="text-[10px] text-[#45475a]">
+                Dùng bot token làm Webhook URL: <code className="text-[#89b4fa]">https://api.telegram.org/bot&lt;TOKEN&gt;/sendMessage</code>
+              </p>
+            </div>
+          )}
+
           <button
             onClick={async () => {
               if (!webhookUrl) {
                 alert('Vui lòng nhập Webhook URL')
+                return
+              }
+              if (webhookType === 'telegram' && !telegramChatId.trim()) {
+                alert('Vui lòng nhập Telegram Chat ID')
                 return
               }
               setLoading(true)
@@ -156,8 +175,10 @@ export default function AlertsPanel({
                 let payload = {}
                 if (webhookType === 'slack') {
                   payload = { text: '🚨 *[Terminux Test]* \nCấu hình Webhook của bạn hoạt động chính xác!' }
-                } else {
+                } else if (webhookType === 'discord') {
                   payload = { content: '🚨 **[Terminux Test]** \nCấu hình Webhook của bạn hoạt động chính xác!' }
+                } else {
+                  payload = { chat_id: telegramChatId.trim(), text: '🚨 [Terminux Test] \nCấu hình Webhook của bạn hoạt động chính xác!' }
                 }
                 await fetch(webhookUrl, {
                   method: 'POST',

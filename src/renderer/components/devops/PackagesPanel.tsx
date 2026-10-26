@@ -32,6 +32,7 @@ export default function PackagesPanel({
 }: PackagesPanelProps) {
   const [packagesList, setPackagesList] = useState<PkgInfo[]>([])
   const [installingPackage, setInstallingPackage] = useState<string | null>(null)
+  const [installFinished, setInstallFinished] = useState(false)
   const [installLogs, setInstallLogs] = useState('')
   const [customPkgInput, setCustomPkgInput] = useState('')
   const [upgradableList, setUpgradableList] = useState<UpgradableItem[]>([])
@@ -72,6 +73,11 @@ export default function PackagesPanel({
   const handleCheckUpgradable = async () => {
     setLoading(true)
     const { stdout } = await exec('apt list --upgradable 2>/dev/null || yum list updates 2>/dev/null || echo "Không hỗ trợ"')
+    if (stdout.trim() === 'Không hỗ trợ') {
+      setError('Máy chủ không có apt/yum nên không kiểm tra được bản cập nhật.')
+      setLoading(false)
+      return
+    }
     const items: UpgradableItem[] = []
     stdout.split('\n').forEach((line) => {
       // apt format: package/codename version arch [upgradable from: version]
@@ -87,21 +93,25 @@ export default function PackagesPanel({
 
   const handleInstallPkg = async (pkgName: string) => {
     setInstallingPackage(pkgName)
+    setInstallFinished(false)
     setInstallLogs(`Bắt đầu cài đặt ${pkgName}...\n`)
     const cmd = `sudo apt-get install -y ${pkgName} || sudo yum install -y ${pkgName}`
     const result = await exec(cmd)
-    setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
+    setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n') + `\n[exit code: ${result.code}]`)
     await fetchPackages()
+    setInstallFinished(true)
   }
 
   const handleRemovePkg = async (pkgName: string) => {
     if (!confirm(`Gỡ cài đặt ${pkgName}?`)) return
     setInstallingPackage(pkgName)
+    setInstallFinished(false)
     setInstallLogs(`Bắt đầu gỡ cài đặt ${pkgName}...\n`)
     const cmd = `sudo apt-get remove -y ${pkgName} || sudo yum remove -y ${pkgName}`
     const result = await exec(cmd)
-    setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
+    setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n') + `\n[exit code: ${result.code}]`)
     await fetchPackages()
+    setInstallFinished(true)
   }
 
   const handleCustomInstall = async () => {
@@ -119,11 +129,13 @@ export default function PackagesPanel({
   const handleUpgradeAll = async () => {
     if (!confirm(`Nâng cấp ${upgradableList.length} gói?`)) return
     setInstallingPackage('Upgrade All')
+    setInstallFinished(false)
     setInstallLogs('Đang nâng cấp tất cả gói...\n')
     const result = await exec('sudo apt-get upgrade -y || sudo yum update -y')
     setInstallLogs((prev) => prev + (result.stdout || result.stderr || 'Hoàn tất.\n'))
     await fetchPackages()
     setUpgradableList([])
+    setInstallFinished(true)
   }
 
   const loadData = useCallback(async () => {
@@ -271,8 +283,8 @@ export default function PackagesPanel({
           <div className="bg-[#1e1e2e] border border-white/10 rounded-2xl shadow-2xl w-[600px] max-h-[70vh] flex flex-col animate-scale-in">
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#181825]">
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#a6adc8] flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#a6e3a1] animate-ping" />
-                Tiến trình gói: {installingPackage}
+                <span className={`w-1.5 h-1.5 rounded-full ${installFinished ? 'bg-[#a6e3a1]' : 'bg-[#a6e3a1] animate-ping'}`} />
+                {installFinished ? 'Đã hoàn tất' : 'Tiến trình gói'}: {installingPackage}
               </h3>
               <button
                 onClick={() => {

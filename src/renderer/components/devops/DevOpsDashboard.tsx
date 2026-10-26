@@ -23,7 +23,6 @@ import {
   FolderTree,
   Users
 } from 'lucide-react'
-import { useTerminalStore } from '../../stores/terminal-store'
 import SftpPanel from '../sftp/SftpPanel'
 import TunnelPanel from '../tunnel/TunnelPanel'
 
@@ -76,7 +75,6 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
     | 'ssl'
     | 'ftp'
     | 'users'
-    | 'multiexec'
   >('overview')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -88,12 +86,15 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
   const [alertDisk, setAlertDisk] = useState(95)
   const [webhookUrl, setWebhookUrl] = useState('')
   const [webhookType, setWebhookType] = useState('slack')
+  const [telegramChatId, setTelegramChatId] = useState('')
+  const [alertsEnabled, setAlertsEnabled] = useState(true)
   const [alertsHistory, setAlertsHistory] = useState<string[]>([])
 
   const lastAlertTimeRef = useRef<number>(0)
 
   const triggerResourceAlert = useCallback(
     async (cpu: number, mem: number, disk: number) => {
+      if (!alertsEnabled) return
       const now = Date.now()
       if (now - lastAlertTimeRef.current < 5 * 60 * 1000) return // Throttle 5 mins
       lastAlertTimeRef.current = now
@@ -121,8 +122,8 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
           } else if (webhookType === 'discord') {
             payload = { content: `🚨 **[Terminux Alert]** \n${message}` }
           } else {
-            // telegram
-            payload = { text: `🚨 [Terminux Alert] \n${message}` }
+            // telegram: requires chat_id + text
+            payload = { chat_id: telegramChatId, text: `🚨 [Terminux Alert] \n${message}` }
           }
           await fetch(webhookUrl, {
             method: 'POST',
@@ -134,13 +135,13 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
         }
       }
     },
-    [alertCpu, alertMem, alertDisk, webhookUrl, webhookType]
+    [alertCpu, alertMem, alertDisk, webhookUrl, webhookType, telegramChatId, alertsEnabled]
   )
 
   const fetchAlertSettings = useCallback(async () => {
     try {
       const rows = await window.api.db.all(
-        "SELECT * FROM app_settings WHERE key LIKE 'devops_alert_%' OR key = 'devops_webhook_url' OR key = 'devops_webhook_type'"
+        "SELECT * FROM app_settings WHERE key LIKE 'devops_alert_%' OR key IN ('devops_webhook_url','devops_webhook_type','devops_alerts_enabled','devops_telegram_chat_id')"
       )
       const map: Record<string, string> = {}
       rows.forEach((r) => {
@@ -151,6 +152,8 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
       if (map['devops_alert_disk']) setAlertDisk(parseInt(map['devops_alert_disk']))
       if (map['devops_webhook_url']) setWebhookUrl(map['devops_webhook_url'])
       if (map['devops_webhook_type']) setWebhookType(map['devops_webhook_type'])
+      if (map['devops_telegram_chat_id']) setTelegramChatId(map['devops_telegram_chat_id'])
+      if (map['devops_alerts_enabled']) setAlertsEnabled(map['devops_alerts_enabled'] !== 'false')
     } catch {}
   }, [])
 
@@ -282,7 +285,7 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
               <div className="bg-[#f38ba8]/10 border border-[#f38ba8]/20 rounded-lg p-3 text-xs text-[#f38ba8] mb-3 flex items-center justify-between shrink-0">
                 <span>{error}</span>
                 <button onClick={() => setError('')} className="hover:text-white">
-                  Close
+                  Đóng
                 </button>
               </div>
             )}
@@ -357,6 +360,10 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
                 setWebhookUrl={setWebhookUrl}
                 webhookType={webhookType}
                 setWebhookType={setWebhookType}
+                telegramChatId={telegramChatId}
+                setTelegramChatId={setTelegramChatId}
+                alertsEnabled={alertsEnabled}
+                setAlertsEnabled={setAlertsEnabled}
                 alertsHistory={alertsHistory}
                 setLoading={setLoading}
               />

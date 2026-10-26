@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Activity, Layers, HardDrive, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { Activity, Layers, HardDrive, TrendingUp, TrendingDown, Minus, RefreshCw } from 'lucide-react'
 import { useTerminalStore } from '../../stores/terminal-store'
 
 const MAX_HISTORY = 60
@@ -110,6 +110,8 @@ export default function OverviewPanel({
   const cpuHistoryRef = useRef<number[]>([])
   const memHistoryRef = useRef<number[]>([])
   const diskHistoryRef = useRef<number[]>([])
+  // Public IP rarely changes — cache it so the 4s poll does not hit the internet.
+  const publicIpRef = useRef('')
   const [cpuHistory, setCpuHistory] = useState<number[]>([])
   const [memHistory, setMemHistory] = useState<number[]>([])
   const [diskHistory, setDiskHistory] = useState<number[]>([])
@@ -203,7 +205,10 @@ export default function OverviewPanel({
         cpu_idle=$(top -bn1 | grep "Cpu(s)" | awk '{print $8}' 2>/dev/null || echo 100)
         cpu_used=$(echo "100 - $cpu_idle" | bc 2>/dev/null || awk "BEGIN {print 100 - $cpu_idle}" 2>/dev/null || echo 0)
         local_ip=$(hostname -I | awk '{print $1}' 2>/dev/null || echo "127.0.0.1")
-        public_ip=$(curl -s --connect-timeout 1 ifconfig.me 2>/dev/null || echo "Unknown")
+        public_ip="${publicIpRef.current || '__LOOKUP__'}"
+        if [ "$public_ip" = "__LOOKUP__" ]; then
+          public_ip=$(curl -s --connect-timeout 1 ifconfig.me 2>/dev/null || echo "Unknown")
+        fi
 
         echo "os: $os"
         echo "uptime: $uptime_str"
@@ -295,6 +300,7 @@ export default function OverviewPanel({
       if (cur && !SKIP.test((cur as NetworkIface).name)) ifaces.push(cur as NetworkIface)
       info.network_ifaces = ifaces
 
+      if (info.public_ip && info.public_ip !== 'Unknown') publicIpRef.current = String(info.public_ip)
       setSysInfo(info)
 
       const cpuUsed = info.cpu_used || 0
@@ -311,12 +317,15 @@ export default function OverviewPanel({
       setMemHistory([...memHistoryRef.current])
       setDiskHistory([...diskHistoryRef.current])
 
-      if (cpuUsed > alertCpu || memPercent > alertMem || diskPercent > alertDisk) {
-        updateTabState(sessionId, { alertStatus: 'danger' })
-        triggerResourceAlert(cpuUsed, memPercent, diskPercent)
-      } else {
-        updateTabState(sessionId, { alertStatus: 'normal' })
+      const overLimit = cpuUsed > alertCpu || memPercent > alertMem || diskPercent > alertDisk
+      const nextStatus = overLimit ? 'danger' : 'normal'
+      const activeTab = useTerminalStore.getState().tabs.find((t) => t.sessionId === sessionId)
+      // Only touch the store when the status actually changes (avoids a
+      // TabBar re-render on every 4s poll).
+      if (activeTab?.alertStatus !== nextStatus) {
+        updateTabState(sessionId, { alertStatus: nextStatus })
       }
+      if (overLimit) triggerResourceAlert(cpuUsed, memPercent, diskPercent)
     } catch (e: any) {
       setError(e.message || 'Lỗi tải dữ liệu Overview')
     }
@@ -338,7 +347,20 @@ export default function OverviewPanel({
     return () => clearInterval(interval)
   }, [fetchOverview])
 
-  if (!sysInfo) return null
+  if (!sysInfo) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center gap-3 text-[#585b70]">
+        <RefreshCw size={22} className="animate-spin text-[#89b4fa]" />
+        <span className="text-xs">Đang tải dữ liệu hệ thống...</span>
+        <button
+          onClick={loadData}
+          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-[#cdd6f4]"
+        >
+          Tải lại
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="flex-1 overflow-y-auto space-y-6">

@@ -201,6 +201,16 @@ const api = {
       }
       return invoke('sftp:upload', [sessionId, remotePath, localPaths])
     },
+    // Upload File objects dropped from the OS (no File.path in a browser).
+    uploadFiles: async (sessionId: string, remotePath: string, files: File[]): Promise<any> => {
+      if (files.length === 0) return { canceled: true }
+      const localPaths: string[] = []
+      for (const file of files) {
+        const uploaded = await uploadToServer(file)
+        localPaths.push(uploaded.path)
+      }
+      return invoke('sftp:upload', [sessionId, remotePath, localPaths])
+    },
     download: async (sessionId: string, remotePath: string): Promise<any> => {
       const result = await invoke('sftp:download', [sessionId, remotePath])
       if (result?.downloadUrl) triggerDownload(result.downloadUrl)
@@ -231,6 +241,8 @@ const api = {
       const { pickPath } = await import('./path-picker')
       return pickPath({ mode: 'dir', title: 'Chọn thư mục trên máy chủ' })
     },
+    readFile: (filePath: string): Promise<{ content?: string; isText?: boolean; error?: string }> =>
+      invoke('local:readFile', [filePath]),
     getDrives: (): Promise<{ name: string; path: string; isDirectory: boolean }[]> => invoke('local:getDrives'),
     mkdir: (dirPath: string): Promise<any> => invoke('local:mkdir', [dirPath]),
     rename: (oldPath: string, newPath: string): Promise<any> => invoke('local:rename', [oldPath, newPath]),

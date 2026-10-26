@@ -1,4 +1,4 @@
-import { readdirSync, statSync, mkdirSync, renameSync, unlinkSync, rmSync, writeFileSync, watch, existsSync } from 'fs'
+import { readdirSync, statSync, mkdirSync, renameSync, unlinkSync, rmSync, readFileSync, writeFileSync, watch, existsSync } from 'fs'
 import { join, basename } from 'path'
 import AdmZip from 'adm-zip'
 import { ipcMain, broadcast } from './ipc-bus'
@@ -48,6 +48,17 @@ export function registerLocalIpc(): void {
 
   // No native dialog in a browser — the client shows its own directory picker.
   ipcMain.handle('local:selectDir', async () => null)
+
+  // Read a file that lives on the machine running the server.
+  ipcMain.handle('local:readFile', async (_event, filePath: string) => {
+    try {
+      const buffer = readFileSync(assertInsideFsRoot(filePath))
+      if (buffer.includes(0)) return { isText: false }
+      return { content: buffer.toString('utf-8'), isText: true }
+    } catch (err: any) {
+      return { error: err.message }
+    }
+  })
 
   ipcMain.handle('local:getDrives', async () => {
     if (process.platform === 'win32') {

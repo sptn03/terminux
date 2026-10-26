@@ -7,6 +7,40 @@ Every AI modification.
 ==================================================
 
 
+Date: 2026-10-26
+AI: CommandCode
+Task: Tự động reconnect khi mất kết nối + hoàn thiện/sửa lỗi các panel quản trị VPS
+Files changed:
+- src/renderer/hooks/use-terminal.ts (shell:exit → connected=false, phát `terminux:connection-lost`)
+- src/renderer/components/terminal/TerminalTab.tsx (auto-reconnect backoff 1.5s→20s, overlay trạng thái, nút dừng)
+- src/renderer/components/devops/PhpManagerPanel.tsx (sửa sed `\s`→`[[:space:]]`, verify ghi php.ini, thêm ô max_input_time)
+- src/renderer/components/devops/WordPressPanel.tsx (parse DB_NAME/DB_USER, không quét lại khi chọn site, plugin fallback "unknown")
+- src/renderer/components/devops/DevOpsDashboard.tsx + AlertsPanel.tsx (công tắc Alerts có tác dụng, Telegram chat_id, dọn text/import thừa)
+- src/renderer/components/devops/BackupPanel.tsx (tên file theo engine, restore PostgreSQL đúng client, mật khẩu MySQL qua base64/MYSQL_PWD)
+- src/renderer/components/devops/UserManagementPanel.tsx (xoá SSH key theo nội dung, selectedUser không còn stale)
+- src/renderer/components/devops/NginxPanel.tsx (không reload toàn panel khi chọn site)
+- src/renderer/components/devops/OverviewPanel.tsx (trạng thái tải thay vì màn hình trắng, cache public IP, giảm re-render)
+- src/renderer/components/devops/DatabasePanel.tsx (Redis scan bỏ LIMIT sai, base64 key/pattern, port backup đúng, grant PostgreSQL)
+- src/renderer/components/devops/PackagesPanel.tsx (không báo "đã cập nhật" giả, trạng thái hoàn tất cài đặt)
+- src/renderer/components/devops/GitPanel.tsx (không còn báo "Clean" khi lỗi)
+- src/renderer/components/devops/DockerPanel.tsx (mật khẩu registry qua base64)
+- src/renderer/components/devops/SslTrackerPanel.tsx (bỏ domain demo google/github)
+- src/renderer/components/sftp/SftpPanel.tsx (đọc file local đúng API, kéo-thả file từ OS hoạt động)
+- src/main/ipc/local.ipc.ts (thêm `local:readFile`)
+- src/renderer/lib/web-api.ts, src/renderer/types/index.ts (`local.readFile`, `sftp.uploadFiles`)
+- memory.md (bỏ đoạn lặp, cập nhật reconnect/SFTP)
+What changed:
+- Mất kết nối SSH giờ tự động thử lại (backoff) và luôn hiện overlay thay vì giữ trạng thái "connected" sai.
+- Sửa các lỗi chức năng chết/sai: PHP settings không lưu, Alerts toggle vô tác dụng, Telegram webhook sai payload, PostgreSQL backup bị restore bằng mysql, xoá SSH key sai dòng, SFTP đọc nhầm file remote, Nginx reload liên tục, Redis scan lỗi.
+- Dọn text/import/state thừa và bỏ dữ liệu demo.
+Reason: Yêu cầu thêm reconnect khi mất kết nối, hoàn thiện quản trị VPS và sửa các phần lỗi/text thừa.
+Risk: Trung bình — thay đổi luồng reconnect và một số lệnh sudo trên máy chủ đích; mọi thao tác phá hoại vẫn có xác nhận.
+Verification: `npm run typecheck` sạch; `npm test` 31/31 pass; `npm run build` thành công.
+
+
+==================================================
+
+
 Date: 2026-10-23
 AI: Cline (Claude)
 Task: Rà soát và hoàn thiện bộ panel quản trị (firewall đa engine, FTP, user database, cài engine DB)

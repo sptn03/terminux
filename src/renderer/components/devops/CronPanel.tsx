@@ -26,6 +26,16 @@ function sanitizeForShell(str: string): string {
   return str.replace(/["$`\\!]/g, '\\$&')
 }
 
+/** True only for real crontab entries (5 fields + command, or @reboot etc.). */
+function isCronLine(line: string): boolean {
+  const clean = line.replace(/^#\s*/, '').trim()
+  if (!clean) return false
+  // Environment assignments such as MAILTO=... or PATH=...
+  if (/^[A-Za-z_][A-Za-z0-9_]*\s*=/.test(clean)) return false
+  if (clean.startsWith('@')) return clean.split(/\s+/).length >= 2
+  return clean.split(/\s+/).length >= 6
+}
+
 interface CronPanelProps {
   sessionId: string
   exec: (cmd: string) => Promise<{ stdout: string; stderr: string; code: number }>
@@ -117,6 +127,9 @@ export default function CronPanel({
             </thead>
             <tbody>
               {cronJobs.map((job, idx) => {
+                // Keep env/comment lines in the array (so writes preserve them)
+                // but never render or toggle them as cron jobs.
+                if (!isCronLine(job)) return null
                 const isCommented = job.startsWith('#')
                 const cleanJob = job.replace(/^#\s*/, '').trim()
                 const parts = cleanJob.split(/\s+/)
