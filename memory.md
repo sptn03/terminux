@@ -247,7 +247,10 @@ Future AI agents should know:
 - DevOps Dashboard has been updated to be fully responsive: the sub-tabs header was replaced with a vertical Left Sub-Sidebar (Option B) that groups the 18 features (Overview, Processes, PM2, Docker, Nginx, Cron Jobs, Git & Deploy, SFTP, Database, Backup, Tunnel, Packages, Logs, Services, Firewall, SSL Tracker, Alerts) into 4 system categories (System, Apps, Data, Network) for optimal navigation without scrolling.
 - OverviewPanel cards/gauges/details use responsive grid breakpoints (sm/lg/etc.) to wrap nicely on resize.
 - Docker, PM2, and Nginx panels feature automatic installers: when these tools are missing on the remote host, the panel displays a status warning and an installer button. The installer runs via sudo SSH commands, streams logs in real-time, and refreshes the panel state on completion.
-- `RemotePathPicker` is a reusable pattern implemented in `NginxPanel`, `DockerPanel` (for compose directory path picking), and `GitPanel` to browse files/directories on the remote host.
+- `RemotePathPicker` (`src/renderer/components/devops/RemotePathPicker.tsx`) is the single shared server-side picker used by Ftp, Docker, PM2, Nginx, Logs and Git panels. Do not add per-panel copies; all call it with `visible`, `mode`, `exec`, `onClose`, `onSelect`.
+- All dashboard panels should wire `refreshKey`, `setLoading` and `setError` (BackupPanel, SslTrackerPanel and MultiExecPanel now do).
+- CronPanel writes crontab through `persistCron()`: it escapes `%` for cron, checks the exit code, and hides env/comment lines from the job table while preserving them in the file.
+- SFTP panel labels the left pane "Server Filesystem" (it is the server's disk, not the browser's) and shows the real SSH session state; transfer progress comes only from server events.
 - DockerPanel: Supports Docker Compose editing, Up/Down/Restart controls, and Interactive Terminal (`docker exec -it` inside new SSH xterm tab).
 - NginxPanel: Integrated with an automated Certbot Wizard to install Certbot and generate Let's Encrypt certificates for sites in 1-click.
 - DatabasePanel: Tích hợp Redis Key-Value Explorer (scan keys, read string/hash/list/set/zset type & value, delete key) và Database Backup/Restore (export, import cho MySQL & PostgreSQL).

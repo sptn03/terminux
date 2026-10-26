@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { Folder, File, FileUp, FileDown, Trash2, FolderPlus, ChevronRight, Home, RefreshCw, Loader2, X, Eye, Upload, Copy, Edit3, ArrowRight, Search, HardDrive, ArrowLeftRight, Star } from 'lucide-react'
 import type { LocalEntry } from '../../types'
+import { useTerminalStore } from '../../stores/terminal-store'
 
 function InputDialog({ title, defaultValue, onConfirm, onClose }: {
   title: string
@@ -292,6 +293,7 @@ function FileViewer({ path, content, isRemote, onSave, onClose }: {
 }
 
 export default function SftpPanel({ sessionId, visible, onToggle, embedded = false }: SftpPanelProps) {
+  const sessionConnected = useTerminalStore((s) => s.tabs.find((t) => t.sessionId === sessionId)?.connected ?? false)
   // Remote state
   const [cwd, setCwd] = useState(() => {
     if (sessionId) {
@@ -709,7 +711,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
 
   // Queue tracking helpers
   const addTransfer = (name: string, type: 'upload' | 'download', id: string) => {
-    setTransfers(prev => [{ id, name, type, status: 'active', progress: 30 }, ...prev])
+    setTransfers(prev => [{ id, name, type, status: 'active', progress: 0 }, ...prev])
     setShowQueue(true)
   }
   const updateTransfer = (id: string, updates: Partial<(typeof transfers)[0]>) => {
@@ -720,7 +722,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
   const handleCancelTransfer = async (id: string) => {
     try {
       await window.api.sftp.cancelTask(id)
-      updateTransfer(id, { status: 'error', errorMsg: 'Đang hủy...' })
+      updateTransfer(id, { status: 'error', progress: 100, errorMsg: 'Đã hủy' })
     } catch {}
   }
 
@@ -733,7 +735,6 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
     const transferId = Math.random().toString(36).substring(7)
     addTransfer(label, 'upload', transferId)
     try {
-      updateTransfer(transferId, { progress: 60 })
       const result = await window.api.sftp.deploy(sessionId, localCwd, cwd, paths, transferId)
       if (result.canceled) {
         updateTransfer(transferId, { status: 'error', progress: 100, errorMsg: 'Đã hủy bỏ' })
@@ -777,7 +778,6 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
     const transferId = Math.random().toString(36).substring(7)
     addTransfer(label, 'download', transferId)
     try {
-      updateTransfer(transferId, { progress: 60 })
       const result = await window.api.sftp.downloadFiles(sessionId, paths, localCwd, transferId)
       if (result.canceled) {
         updateTransfer(transferId, { status: 'error', progress: 100, errorMsg: 'Đã hủy bỏ' })
@@ -936,7 +936,7 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
           <div className="flex-1 flex flex-col border-r border-white/5 bg-[#11111b]/20">
             {/* Header / Select drive */}
             <div className="px-3 py-2 border-b border-white/5 bg-[#181825] flex justify-between items-center">
-              <span className="text-[10px] font-bold text-[#89b4fa] uppercase tracking-wider">Local Computer</span>
+              <span className="text-[10px] font-bold text-[#89b4fa] uppercase tracking-wider">Server Filesystem</span>
               {drives.length > 1 && (
                 <select
                   value={drives.find(d => localCwd.startsWith(d.path))?.path || drives[0]?.path}
@@ -1146,7 +1146,9 @@ export default function SftpPanel({ sessionId, visible, onToggle, embedded = fal
             {/* Header */}
             <div className="px-3 py-2 border-b border-white/5 bg-[#181825] flex justify-between items-center">
               <span className="text-[10px] font-bold text-[#f9e2af] uppercase tracking-wider">Remote Server</span>
-              <span className="text-[9px] font-mono text-[#585b70]">SFTP connection active</span>
+              <span className={`text-[9px] font-mono ${sessionConnected ? 'text-[#a6e3a1]' : 'text-[#f38ba8]'}`}>
+                {sessionConnected ? 'SFTP connected' : 'Session disconnected'}
+              </span>
             </div>
 
             {/* Toolbar */}

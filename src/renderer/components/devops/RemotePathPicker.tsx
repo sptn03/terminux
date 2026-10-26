@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { X, ArrowUp, Folder, File, RefreshCw, CornerDownLeft } from 'lucide-react'
 
+function joinPath(base: string, name: string): string {
+  const root = base === '/' ? '' : base.replace(/\/+$/, '')
+  return `${root}/${name}`
+}
+
 export interface RemotePathPickerProps {
   visible: boolean
   mode: 'file' | 'dir'
@@ -126,7 +131,7 @@ export default function RemotePathPicker({
             <div
               key={item.name}
               onClick={() =>
-                item.isDir ? fetchDir(currentPath + '/' + item.name) : onSelect(currentPath + '/' + item.name)
+                item.isDir ? fetchDir(joinPath(currentPath, item.name)) : onSelect(joinPath(currentPath, item.name))
               }
               className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-white/5 cursor-pointer group"
             >
@@ -149,12 +154,14 @@ export default function RemotePathPicker({
           <button onClick={onClose} className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10">
             Hủy
           </button>
-          <button
-            onClick={() => onSelect(currentPath)}
-            className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec]"
-          >
-            {mode === 'dir' ? 'Chọn thư mục này' : 'Chọn thư mục hiện tại'}
-          </button>
+          {mode === 'dir' && (
+            <button
+              onClick={() => onSelect(currentPath)}
+              className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec]"
+            >
+              Chọn thư mục này
+            </button>
+          )}
         </div>
       </div>
     </div>

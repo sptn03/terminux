@@ -42,10 +42,11 @@ export default function SslTrackerPanel({
       } else {
         setDomains([])
       }
-    } catch {
+    } catch (err: any) {
       setDomains([])
+      setError('Không đọc được danh sách domain SSL: ' + (err.message || 'lỗi không xác định'))
     }
-  }, [])
+  }, [setError])
 
   const saveDomainsToDb = async (updatedDomains: string[]) => {
     setDomains(updatedDomains)
@@ -158,12 +159,17 @@ export default function SslTrackerPanel({
     })
   }
 
-  const handleRefreshAll = () => {
+  const handleRefreshAll = async () => {
+    setLoading(true)
+    setError('')
     checkedRef.current.clear()
-    domains.forEach((d) => {
-      checkedRef.current.add(d)
-      checkDomainSsl(d)
-    })
+    await Promise.all(
+      domains.map((d) => {
+        checkedRef.current.add(d)
+        return checkDomainSsl(d)
+      })
+    )
+    setLoading(false)
   }
 
   useEffect(() => {

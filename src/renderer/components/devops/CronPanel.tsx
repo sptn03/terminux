@@ -22,8 +22,9 @@ function describeCron(expr: string): string {
 }
 
 function sanitizeForShell(str: string): string {
-  // Escape shell special chars to prevent injection
-  return str.replace(/["$`\\!]/g, '\\$&')
+  // Escape shell special chars to prevent injection, and `%` which cron
+  // otherwise expands into a command separator/newline.
+  return str.replace(/["$`\\!]/g, '\\$&').replace(/(^|[^\\])%/g, '$1\\%')
 }
 
 /** True only for real crontab entries (5 fields + command, or @reboot etc.). */
@@ -67,6 +68,20 @@ export default function CronPanel({
       setError(e.message || 'Lỗi tải danh sách cron jobs')
     }
   }, [exec, setError])
+
+  /** Write the full crontab and surface failures instead of a fake success. */
+  const persistCron = async (updatedJobs: string[]): Promise<boolean> => {
+    const newCronString = sanitizeForShell(updatedJobs.join('\n'))
+    const res = await exec(`echo "${newCronString}" | crontab -`)
+    if (res.code !== 0) {
+      const message = res.stderr || res.stdout || `exit code ${res.code}`
+      alert('Không cập nhật được crontab: ' + message)
+      setError('Lỗi cập nhật crontab: ' + message)
+      return false
+    }
+    await fetchCronJobs()
+    return true
+  }
 
   const loadData = useCallback(async () => {
     setLoading(true)
@@ -161,9 +176,7 @@ export default function CronPanel({
                             } else {
                               updatedJobs[idx] = `# ${job}`
                             }
-                            const newCronString = sanitizeForShell(updatedJobs.join('\n'))
-                            await exec(`echo "${newCronString}" | crontab -`)
-                            await fetchCronJobs()
+                            await persistCron(updatedJobs)
                             setLoading(false)
                           }}
                           className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-xs transition-all animate-none text-[#a6adc8]"
@@ -200,9 +213,7 @@ export default function CronPanel({
                             if (confirm('Xóa cron job này?')) {
                               setLoading(true)
                               const updatedJobs = cronJobs.filter((_, i) => i !== idx)
-                              const newCronString = sanitizeForShell(updatedJobs.join('\n'))
-                              await exec(`echo "${newCronString}" | crontab -`)
-                              await fetchCronJobs()
+                              await persistCron(updatedJobs)
                               setLoading(false)
                             }
                           }}
@@ -303,10 +314,8 @@ export default function CronPanel({
                     } else {
                       updatedJobs.push(newJob)
                     }
-                    const newCronString = sanitizeForShell(updatedJobs.join('\n'))
-                    await exec(`echo "${newCronString}" | crontab -`)
-                    await fetchCronJobs()
-                    setShowAddCronModal(false)
+                    const ok = await persistCron(updatedJobs)
+                    if (ok) setShowAddCronModal(false)
                     setLoading(false)
                   }}
                   className="px-4 py-1.5 rounded-lg font-semibold bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] active:scale-95 transition-all"

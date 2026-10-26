@@ -369,7 +369,15 @@ export default function DevOpsDashboard({ sessionId }: DevOpsDashboardProps) {
               />
             )}
 
-            {activeSubTab === 'backup' && <BackupPanel sessionId={sessionId} exec={exec} setLoading={setLoading} />}
+            {activeSubTab === 'backup' && (
+              <BackupPanel
+                sessionId={sessionId}
+                exec={exec}
+                refreshKey={refreshKey}
+                setLoading={setLoading}
+                setError={setError}
+              />
+            )}
 
             {activeSubTab === 'firewall' && (
               <FirewallPanel sessionId={sessionId} exec={exec} refreshKey={refreshKey} setLoading={setLoading} setError={setError} />

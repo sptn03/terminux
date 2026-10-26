@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Send, RefreshCw } from 'lucide-react'
 import { useTerminalStore } from '../../stores/terminal-store'
 
@@ -13,6 +13,7 @@ interface MultiExecPanelProps {
 export default function MultiExecPanel({
   sessionId,
   exec,
+  refreshKey,
   setLoading,
   setError
 }: MultiExecPanelProps) {
@@ -28,6 +29,11 @@ export default function MultiExecPanel({
 
   const tabs = useTerminalStore((s) => s.tabs)
   const otherTabs = tabs.filter((t) => t.connected && t.sessionId !== sessionId)
+
+  // Dashboard Refresh clears previous cluster output.
+  useEffect(() => {
+    setMultiOutputs({})
+  }, [refreshKey])
 
   const labelFor = (id: string): string =>
     id === sessionId ? 'Máy chủ hiện tại (Local)' : tabs.find((t) => t.sessionId === id)?.label || id

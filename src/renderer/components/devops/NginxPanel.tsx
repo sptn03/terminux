@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import RemotePathPicker from './RemotePathPicker'
 import {
   FileCode,
   RefreshCw,
@@ -16,14 +17,6 @@ import {
   ExternalLink,
   Copy,
   Check,
-  ShieldAlert,
-  Sliders,
-  FolderOpen,
-  ArrowUpRight,
-  Shield,
-  Layers,
-  Lock,
-  ChevronRight,
   Sparkles
 } from 'lucide-react'
 
@@ -501,19 +494,6 @@ EOF
     } finally {
       setInstalling(false)
     }
-  }
-
-  const handleOpenSslWizard = () => {
-    const match = nginxConfigContent.match(/server_name\s+([^;]+);/)
-    if (match && match[1]) {
-      setSslDomain(match[1].trim().split(/\s+/)[0])
-    } else {
-      setSslDomain('')
-    }
-    setSslEmail('')
-    setSslLogs('')
-    setRunningSsl(false)
-    setShowSslModal(true)
   }
 
   const handleRunSslCertbot = async () => {
@@ -1302,153 +1282,6 @@ EOF
           onSelect={(path) => setNewSiteParam(path)}
         />
       )}
-    </div>
-  )
-}
-
-interface RemotePathPickerProps {
-  visible: boolean
-  mode: 'file' | 'dir'
-  exec: (cmd: string) => Promise<{ stdout: string; stderr: string; code: number }>
-  onClose: () => void
-  onSelect: (path: string) => void
-}
-
-function RemotePathPicker({ mode, exec, onClose, onSelect }: RemotePathPickerProps) {
-  const [currentPath, setCurrentPath] = useState('/')
-  const [items, setItems] = useState<{ name: string; isDir: boolean }[]>([])
-  const [loading, setLoading] = useState(false)
-
-  const fetchDir = useCallback(async (path: string) => {
-    setLoading(true)
-    try {
-      const sanitizedPath = path.replace(/"/g, '\\"')
-      const cmd = `cd "${sanitizedPath}" && ls -F -1`
-      const res = await exec(cmd)
-      if (res.code === 0) {
-        const parsed = res.stdout
-          .split('\n')
-          .map((f) => f.trim())
-          .filter((f) => f && f !== './' && f !== '../')
-          .map((f) => {
-            const isDir = f.endsWith('/')
-            const name = isDir ? f.slice(0, -1) : f
-            return { name, isDir }
-          })
-
-        parsed.sort((a, b) => {
-          if (a.isDir && !b.isDir) return -1
-          if (!a.isDir && b.isDir) return 1
-          return a.name.localeCompare(b.name)
-        })
-
-        setItems(parsed)
-        setCurrentPath(path)
-      } else {
-        alert('Lỗi đọc thư mục: ' + res.stderr)
-      }
-    } catch (e: any) {
-      alert('Lỗi: ' + e.message)
-    } finally {
-      setLoading(false)
-    }
-  }, [exec])
-
-  useEffect(() => {
-    fetchDir('/')
-  }, [fetchDir])
-
-  const handleGoUp = () => {
-    if (currentPath === '/') return
-    const parts = currentPath.split('/').filter(Boolean)
-    parts.pop()
-    const parent = '/' + parts.join('/')
-    fetchDir(parent)
-  }
-
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in">
-      <div className="bg-[#181825] border border-white/10 rounded-3xl shadow-2xl w-[420px] h-[500px] flex flex-col animate-scale-in overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] bg-[#11111b]/50">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#cdd6f4]">
-            Chọn Thư Mục trên Server
-          </h3>
-          <button onClick={onClose} className="p-1.5 rounded-xl hover:bg-white/10 text-[#585b70] hover:text-[#cdd6f4]">
-            <X size={14} />
-          </button>
-        </div>
-
-        <div className="p-3 bg-[#11111b] border-b border-white/5 flex gap-2 items-center">
-          <button
-            onClick={handleGoUp}
-            disabled={currentPath === '/'}
-            className="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-[#cdd6f4] hover:bg-white/10 disabled:opacity-40"
-          >
-            ← Lên
-          </button>
-          <input
-            type="text"
-            readOnly
-            value={currentPath}
-            className="flex-1 bg-[#181825] border border-white/5 rounded-lg px-2.5 py-1 text-xs text-[#a6adc8] font-mono outline-none"
-          />
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-3 space-y-1 scrollbar-thin">
-          {loading ? (
-            <div className="flex items-center justify-center h-full text-xs text-[#585b70] gap-2">
-              <RefreshCw size={14} className="animate-spin text-[#89b4fa]" /> Đang tải...
-            </div>
-          ) : items.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-xs text-[#585b70]">
-              Thư mục trống.
-            </div>
-          ) : (
-            items.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => {
-                  const newPath = currentPath === '/' ? `/${item.name}` : `${currentPath}/${item.name}`
-                  if (item.isDir) {
-                    fetchDir(newPath)
-                  } else {
-                    if (mode === 'file') {
-                      onSelect(newPath)
-                      onClose()
-                    }
-                  }
-                }}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-left text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-white/[0.04] transition-all"
-              >
-                <span className="shrink-0">{item.isDir ? '📁' : '📄'}</span>
-                <span className="truncate">{item.name}</span>
-              </button>
-            ))
-          )}
-        </div>
-
-        <div className="p-4 border-t border-white/[0.06] bg-[#11111b]/50 flex justify-between items-center">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-[#cdd6f4]"
-          >
-            Hủy
-          </button>
-          {mode === 'dir' && (
-            <button
-              type="button"
-              onClick={() => {
-                onSelect(currentPath)
-                onClose()
-              }}
-              className="px-4 py-1.5 rounded-xl bg-[#89b4fa] text-[#11111b] hover:bg-[#74c7ec] text-xs font-bold shadow-sm"
-            >
-              Chọn thư mục này
-            </button>
-          )}
-        </div>
-      </div>
     </div>
   )
 }

@@ -9,6 +9,31 @@ Every AI modification.
 
 Date: 2026-10-26
 AI: CommandCode
+Task: Hoàn thiện tại chỗ các tính năng DevOps (không thêm tính năng/thư viện mới)
+Files changed:
+- src/renderer/components/devops/RemotePathPicker.tsx (join path chuẩn, chỉ hiện nút "Chọn thư mục này" ở mode dir)
+- src/renderer/components/devops/{Docker,Git,Logs,Nginx,PM2}Panel.tsx (xóa 5 bản RemotePathPicker copy, dùng component chung; bỏ import/handler chết)
+- src/renderer/components/devops/BackupPanel.tsx + DevOpsDashboard.tsx (nối refreshKey + setError)
+- src/renderer/components/devops/SslTrackerPanel.tsx (dùng setLoading/setError, refresh dùng Promise.all)
+- src/renderer/components/devops/MultiExecPanel.tsx (refreshKey xóa output cũ)
+- src/renderer/components/sftp/SftpPanel.tsx (bỏ progress ảo 30/60, huỷ chuyển "Đã hủy", nhãn "Server Filesystem", trạng thái SFTP theo session)
+- src/renderer/components/devops/ServicesPanel.tsx (kiểm tra exit code thay vì chỉ chữ "Failed")
+- src/renderer/components/devops/PhpManagerPanel.tsx (bỏ subtab 'composer' chết + import thừa)
+- src/renderer/components/devops/CronPanel.tsx (escape `%` đúng chuẩn crontab, persistCron kiểm tra exit code, ẩn dòng env/comment)
+What changed:
+- Không còn 5 bản picker trùng lặp; mọi panel dùng chung một hành vi (pwd, startPath, báo lỗi).
+- Nút Refresh và banner lỗi của dashboard hoạt động ở tab Backup/SslTracker/MultiExec.
+- Sửa các trạng thái giả trong SFTP và thông báo lỗi dịch vụ/crontab.
+Reason: Yêu cầu hoàn thiện các tính năng DevOps mà không thêm gì mới.
+Risk: Thấp — chủ yếu refactor/dọn dead code và nối props.
+Verification: `npm run typecheck` sạch; `npm test` 31/31 pass; `npm run build` thành công.
+
+
+==================================================
+
+
+Date: 2026-10-26
+AI: CommandCode
 Task: Tự động reconnect khi mất kết nối + hoàn thiện/sửa lỗi các panel quản trị VPS
 Files changed:
 - src/renderer/hooks/use-terminal.ts (shell:exit → connected=false, phát `terminux:connection-lost`)

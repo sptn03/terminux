@@ -4,7 +4,9 @@ import { DownloadCloud, RotateCw, Trash2, X, Clock } from 'lucide-react'
 interface BackupPanelProps {
   sessionId: string
   exec: (cmd: string) => Promise<{ stdout: string; stderr: string; code: number }>
+  refreshKey: number
   setLoading: (loading: boolean) => void
+  setError: (error: string) => void
 }
 
 interface BackupHistoryItem {
@@ -16,7 +18,9 @@ interface BackupHistoryItem {
 export default function BackupPanel({
   sessionId,
   exec,
-  setLoading
+  refreshKey,
+  setLoading,
+  setError
 }: BackupPanelProps) {
   const [backupPath, setBackupPath] = useState('/var/www')
   const [backupType, setBackupType] = useState<'dir' | 'mysql' | 'postgres'>('dir')
@@ -62,10 +66,11 @@ export default function BackupPanel({
 
   useEffect(() => {
     fetchBackupHistory()
-  }, [fetchBackupHistory])
+  }, [fetchBackupHistory, refreshKey])
 
   const handleStartBackup = async () => {
     setLoading(true)
+    setError('')
     setBackupStatus('Đang khởi tạo tiến trình sao lưu...\n')
     const timestamp = Date.now()
 
@@ -87,6 +92,7 @@ export default function BackupPanel({
         )
       } else {
         setBackupStatus((prev) => prev + `❌ Lỗi nén file: ${result.stderr}`)
+        setError(result.stderr || 'Lỗi nén thư mục khi sao lưu')
       }
     } else if (backupType === 'mysql') {
       if (!dbName) {
@@ -107,6 +113,7 @@ export default function BackupPanel({
         )
       } else {
         setBackupStatus((prev) => prev + `❌ Lỗi xuất database: ${result.stderr}`)
+        setError(result.stderr || 'Lỗi xuất database MySQL')
       }
     } else {
       // postgres
@@ -127,6 +134,7 @@ export default function BackupPanel({
         )
       } else {
         setBackupStatus((prev) => prev + `❌ Lỗi xuất database: ${result.stderr}`)
+        setError(result.stderr || 'Lỗi xuất database PostgreSQL')
       }
     }
 

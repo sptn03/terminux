@@ -3,20 +3,15 @@ import {
   RefreshCw,
   Sliders,
   CheckCircle,
-  AlertTriangle,
   Play,
   Square,
   RotateCw,
   Plus,
   Package,
-  FileCode,
-  Terminal,
   Layers,
-  Sparkles,
   Download,
   Check,
   Zap,
-  HardDrive,
   Cpu,
   X
 } from 'lucide-react'
@@ -61,7 +56,7 @@ export default function PhpManagerPanel({
 }: PhpManagerPanelProps) {
   const [phpVersions, setPhpVersions] = useState<PhpVersionInfo[]>([])
   const [selectedVersion, setSelectedVersion] = useState<string | null>(null)
-  const [activeSubTab, setActiveSubTab] = useState<'settings' | 'extensions' | 'raw_ini' | 'composer'>('settings')
+  const [activeSubTab, setActiveSubTab] = useState<'settings' | 'extensions' | 'raw_ini'>('settings')
 
   // Form php.ini settings
   const [memoryLimit, setMemoryLimit] = useState('256M')

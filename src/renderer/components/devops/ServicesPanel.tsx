@@ -179,9 +179,9 @@ export default function ServicesPanel({
 
   const handleServiceAction = async (action: 'restart' | 'stop' | 'start' | 'enable' | 'disable', serviceName: string) => {
     setLoading(true)
-    const { stderr } = await exec(`sudo systemctl ${action} ${serviceName} || systemctl ${action} ${serviceName}`)
-    if (stderr && stderr.includes('Failed')) {
-      alert('Lỗi thao tác: ' + stderr)
+    const { code, stderr } = await exec(`sudo systemctl ${action} ${serviceName} || systemctl ${action} ${serviceName}`)
+    if (code !== 0) {
+      alert('Lỗi thao tác: ' + (stderr || `exit code ${code}`))
     }
     await fetchServices()
     setLoading(false)
